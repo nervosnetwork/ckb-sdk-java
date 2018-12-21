@@ -9,7 +9,7 @@ import org.nervos.ckb.response.item.Cell;
  * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public interface NervosApi {
+public interface CKBApi {
 
     Request<?, ResBlock> getBlock(String blockHash);
 

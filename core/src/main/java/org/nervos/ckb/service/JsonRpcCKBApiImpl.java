@@ -12,11 +12,11 @@ import java.util.Collections;
  * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class JsonRpcNervosApiImpl implements NervosService {
+public class JsonRpcCKBApiImpl implements CKBService {
 
     protected final APIService apiService;
 
-    public JsonRpcNervosApiImpl(APIService apiService) {
+    public JsonRpcCKBApiImpl(APIService apiService) {
         this.apiService = apiService;
     }
 

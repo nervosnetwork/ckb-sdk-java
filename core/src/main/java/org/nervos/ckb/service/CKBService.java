@@ -6,7 +6,7 @@ package org.nervos.ckb.service;
  * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public interface NervosService extends NervosApi {
+public interface CKBService extends CKBApi {
 
     /**
      * Construct a new apiService instance.
@@ -14,8 +14,8 @@ public interface NervosService extends NervosApi {
      * @param apiService api service instance - i.e. HTTP or IPC
      * @return new apiService instance
      */
-    static NervosService build(APIService apiService) {
-        return new JsonRpcNervosApiImpl(apiService);
+    static CKBService build(APIService apiService) {
+        return new JsonRpcCKBApiImpl(apiService);
     }
 
 }

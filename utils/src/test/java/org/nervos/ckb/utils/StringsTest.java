@@ -2,9 +2,6 @@ package org.nervos.ckb.utils;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.nervos.ckb.utils.Strings.*;
@@ -12,37 +9,6 @@ import static org.nervos.ckb.utils.Strings.*;
 
 public class StringsTest {
 
-    @Test
-    public void testToCsv() {
-        assertThat(toCsv(Collections.<String>emptyList()), is(""));
-        assertThat(toCsv(Collections.singletonList("a")), is("a"));
-        assertThat(toCsv(Arrays.asList("a", "b", "c")), is("a, b, c"));
-    }
-
-    @Test
-    public void testJoin() {
-        assertThat(join(Arrays.asList("a", "b"), "|"), is("a|b"));
-        assertNull(join(null, "|"));
-        assertThat(join(Collections.singletonList("a"), "|"), is("a"));
-    }
-
-    @Test
-    public void testCapitaliseFirstLetter() {
-        assertThat(capitaliseFirstLetter(""), is(""));
-        assertThat(capitaliseFirstLetter("a"), is("A"));
-        assertThat(capitaliseFirstLetter("aa"), is("Aa"));
-        assertThat(capitaliseFirstLetter("A"), is("A"));
-        assertThat(capitaliseFirstLetter("Ab"), is("Ab"));
-    }
-
-    @Test
-    public void testLowercaseFirstLetter() {
-        assertThat(lowercaseFirstLetter(""), is(""));
-        assertThat(lowercaseFirstLetter("A"), is("a"));
-        assertThat(lowercaseFirstLetter("AA"), is("aA"));
-        assertThat(lowercaseFirstLetter("a"), is("a"));
-        assertThat(lowercaseFirstLetter("aB"), is("aB"));
-    }
 
     @Test
     public void testRepeat() {
