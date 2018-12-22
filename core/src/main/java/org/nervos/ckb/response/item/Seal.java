@@ -15,6 +15,17 @@ public class Seal {
      */
 
     public String nonce;
-    public List<Integer> proof;
+    private List<Integer> proof;
 
+    public List<Integer> getProof() {
+        int size = proof.size();
+        for (int i = 0; i < size; i++) {
+            proof.set(i, proof.get(i) & 0xff);
+        }
+        return proof;
+    }
+
+    public void setProof(List<Integer> proof) {
+        this.proof = proof;
+    }
 }
