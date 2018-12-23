@@ -25,60 +25,61 @@ public class HashTest {
         };
 
         byte[] expected = new byte[]{
-                asByte(0x4, 0x7),
-                asByte(0x1, 0x7),
-                asByte(0x3, 0x2),
-                asByte(0x8, 0x5),
-                asByte(0xa, 0x8),
-                asByte(0xd, 0x7),
-                asByte(0x3, 0x4),
-                asByte(0x1, 0xe),
-                asByte(0x5, 0xe),
-                asByte(0x9, 0x7),
-                asByte(0x2, 0xf),
-                asByte(0xc, 0x6),
-                asByte(0x7, 0x7),
-                asByte(0x2, 0x8),
-                asByte(0x6, 0x3),
-                asByte(0x8, 0x4),
-                asByte(0xf, 0x8),
-                asByte(0x0, 0x2),
-                asByte(0xf, 0x8),
-                asByte(0xe, 0xf),
-                asByte(0x4, 0x2),
-                asByte(0xa, 0x5),
-                asByte(0xe, 0xc),
-                asByte(0x5, 0xf),
-                asByte(0x0, 0x3),
-                asByte(0xb, 0xb),
-                asByte(0xf, 0xa),
-                asByte(0x2, 0x5),
-                asByte(0x4, 0xc),
-                asByte(0xb, 0x0),
-                asByte(0x1, 0xf),
-                asByte(0xa, 0xd)
+                asByte(0x6, 0x4),
+                asByte(0x4, 0xb),
+                asByte(0xc, 0xc),
+                asByte(0x7, 0xe),
+                asByte(0x5, 0x6),
+                asByte(0x4, 0x3),
+                asByte(0x7, 0x3),
+                asByte(0x0, 0x4),
+                asByte(0x0, 0x9),
+                asByte(0x9, 0x9),
+                asByte(0xa, 0xa),
+                asByte(0xc, 0x8),
+                asByte(0x9, 0xe),
+                asByte(0x7, 0x6),
+                asByte(0x2, 0x2),
+                asByte(0xf, 0x3),
+                asByte(0xc, 0xa),
+                asByte(0x7, 0x1),
+                asByte(0xf, 0xb),
+                asByte(0xa, 0x1),
+                asByte(0xd, 0x9),
+                asByte(0x7, 0x2),
+                asByte(0xf, 0xd),
+                asByte(0x9, 0x4),
+                asByte(0xa, 0x3),
+                asByte(0x1, 0xc),
+                asByte(0x3, 0xb),
+                asByte(0xf, 0xb),
+                asByte(0xf, 0x2),
+                asByte(0x4, 0xe),
+                asByte(0x3, 0x9),
+                asByte(0x3, 0x8)
         };
 
         byte[] result = Hash.sha3(input);
         assertThat(result, is(expected));
     }
 
+
     @Test
     public void testSha3HashHex() {
         assertThat(Hash.sha3(""),
-                is("0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"));
+                is("0xa7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"));
 
         assertThat(Hash.sha3("68656c6c6f20776f726c64"),
-                is("0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad"));
+                is("0x644bcc7e564373040999aac89e7622f3ca71fba1d972fd94a31c3bfbf24e3938"));
     }
 
     @Test
     public void testSha3String() {
         assertThat(Hash.sha3String(""),
-                is("0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"));
+                is("0xa7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a"));
 
-        assertThat(Hash.sha3String("EVWithdraw(address,uint256,bytes32)"),
-                is("0x953d0c27f84a9649b0e121099ffa9aeb7ed83e65eaed41d3627f895790c72d41"));
+        assertThat(Hash.sha3String("hello ckb"),
+                is("0xf3ac0212947c7de8cea1a48c8b5534e771d1644ab77b8dede1d8e7af0f83791c"));
     }
 
     @Test

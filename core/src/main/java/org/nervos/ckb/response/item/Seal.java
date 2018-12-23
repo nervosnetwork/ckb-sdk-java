@@ -15,6 +15,8 @@ public class Seal {
      */
 
     public String nonce;
+
+    // data type: uint8
     private List<Integer> proof;
 
     public List<Integer> getProof() {
