@@ -1,6 +1,5 @@
 package org.nervos.ckb.crypto;
 
-import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.nervos.ckb.utils.Numeric;
 
