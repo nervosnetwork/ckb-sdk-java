@@ -1,0 +1,6 @@
+rootProject.name = 'ckb'
+
+include 'core'
+include 'utils'
+
+
