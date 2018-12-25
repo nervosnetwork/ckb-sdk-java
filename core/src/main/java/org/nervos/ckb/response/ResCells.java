@@ -2,14 +2,16 @@ package org.nervos.ckb.response;
 
 import org.nervos.ckb.response.item.Cell;
 
+import java.util.List;
+
 /**
- * Created by duanyytop on 2018-12-25.
+ * Created by duanyytop on 2018-12-21.
  * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class ResCell extends Response<Cell> {
+public class ResCells extends Response<List<Cell>> {
 
-    public Cell getCell() {
+    public List<Cell> getCells() {
         return result;
     }
 
