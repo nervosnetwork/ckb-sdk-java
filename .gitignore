@@ -21,6 +21,9 @@ hs_err_pid*
 
 gradle.properties
 
+# Config example
+*.example
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
