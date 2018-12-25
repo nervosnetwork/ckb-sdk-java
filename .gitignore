@@ -21,8 +21,8 @@ hs_err_pid*
 
 gradle.properties
 
-# Config example
-*.example
+# Ignore APITest because loachost can not visit
+APITest.java
 
 # Ignore Gradle GUI config
 gradle-app.setting
