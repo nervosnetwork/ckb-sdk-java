@@ -1,7 +1,5 @@
 package org.nervos.ckb.response;
 
-import org.nervos.ckb.utils.Numeric;
-
 import java.math.BigInteger;
 
 /**
@@ -12,7 +10,7 @@ import java.math.BigInteger;
 public class ResBlockNumber extends Response<String> {
 
     public BigInteger getBlockNumber() {
-        return Numeric.decodeQuantity(result);
+        return new BigInteger(result);
     }
 
 }

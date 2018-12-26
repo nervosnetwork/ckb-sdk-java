@@ -17,6 +17,6 @@ public class Block {
 
     public String hash;
     public Header header;
-    public List<Transaction> transactions;
+    public List<TransactionItem> transactions;
 
 }

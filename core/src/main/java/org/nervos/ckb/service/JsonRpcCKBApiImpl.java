@@ -3,9 +3,12 @@ package org.nervos.ckb.service;
 import org.nervos.ckb.request.Request;
 import org.nervos.ckb.response.*;
 import org.nervos.ckb.response.item.Cell;
+import org.nervos.ckb.response.item.Transaction;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by duanyytop on 2018-12-20.
@@ -61,30 +64,47 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
 
     @Override
-    public Request<?, ResCell> getCellsByTypeHash(String typeHash) {
+    public Request<?, ResCells> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber) {
         return new Request<>(
                 "get_cells_by_type_hash",
-                Arrays.asList(typeHash),
+                Arrays.asList(typeHash, fromBlockNumber, toBlockNumber),
                 apiService,
-                ResCell.class);
+                ResCells.class);
     }
 
 
     @Override
     public Request<?, ResCell> getCurrentCell(Cell.OutPoint outPoint) {
         return new Request<>(
-                "get_current_hash",
-                Collections.<String>emptyList(),
+                "get_current_cell",
+                Arrays.asList(outPoint),
                 apiService,
                 ResCell.class);
     }
 
+    @Override
+    public Request<?, ResBlockNumber> getTipBlockNumber() {
+        return new Request<>(
+                "get_tip_block_number",
+                Collections.<String>emptyList(),
+                apiService,
+                ResBlockNumber.class);
+    }
 
     @Override
-    public Request<?, ResTransactionHash> sendTransaction() {
+    public Request<?, ResNodeId> localNodeId() {
+        return new Request<>(
+                "local_node_id",
+                Collections.<String>emptyList(),
+                apiService,
+                ResNodeId.class);
+    }
+
+    @Override
+    public Request<?, ResTransactionHash> sendTransaction(Transaction transaction) {
         return new Request<>(
                 "send_transaction",
-                Collections.<String>emptyList(),
+                Arrays.asList(transaction),
                 apiService,
                 ResTransactionHash.class);
     }
