@@ -1,7 +1,5 @@
 package org.nervos.ckb.response.item;
 
-import java.util.List;
-
 /**
  * Created by duanyytop on 2018-12-21.
  * <p>
@@ -16,18 +14,6 @@ public class Seal {
 
     public String nonce;
 
-    // data type: uint8
-    private List<Integer> proof;
+    public byte[] proof;
 
-    public List<Integer> getProof() {
-        int size = proof.size();
-        for (int i = 0; i < size; i++) {
-            proof.set(i, proof.get(i) & 0xff);
-        }
-        return proof;
-    }
-
-    public void setProof(List<Integer> proof) {
-        this.proof = proof;
-    }
 }

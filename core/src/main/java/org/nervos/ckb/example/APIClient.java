@@ -1,12 +1,12 @@
 package org.nervos.ckb.example;
 
 import com.google.gson.Gson;
-import org.nervos.ckb.response.item.Block;
-import org.nervos.ckb.response.item.Cell;
-import org.nervos.ckb.response.item.Header;
-import org.nervos.ckb.response.item.Transaction;
+import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.exceptions.APIErrorException;
+import org.nervos.ckb.response.item.*;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.utils.Numeric;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -27,40 +27,88 @@ public class APIClient {
 
     public static void main(String[] args) throws IOException {
 
-        String blockHash = ckbService.getBlockHash(1).send().getBlockHash();
-        System.out.println("Second block hash is " + blockHash);
+        long blockNumber = 1;
+        Block block = getBlock(getBlockHash(blockNumber));
+        System.out.println("Block is " + new Gson().toJson(block));
 
-        Block block = ckbService.getBlock(blockHash).send().getBlock();
-        System.out.println("Second block is " + new Gson().toJson(block));
+        System.out.println("Always success cell hash is " + alwaysSuccessCellHash());
 
-        String transactionHash = block.transactions.get(0).hash;
-        Transaction transaction = ckbService.getTransaction(transactionHash).send().getTransaction().transaction;
-        System.out.println("The result of getTransactionByHash is " + new Gson().toJson(transaction));
+    }
 
-        Header header = ckbService.getTipHeader().send().getHeader();
-        System.out.println("The tip header is " + new Gson().toJson(header));
+    private static String getBlockHash(long blockNumber) throws IOException {
+        return ckbService.getBlockHash(blockNumber).send().getBlockHash();
+    }
 
-        BigInteger blockNumber = ckbService.getTipBlockNumber().send().getBlockNumber();
-        System.out.println("The result of getTipBlockNumber is " + blockNumber.toString());
+    private static Block getBlock(String blockHash) throws IOException {
+        return ckbService.getBlock(blockHash).send().getBlock();
+    }
 
-        String nodeId = ckbService.localNodeId().send().getNodeId();
-        System.out.println("Local node id is " + nodeId);
+    private static Transaction getTransaction(String transactionHash) throws IOException {
+        return ckbService.getTransaction(transactionHash).send().getTransaction().transaction;
+    }
 
-        List<Cell> cells = ckbService.getCellsByTypeHash(
+    private static Header getTipHeader() throws IOException {
+        return ckbService.getTipHeader().send().getHeader();
+    }
+
+
+    private static BigInteger getTipBlockNumber() throws IOException {
+        return ckbService.getTipBlockNumber().send().getBlockNumber();
+    }
+
+
+    private static String localNodeId() throws IOException {
+        return ckbService.localNodeId().send().getNodeId();
+    }
+
+
+    private static List<Cell> getCellsByTypeHash() throws IOException {
+        return ckbService.getCellsByTypeHash(
                 "0xcf7294651a9e2033243b04cfd3fa35097d56b811824691a75cd29d50ac23720a", 1, 100
         ).send().getCells();
-        System.out.println("The result of getCellsByTypeHash is " + new Gson().toJson(cells));
+    }
 
-        Cell cell = ckbService.getCurrentCell(
+    private static Cell getLiveCell() throws IOException {
+        return ckbService.getLiveCell(
                 new Cell.OutPoint("0x10262d4d6918774ae939a55b88f1b2c847f75489e36cd58cca03bad5c216db4f", 0)
         ).send().getCell();
-        System.out.println("Current cell is " + new Gson().toJson(cell));
+    }
 
-        String hash = ckbService.sendTransaction(
+
+    private static String sendTransaction() throws IOException {
+        return ckbService.sendTransaction(
                 new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
         ).send().getTransactionHash();
-        System.out.println("The result transaction hash of sending transaction is " + hash);
+    }
 
+
+    private static Block genesisBlock() throws IOException {
+        String blockHash = ckbService.getBlockHash(0).send().getBlockHash();
+        return ckbService.getBlock(blockHash).send().getBlock();
+    }
+
+
+    private static String mrubyCellHash() throws IOException {
+        List<Output> systemCells = genesisBlock().transactions.get(0).transaction.outputs;
+        if (systemCells.size() < 3) {
+            throw new APIErrorException("Cannot find mruby contract cell");
+        }
+        return Numeric.toHexString(Hash.sha3(systemCells.get(2).data));
+    }
+
+
+    private static String alwaysSuccessCellHash() throws IOException {
+        List<Output> systemCells = genesisBlock().transactions.get(0).transaction.outputs;
+        if (systemCells.isEmpty() || systemCells.get(0) == null) {
+            throw new APIErrorException("Cannot find always success cell");
+        }
+        return Numeric.toHexString(Hash.sha3(systemCells.get(0).data));
+    }
+
+
+    private static Cell.OutPoint alwaysSuccessScriptOutPoint() throws IOException {
+        String hash = genesisBlock().transactions.get(0).hash;
+        return new Cell.OutPoint(hash, 0);
     }
 
 }

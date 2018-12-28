@@ -74,9 +74,9 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
 
     @Override
-    public Request<?, ResCell> getCurrentCell(Cell.OutPoint outPoint) {
+    public Request<?, ResCell> getLiveCell(Cell.OutPoint outPoint) {
         return new Request<>(
-                "get_current_cell",
+                "get_live_cell",
                 Arrays.asList(outPoint),
                 apiService,
                 ResCell.class);

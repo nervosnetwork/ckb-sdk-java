@@ -19,6 +19,6 @@ public class Output {
     public int capacity;
     public Object contract;
     public String lock;
-    public List<?> data;
+    public byte[] data;
 
 }

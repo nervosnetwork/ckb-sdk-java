@@ -5,17 +5,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.nervos.ckb.response.item.Seal;
 
-import java.util.Arrays;
 
 public class SealTest {
 
     @Test
     public void testSeal() {
-        String json = "{\"nonce\": 10545468520399447721, \"proof\": [240, 2400]}";
+        String json = "{\"nonce\": 10545468520399447721, \"proof\": [124, 125]}";
         Seal seal = new Gson().fromJson(json, Seal.class);
 
         Assert.assertEquals("10545468520399447721", seal.nonce);
-        Assert.assertEquals(seal.getProof(), Arrays.asList(240, 96));
+        Assert.assertArrayEquals(seal.proof, new byte[]{124, 125});
     }
 
 }

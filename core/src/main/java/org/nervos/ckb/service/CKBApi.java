@@ -22,7 +22,7 @@ public interface CKBApi {
 
     Request<?, ResCells> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber);
 
-    Request<?, ResCell> getCurrentCell(Cell.OutPoint outPoint);
+    Request<?, ResCell> getLiveCell(Cell.OutPoint outPoint);
 
     Request<?, ResBlockNumber> getTipBlockNumber();
 
