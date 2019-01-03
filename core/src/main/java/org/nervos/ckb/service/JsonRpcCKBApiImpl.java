@@ -5,10 +5,8 @@ import org.nervos.ckb.response.*;
 import org.nervos.ckb.response.item.Cell;
 import org.nervos.ckb.response.item.Transaction;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by duanyytop on 2018-12-20.

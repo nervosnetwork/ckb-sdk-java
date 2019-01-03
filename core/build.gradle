@@ -1,6 +1,20 @@
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
+    }
+}
+
 plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
     id 'java'
 }
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
 
 version '0.1'
 
@@ -19,3 +33,6 @@ dependencies {
     compile "com.squareup.okhttp3:logging-interceptor:3.12.0"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+mainClassName = 'org.nervos.ckb.example.APIClient'
+applicationName = 'ckb-sdk-java'
