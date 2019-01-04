@@ -21,7 +21,7 @@ public class APIClient {
 
 
     static {
-        HttpService.setDebug(true);
+        HttpService.setDebug(false);
         ckbService = CKBService.build(new HttpService(NODE_URL));
     }
 
@@ -49,7 +49,9 @@ public class APIClient {
 
         System.out.println("Transaction hash: " + sendTransaction());
 
-        System.out.println("Always success cell hash is " + alwaysSuccessCellHash());
+        System.out.println("Always Success Cell Hash: " + alwaysSuccessCellHash());
+
+        System.out.println("Always Success Script OutPoint: " + gson.toJson(alwaysSuccessScriptOutPoint()));
 
     }
 
@@ -103,15 +105,6 @@ public class APIClient {
     private static Block genesisBlock() throws IOException {
         String blockHash = ckbService.getBlockHash(0).send().getBlockHash();
         return ckbService.getBlock(blockHash).send().getBlock();
-    }
-
-
-    private static String mrubyCellHash() throws IOException {
-        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
-        if (systemCells.size() < 3) {
-            throw new APIErrorException("Cannot find mruby contract cell");
-        }
-        return Hash.sha3(systemCells.get(2).data);
     }
 
 
