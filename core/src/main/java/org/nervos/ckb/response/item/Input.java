@@ -34,7 +34,7 @@ public class Input {
     public static class Unlock {
         /**
          * args : []
-         * binary : [1,0,0,0,0,0,0,0]
+         * binary: 0x0100000000000000
          * reference : null
          * signed_args : []
          * version : 0
@@ -42,9 +42,11 @@ public class Input {
 
         public Object reference;
         public int version;
-        public List<?> args;
-        public List<Integer> binary;
-        public List<?> signed_args;
+        public Byte[] args;
+        public String binary;
+
+        @SerializedName("signed_args")
+        public Byte[] signedArgs;
 
     }
 }

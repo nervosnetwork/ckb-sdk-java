@@ -1,7 +1,5 @@
 package org.nervos.ckb.response;
 
-import org.nervos.ckb.response.Response;
-
 /**
  * Created by duanyytop on 2018-12-21.
  * <p>

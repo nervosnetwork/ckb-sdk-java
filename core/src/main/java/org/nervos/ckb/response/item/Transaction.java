@@ -17,7 +17,8 @@ public class Transaction {
      */
 
     public int version;
-    public List<?> deps;
+    public String hash;
+    public List<Cell.OutPoint> deps;
     public List<Input> inputs;
     public List<Output> outputs;
 
@@ -25,7 +26,7 @@ public class Transaction {
 
     }
 
-    public Transaction(int version, List deps, List<Input> inputs, List<Output> outputs) {
+    public Transaction(int version, List<Cell.OutPoint> deps, List<Input> inputs, List<Output> outputs) {
         this.version = version;
         this.deps = deps;
         this.inputs = inputs;

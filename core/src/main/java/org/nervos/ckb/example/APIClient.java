@@ -6,8 +6,6 @@ import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.response.item.*;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.utils.Numeric;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;
@@ -19,17 +17,37 @@ public class APIClient {
 
     private static CKBService ckbService;
 
+    private static Gson gson = new Gson();
+
 
     static {
-        HttpService.setDebug(false);
+        HttpService.setDebug(true);
         ckbService = CKBService.build(new HttpService(NODE_URL));
     }
 
     public static void main(String[] args) throws IOException {
 
-        long blockNumber = 1;
-        Block block = getBlock(getBlockHash(blockNumber));
-        System.out.println("Block is " + new Gson().toJson(block));
+        long blockNumber = 0;
+
+        String blockHash = getBlockHash(blockNumber);
+        System.out.println("Block hash: " + blockHash);
+
+        Block block = getBlock(blockHash);
+        System.out.println("Block: " + gson.toJson(block));
+
+        System.out.println("Transaction: " + gson.toJson(getTransaction(block.commitTransactions.get(0).hash)));
+
+        System.out.println("Header: " + gson.toJson(getTipHeader()));
+
+        System.out.println("Block number: " + getTipBlockNumber().toString());
+
+        System.out.println("Local host: " + localNodeId());
+
+        System.out.println("Cells: " + gson.toJson(getCellsByTypeHash()));
+
+        System.out.println("Cell: " + gson.toJson(getLiveCell()));
+
+        System.out.println("Transaction hash: " + sendTransaction());
 
         System.out.println("Always success cell hash is " + alwaysSuccessCellHash());
 
@@ -44,7 +62,7 @@ public class APIClient {
     }
 
     private static Transaction getTransaction(String transactionHash) throws IOException {
-        return ckbService.getTransaction(transactionHash).send().getTransaction().transaction;
+        return ckbService.getTransaction(transactionHash).send().getTransaction();
     }
 
     private static Header getTipHeader() throws IOException {
@@ -89,25 +107,25 @@ public class APIClient {
 
 
     private static String mrubyCellHash() throws IOException {
-        List<Output> systemCells = genesisBlock().transactions.get(0).transaction.outputs;
+        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
         if (systemCells.size() < 3) {
             throw new APIErrorException("Cannot find mruby contract cell");
         }
-        return Numeric.toHexString(Hash.sha3(systemCells.get(2).data));
+        return Hash.sha3(systemCells.get(2).data);
     }
 
 
     private static String alwaysSuccessCellHash() throws IOException {
-        List<Output> systemCells = genesisBlock().transactions.get(0).transaction.outputs;
+        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
         if (systemCells.isEmpty() || systemCells.get(0) == null) {
             throw new APIErrorException("Cannot find always success cell");
         }
-        return Numeric.toHexString(Hash.sha3(systemCells.get(0).data));
+        return Hash.sha3(systemCells.get(0).data);
     }
 
 
     private static Cell.OutPoint alwaysSuccessScriptOutPoint() throws IOException {
-        String hash = genesisBlock().transactions.get(0).hash;
+        String hash = genesisBlock().commitTransactions.get(0).hash;
         return new Cell.OutPoint(hash, 0);
     }
 
