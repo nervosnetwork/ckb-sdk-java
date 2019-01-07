@@ -84,13 +84,13 @@ public class APIClient {
 
     private static List<Cell> getCellsByTypeHash() throws IOException {
         return ckbService.getCellsByTypeHash(
-                "0xcf7294651a9e2033243b04cfd3fa35097d56b811824691a75cd29d50ac23720a", 1, 100
+                "0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674", 1, 100
         ).send().getCells();
     }
 
     private static Cell getLiveCell() throws IOException {
         return ckbService.getLiveCell(
-                new Cell.OutPoint("0x10262d4d6918774ae939a55b88f1b2c847f75489e36cd58cca03bad5c216db4f", 0)
+                new Cell.OutPoint("0x15c809f08c7bca63d2b661e1dbc26c74551a6f982f7631c718dc43bd2bb5c90e", 0)
         ).send().getCell();
     }
 
