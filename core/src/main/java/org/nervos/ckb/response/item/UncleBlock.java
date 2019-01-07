@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by duanyytop on 2019-01-04.
- * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class UncleBlock {

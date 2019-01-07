@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * Created by duanyytop on 2018-12-20.
- * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class Block {

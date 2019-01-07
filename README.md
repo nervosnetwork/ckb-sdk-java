@@ -10,4 +10,3 @@ git clone https://github.com/nervosnetwork/ckb-sdk-java.git
 gradle shadowJar
 ```
 
-Note: this is at very early stage, treat it as a PoC implementation.

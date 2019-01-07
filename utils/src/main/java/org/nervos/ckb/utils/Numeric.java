@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
- * <p>Message codec functions.</p>
+ * Message codec functions.
  */
 public final class Numeric {
 
