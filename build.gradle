@@ -1,16 +1,52 @@
+buildscript {
+
+    ext.bouncycastleVersion = '1.60'
+    ext.rxjavaVersion = '2.2.3'
+    ext.gsonVersion = '2.8.5'
+    ext.jacksonVersion = '2.8.5'
+    ext.okhttpVersion = '3.12.0'
+    ext.loggingOkhttpVersion = '3.12.0'
+
+    ext.junitVersion = '4.12'
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
+    }
+}
+
 plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
     id 'java'
 }
 
-group 'org.nervos.ckb'
-version '0.1'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
 
-sourceCompatibility = 1.8
+mainClassName = 'org.nervos.ckb.example.APIClient'
+applicationName = 'ckb-sdk-java'
 
-repositories {
-    mavenCentral()
+description 'ckb-sdk-java base project'
+
+allprojects {
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    group 'org.nervos.ckb'
+    version '0.4.0'
+
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+subprojects {
+    apply plugin: 'java'
+
+    dependencies {
+        testCompile "junit:junit:$junitVersion"
+    }
 }

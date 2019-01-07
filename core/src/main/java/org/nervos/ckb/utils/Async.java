@@ -29,7 +29,7 @@ public class Async {
     /**
      * Provide a new ScheduledExecutorService instance.
      *
-     * <p>A shutdown hook is created to terminate the thread pool on application termination.
+     * A shutdown hook is created to terminate the thread pool on application termination.
      *
      * @return new ScheduledExecutorService
      */

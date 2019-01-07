@@ -37,6 +37,7 @@ public class Hash {
         return sha3.digest();
     }
 
+
     /**
      * SHA3-256 hash function.
      *

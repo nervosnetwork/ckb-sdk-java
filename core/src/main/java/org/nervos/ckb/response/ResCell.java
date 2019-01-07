@@ -4,7 +4,6 @@ import org.nervos.ckb.response.item.Cell;
 
 /**
  * Created by duanyytop on 2018-12-25.
- * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class ResCell extends Response<Cell> {
