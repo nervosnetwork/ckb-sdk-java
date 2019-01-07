@@ -1,6 +1,6 @@
 package org.nervos.ckb.response.item;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by duanyytop on 2018-12-21.
@@ -18,7 +18,7 @@ public class Cell {
     public int capacity;
     public String lock;
 
-    @SerializedName("out_point")
+    @JsonProperty("out_point")
     public OutPoint outPoint;
 
 
