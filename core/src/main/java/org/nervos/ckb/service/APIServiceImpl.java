@@ -1,8 +1,8 @@
 package org.nervos.ckb.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.nervos.ckb.request.Request;
-import org.nervos.ckb.response.Response;
+import org.nervos.ckb.methods.request.Request;
+import org.nervos.ckb.methods.Response;
 import org.nervos.ckb.utils.Async;
 import org.nervos.ckb.utils.ObjectMapperFactory;
 

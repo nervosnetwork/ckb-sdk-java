@@ -1,4 +1,4 @@
-package org.nervos.ckb.response.item;
+package org.nervos.ckb.methods.response.item;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,5 +19,15 @@ public class Block {
     public Byte[] proposalTransactions;
 
     public List<UncleBlock> uncles;
+
+    public static class UncleBlock {
+
+        public Header header;
+        public Transaction cellbase;
+
+        @JsonProperty("proposal_transactions")
+        public Byte[] proposalTransactions;
+
+    }
 
 }

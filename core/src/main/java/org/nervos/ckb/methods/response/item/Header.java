@@ -1,4 +1,4 @@
-package org.nervos.ckb.response.item;
+package org.nervos.ckb.methods.response.item;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

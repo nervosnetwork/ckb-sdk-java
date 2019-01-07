@@ -1,7 +1,7 @@
-package org.nervos.ckb.request;
+package org.nervos.ckb.methods.request;
 
 import io.reactivex.Flowable;
-import org.nervos.ckb.response.Response;
+import org.nervos.ckb.methods.Response;
 import org.nervos.ckb.service.APIService;
 import org.nervos.ckb.service.RemoteCall;
 

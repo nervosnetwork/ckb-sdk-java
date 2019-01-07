@@ -1,4 +1,4 @@
-package org.nervos.ckb.response.item;
+package org.nervos.ckb.methods.response.item;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,6 +29,8 @@ public class Cell {
 
         public String hash;
         public int index;
+
+        public OutPoint() {}
 
         public OutPoint(String hash, int index) {
             this.hash = hash;

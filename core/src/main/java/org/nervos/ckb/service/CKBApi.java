@@ -1,9 +1,9 @@
 package org.nervos.ckb.service;
 
-import org.nervos.ckb.request.Request;
-import org.nervos.ckb.response.*;
-import org.nervos.ckb.response.item.Cell;
-import org.nervos.ckb.response.item.Transaction;
+import org.nervos.ckb.methods.request.Request;
+import org.nervos.ckb.methods.response.*;
+import org.nervos.ckb.methods.response.item.Cell;
+import org.nervos.ckb.methods.response.item.Transaction;
 
 /**
  * Created by duanyytop on 2018-12-20.
@@ -11,22 +11,22 @@ import org.nervos.ckb.response.item.Transaction;
  */
 public interface CKBApi {
 
-    Request<?, ResBlock> getBlock(String blockHash);
+    Request<?, CkbBlock> getBlock(String blockHash);
 
-    Request<?, ResTransaction> getTransaction(String transactionHash);
+    Request<?, CkbTransaction> getTransaction(String transactionHash);
 
-    Request<?, ResBlockHash> getBlockHash(long blockNumber);
+    Request<?, CkbBlockHash> getBlockHash(long blockNumber);
 
-    Request<?, ResHeader> getTipHeader();
+    Request<?, CkbHeader> getTipHeader();
 
-    Request<?, ResCells> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber);
+    Request<?, CkbCells> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber);
 
-    Request<?, ResCell> getLiveCell(Cell.OutPoint outPoint);
+    Request<?, CkbCell> getLiveCell(Cell.OutPoint outPoint);
 
-    Request<?, ResBlockNumber> getTipBlockNumber();
+    Request<?, CkbBlockNumber> getTipBlockNumber();
 
-    Request<?, ResNodeId> localNodeId();
+    Request<?, CkbNodeId> localNodeId();
 
-    Request<?, ResTransactionHash> sendTransaction(Transaction transaction);
+    Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 
 }

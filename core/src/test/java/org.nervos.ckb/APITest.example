@@ -3,10 +3,6 @@ package org.nervos.ckb;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.nervos.ckb.response.item.Block;
-import org.nervos.ckb.response.item.Cell;
-import org.nervos.ckb.response.item.Header;
-import org.nervos.ckb.response.item.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 

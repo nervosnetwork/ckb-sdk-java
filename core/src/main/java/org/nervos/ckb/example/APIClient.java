@@ -3,11 +3,10 @@ package org.nervos.ckb.example;
 import com.google.gson.Gson;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.APIErrorException;
-import org.nervos.ckb.response.item.*;
-import org.nervos.ckb.response.item.Block;
-import org.nervos.ckb.response.item.Cell;
-import org.nervos.ckb.response.item.Header;
-import org.nervos.ckb.response.item.Transaction;
+import org.nervos.ckb.methods.response.item.Block;
+import org.nervos.ckb.methods.response.item.Cell;
+import org.nervos.ckb.methods.response.item.Header;
+import org.nervos.ckb.methods.response.item.Transaction;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.service.CKBService;
 import java.io.IOException;
@@ -113,7 +112,7 @@ public class APIClient {
 
 
     private static String alwaysSuccessCellHash() throws IOException {
-        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
+        List<Transaction.Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
         if (systemCells.isEmpty() || systemCells.get(0) == null) {
             throw new APIErrorException("Cannot find always success cell");
         }
