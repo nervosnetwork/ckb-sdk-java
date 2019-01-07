@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.response.item.*;
+import org.nervos.ckb.response.item.Block;
+import org.nervos.ckb.response.item.Cell;
+import org.nervos.ckb.response.item.Header;
+import org.nervos.ckb.response.item.Transaction;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.service.CKBService;
 import java.io.IOException;
@@ -115,7 +119,6 @@ public class APIClient {
         }
         return Hash.sha3(systemCells.get(0).data);
     }
-
 
     private static Cell.OutPoint alwaysSuccessScriptOutPoint() throws IOException {
         String hash = genesisBlock().commitTransactions.get(0).hash;
