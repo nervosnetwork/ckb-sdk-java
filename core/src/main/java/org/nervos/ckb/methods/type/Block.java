@@ -16,7 +16,7 @@ public class Block {
     public List<Transaction> commitTransactions;
 
     @JsonProperty("proposal_transactions")
-    public Byte[] proposalTransactions;
+    public List<Byte[]> proposalTransactions;       // Fixed 10-element array representing short hash.
 
     public List<UncleBlock> uncles;
 
@@ -26,7 +26,7 @@ public class Block {
         public Transaction cellbase;
 
         @JsonProperty("proposal_transactions")
-        public Byte[] proposalTransactions;
+        public List<Byte[]> proposalTransactions;
 
     }
 
