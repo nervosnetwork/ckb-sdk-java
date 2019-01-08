@@ -2,8 +2,8 @@ package org.nervos.ckb.service;
 
 import org.nervos.ckb.methods.request.Request;
 import org.nervos.ckb.methods.response.*;
-import org.nervos.ckb.methods.response.item.Cell;
-import org.nervos.ckb.methods.response.item.Transaction;
+import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.methods.type.Transaction;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -71,7 +71,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
 
     @Override
-    public Request<?, CkbCell> getLiveCell(Cell.OutPoint outPoint) {
+    public Request<?, CkbCell> getLiveCell(OutPoint outPoint) {
         return new Request<>(
                 "get_live_cell",
                 Arrays.asList(outPoint),

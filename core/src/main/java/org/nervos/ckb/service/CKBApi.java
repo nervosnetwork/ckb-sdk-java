@@ -2,8 +2,8 @@ package org.nervos.ckb.service;
 
 import org.nervos.ckb.methods.request.Request;
 import org.nervos.ckb.methods.response.*;
-import org.nervos.ckb.methods.response.item.Cell;
-import org.nervos.ckb.methods.response.item.Transaction;
+import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.methods.type.Transaction;
 
 /**
  * Created by duanyytop on 2018-12-20.
@@ -21,7 +21,7 @@ public interface CKBApi {
 
     Request<?, CkbCells> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber);
 
-    Request<?, CkbCell> getLiveCell(Cell.OutPoint outPoint);
+    Request<?, CkbCell> getLiveCell(OutPoint outPoint);
 
     Request<?, CkbBlockNumber> getTipBlockNumber();
 

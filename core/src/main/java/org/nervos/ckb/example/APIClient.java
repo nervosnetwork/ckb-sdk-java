@@ -3,10 +3,7 @@ package org.nervos.ckb.example;
 import com.google.gson.Gson;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.APIErrorException;
-import org.nervos.ckb.methods.response.item.Block;
-import org.nervos.ckb.methods.response.item.Cell;
-import org.nervos.ckb.methods.response.item.Header;
-import org.nervos.ckb.methods.response.item.Transaction;
+import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.service.CKBService;
 import java.io.IOException;
@@ -93,7 +90,7 @@ public class APIClient {
 
     private static Cell getLiveCell() throws IOException {
         return ckbService.getLiveCell(
-                new Cell.OutPoint("0x15c809f08c7bca63d2b661e1dbc26c74551a6f982f7631c718dc43bd2bb5c90e", 0)
+                new OutPoint("0x15c809f08c7bca63d2b661e1dbc26c74551a6f982f7631c718dc43bd2bb5c90e", 0)
         ).send().getCell();
     }
 
@@ -112,16 +109,16 @@ public class APIClient {
 
 
     private static String alwaysSuccessCellHash() throws IOException {
-        List<Transaction.Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
+        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
         if (systemCells.isEmpty() || systemCells.get(0) == null) {
             throw new APIErrorException("Cannot find always success cell");
         }
         return Hash.sha3(systemCells.get(0).data);
     }
 
-    private static Cell.OutPoint alwaysSuccessScriptOutPoint() throws IOException {
+    private static OutPoint alwaysSuccessScriptOutPoint() throws IOException {
         String hash = genesisBlock().commitTransactions.get(0).hash;
-        return new Cell.OutPoint(hash, 0);
+        return new OutPoint(hash, 0);
     }
 
 }

@@ -1,7 +1,7 @@
 package org.nervos.ckb.methods.response;
 
 import org.nervos.ckb.methods.Response;
-import org.nervos.ckb.methods.response.item.Block;
+import org.nervos.ckb.methods.type.Block;
 
 /**
  * Created by duanyytop on 2018-12-21.
