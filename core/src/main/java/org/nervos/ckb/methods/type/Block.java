@@ -18,9 +18,9 @@ public class Block {
     @JsonProperty("proposal_transactions")
     public List<Byte[]> proposalTransactions;       // Fixed 10-element array representing short hash.
 
-    public List<UncleBlock> uncles;
+    public List<Uncle> uncles;
 
-    public static class UncleBlock {
+    public static class Uncle {
 
         public Header header;
         public Transaction cellbase;
