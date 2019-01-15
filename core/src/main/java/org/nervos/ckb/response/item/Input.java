@@ -1,12 +1,9 @@
 package org.nervos.ckb.response.item;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by duanyytop on 2018-12-21.
- * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class Input {
@@ -16,7 +13,7 @@ public class Input {
      * unlock : {"args":[],"binary":[1,0,0,0,0,0,0,0],"reference":null,"signed_args":[],"version":0}
      */
 
-    @SerializedName("previous_output")
+    @JsonProperty("previous_output")
     private PreviousOutput previousOutput;
     private Unlock unlock;
 
@@ -34,7 +31,7 @@ public class Input {
     public static class Unlock {
         /**
          * args : []
-         * binary : [1,0,0,0,0,0,0,0]
+         * binary: 0x0100000000000000
          * reference : null
          * signed_args : []
          * version : 0
@@ -42,9 +39,11 @@ public class Input {
 
         public Object reference;
         public int version;
-        public List<?> args;
-        public List<Integer> binary;
-        public List<?> signed_args;
+        public Byte[] args;
+        public String binary;
+
+        @JsonProperty("signed_args")
+        public Byte[] signedArgs;
 
     }
 }

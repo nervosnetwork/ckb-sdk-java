@@ -1,12 +1,16 @@
 package org.nervos.ckb.response;
 
+import org.nervos.ckb.response.item.Cell;
+
+import java.util.List;
+
 /**
  * Created by duanyytop on 2018-12-21.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class ResBlockHash extends Response<String> {
+public class ResCells extends Response<List<Cell>> {
 
-    public String getBlockHash() {
+    public List<Cell> getCells() {
         return result;
     }
 

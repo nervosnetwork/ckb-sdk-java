@@ -12,7 +12,6 @@ import java.util.concurrent.Future;
 
 /**
  * Created by duanyytop on 2018-12-20.
- * <p>
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  *
  * Base api service implementation.
