@@ -1,6 +1,6 @@
 package org.nervos.ckb.service;
 
-import org.nervos.ckb.methods.request.Request;
+import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.Response;
 
 import java.io.IOException;

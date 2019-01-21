@@ -1,4 +1,4 @@
-package org.nervos.ckb.methods.request;
+package org.nervos.ckb.methods;
 
 import io.reactivex.Flowable;
 import org.nervos.ckb.methods.Response;
