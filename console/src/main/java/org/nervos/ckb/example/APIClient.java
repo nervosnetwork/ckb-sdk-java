@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.methods.type.*;
-import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.service.HttpService;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;

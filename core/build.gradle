@@ -10,3 +10,5 @@ dependencies {
     compile "com.squareup.okhttp3:logging-interceptor:$loggingOkhttpVersion"
 }
 
+
+apply plugin: 'com.github.johnrengelman.shadow'
