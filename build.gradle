@@ -10,7 +10,7 @@ buildscript {
     ext.junitVersion = '4.12'
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
