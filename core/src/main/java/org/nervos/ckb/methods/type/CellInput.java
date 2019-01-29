@@ -19,6 +19,11 @@ public class CellInput {
     public PreviousOutput previousOutput;
     public Script unlock;
 
+    public Input(PreviousOutput previousOutput, Script unlock) {
+        this.previousOutput = previousOutput;
+        this.unlock = unlock;
+    }
+
     public static class PreviousOutput {
         /**
          * hash : 0x0000000000000000000000000000000000000000000000000000000000000000
@@ -27,6 +32,11 @@ public class CellInput {
 
         public String hash;
         public long index;
+
+        public PreviousOutput(String hash, long index) {
+            this.hash = hash;
+            this.index = index;
+        }
 
     }
 

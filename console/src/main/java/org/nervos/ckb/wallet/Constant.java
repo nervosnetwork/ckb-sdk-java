@@ -7,5 +7,7 @@ package org.nervos.ckb.wallet;
 public class Constant {
 
     public static final String NODE_URL = "http://localhost:8114/";
+    public static final long MIN_CELL_CAPACITY = 40;
+    public static final long MIN_UDT_CELL_CAPACITY = 48;
 
 }
