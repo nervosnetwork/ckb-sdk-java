@@ -9,11 +9,18 @@ import java.util.List;
  */
 public class Script {
 
-    public short version;
+    public int version;
     public String binary;
     public String reference;
     public List<String> signedArgs;
     public List<String> args;
+
+    public Script(int version, String reference, List<String> signedArgs, List<String> args) {
+        this.version = version;
+        this.reference = reference;
+        this.signedArgs = signedArgs;
+        this.args = args;
+    }
 
     public String getTypeHash() {
         StringBuilder sb = new StringBuilder();
