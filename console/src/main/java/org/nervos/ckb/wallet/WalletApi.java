@@ -28,11 +28,13 @@ public class WalletApi {
 
     private CKBService ckbService;
     private String privateKey;
+    private String address;
 
     public static WalletApi buildWithPrivateKey(String privateKey) {
         WalletApi walletApi = new WalletApi();
         walletApi.ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
         walletApi.privateKey = privateKey;
+        walletApi.address = walletApi.verifyScript().getTypeHash();
         return walletApi;
     }
 
@@ -45,7 +47,24 @@ public class WalletApi {
         return balance;
     }
 
+    public Transaction generateTx(String toAddress, long capacity) {
+        try {
+            ValidInput validInput = gatherInputs(capacity, Constant.MIN_CELL_CAPACITY);
+            long inputCapacity = validInput.capacity;
+            List<Output> outputs = new ArrayList<>();
+            outputs.add(new Output(capacity, "", toAddress));
+            if (inputCapacity > capacity) {
+                outputs.add(new Output(inputCapacity - capacity, "", address));
+            }
+            return new Transaction(
+                    0,
+                    Arrays.asList(alwaysSuccessScriptOutPoint()),
 
+            )
+        } catch (CapacityException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ValidInput gatherInputs(long capacity, long minCapacity) throws CapacityException {
         if (capacity < minCapacity) {
@@ -82,7 +101,7 @@ public class WalletApi {
         String verifyScript = FileUtils.readFile("console/main/java/resource/bitcoin_unlock.rb");
         List<String> signedArgs = new ArrayList<>();
         signedArgs.add(verifyScript);
-        signedArgs.add(ECKeyPair.create(Numeric.toBigInt(privateKey)).getPublicKey().toString())
+        signedArgs.add(ECKeyPair.create(Numeric.toBigInt(privateKey)).getPublicKey().toString());
         return new Script(
                 0,
                 TYPE_HASH_SECPK1,
