@@ -14,7 +14,7 @@ public class CellOutput {
      */
 
     public long capacity;
-    public Object type;
+    public Script type;
     public String lock;
     public String data;
 

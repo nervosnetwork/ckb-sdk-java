@@ -25,10 +25,7 @@ import java.security.SecureRandomSpi;
 import java.security.Security;
 
 /**
- * Implementation from
- * <a href="https://github.com/bitcoinj/bitcoinj/blob/master/core/src/main/java/org/bitcoinj/crypto/LinuxSecureRandom.java">BitcoinJ implementation</a>
- *
- * <p>A SecureRandom implementation that is able to override the standard JVM provided
+ * A SecureRandom implementation that is able to override the standard JVM provided
  * implementation, and which simply serves random numbers by reading /dev/urandom. That is, it
  * delegates to the kernel on UNIX systems and is unusable on other platforms. Attempts to manually
  * set the seed are ignored. There is no difference between seed bytes and non-seed bytes, they are

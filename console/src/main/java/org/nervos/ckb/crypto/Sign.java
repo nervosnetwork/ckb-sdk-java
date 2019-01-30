@@ -18,10 +18,6 @@ import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
 
 /**
  * <p>Transaction signing logic.</p>
- *
- * <p>Adapted from the
- * <a href="https://github.com/bitcoinj/bitcoinj/blob/master/core/src/main/java/org/bitcoinj/core/ECKey.java">
- * BitcoinJ ECKey</a> implementation.
  */
 public class Sign {
 
@@ -149,7 +145,7 @@ public class Sign {
     }
 
     /**
-     * Given an arbitrary piece of text and an Ethereum message signature encoded in bytes,
+     * Given an arbitrary piece of text and an message signature encoded in bytes,
      * returns the public key that was used to sign it. This can then be compared to the expected
      * public key to determine if the signature was correct.
      *
@@ -170,8 +166,7 @@ public class Sign {
         int header = signatureData.getV() & 0xFF;
         // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
         //                  0x1D = second key with even y, 0x1E = second key with odd y
-        //if (header < 27 || header > 34) {
-        if (header < 0 || header > 7) {
+        if (header > 7) {
             throw new SignatureException("Header byte out of range: " + header);
         }
 
@@ -180,7 +175,6 @@ public class Sign {
                 new BigInteger(1, signatureData.getS()));
 
         byte[] messageHash = Hash.sha3(message);
-        //int recId = header - 27;
         int recId = header;
         BigInteger key = recoverFromSignature(recId, sig, messageHash);
         if (key == null) {
@@ -206,10 +200,6 @@ public class Sign {
      * Returns public key point from the given private key.
      */
     private static ECPoint publicPointFromPrivate(BigInteger privKey) {
-        /*
-         * TODO: FixedPointCombMultiplier currently doesn't support scalars longer than the group
-         * order, but that could change in future versions.
-         */
         if (privKey.bitLength() > CURVE.getN().bitLength()) {
             privKey = privKey.mod(CURVE.getN());
         }
@@ -267,7 +257,7 @@ public class Sign {
             return result;
         }
 
-        public byte[] get_signature() {
+        public byte[] getSignature() {
             byte[] sig = new byte[65];
             System.arraycopy(r, 0, sig, 0, 32);
             System.arraycopy(s, 0, sig, 32, 32);

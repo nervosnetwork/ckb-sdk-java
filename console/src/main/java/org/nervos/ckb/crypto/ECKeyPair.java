@@ -11,6 +11,7 @@ import org.nervos.ckb.utils.Numeric;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Elliptic Curve SECP-256k1 generated key pair.
@@ -53,9 +54,6 @@ public class ECKeyPair {
 
         BigInteger privateKeyValue = privateKey.getD();
 
-        // Ethereum does not use encoded public keys like bitcoin - see
-        // https://en.bitcoin.it/wiki/Elliptic_Curve_Digital_Signature_Algorithm for details
-        // Additionally, as the first bit is a constant prefix (0x04) we ignore this value
         byte[] publicKeyBytes = publicKey.getQ().getEncoded(false);
         BigInteger publicKeyValue =
                 new BigInteger(1, Arrays.copyOfRange(publicKeyBytes, 1, publicKeyBytes.length));
@@ -82,13 +80,11 @@ public class ECKeyPair {
 
         ECKeyPair ecKeyPair = (ECKeyPair) o;
 
-        if (privateKey != null
-                ? !privateKey.equals(ecKeyPair.privateKey) : ecKeyPair.privateKey != null) {
+        if (!Objects.equals(privateKey, ecKeyPair.privateKey)) {
             return false;
         }
 
-        return publicKey != null
-                ? publicKey.equals(ecKeyPair.publicKey) : ecKeyPair.publicKey == null;
+        return Objects.equals(publicKey, ecKeyPair.publicKey);
     }
 
     @Override

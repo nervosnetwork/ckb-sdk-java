@@ -59,11 +59,13 @@ public class WalletApi {
             return new Transaction(
                     0,
                     Arrays.asList(alwaysSuccessScriptOutPoint()),
-
-            )
+                    Utils.signSigHashAllInputs(validInput.inputs, outputs, privateKey),
+                    outputs
+            );
         } catch (CapacityException | IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public ValidInput gatherInputs(long capacity, long minCapacity) throws CapacityException {
