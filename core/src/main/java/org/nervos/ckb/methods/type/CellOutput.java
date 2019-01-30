@@ -18,6 +18,8 @@ public class CellOutput {
     public String lock;
     public String data;
 
+    public Output(){}
+
     public Output(long capacity, String data, String lock) {
         this.capacity = capacity;
         this.data = data;

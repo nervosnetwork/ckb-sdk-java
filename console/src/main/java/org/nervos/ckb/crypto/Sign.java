@@ -190,10 +190,20 @@ public class Sign {
      * @return BigInteger encoded public key
      */
     public static BigInteger publicKeyFromPrivate(BigInteger privKey) {
+        return publicKeyFromPrivate(privKey, false);
+    }
+
+    /**
+     * Returns public key from the given private key.
+     *
+     * @param privKey the private key to derive the public key from
+     * @return BigInteger encoded public key
+     */
+    public static BigInteger publicKeyFromPrivate(BigInteger privKey, boolean compressed) {
         ECPoint point = publicPointFromPrivate(privKey);
 
-        byte[] encoded = point.getEncoded(false);
-        return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));  // remove prefix
+        byte[] encoded = point.getEncoded(compressed);
+        return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
     }
 
     /**

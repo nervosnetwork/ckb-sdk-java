@@ -2,10 +2,9 @@ package org.nervos.ckb.wallet;
 
 import org.nervos.ckb.crypto.ECKeyPair;
 import org.nervos.ckb.crypto.Hash;
-import org.nervos.ckb.crypto.Keys;
+import org.nervos.ckb.crypto.Sign;
 import org.nervos.ckb.exception.CapacityException;
 import org.nervos.ckb.exceptions.APIErrorException;
-import org.nervos.ckb.exceptions.TransactionException;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
@@ -24,13 +23,13 @@ import java.util.List;
  */
 public class WalletApi {
 
-    private static final String TYPE_HASH_SECPK1 = "0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674";
+    private static final String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
 
     private CKBService ckbService;
     private String privateKey;
     private String address;
 
-    public static WalletApi buildWithPrivateKey(String privateKey) {
+    public static WalletApi createWithPrivateKey(String privateKey) {
         WalletApi walletApi = new WalletApi();
         walletApi.ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
         walletApi.privateKey = privateKey;
@@ -45,6 +44,15 @@ public class WalletApi {
             balance += cell.capacity;
         }
         return balance;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String sendCapacity(String toAddress, long capacity) throws IOException {
+        Transaction tx = generateTx(toAddress, capacity);
+        return ckbService.sendTransaction(tx).send().getTransactionHash();
     }
 
     public Transaction generateTx(String toAddress, long capacity) {
@@ -100,16 +108,11 @@ public class WalletApi {
     }
 
     public Script verifyScript() {
-        String verifyScript = FileUtils.readFile("console/main/java/resource/bitcoin_unlock.rb");
+        String verifyScript = FileUtils.readFile("console/src/main/resources/bitcoin_unlock.rb");
         List<String> signedArgs = new ArrayList<>();
         signedArgs.add(verifyScript);
-        signedArgs.add(ECKeyPair.create(Numeric.toBigInt(privateKey)).getPublicKey().toString());
-        return new Script(
-                0,
-                TYPE_HASH_SECPK1,
-                signedArgs,
-                Collections.emptyList()
-        );
+        signedArgs.add(String.format("%066x", Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true)));
+        return new Script(0, MRUBY_CELL_HASH, signedArgs);
     }
 
 
@@ -120,8 +123,10 @@ public class WalletApi {
             long fromBlockNumber = 1;
             while (fromBlockNumber <= toBlockNumber) {
                 long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-                List<Cell> cells = ckbService.getCellsByTypeHash(getAddress(), fromBlockNumber, currentToBlockNumber).send().getCells();
-                results.addAll(cells);
+                List<Cell> cells = ckbService.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber).send().getCells();
+                if (cells != null && cells.size() > 0) {
+                    results.addAll(cells);
+                }
                 fromBlockNumber = currentToBlockNumber + 1;
             }
         } catch (IOException e) {
@@ -130,9 +135,9 @@ public class WalletApi {
         return results;
     }
 
-    public String getAddress() {
+    public String getMinerAddress() {
         try {
-            Script script = new Script(0, alwaysSuccessCellHash(), Collections.emptyList(), Collections.emptyList());
+            Script script = new Script(0, alwaysSuccessCellHash(), Collections.emptyList());
             return script.getTypeHash();
         } catch (IOException e) {
             e.printStackTrace();
