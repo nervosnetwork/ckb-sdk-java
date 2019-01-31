@@ -5,6 +5,7 @@ import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.rpc.RpcRequest;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class APIClient {
 
@@ -32,7 +33,7 @@ public class APIClient {
 
         System.out.println("Cell: " + gson.toJson(RpcRequest.getLiveCell()));
 
-        System.out.println("Transaction hash: " + RpcRequest.sendTransaction());
+        System.out.println("Transaction hash: " + RpcRequest.sendTransaction(new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList())));
 
         System.out.println("Always Success Cell Hash: " + RpcRequest.alwaysSuccessCellHash());
 

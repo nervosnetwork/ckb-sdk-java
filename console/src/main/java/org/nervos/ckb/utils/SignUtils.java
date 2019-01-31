@@ -1,11 +1,14 @@
 package org.nervos.ckb.utils;
 
+import org.bouncycastle.asn1.*;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.nervos.ckb.crypto.ECKeyPair;
 import org.nervos.ckb.crypto.Sign;
 import org.nervos.ckb.methods.type.Input;
 import org.nervos.ckb.methods.type.Output;
 
+import java.io.ByteArrayInputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class SignUtils {
         byte[] messageHash = sha3.digest();
 
         ECKeyPair keyPair = ECKeyPair.createWithPrivateKey(Numeric.toBigInt(privateKey));
-        byte[] signature = Sign.signMessage(messageHash, keyPair).getSignature();
+        byte[] signature = Sign.signMessage(messageHash, keyPair).getDerSignature();
         String signatureHex = Numeric.toHexString(signature);
 
         for (Input input: inputs) {
@@ -48,6 +51,5 @@ public class SignUtils {
         return inputs;
 
     }
-
 
 }

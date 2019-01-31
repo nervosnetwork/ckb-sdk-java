@@ -4,8 +4,6 @@ import org.nervos.ckb.crypto.Sign;
 import org.nervos.ckb.exception.CapacityException;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.rpc.RpcRequest;
-import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.utils.FileUtils;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.SignUtils;
@@ -21,22 +19,19 @@ import java.util.List;
  * Created by duanyytop on 2019-01-29.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class Wallet {
+public class VerifyWallet {
 
     private static final String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
     private static final String MRUBY_OUT_POINT_HASH = "0x70b79cf5866b10c44ad175d24c101808d24729110fc48eb5ce562042f8526959";
 
-    private CKBService ckbService;
     private String privateKey;
     private String address;
 
-    public static Wallet createWithPrivateKey(String privateKey) {
-        Wallet wallet = new Wallet();
-        HttpService.setDebug(true);
-        wallet.ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
-        wallet.privateKey = privateKey;
-        wallet.address = wallet.signedScript().getTypeHash();
-        return wallet;
+    public static VerifyWallet createWithPrivateKey(String privateKey) {
+        VerifyWallet verifyWallet = new VerifyWallet();
+        verifyWallet.privateKey = privateKey;
+        verifyWallet.address = verifyWallet.unlockScript().getTypeHash();
+        return verifyWallet;
     }
 
     public long getBalance() {
@@ -54,7 +49,7 @@ public class Wallet {
 
     public String sendCapacity(String toAddress, long capacity) throws IOException {
         Transaction tx = generateTx(toAddress, capacity);
-        return ckbService.sendTransaction(TransactionUtils.formatTx(tx)).send().getTransactionHash();
+        return RpcRequest.sendTransaction(TransactionUtils.formatTx(tx));
     }
 
 
@@ -87,7 +82,7 @@ public class Wallet {
         List<Input> inputs = new ArrayList<>();
         List<Cell> cells = getUnSpendCells();
         for (Cell cell: cells) {
-            Input input = new Input(new Input.PreviousOutput(cell.outPoint.hash, cell.outPoint.index), signedScript());
+            Input input = new Input(new Input.PreviousOutput(cell.outPoint.hash, cell.outPoint.index), unlockScript());
             inputs.add(input);
             inputCapacities += cell.capacity;
             if (inputCapacities >= capacity && (inputCapacities - capacity) >= minCapacity) {
@@ -110,7 +105,7 @@ public class Wallet {
         }
     }
 
-    private Script signedScript() {
+    private Script unlockScript() {
         String verifyScript = FileUtils.readFile("console/src/main/resources/bitcoin_unlock.rb");
         List<String> signedArgs = new ArrayList<>();
         signedArgs.add(verifyScript);
@@ -122,7 +117,7 @@ public class Wallet {
     private List<Cell> getUnSpendCells() {
         List<Cell> results = new ArrayList<>();
         try {
-            long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
+            long toBlockNumber = RpcRequest.getTipBlockNumber().longValue();
             long fromBlockNumber = 1;
             while (fromBlockNumber <= toBlockNumber) {
                 long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);

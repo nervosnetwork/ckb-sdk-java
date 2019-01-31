@@ -30,7 +30,9 @@ public class Sign {
     public static SignatureData signMessage(byte[] message, ECKeyPair keyPair) {
         BigInteger publicKey = keyPair.getPublicKey();
 
-        byte[] messageHash = Hash.sha3(message);
+//        byte[] messageHash = Hash.sha3(message);
+
+        byte[] messageHash = message;
 
         ECDSASignature sig = keyPair.sign(messageHash);
         // Now we have to work backwards to figure out the recId needed to recover the signature.
@@ -276,6 +278,38 @@ public class Sign {
             System.arraycopy(r, 0, sig, 0, 32);
             System.arraycopy(s, 0, sig, 32, 32);
             sig[64] = v;
+            return sig;
+        }
+
+        // https://crypto.stackexchange.com/questions/1795/how-can-i-convert-a-der-ecdsa-signature-to-asn-1
+        public byte[] getDerSignature() {
+            int rLen = r.length;
+            int sLen = s.length;
+            int len = 6 + rLen + sLen;
+            if ((r[0] & 0xFF) > 0x7F) {
+                len += 1;
+            }
+            if ((s[0] & 0xFF) > 0x7F) {
+                len += 1;
+            }
+            byte[] sig = new byte[len];
+            sig[0] = 0x30;
+            sig[1] = (byte) (len - 2);
+            sig[2] = 0x02;
+            sig[3] = (byte) rLen;
+            int index = 4;
+            if ((r[0] & 0xFF) > 0x7F) {
+                sig[4] = 0x00;
+                index = 5;
+            }
+            System.arraycopy(r, 0, sig, index, rLen);
+            sig[index + rLen] = 0x02;
+            sig[index + rLen + 1] = (byte) sLen;
+            if ((s[0] & 0xFF) > 0x7F) {
+                index += 1;
+                sig[index + rLen + 1] = 0x00;
+            }
+            System.arraycopy(s, 0, sig, index + rLen + 2, sLen);
             return sig;
         }
     }

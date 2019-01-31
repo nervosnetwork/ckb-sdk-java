@@ -8,7 +8,6 @@ import org.nervos.ckb.service.HttpService;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,10 +62,8 @@ public class RpcRequest {
     }
 
 
-    public static String sendTransaction() throws IOException {
-        return ckbService.sendTransaction(
-                new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
-        ).send().getTransactionHash();
+    public static String sendTransaction(Transaction transaction) throws IOException {
+        return ckbService.sendTransaction(transaction).send().getTransactionHash();
     }
 
 
