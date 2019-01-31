@@ -3,7 +3,8 @@ package org.nervos.ckb.crypto;
 import java.math.BigInteger;
 
 /**
- * An ECDSA Signature.
+ * Created by duanyytop on 2019-01-31.
+ * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class ECDSASignature {
     public final BigInteger r;
@@ -16,9 +17,6 @@ public class ECDSASignature {
 
     /**
      * @return true if the S component is "low", that means it is below
-     * {@link Sign#HALF_CURVE_ORDER}. See
-     * <a href="https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki#Low_S_values_in_signatures">
-     * BIP62</a>.
      */
     public boolean isCanonical() {
         return s.compareTo(Sign.HALF_CURVE_ORDER) <= 0;

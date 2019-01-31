@@ -17,7 +17,8 @@ import java.util.Arrays;
 import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
 
 /**
- * <p>Transaction signing logic.</p>
+ * Created by duanyytop on 2019-01-31.
+ * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class Sign {
 
@@ -190,7 +191,10 @@ public class Sign {
      * @return BigInteger encoded public key
      */
     public static BigInteger publicKeyFromPrivate(BigInteger privKey) {
-        return publicKeyFromPrivate(privKey, false);
+        ECPoint point = publicPointFromPrivate(privKey);
+
+        byte[] encoded = point.getEncoded(false);
+        return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
     }
 
     /**

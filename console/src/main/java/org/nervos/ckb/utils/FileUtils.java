@@ -17,7 +17,7 @@ public class FileUtils {
             StringBuilder strBuilder = new StringBuilder();
             String str;
             while ((str = in.readLine()) != null) {
-                strBuilder.append(str);
+                strBuilder.append(str).append("\n");
             }
             return strBuilder.toString();
         } catch (IOException e) {

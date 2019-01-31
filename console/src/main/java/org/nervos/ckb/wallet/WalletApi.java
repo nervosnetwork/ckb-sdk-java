@@ -1,6 +1,5 @@
 package org.nervos.ckb.wallet;
 
-import org.nervos.ckb.crypto.ECKeyPair;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.Sign;
 import org.nervos.ckb.exception.CapacityException;
@@ -24,6 +23,7 @@ import java.util.List;
 public class WalletApi {
 
     private static final String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
+    private static final String MRUBY_OUT_POINT_HASH = "0x70b79cf5866b10c44ad175d24c101808d24729110fc48eb5ce562042f8526959";
 
     private CKBService ckbService;
     private String privateKey;
@@ -31,6 +31,7 @@ public class WalletApi {
 
     public static WalletApi createWithPrivateKey(String privateKey) {
         WalletApi walletApi = new WalletApi();
+        HttpService.setDebug(true);
         walletApi.ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
         walletApi.privateKey = privateKey;
         walletApi.address = walletApi.verifyScript().getTypeHash();
@@ -52,7 +53,11 @@ public class WalletApi {
 
     public String sendCapacity(String toAddress, long capacity) throws IOException {
         Transaction tx = generateTx(toAddress, capacity);
-        return ckbService.sendTransaction(tx).send().getTransactionHash();
+        return ckbService.sendTransaction(Utils.formatTransaction(tx)).send().getTransactionHash();
+    }
+
+    public Transaction getTransactionByHash(String hash) throws IOException {
+        return ckbService.getTransaction(hash).send().getTransaction();
     }
 
     public Transaction generateTx(String toAddress, long capacity) {
@@ -160,8 +165,8 @@ public class WalletApi {
     }
 
     private OutPoint alwaysSuccessScriptOutPoint() throws IOException {
-        String hash = genesisBlock().commitTransactions.get(0).hash;
-        return new OutPoint(hash, 0);
+//        String hash = genesisBlock().commitTransactions.get(0).hash;
+        return new OutPoint(MRUBY_OUT_POINT_HASH, 0);
     }
 
 }

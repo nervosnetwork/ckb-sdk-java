@@ -14,7 +14,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Elliptic Curve SECP-256k1 generated key pair.
+ * Created by duanyytop on 2019-01-31.
+ * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class ECKeyPair {
     private final BigInteger privateKey;
@@ -33,6 +34,27 @@ public class ECKeyPair {
         return publicKey;
     }
 
+    public static ECKeyPair createWithKeyPair(KeyPair keyPair) {
+        BCECPrivateKey privateKey = (BCECPrivateKey) keyPair.getPrivate();
+        BCECPublicKey publicKey = (BCECPublicKey) keyPair.getPublic();
+
+        BigInteger privateKeyValue = privateKey.getD();
+
+        byte[] publicKeyBytes = publicKey.getQ().getEncoded(false);
+        BigInteger publicKeyValue =
+                new BigInteger(1, Arrays.copyOfRange(publicKeyBytes, 1, publicKeyBytes.length));
+
+        return new ECKeyPair(privateKeyValue, publicKeyValue);
+    }
+
+    public static ECKeyPair createWithPrivateKey(BigInteger privateKey) {
+        return new ECKeyPair(privateKey, Sign.publicKeyFromPrivate(privateKey));
+    }
+
+    public static ECKeyPair createWithPrivateKey(byte[] privateKey) {
+        return createWithPrivateKey(Numeric.toBigInt(privateKey));
+    }
+
     /**
      * Sign a hash with the private key of this key pair.
      * @param transactionHash   the hash to sign
@@ -46,27 +68,6 @@ public class ECKeyPair {
         BigInteger[] components = signer.generateSignature(transactionHash);
 
         return new ECDSASignature(components[0], components[1]).toCanonicalised();
-    }
-
-    public static ECKeyPair create(KeyPair keyPair) {
-        BCECPrivateKey privateKey = (BCECPrivateKey) keyPair.getPrivate();
-        BCECPublicKey publicKey = (BCECPublicKey) keyPair.getPublic();
-
-        BigInteger privateKeyValue = privateKey.getD();
-
-        byte[] publicKeyBytes = publicKey.getQ().getEncoded(false);
-        BigInteger publicKeyValue =
-                new BigInteger(1, Arrays.copyOfRange(publicKeyBytes, 1, publicKeyBytes.length));
-
-        return new ECKeyPair(privateKeyValue, publicKeyValue);
-    }
-
-    public static ECKeyPair create(BigInteger privateKey) {
-        return new ECKeyPair(privateKey, Sign.publicKeyFromPrivate(privateKey));
-    }
-
-    public static ECKeyPair create(byte[] privateKey) {
-        return create(Numeric.toBigInt(privateKey));
     }
 
     @Override
