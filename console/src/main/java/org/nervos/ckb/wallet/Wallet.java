@@ -1,14 +1,15 @@
 package org.nervos.ckb.wallet;
 
-import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.Sign;
 import org.nervos.ckb.exception.CapacityException;
-import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.methods.type.*;
+import org.nervos.ckb.rpc.RpcRequest;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.utils.FileUtils;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.SignUtils;
+import org.nervos.ckb.utils.TransactionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by duanyytop on 2019-01-29.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class WalletApi {
+public class Wallet {
 
     private static final String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
     private static final String MRUBY_OUT_POINT_HASH = "0x70b79cf5866b10c44ad175d24c101808d24729110fc48eb5ce562042f8526959";
@@ -29,17 +30,17 @@ public class WalletApi {
     private String privateKey;
     private String address;
 
-    public static WalletApi createWithPrivateKey(String privateKey) {
-        WalletApi walletApi = new WalletApi();
+    public static Wallet createWithPrivateKey(String privateKey) {
+        Wallet wallet = new Wallet();
         HttpService.setDebug(true);
-        walletApi.ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
-        walletApi.privateKey = privateKey;
-        walletApi.address = walletApi.verifyScript().getTypeHash();
-        return walletApi;
+        wallet.ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
+        wallet.privateKey = privateKey;
+        wallet.address = wallet.signedScript().getTypeHash();
+        return wallet;
     }
 
     public long getBalance() {
-        List<Cell> cells = getUnspendCells();
+        List<Cell> cells = getUnSpendCells();
         long balance = 0;
         for (Cell cell: cells) {
             balance += cell.capacity;
@@ -53,14 +54,11 @@ public class WalletApi {
 
     public String sendCapacity(String toAddress, long capacity) throws IOException {
         Transaction tx = generateTx(toAddress, capacity);
-        return ckbService.sendTransaction(Utils.formatTransaction(tx)).send().getTransactionHash();
+        return ckbService.sendTransaction(TransactionUtils.formatTx(tx)).send().getTransactionHash();
     }
 
-    public Transaction getTransactionByHash(String hash) throws IOException {
-        return ckbService.getTransaction(hash).send().getTransaction();
-    }
 
-    public Transaction generateTx(String toAddress, long capacity) {
+    private Transaction generateTx(String toAddress, long capacity) {
         try {
             ValidInput validInput = gatherInputs(capacity, Constant.MIN_CELL_CAPACITY);
             long inputCapacity = validInput.capacity;
@@ -72,24 +70,24 @@ public class WalletApi {
             return new Transaction(
                     0,
                     Arrays.asList(alwaysSuccessScriptOutPoint()),
-                    Utils.signSigHashAllInputs(validInput.inputs, outputs, privateKey),
+                    SignUtils.signSigHashAllInputs(validInput.inputs, outputs, privateKey),
                     outputs
             );
-        } catch (CapacityException | IOException e) {
+        } catch (CapacityException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public ValidInput gatherInputs(long capacity, long minCapacity) throws CapacityException {
+    private ValidInput gatherInputs(long capacity, long minCapacity) throws CapacityException {
         if (capacity < minCapacity) {
             throw new CapacityException("capacity cannot be less than " + minCapacity);
         }
         long inputCapacities = 0;
         List<Input> inputs = new ArrayList<>();
-        List<Cell> cells = getUnspendCells();
+        List<Cell> cells = getUnSpendCells();
         for (Cell cell: cells) {
-            Input input = new Input(new Input.PreviousOutput(cell.outPoint.hash, cell.outPoint.index), verifyScript());
+            Input input = new Input(new Input.PreviousOutput(cell.outPoint.hash, cell.outPoint.index), signedScript());
             inputs.add(input);
             inputCapacities += cell.capacity;
             if (inputCapacities >= capacity && (inputCapacities - capacity) >= minCapacity) {
@@ -102,7 +100,7 @@ public class WalletApi {
         return new ValidInput(inputs, inputCapacities);
     }
 
-    public class ValidInput {
+    private class ValidInput {
         public List<Input> inputs;
         public long capacity;
 
@@ -112,7 +110,7 @@ public class WalletApi {
         }
     }
 
-    public Script verifyScript() {
+    private Script signedScript() {
         String verifyScript = FileUtils.readFile("console/src/main/resources/bitcoin_unlock.rb");
         List<String> signedArgs = new ArrayList<>();
         signedArgs.add(verifyScript);
@@ -121,14 +119,14 @@ public class WalletApi {
     }
 
 
-    public List<Cell> getUnspendCells() {
+    private List<Cell> getUnSpendCells() {
         List<Cell> results = new ArrayList<>();
         try {
             long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
             long fromBlockNumber = 1;
             while (fromBlockNumber <= toBlockNumber) {
                 long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-                List<Cell> cells = ckbService.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber).send().getCells();
+                List<Cell> cells = RpcRequest.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber);
                 if (cells != null && cells.size() > 0) {
                     results.addAll(cells);
                 }
@@ -142,7 +140,7 @@ public class WalletApi {
 
     public String getMinerAddress() {
         try {
-            Script script = new Script(0, alwaysSuccessCellHash(), Collections.emptyList());
+            Script script = new Script(0, RpcRequest.alwaysSuccessCellHash(), Collections.emptyList());
             return script.getTypeHash();
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,22 +148,7 @@ public class WalletApi {
         return null;
     }
 
-    private Block genesisBlock() throws IOException {
-        String blockHash = ckbService.getBlockHash(0).send().getBlockHash();
-        return ckbService.getBlock(blockHash).send().getBlock();
-    }
-
-
-    private String alwaysSuccessCellHash() throws IOException {
-        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
-        if (systemCells.isEmpty() || systemCells.get(0) == null) {
-            throw new APIErrorException("Cannot find always success cell");
-        }
-        return Hash.sha3(systemCells.get(0).data);
-    }
-
-    private OutPoint alwaysSuccessScriptOutPoint() throws IOException {
-//        String hash = genesisBlock().commitTransactions.get(0).hash;
+    private OutPoint alwaysSuccessScriptOutPoint() {
         return new OutPoint(MRUBY_OUT_POINT_HASH, 0);
     }
 

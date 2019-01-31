@@ -154,7 +154,7 @@ public class Sign {
      * @param signatureData The message signature components
      * @return the public key used to sign the message
      * @throws SignatureException If the public key could not be recovered or if there was a
-     *     signature format error.
+     *     signature formatTx error.
      */
     public static BigInteger signedMessageToKey(
             byte[] message, SignatureData signatureData) throws SignatureException {
