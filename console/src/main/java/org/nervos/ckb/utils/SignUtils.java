@@ -37,19 +37,21 @@ public class SignUtils {
         }
         byte[] messageHash = sha3.digest();
 
-        ECKeyPair keyPair = ECKeyPair.createWithPrivateKey(Numeric.toBigInt(privateKey));
-        byte[] signature = Sign.signMessage(messageHash, keyPair).getDerSignature();
-        String signatureHex = Numeric.toHexString(signature);
-
         for (Input input: inputs) {
             List<String> args = new ArrayList<>();
-            args.add(signatureHex);
+            args.add(signMessageForHexString(messageHash, privateKey));
             args.add(sigHashType);
             input.unlock.args = args;
         }
 
         return inputs;
 
+    }
+
+    public static String signMessageForHexString(byte[] message, String privateKey) {
+        ECKeyPair keyPair = ECKeyPair.createWithPrivateKey(Numeric.toBigInt(privateKey));
+        byte[] signature = Sign.signMessage(message, keyPair).getDerSignature();
+        return Numeric.toHexString(signature);
     }
 
 }
