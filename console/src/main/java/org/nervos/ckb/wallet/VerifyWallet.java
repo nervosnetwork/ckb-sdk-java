@@ -20,9 +20,8 @@ import java.util.List;
  */
 public class VerifyWallet extends BaseWallet {
 
-    // TODO: Need ruby demo to install mruby cell.
-    private static final String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
-    private static final String MRUBY_OUT_POINT_HASH = "0x70b79cf5866b10c44ad175d24c101808d24729110fc48eb5ce562042f8526959";
+    private static String MRUBY_CELL_HASH = "";
+    private static String MRUBY_OUT_POINT_HASH = "";
 
     private String privateKey;
 
@@ -33,6 +32,14 @@ public class VerifyWallet extends BaseWallet {
     }
 
     private VerifyWallet() {
+    }
+
+    public static void setMRubyCellHash(String mRubyCellHash) {
+        MRUBY_CELL_HASH = mRubyCellHash;
+    }
+
+    public static void setMRubyOutPointHash(String mRubyOutPointHash) {
+        MRUBY_OUT_POINT_HASH = mRubyOutPointHash;
     }
 
     @Override
@@ -68,7 +75,7 @@ public class VerifyWallet extends BaseWallet {
             ValidInputs validInputs = gatherInputs(getAddress(), capacity, Constant.MIN_CELL_CAPACITY);
             long inputCapacity = validInputs.capacity;
             if (inputCapacity < capacity) {
-                throw new CapacityException("Not enough capacity");
+                throw new CapacityException("Not enough capacity paid");
             }
             List<Output> outputs = new ArrayList<>();
             outputs.add(new Output(capacity, "", toAddress));

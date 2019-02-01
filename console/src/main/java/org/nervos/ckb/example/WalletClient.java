@@ -12,7 +12,12 @@ import org.nervos.ckb.wallet.VerifyWallet;
  */
 public class WalletClient {
 
+    private static String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
+    private static String MRUBY_OUT_POINT_HASH = "0x4a4b909a6ac3116f7c0eb9eb07292fa1cacbb3041910623a6a5827dfd9ec4625";
+
     public static void main(String[] args) throws Exception {
+
+        initConfig();
 
         AlwaysSuccessWallet minerWallet = new AlwaysSuccessWallet();
         System.out.println("Miner's always success wallet address: " + minerWallet.getAddress() + " and balance: " + minerWallet.getBalance());
@@ -52,5 +57,9 @@ public class WalletClient {
     }
 
 
+    private static void initConfig() {
+        VerifyWallet.setMRubyCellHash(MRUBY_CELL_HASH);
+        VerifyWallet.setMRubyOutPointHash(MRUBY_OUT_POINT_HASH);
+    }
 
 }

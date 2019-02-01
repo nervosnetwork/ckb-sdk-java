@@ -26,6 +26,10 @@ public abstract class BaseWallet implements WalletAction {
 
     protected abstract Transaction generateTx(String toAddress, long capacity);
 
+    protected abstract Script getUnlockScript();
+
+    protected abstract List<OutPoint> getDepsForOutPoint();
+
     ValidInputs gatherInputs(String address, long capacity, long minCapacity) throws CapacityException {
         if (capacity < minCapacity) {
             throw new CapacityException("capacity cannot be less than " + minCapacity);
@@ -57,9 +61,6 @@ public abstract class BaseWallet implements WalletAction {
         }
     }
 
-    protected abstract Script getUnlockScript();
-
-
     List<Cell> getUnSpendCells(String address) {
         List<Cell> results = new ArrayList<>();
         try {
@@ -78,7 +79,5 @@ public abstract class BaseWallet implements WalletAction {
         }
         return results;
     }
-
-    protected abstract List<OutPoint> getDepsForOutPoint();
 
 }
