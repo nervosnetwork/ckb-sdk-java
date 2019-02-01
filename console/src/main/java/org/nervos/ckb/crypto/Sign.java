@@ -12,7 +12,9 @@ import org.nervos.ckb.utils.Numeric;
 
 import java.math.BigInteger;
 import java.security.SignatureException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
 
@@ -283,36 +285,33 @@ public class Sign {
 
         // https://crypto.stackexchange.com/questions/1795/how-can-i-convert-a-der-ecdsa-signature-to-asn-1
         public byte[] getDerSignature() {
-            int rLen = r.length;
-            int sLen = s.length;
+            int rLen = (r[0] & 0xFF) > 0x7F ? r.length + 1: r.length;
+            int sLen = (s[0] & 0xFF) > 0x7F ? s.length + 1: s.length;
             int len = 6 + rLen + sLen;
-            if ((r[0] & 0xFF) > 0x7F) {
-                len += 1;
-            }
-            if ((s[0] & 0xFF) > 0x7F) {
-                len += 1;
-            }
             byte[] sig = new byte[len];
+
             sig[0] = 0x30;
             sig[1] = (byte) (len - 2);
             sig[2] = 0x02;
             sig[3] = (byte) rLen;
 
-            int index = 4;
             if ((r[0] & 0xFF) > 0x7F) {
                 sig[4] = 0x00;
-                index += 1;
-                sig[3] = (byte) (rLen + 1);
+                System.arraycopy(r, 0, sig, 5, rLen - 1);
+            } else {
+                System.arraycopy(r, 0, sig, 4, rLen);
             }
-            System.arraycopy(r, 0, sig, index, rLen);
 
-            sig[index + rLen] = 0x02;
-            sig[index + rLen + 1] = (byte) sLen;
+            sig[4 + rLen] = 0x02;
+            sig[4 + rLen + 1] = (byte) sLen;
+
             if ((s[0] & 0xFF) > 0x7F) {
-                index += 1;
-                sig[index + rLen + 1] = 0x00;
+                sig[4 + rLen + 2] = 0x00;
+                System.arraycopy(s, 0, sig, 4 + rLen + 3, sLen - 1);
+            } else {
+                System.arraycopy(s, 0, sig, 4 + rLen + 2, sLen);
             }
-            System.arraycopy(s, 0, sig, index + rLen + 2, sLen);
+
             return sig;
         }
     }
