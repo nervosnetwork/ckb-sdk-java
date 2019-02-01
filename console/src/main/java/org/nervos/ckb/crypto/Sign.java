@@ -297,12 +297,15 @@ public class Sign {
             sig[1] = (byte) (len - 2);
             sig[2] = 0x02;
             sig[3] = (byte) rLen;
+
             int index = 4;
             if ((r[0] & 0xFF) > 0x7F) {
                 sig[4] = 0x00;
-                index = 5;
+                index += 1;
+                sig[3] = (byte) (rLen + 1);
             }
             System.arraycopy(r, 0, sig, index, rLen);
+
             sig[index + rLen] = 0x02;
             sig[index + rLen + 1] = (byte) sLen;
             if ((s[0] & 0xFF) > 0x7F) {

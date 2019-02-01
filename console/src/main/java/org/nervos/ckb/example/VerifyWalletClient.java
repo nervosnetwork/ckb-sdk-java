@@ -20,7 +20,7 @@ public class VerifyWalletClient {
         System.out.println("Alice's address: " + aliceWallet.getAddress() + " and balance: " + aliceWallet.getBalance());
 
         System.out.println("Bob send 200 capacity to alice...");
-        bobWallet.sendCapacity(aliceWallet.getAddress(), 200);
+        bobWallet.sendCapacity(aliceWallet.getAddress(), 100);
 
         System.out.println("Bob's address:  " + bobWallet.getAddress() + " and balance: " + bobWallet.getBalance());
         System.out.println("Alice's address:  " + aliceWallet.getAddress() + " and balance: " + aliceWallet.getBalance());
