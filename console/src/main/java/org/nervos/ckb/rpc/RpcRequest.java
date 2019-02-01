@@ -9,7 +9,6 @@ import org.nervos.ckb.wallet.Constant;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

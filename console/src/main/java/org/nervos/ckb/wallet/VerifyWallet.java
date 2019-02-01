@@ -11,7 +11,6 @@ import org.nervos.ckb.utils.TransactionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,11 +67,12 @@ public class VerifyWallet extends BaseWallet {
         try {
             ValidInputs validInputs = gatherInputs(getAddress(), capacity, Constant.MIN_CELL_CAPACITY);
             long inputCapacity = validInputs.capacity;
+            if (inputCapacity < capacity) {
+                throw new CapacityException("Not enough capacity");
+            }
             List<Output> outputs = new ArrayList<>();
             outputs.add(new Output(capacity, "", toAddress));
-            if (inputCapacity > capacity) {
-                outputs.add(new Output(inputCapacity - capacity, "", getAddress()));
-            }
+            outputs.add(new Output(inputCapacity - capacity, "", getAddress()));
             return new Transaction(
                     0,
                     getDepsForOutPoint(),
