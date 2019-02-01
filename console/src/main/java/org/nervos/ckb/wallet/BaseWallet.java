@@ -48,8 +48,8 @@ public abstract class BaseWallet implements WalletAction {
     }
 
     class ValidInputs {
-        List<Input> inputs;
-        long capacity;
+        final List<Input> inputs;
+        final long capacity;
 
         ValidInputs(List<Input> inputs, long capacity) {
             this.inputs = inputs;

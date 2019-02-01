@@ -97,7 +97,7 @@ public class VerifyWallet extends BaseWallet {
 
     @Override
     protected List<OutPoint> getDepsForOutPoint() {
-        return Arrays.asList(new OutPoint(MRUBY_OUT_POINT_HASH, 0));
+        return Collections.singletonList(new OutPoint(MRUBY_OUT_POINT_HASH, 0));
     }
 
 

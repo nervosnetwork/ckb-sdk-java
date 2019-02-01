@@ -18,11 +18,11 @@ import java.util.concurrent.Future;
  */
 public abstract class APIServiceImpl implements APIService {
 
-    protected final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     protected abstract Reader performIO(String payload) throws IOException;
 
-    public APIServiceImpl() {
+    APIServiceImpl() {
         objectMapper = ObjectMapperFactory.getObjectMapper();
     }
 

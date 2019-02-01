@@ -1,14 +1,11 @@
 package org.nervos.ckb.utils;
 
-import org.bouncycastle.asn1.*;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.nervos.ckb.crypto.ECKeyPair;
 import org.nervos.ckb.crypto.Sign;
 import org.nervos.ckb.methods.type.Input;
 import org.nervos.ckb.methods.type.Output;
 
-import java.io.ByteArrayInputStream;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 

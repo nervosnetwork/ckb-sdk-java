@@ -10,6 +10,7 @@ import org.nervos.ckb.wallet.Constant;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -83,7 +84,7 @@ public class RpcRequest {
 
     public static List<OutPoint> alwaysSuccessScriptOutPoint() throws IOException {
         String hash = genesisBlock().commitTransactions.get(0).hash;
-        return Arrays.asList(new OutPoint(hash, 0));
+        return Collections.singletonList(new OutPoint(hash, 0));
     }
 
 }

@@ -12,9 +12,7 @@ import org.nervos.ckb.utils.Numeric;
 
 import java.math.BigInteger;
 import java.security.SignatureException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
 
@@ -30,11 +28,13 @@ public class Sign {
     static final BigInteger HALF_CURVE_ORDER = CURVE_PARAMS.getN().shiftRight(1);
 
     public static SignatureData signMessage(byte[] message, ECKeyPair keyPair) {
+        return signMessage(message, keyPair, false);
+    }
+
+    public static SignatureData signMessage(byte[] message, ECKeyPair keyPair, boolean isHash) {
         BigInteger publicKey = keyPair.getPublicKey();
 
-//        byte[] messageHash = Hash.sha3(message);
-
-        byte[] messageHash = message;
+        byte[] messageHash = isHash? Hash.sha3(message) : message;
 
         ECDSASignature sig = keyPair.sign(messageHash);
         // Now we have to work backwards to figure out the recId needed to recover the signature.

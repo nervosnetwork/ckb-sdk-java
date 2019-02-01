@@ -2,8 +2,6 @@ package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 /**
  * Created by duanyytop on 2019-01-08.
  * Copyright © 2018 Nervos Foundation. All rights reserved.

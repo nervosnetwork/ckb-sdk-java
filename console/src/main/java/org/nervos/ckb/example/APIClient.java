@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class APIClient {
 
-    private static Gson gson = new Gson();
+    private final static Gson gson = new Gson();
 
     public static void main(String[] args) throws IOException {
 
