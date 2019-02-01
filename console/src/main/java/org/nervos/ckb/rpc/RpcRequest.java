@@ -5,11 +5,11 @@ import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
+import org.nervos.ckb.wallet.Constant;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,13 +18,11 @@ import java.util.List;
  */
 public class RpcRequest {
 
-    private static final String NODE_URL = "http://localhost:8114/";
-
     private static CKBService ckbService;
 
     static {
         HttpService.setDebug(false);
-        ckbService = CKBService.build(new HttpService(NODE_URL));
+        ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
     }
 
     public static String getBlockHash(long blockNumber) throws IOException {

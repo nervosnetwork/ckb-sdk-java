@@ -15,47 +15,35 @@ public class TransactionUtils {
 
     public static Transaction formatTx(Transaction transaction) {
         for (Input input: transaction.inputs) {
-            List<String> signedArgs = new ArrayList<>();
-            for (String arg: input.unlock.signedArgs) {
-                signedArgs.add(binToHex(arg));
-            }
-            input.unlock.signedArgs = signedArgs;
-
-            List<String> args = new ArrayList<>();
-            for (String arg: input.unlock.args) {
-                args.add(binToHex(arg));
-            }
-            input.unlock.args = args;
-
-            if (!Strings.isEmpty(input.unlock.binary)) {
-                input.unlock.binary = binToHex(input.unlock.binary);
-            }
+            input.unlock.signedArgs = formatList(input.unlock.signedArgs);
+            input.unlock.args = formatList(input.unlock.args);
+            input.unlock.binary = formatNonNullString(input.unlock.binary);
         }
         for (Output output: transaction.outputs) {
             output.data = binToHex(output.data);
             if (output.type != null) {
-                List<String> signedArgs = new ArrayList<>();
-                for (String arg: output.type.signedArgs) {
-                    signedArgs.add(binToHex(arg));
-                }
-                output.type.signedArgs = signedArgs;
-
-                List<String> args = new ArrayList<>();
-                for (String arg: output.type.args) {
-                    args.add(binToHex(arg));
-                }
-                output.type.args = args;
-
-                if (!Strings.isEmpty(output.type.binary)) {
-                    output.type.binary = binToHex(output.type.binary);
-                }
+                output.type.signedArgs = formatList(output.type.signedArgs);
+                output.type.args = formatList(output.type.args);
+                output.type.binary = formatNonNullString(output.type.binary);
             }
         }
         return transaction;
     }
 
+    private static String formatNonNullString(String value) {
+        return Strings.isEmpty(value)? value : binToHex(value);
+    }
 
-    private static String binToHex(String value) {
+    private static List<String> formatList(List<String> values) {
+        List<String> results = new ArrayList<>();
+        for (String arg: values) {
+            results.add(binToHex(arg));
+        }
+        return results;
+    }
+
+
+    public static String binToHex(String value) {
         return Numeric.toHexString(value.getBytes());
     }
 
