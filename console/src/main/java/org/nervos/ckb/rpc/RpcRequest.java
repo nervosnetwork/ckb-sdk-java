@@ -8,6 +8,8 @@ import org.nervos.ckb.service.HttpService;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,9 +83,9 @@ public class RpcRequest {
         return Hash.sha3(systemCells.get(0).data);
     }
 
-    public static OutPoint alwaysSuccessScriptOutPoint() throws IOException {
+    public static List<OutPoint> alwaysSuccessScriptOutPoint() throws IOException {
         String hash = genesisBlock().commitTransactions.get(0).hash;
-        return new OutPoint(hash, 0);
+        return Arrays.asList(new OutPoint(hash, 0));
     }
 
 }

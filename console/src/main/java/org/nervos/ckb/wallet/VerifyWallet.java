@@ -19,23 +19,26 @@ import java.util.List;
  * Created by duanyytop on 2019-01-29.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class VerifyWallet {
+public class VerifyWallet extends BaseWallet {
 
+    // TODO: Need ruby demo to install mruby cell.
     private static final String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
     private static final String MRUBY_OUT_POINT_HASH = "0x70b79cf5866b10c44ad175d24c101808d24729110fc48eb5ce562042f8526959";
 
     private String privateKey;
-    private String address;
 
     public static VerifyWallet createWithPrivateKey(String privateKey) {
         VerifyWallet verifyWallet = new VerifyWallet();
         verifyWallet.privateKey = privateKey;
-        verifyWallet.address = verifyWallet.unlockScript().getTypeHash();
         return verifyWallet;
     }
 
+    private VerifyWallet() {
+    }
+
+    @Override
     public long getBalance() {
-        List<Cell> cells = getUnSpendCells();
+        List<Cell> cells = getUnSpendCells(getAddress());
         long balance = 0;
         for (Cell cell: cells) {
             balance += cell.capacity;
@@ -43,29 +46,37 @@ public class VerifyWallet {
         return balance;
     }
 
+    @Override
     public String getAddress() {
-        return address;
+        return getUnlockScript().getTypeHash();
     }
 
-    public String sendCapacity(String toAddress, long capacity) throws IOException {
+    @Override
+    public String sendCapacity(String toAddress, long capacity) {
         Transaction tx = generateTx(toAddress, capacity);
-        return RpcRequest.sendTransaction(TransactionUtils.formatTx(tx));
+        try {
+            return RpcRequest.sendTransaction(TransactionUtils.formatTx(tx));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
-    private Transaction generateTx(String toAddress, long capacity) {
+    @Override
+    protected Transaction generateTx(String toAddress, long capacity) {
         try {
-            ValidInput validInput = gatherInputs(capacity, Constant.MIN_CELL_CAPACITY);
-            long inputCapacity = validInput.capacity;
+            ValidInputs validInputs = gatherInputs(getAddress(), capacity, Constant.MIN_CELL_CAPACITY);
+            long inputCapacity = validInputs.capacity;
             List<Output> outputs = new ArrayList<>();
             outputs.add(new Output(capacity, "", toAddress));
             if (inputCapacity > capacity) {
-                outputs.add(new Output(inputCapacity - capacity, "", address));
+                outputs.add(new Output(inputCapacity - capacity, "", getAddress()));
             }
             return new Transaction(
                     0,
-                    Arrays.asList(alwaysSuccessScriptOutPoint()),
-                    SignUtils.signSigHashAllInputs(validInput.inputs, outputs, privateKey),
+                    getDepsForOutPoint(),
+                    SignUtils.signSigHashAllInputs(validInputs.inputs, outputs, privateKey),
                     outputs
             );
         } catch (CapacityException e) {
@@ -74,77 +85,20 @@ public class VerifyWallet {
         return null;
     }
 
-    private ValidInput gatherInputs(long capacity, long minCapacity) throws CapacityException {
-        if (capacity < minCapacity) {
-            throw new CapacityException("capacity cannot be less than " + minCapacity);
-        }
-        long inputCapacities = 0;
-        List<Input> inputs = new ArrayList<>();
-        List<Cell> cells = getUnSpendCells();
-        for (Cell cell: cells) {
-            Input input = new Input(new Input.PreviousOutput(cell.outPoint.hash, cell.outPoint.index), unlockScript());
-            inputs.add(input);
-            inputCapacities += cell.capacity;
-            if (inputCapacities >= capacity && (inputCapacities - capacity) >= minCapacity) {
-                break;
-            }
-        }
-        if (inputCapacities < capacity) {
-            throw new CapacityException("Not enough capacity!");
-        }
-        return new ValidInput(inputs, inputCapacities);
-    }
 
-    private class ValidInput {
-        public List<Input> inputs;
-        public long capacity;
-
-        public ValidInput(List<Input> inputs, long capacity) {
-            this.inputs = inputs;
-            this.capacity = capacity;
-        }
-    }
-
-    private Script unlockScript() {
+    @Override
+    protected Script getUnlockScript() {
         String verifyScript = FileUtils.readFile("console/src/main/resources/bitcoin_unlock.rb");
         List<String> signedArgs = new ArrayList<>();
         signedArgs.add(verifyScript);
         signedArgs.add(String.format("%066x", Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true)));
-        return new Script(0, MRUBY_CELL_HASH, signedArgs);
+        return new Script(0, MRUBY_CELL_HASH, signedArgs, Collections.emptyList());
     }
 
-
-    private List<Cell> getUnSpendCells() {
-        List<Cell> results = new ArrayList<>();
-        try {
-            long toBlockNumber = RpcRequest.getTipBlockNumber().longValue();
-            long fromBlockNumber = 1;
-            while (fromBlockNumber <= toBlockNumber) {
-                long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-                List<Cell> cells = RpcRequest.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber);
-                if (cells != null && cells.size() > 0) {
-                    results.addAll(cells);
-                }
-                fromBlockNumber = currentToBlockNumber + 1;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return results;
+    @Override
+    protected List<OutPoint> getDepsForOutPoint() {
+        return Arrays.asList(new OutPoint(MRUBY_OUT_POINT_HASH, 0));
     }
 
-    public String getMinerAddress() {
-        try {
-            Script script = new Script(0, RpcRequest.alwaysSuccessCellHash(), Collections.emptyList());
-            return script.getTypeHash();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private OutPoint alwaysSuccessScriptOutPoint() {
-        return new OutPoint(MRUBY_OUT_POINT_HASH, 0);
-    }
 
 }

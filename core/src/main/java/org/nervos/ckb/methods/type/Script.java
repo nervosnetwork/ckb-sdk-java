@@ -19,10 +19,13 @@ public class Script {
     public List<String> signedArgs;
     public List<String> args;
 
-    public Script(int version, String reference, List<String> signedArgs) {
+    public Script(){}
+
+    public Script(int version, String reference, List<String> signedArgs, List<String> args) {
         this.version = version;
         this.reference = reference;
         this.signedArgs = signedArgs;
+        this.args = args;
     }
 
     public String getTypeHash() {
