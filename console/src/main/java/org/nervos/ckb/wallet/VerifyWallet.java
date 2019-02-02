@@ -74,14 +74,11 @@ public class VerifyWallet extends BaseWallet {
         try {
             ValidInputs validInputs = gatherInputs(getAddress(), capacity, Constant.MIN_CELL_CAPACITY);
             long inputCapacity = validInputs.capacity;
-            if (inputCapacity < capacity) {
-                throw new CapacityException("Not enough capacity paid");
-            }
             List<Output> outputs = new ArrayList<>();
             outputs.add(new Output(capacity, "", toAddress));
             outputs.add(new Output(inputCapacity - capacity, "", getAddress()));
             return new Transaction(
-                    0,
+                    Constant.VERSION,
                     getDepsForOutPoint(),
                     SignUtils.signSigHashAllInputs(validInputs.inputs, outputs, privateKey),
                     outputs
@@ -99,7 +96,7 @@ public class VerifyWallet extends BaseWallet {
         List<String> signedArgs = new ArrayList<>();
         signedArgs.add(verifyScript);
         signedArgs.add(String.format("%066x", Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true)));
-        return new Script(0, MRUBY_CELL_HASH, signedArgs, Collections.emptyList());
+        return new Script(Constant.VERSION, MRUBY_CELL_HASH, signedArgs, Collections.emptyList());
     }
 
     @Override

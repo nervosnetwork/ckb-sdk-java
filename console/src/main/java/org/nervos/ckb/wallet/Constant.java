@@ -10,4 +10,6 @@ public class Constant {
     public static final long MIN_CELL_CAPACITY = 40;
     public static final long MIN_UDT_CELL_CAPACITY = 48;
 
+    public static final int VERSION = 0;
+
 }

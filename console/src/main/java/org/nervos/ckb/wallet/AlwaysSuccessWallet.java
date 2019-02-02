@@ -41,7 +41,7 @@ public class AlwaysSuccessWallet extends BaseWallet {
             if (inputCapacity > capacity) {
                 outputs.add(new Output(inputCapacity - capacity, "", getAddress()));
             }
-            return new Transaction(0, getDepsForOutPoint(), validInput.inputs, outputs);
+            return new Transaction(Constant.VERSION, getDepsForOutPoint(), validInput.inputs, outputs);
         } catch (CapacityException e) {
             e.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class AlwaysSuccessWallet extends BaseWallet {
     @Override
     protected Script getUnlockScript() {
         try {
-            return new Script(0, RpcRequest.alwaysSuccessCellHash(), Collections.emptyList(), Collections.emptyList());
+            return new Script(Constant.VERSION, RpcRequest.alwaysSuccessCellHash(), Collections.emptyList(), Collections.emptyList());
         } catch (IOException e) {
             e.printStackTrace();
         }
