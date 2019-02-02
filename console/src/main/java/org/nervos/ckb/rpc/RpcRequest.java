@@ -58,7 +58,7 @@ public class RpcRequest {
     public static Cell getLiveCell() throws IOException {
         return ckbService.getLiveCell(
                 new OutPoint("0x15c809f08c7bca63d2b661e1dbc26c74551a6f982f7631c718dc43bd2bb5c90e", 0)
-        ).send().getCell();
+        ).send().getCellStatus();
     }
 
 
