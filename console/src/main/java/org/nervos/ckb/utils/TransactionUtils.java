@@ -1,7 +1,7 @@
 package org.nervos.ckb.utils;
 
-import org.nervos.ckb.methods.type.Input;
-import org.nervos.ckb.methods.type.Output;
+import org.nervos.ckb.methods.type.CellInput;
+import org.nervos.ckb.methods.type.CellOutput;
 import org.nervos.ckb.methods.type.Transaction;
 
 import java.util.ArrayList;
@@ -14,17 +14,17 @@ import java.util.List;
 public class TransactionUtils {
 
     public static Transaction formatTx(Transaction transaction) {
-        for (Input input: transaction.inputs) {
-            input.unlock.signedArgs = formatList(input.unlock.signedArgs);
-            input.unlock.args = formatList(input.unlock.args);
-            input.unlock.binary = formatNonNullString(input.unlock.binary);
+        for (CellInput cellInput : transaction.inputs) {
+            cellInput.unlock.signedArgs = formatList(cellInput.unlock.signedArgs);
+            cellInput.unlock.args = formatList(cellInput.unlock.args);
+            cellInput.unlock.binary = formatNonNullString(cellInput.unlock.binary);
         }
-        for (Output output: transaction.outputs) {
-            output.data = binToHex(output.data);
-            if (output.type != null) {
-                output.type.signedArgs = formatList(output.type.signedArgs);
-                output.type.args = formatList(output.type.args);
-                output.type.binary = formatNonNullString(output.type.binary);
+        for (CellOutput cellOutput : transaction.outputs) {
+            cellOutput.data = binToHex(cellOutput.data);
+            if (cellOutput.type != null) {
+                cellOutput.type.signedArgs = formatList(cellOutput.type.signedArgs);
+                cellOutput.type.args = formatList(cellOutput.type.args);
+                cellOutput.type.binary = formatNonNullString(cellOutput.type.binary);
             }
         }
         return transaction;

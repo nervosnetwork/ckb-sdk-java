@@ -4,8 +4,8 @@
 # optional unsigned argument:
 # 1. signature, signature used to present ownership
 # 2. type, SIGHASH type
-# 3. output(s), this is only used for SIGHASH_SINGLE and SIGHASH_MULTIPLE types,
-# for SIGHASH_SINGLE, it stores an integer denoting the index of output to be
+# 3. cellOutput(s), this is only used for SIGHASH_SINGLE and SIGHASH_MULTIPLE types,
+# for SIGHASH_SINGLE, it stores an integer denoting the index of cellOutput to be
 # signed; for SIGHASH_MULTIPLE, it stores a string of `,` separated array denoting
 # outputs to sign
 if ARGV.length != 3 && ARGV.length != 4
@@ -33,25 +33,25 @@ sha3.update(ARGV[2])
 sighash_type = ARGV[2].to_i
 
 if sighash_type & SIGHASH_ANYONECANPAY != 0
-  # Only hash current input
+  # Only hash current cellInput
   out_point = CKB.load_input_out_point(0, CKB::Source::CURRENT)
   sha3.update(out_point["hash"])
   sha3.update(out_point["index"].to_s)
   sha3.update(CKB::CellField.new(CKB::Source::CURRENT, 0, CKB::CellField::LOCK_HASH).readall)
 else
   # Hash all inputs
-  tx["inputs"].each_with_index do |input, i|
-    sha3.update(input["hash"])
-    sha3.update(input["index"].to_s)
+  tx["inputs"].each_with_index do |cellInput, i|
+    sha3.update(cellInput["hash"])
+    sha3.update(cellInput["index"].to_s)
     sha3.update(CKB.load_script_hash(i, CKB::Source::INPUT, CKB::Category::LOCK))
   end
 end
 
 case sighash_type & (~SIGHASH_ANYONECANPAY)
 when SIGHASH_ALL
-  tx["outputs"].each_with_index do |output, i|
-    sha3.update(output["capacity"].to_s)
-    sha3.update(output["lock"])
+  tx["outputs"].each_with_index do |cellOutput, i|
+    sha3.update(cellOutput["capacity"].to_s)
+    sha3.update(cellOutput["lock"])
     if hash = CKB.load_script_hash(i, CKB::Source::OUTPUT, CKB::Category::TYPE)
       sha3.update(hash)
     end
@@ -59,9 +59,9 @@ when SIGHASH_ALL
 when SIGHASH_SINGLE
   raise "Not enough arguments" unless ARGV[3]
   output_index = ARGV[3].to_i
-  output = tx["outputs"][output_index]
-  sha3.update(output["capacity"].to_s)
-  sha3.update(output["lock"])
+  cellOutput = tx["outputs"][output_index]
+  sha3.update(cellOutput["capacity"].to_s)
+  sha3.update(cellOutput["lock"])
   if hash = CKB.load_script_hash(output_index, CKB::Source::OUTPUT, CKB::Category::TYPE)
     sha3.update(hash)
   end
@@ -69,9 +69,9 @@ when SIGHASH_MULTIPLE
   raise "Not enough arguments" unless ARGV[3]
   ARGV[3].split(",").each do |output_index|
     output_index = output_index.to_i
-    output = tx["outputs"][output_index]
-    sha3.update(output["capacity"].to_s)
-    sha3.update(output["lock"])
+    cellOutput = tx["outputs"][output_index]
+    sha3.update(cellOutput["capacity"].to_s)
+    sha3.update(cellOutput["lock"])
     if hash = CKB.load_script_hash(output_index, CKB::Source::OUTPUT, CKB::Category::TYPE)
       sha3.update(hash)
     end

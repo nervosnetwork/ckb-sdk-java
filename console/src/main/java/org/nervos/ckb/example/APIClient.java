@@ -31,11 +31,11 @@ public class APIClient {
 
         System.out.println("Cells: " + gson.toJson(RpcRequest.getCellsByTypeHash("0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674", 1, 100)));
 
-        System.out.println("Cell: " + gson.toJson(RpcRequest.getLiveCell()));
+        System.out.println("CellOutputWithOutPoint: " + gson.toJson(RpcRequest.getLiveCell()));
 
         System.out.println("Transaction hash: " + RpcRequest.sendTransaction(new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList())));
 
-        System.out.println("Always Success Cell Hash: " + RpcRequest.alwaysSuccessCellHash());
+        System.out.println("Always Success CellOutputWithOutPoint Hash: " + RpcRequest.alwaysSuccessCellHash());
 
         System.out.println("Always Success Script OutPoint: " + gson.toJson(RpcRequest.alwaysSuccessScriptOutPoint()));
 

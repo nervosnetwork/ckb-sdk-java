@@ -36,12 +36,12 @@ public class AlwaysSuccessWallet extends BaseWallet {
         try {
             ValidInputs validInput = gatherInputs(getAddress(), capacity, Constant.MIN_CELL_CAPACITY);
             long inputCapacity = validInput.capacity;
-            List<Output> outputs = new ArrayList<>();
-            outputs.add(new Output(capacity, "", toAddress));
+            List<CellOutput> cellOutputs = new ArrayList<>();
+            cellOutputs.add(new CellOutput(capacity, "", toAddress));
             if (inputCapacity > capacity) {
-                outputs.add(new Output(inputCapacity - capacity, "", getAddress()));
+                cellOutputs.add(new CellOutput(inputCapacity - capacity, "", getAddress()));
             }
-            return new Transaction(Constant.VERSION, getDepsForOutPoint(), validInput.inputs, outputs);
+            return new Transaction(Constant.VERSION, getDepsForOutPoint(), validInput.cellInputs, cellOutputs);
         } catch (CapacityException e) {
             e.printStackTrace();
         }

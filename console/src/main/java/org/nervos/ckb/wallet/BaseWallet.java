@@ -16,10 +16,10 @@ public abstract class BaseWallet implements WalletAction {
 
     @Override
     public long getBalance() {
-        List<Cell> cells = getUnSpendCells(getAddress());
+        List<CellOutputWithOutPoint> cellOutputWithOutPoints = getUnSpendCells(getAddress());
         long balance = 0;
-        for (Cell cell: cells) {
-            balance += cell.capacity;
+        for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputWithOutPoints) {
+            balance += cellOutputWithOutPoint.capacity;
         }
         return balance;
     }
@@ -35,12 +35,12 @@ public abstract class BaseWallet implements WalletAction {
             throw new CapacityException("capacity cannot be less than " + minCapacity);
         }
         long inputCapacities = 0;
-        List<Input> inputs = new ArrayList<>();
-        List<Cell> cells = getUnSpendCells(address);
-        for (Cell cell: cells) {
-            Input input = new Input(new Input.PreviousOutput(cell.outPoint.hash, cell.outPoint.index), getUnlockScript());
-            inputs.add(input);
-            inputCapacities += cell.capacity;
+        List<CellInput> cellInputs = new ArrayList<>();
+        List<CellOutputWithOutPoint> cellOutputWithOutPoints = getUnSpendCells(address);
+        for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputWithOutPoints) {
+            CellInput cellInput = new CellInput(new CellInput.PreviousOutput(cellOutputWithOutPoint.outPoint.hash, cellOutputWithOutPoint.outPoint.index), getUnlockScript());
+            cellInputs.add(cellInput);
+            inputCapacities += cellOutputWithOutPoint.capacity;
             if (inputCapacities >= capacity && (inputCapacities - capacity) >= minCapacity) {
                 break;
             }
@@ -48,29 +48,29 @@ public abstract class BaseWallet implements WalletAction {
         if (inputCapacities < capacity) {
             throw new CapacityException("Not enough capacity!");
         }
-        return new ValidInputs(inputs, inputCapacities);
+        return new ValidInputs(cellInputs, inputCapacities);
     }
 
     class ValidInputs {
-        final List<Input> inputs;
+        final List<CellInput> cellInputs;
         final long capacity;
 
-        ValidInputs(List<Input> inputs, long capacity) {
-            this.inputs = inputs;
+        ValidInputs(List<CellInput> cellInputs, long capacity) {
+            this.cellInputs = cellInputs;
             this.capacity = capacity;
         }
     }
 
-    List<Cell> getUnSpendCells(String address) {
-        List<Cell> results = new ArrayList<>();
+    List<CellOutputWithOutPoint> getUnSpendCells(String address) {
+        List<CellOutputWithOutPoint> results = new ArrayList<>();
         try {
             long toBlockNumber = RpcRequest.getTipBlockNumber().longValue();
             long fromBlockNumber = 1;
             while (fromBlockNumber <= toBlockNumber) {
                 long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-                List<Cell> cells = RpcRequest.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber);
-                if (cells != null && cells.size() > 0) {
-                    results.addAll(cells);
+                List<CellOutputWithOutPoint> cellOutputWithOutPoints = RpcRequest.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber);
+                if (cellOutputWithOutPoints != null && cellOutputWithOutPoints.size() > 0) {
+                    results.addAll(cellOutputWithOutPoints);
                 }
                 fromBlockNumber = currentToBlockNumber + 1;
             }

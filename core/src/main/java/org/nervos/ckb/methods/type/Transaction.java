@@ -25,7 +25,11 @@ public class Transaction {
 
     }
 
+<<<<<<< HEAD
     public Transaction(int version, List<OutPoint> deps, List<CellInput> cellInputs, List<CellOutput> cellOutputs) {
+=======
+    public Transaction(int version, List<OutPoint> deps, List<CellInput> inputs, List<CellOutput> outputs) {
+>>>>>>> chore: rename Input and Output to CellInput and CellOutput
         this.version = version;
         this.deps = deps;
         this.inputs = cellInputs;

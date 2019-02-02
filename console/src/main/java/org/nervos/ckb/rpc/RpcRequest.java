@@ -51,14 +51,14 @@ public class RpcRequest {
         return ckbService.localNodeId().send().getNodeId();
     }
 
-    public static List<Cell> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber) throws IOException {
+    public static List<CellOutputWithOutPoint> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber) throws IOException {
         return ckbService.getCellsByTypeHash(typeHash, fromBlockNumber, toBlockNumber).send().getCells();
     }
 
     public static Cell getLiveCell() throws IOException {
         return ckbService.getLiveCell(
                 new OutPoint("0x15c809f08c7bca63d2b661e1dbc26c74551a6f982f7631c718dc43bd2bb5c90e", 0)
-        ).send().getCellStatus();
+        ).send().getCell();
     }
 
 
@@ -74,9 +74,9 @@ public class RpcRequest {
 
 
     public static String alwaysSuccessCellHash() throws IOException {
-        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
+        List<CellOutput> systemCells = genesisBlock().commitTransactions.get(0).outputs;
         if (systemCells.isEmpty() || systemCells.get(0) == null) {
-            throw new APIErrorException("Cannot find always success cell");
+            throw new APIErrorException("Cannot find always success cellOutputWithOutPoint");
         }
         return Hash.sha3(systemCells.get(0).data);
     }

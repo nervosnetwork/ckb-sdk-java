@@ -44,10 +44,10 @@ public class VerifyWallet extends BaseWallet {
 
     @Override
     public long getBalance() {
-        List<Cell> cells = getUnSpendCells(getAddress());
+        List<CellOutputWithOutPoint> cellOutputWithOutPoints = getUnSpendCells(getAddress());
         long balance = 0;
-        for (Cell cell: cells) {
-            balance += cell.capacity;
+        for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputWithOutPoints) {
+            balance += cellOutputWithOutPoint.capacity;
         }
         return balance;
     }
@@ -74,14 +74,14 @@ public class VerifyWallet extends BaseWallet {
         try {
             ValidInputs validInputs = gatherInputs(getAddress(), capacity, Constant.MIN_CELL_CAPACITY);
             long inputCapacity = validInputs.capacity;
-            List<Output> outputs = new ArrayList<>();
-            outputs.add(new Output(capacity, "", toAddress));
-            outputs.add(new Output(inputCapacity - capacity, "", getAddress()));
+            List<CellOutput> cellOutputs = new ArrayList<>();
+            cellOutputs.add(new CellOutput(capacity, "", toAddress));
+            cellOutputs.add(new CellOutput(inputCapacity - capacity, "", getAddress()));
             return new Transaction(
                     Constant.VERSION,
                     getDepsForOutPoint(),
-                    SignUtils.signSigHashAllInputs(validInputs.inputs, outputs, privateKey),
-                    outputs
+                    SignUtils.signSigHashAllInputs(validInputs.cellInputs, cellOutputs, privateKey),
+                    cellOutputs
             );
         } catch (CapacityException e) {
             e.printStackTrace();

@@ -17,9 +17,9 @@ public class CellInput {
     public PreviousOutput previousOutput;
     public Script unlock;
 
-    public Input(){}
+    public CellInput(){}
 
-    public Input(PreviousOutput previousOutput, Script unlock) {
+    public CellInput(PreviousOutput previousOutput, Script unlock) {
         this.previousOutput = previousOutput;
         this.unlock = unlock;
     }

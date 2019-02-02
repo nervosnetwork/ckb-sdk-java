@@ -18,9 +18,9 @@ public class CellOutput {
     public String lock;
     public String data;
 
-    public Output(){}
+    public CellOutput(){}
 
-    public Output(long capacity, String data, String lock) {
+    public CellOutput(long capacity, String data, String lock) {
         this.capacity = capacity;
         this.data = data;
         this.lock = lock;
