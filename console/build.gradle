@@ -1,0 +1,10 @@
+description 'ckb-sdk-java is a lightweight Java library for integration with nervos CKB.'
+
+dependencies {
+    compile project(":core")
+    compile project(":utils")
+    compile "com.google.code.gson:gson:$gsonVersion"
+}
+
+
+apply plugin: 'com.github.johnrengelman.shadow'

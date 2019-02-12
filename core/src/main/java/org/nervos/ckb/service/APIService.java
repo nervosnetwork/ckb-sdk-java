@@ -1,7 +1,7 @@
 package org.nervos.ckb.service;
 
-import org.nervos.ckb.request.Request;
-import org.nervos.ckb.response.Response;
+import org.nervos.ckb.methods.Request;
+import org.nervos.ckb.methods.Response;
 
 import java.io.IOException;
 import java.util.concurrent.Future;
