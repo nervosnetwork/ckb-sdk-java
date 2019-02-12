@@ -25,7 +25,7 @@ public interface CKBApi {
 
     Request<?, CkbBlockNumber> getTipBlockNumber();
 
-    Request<?, CkbNodeId> localNodeInfo();
+    Request<?, CkbNodeInfo> localNodeInfo();
 
     Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 

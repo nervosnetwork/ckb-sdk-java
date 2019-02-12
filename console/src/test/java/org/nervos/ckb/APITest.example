@@ -63,8 +63,8 @@ public class APITest {
 
     @Test
     public void localNodeInfo() throws IOException {
-        String nodeId = ckbService.localNodeInfo().send().getNodeId();
-        Assert.assertNotNull("Node id is null", nodeId);
+        NodeInfo nodeInfo = ckbService.localNodeInfo().send().getNodeInfo();
+        Assert.assertNotNull("Node id is null", nodeInfo);
     }
 
     @Test
