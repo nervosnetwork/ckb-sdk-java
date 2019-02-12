@@ -42,7 +42,7 @@ public class APIClient {
 
         System.out.println("Block number: " + getTipBlockNumber().toString());
 
-        System.out.println("Local host: " + localNodeId());
+        System.out.println("Local host: " + localNodeInfo());
 
         System.out.println("Cells: " + gson.toJson(getCellsByTypeHash()));
 
@@ -78,8 +78,8 @@ public class APIClient {
     }
 
 
-    private static String localNodeId() throws IOException {
-        return ckbService.localNodeId().send().getNodeId();
+    private static String localNodeInfo() throws IOException {
+        return ckbService.localNodeInfo().send().getNodeId();
     }
 
 

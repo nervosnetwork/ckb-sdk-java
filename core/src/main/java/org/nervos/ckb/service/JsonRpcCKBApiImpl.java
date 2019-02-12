@@ -89,7 +89,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
     }
 
     @Override
-    public Request<?, CkbNodeId> localNodeId() {
+    public Request<?, CkbNodeId> localNodeInfo() {
         return new Request<>(
                 "local_node_id",
                 Collections.<String>emptyList(),
