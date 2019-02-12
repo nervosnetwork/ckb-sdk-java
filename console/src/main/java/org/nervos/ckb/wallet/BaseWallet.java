@@ -36,11 +36,11 @@ public abstract class BaseWallet implements WalletAction {
         }
         long inputCapacities = 0;
         List<CellInput> cellInputs = new ArrayList<>();
-        List<CellOutputWithOutPoint> cellOutputWithOutPoints = getUnSpendCells(address);
-        for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputWithOutPoints) {
-            CellInput cellInput = new CellInput(new CellInput.PreviousOutput(cellOutputWithOutPoint.outPoint.hash, cellOutputWithOutPoint.outPoint.index), getUnlockScript());
+        List<CellOutputWithOutPoint> cellOutputs = getUnSpendCells(address);
+        for (CellOutputWithOutPoint cellOutput : cellOutputs) {
+            CellInput cellInput = new CellInput(new CellInput.PreviousOutput(cellOutput.outPoint.hash, cellOutput.outPoint.index), getUnlockScript());
             cellInputs.add(cellInput);
-            inputCapacities += cellOutputWithOutPoint.capacity;
+            inputCapacities += cellOutput.capacity;
             if (inputCapacities >= capacity && (inputCapacities - capacity) >= minCapacity) {
                 break;
             }
@@ -68,9 +68,9 @@ public abstract class BaseWallet implements WalletAction {
             long fromBlockNumber = 1;
             while (fromBlockNumber <= toBlockNumber) {
                 long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-                List<CellOutputWithOutPoint> cellOutputWithOutPoints = RpcRequest.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber);
-                if (cellOutputWithOutPoints != null && cellOutputWithOutPoints.size() > 0) {
-                    results.addAll(cellOutputWithOutPoints);
+                List<CellOutputWithOutPoint> cellOutputs = RpcRequest.getCellsByTypeHash(address, fromBlockNumber, currentToBlockNumber);
+                if (cellOutputs != null && cellOutputs.size() > 0) {
+                    results.addAll(cellOutputs);
                 }
                 fromBlockNumber = currentToBlockNumber + 1;
             }
