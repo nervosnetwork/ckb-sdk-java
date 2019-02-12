@@ -83,7 +83,7 @@ public class APIClient {
     }
 
 
-    private static List<Cell> getCellsByTypeHash() throws IOException {
+    private static List<CellOutputWithOutPoint> getCellsByTypeHash() throws IOException {
         return ckbService.getCellsByTypeHash(
                 "0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674", 1, 100
         ).send().getCells();
@@ -110,7 +110,7 @@ public class APIClient {
 
 
     private static String alwaysSuccessCellHash() throws IOException {
-        List<Output> systemCells = genesisBlock().commitTransactions.get(0).outputs;
+        List<CellOutput> systemCells = genesisBlock().commitTransactions.get(0).outputs;
         if (systemCells.isEmpty() || systemCells.get(0) == null) {
             throw new APIErrorException("Cannot find always success cell");
         }

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by duanyytop on 2019-01-08.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class Input {
+public class CellInput {
 
     /**
      * previous_output : {"hash":"0x0000000000000000000000000000000000000000000000000000000000000000","index":4294967295}
