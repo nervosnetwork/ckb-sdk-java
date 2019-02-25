@@ -1,16 +1,16 @@
 buildscript {
 
     ext.bouncycastleVersion = '1.60'
-    ext.rxjavaVersion = '2.2.5'
+    ext.rxjavaVersion = '2.2.6'
     ext.gsonVersion = '2.8.5'
     ext.jacksonVersion = '2.8.5'
-    ext.okhttpVersion = '3.12.1'
-    ext.loggingOkhttpVersion = '3.12.1'
+    ext.okhttpVersion = '3.13.1'
+    ext.loggingOkhttpVersion = '3.13.1'
 
     ext.junitVersion = '4.12'
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
