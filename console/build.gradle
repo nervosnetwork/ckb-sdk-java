@@ -4,6 +4,7 @@ dependencies {
     compile project(":core")
     compile project(":utils")
     compile "com.google.code.gson:gson:$gsonVersion"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
 }
 
 

@@ -2,6 +2,7 @@ package org.nervos.ckb.methods.response;
 
 import org.nervos.ckb.methods.Response;
 import org.nervos.ckb.methods.type.Cell;
+import org.nervos.ckb.methods.type.CellOutputWithOutPoint;
 
 /**
  * Created by duanyytop on 2018-12-25.

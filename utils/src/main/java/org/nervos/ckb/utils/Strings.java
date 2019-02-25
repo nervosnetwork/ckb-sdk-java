@@ -1,9 +1,11 @@
 package org.nervos.ckb.utils;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
+ * Created by duanyytop on 2019-01-29.
+ * Copyright © 2018 Nervos Foundation. All rights reserved.
+ *
  * String utility functions.
  */
 public class Strings {
@@ -22,7 +24,7 @@ public class Strings {
 
     public static byte[] asciiToHex(String asciiValue, int length) {
         char[] chars = asciiValue.toCharArray();
-        StringBuffer hex = new StringBuffer();
+        StringBuilder hex = new StringBuilder();
         for (int i = 0; i < chars.length; i++) {
             hex.append(Integer.toHexString((int) chars[i]));
         }

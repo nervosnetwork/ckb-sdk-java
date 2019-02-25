@@ -24,7 +24,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
     public Request<?, CkbBlock> getBlock(String blockHash) {
         return new Request<>(
                 "get_block",
-                Arrays.asList(blockHash),
+                Collections.singletonList(blockHash),
                 apiService,
                 CkbBlock.class);
     }
@@ -34,7 +34,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
     public Request<?, CkbTransaction> getTransaction(String transactionHash) {
         return new Request<>(
                 "get_transaction",
-                Arrays.asList(transactionHash),
+                Collections.singletonList(transactionHash),
                 apiService,
                 CkbTransaction.class);
     }
@@ -44,7 +44,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
     public Request<?, CkbBlockHash> getBlockHash(long blockNumber) {
         return new Request<>(
                 "get_block_hash",
-                Arrays.asList(blockNumber),
+                Collections.singletonList(blockNumber),
                 apiService,
                 CkbBlockHash.class);
     }
@@ -74,7 +74,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
     public Request<?, CkbCell> getLiveCell(OutPoint outPoint) {
         return new Request<>(
                 "get_live_cell",
-                Arrays.asList(outPoint),
+                Collections.singletonList(outPoint),
                 apiService,
                 CkbCell.class);
     }
@@ -89,19 +89,19 @@ public class JsonRpcCKBApiImpl implements CKBService {
     }
 
     @Override
-    public Request<?, CkbNodeId> localNodeId() {
+    public Request<?, CkbNodeInfo> localNodeInfo() {
         return new Request<>(
-                "local_node_id",
+                "local_node_info",
                 Collections.<String>emptyList(),
                 apiService,
-                CkbNodeId.class);
+                CkbNodeInfo.class);
     }
 
     @Override
     public Request<?, CkbTransactionHash> sendTransaction(Transaction transaction) {
         return new Request<>(
                 "send_transaction",
-                Arrays.asList(transaction),
+                Collections.singletonList(transaction),
                 apiService,
                 CkbTransactionHash.class);
     }

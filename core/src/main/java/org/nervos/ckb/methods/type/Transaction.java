@@ -18,18 +18,18 @@ public class Transaction {
     public int version;
     public String hash;
     public List<OutPoint> deps;
-    public List<Input> inputs;
-    public List<Output> outputs;
+    public List<CellInput> inputs;
+    public List<CellOutput> outputs;
 
     public Transaction(){
 
     }
 
-    public Transaction(int version, List<OutPoint> deps, List<Input> inputs, List<Output> outputs) {
+    public Transaction(int version, List<OutPoint> deps, List<CellInput> cellInputs, List<CellOutput> cellOutputs) {
         this.version = version;
         this.deps = deps;
-        this.inputs = inputs;
-        this.outputs = outputs;
+        this.inputs = cellInputs;
+        this.outputs = cellOutputs;
     }
 
 

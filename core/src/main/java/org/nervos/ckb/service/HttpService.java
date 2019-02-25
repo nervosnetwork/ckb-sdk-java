@@ -14,14 +14,14 @@ import java.util.Map;
  */
 public class HttpService extends APIServiceImpl {
 
-    public static final MediaType JSON_MEDIA_TYPE
+    private static final MediaType JSON_MEDIA_TYPE
             = MediaType.parse("application/json; charset=utf-8");
 
-    public static final String DEFAULT_URL = "http://localhost:8114/";
+    private static final String DEFAULT_URL = "http://localhost:8114/";
 
     private static boolean debug = false;
 
-    private OkHttpClient httpClient;
+    private final OkHttpClient httpClient;
 
     private final String url;
 

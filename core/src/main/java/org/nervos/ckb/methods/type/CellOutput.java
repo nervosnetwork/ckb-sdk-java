@@ -4,7 +4,7 @@ package org.nervos.ckb.methods.type;
  * Created by duanyytop on 2019-01-08.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
-public class Output {
+public class CellOutput {
 
     /**
      * capacity : 50000
@@ -14,8 +14,16 @@ public class Output {
      */
 
     public long capacity;
-    public Object type;
+    public Script type;
     public String lock;
     public String data;
+
+    public CellOutput(){}
+
+    public CellOutput(long capacity, String data, String lock) {
+        this.capacity = capacity;
+        this.data = data;
+        this.lock = lock;
+    }
 
 }

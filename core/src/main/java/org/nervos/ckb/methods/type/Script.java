@@ -1,6 +1,9 @@
 package org.nervos.ckb.methods.type;
 
-import org.nervos.ckb.crypto.Hash;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.bouncycastle.jcajce.provider.digest.SHA3;
+import org.nervos.ckb.utils.Numeric;
+
 import java.util.List;
 
 /**
@@ -9,19 +12,33 @@ import java.util.List;
  */
 public class Script {
 
-    public short version;
+    public int version;
     public String binary;
     public String reference;
+    @JsonProperty("signed_args")
     public List<String> signedArgs;
     public List<String> args;
 
+    public Script(){}
+
+    public Script(int version, String reference, List<String> signedArgs, List<String> args) {
+        this.version = version;
+        this.reference = reference;
+        this.signedArgs = signedArgs;
+        this.args = args;
+    }
+
     public String getTypeHash() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(reference).append("|").append(binary);
-        for (String str: signedArgs) {
-            sb.append(str);
+        SHA3.DigestSHA3 sha3 = new SHA3.Digest256();
+        sha3.update(Numeric.hexStringToByteArray(reference));
+        sha3.update("|".getBytes());
+        if (binary != null) {
+            sha3.update(Numeric.hexStringToByteArray(binary));
         }
-        return Hash.sha3(sb.toString());
+        for (String arg: signedArgs) {
+            sha3.update(arg.getBytes());
+        }
+        return Numeric.toHexString(sha3.digest());
     }
 
 }
