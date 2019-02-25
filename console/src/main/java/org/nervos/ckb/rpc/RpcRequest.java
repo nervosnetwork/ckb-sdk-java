@@ -47,8 +47,8 @@ public class RpcRequest {
     }
 
 
-    public static String localNodeId() throws IOException {
-        return ckbService.localNodeId().send().getNodeId();
+    public static NodeInfo localNodeInfo() throws IOException {
+        return ckbService.localNodeInfo().send().getNodeInfo();
     }
 
     public static List<CellOutputWithOutPoint> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber) throws IOException {

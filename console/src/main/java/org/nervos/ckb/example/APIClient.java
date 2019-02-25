@@ -27,7 +27,7 @@ public class APIClient {
 
         System.out.println("Block number: " + RpcRequest.getTipBlockNumber().toString());
 
-        System.out.println("Local host: " + RpcRequest.localNodeId());
+        System.out.println("Local host: " + gson.toJson(RpcRequest.localNodeInfo()));
 
         System.out.println("Cells: " + gson.toJson(RpcRequest.getCellsByTypeHash("0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674", 1, 100)));
 
