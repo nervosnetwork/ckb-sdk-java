@@ -59,4 +59,25 @@ public class Hash {
     public static String blake2bString(String utf8String) {
         return Numeric.toHexString(blake2b(utf8String.getBytes(StandardCharsets.UTF_8)));
     }
+
+    private static Blake2bDigest blake2bDigest;
+    public static Blake2bDigest update(byte[] input) {
+        if (blake2bDigest == null) {
+            blake2bDigest = new Blake2bDigest(256);
+        }
+        blake2bDigest.update(input, 0, input.length);
+        return blake2bDigest;
+    }
+
+    public static byte[] doFinalBytes() {
+        byte[] out = new byte[32];
+        if (blake2bDigest != null) {
+            blake2bDigest.doFinal(out, 0);
+        }
+        return out;
+    }
+
+    public static String doFinalString() {
+        return Numeric.toHexString(doFinalBytes());
+    }
 }

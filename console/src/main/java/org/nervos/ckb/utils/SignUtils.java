@@ -1,7 +1,7 @@
 package org.nervos.ckb.utils;
 
-import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.nervos.ckb.crypto.ECKeyPair;
+import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.Sign;
 import org.nervos.ckb.methods.type.CellInput;
 import org.nervos.ckb.methods.type.CellOutput;
@@ -17,22 +17,21 @@ public class SignUtils {
 
     public static List<CellInput> signSigHashAllInputs(List<CellInput> cellInputs, List<CellOutput> cellOutputs, String privateKey) {
         String sigHashType = "1";
-        SHA3.Digest256 sha3 = new SHA3.Digest256();
-        sha3.update(sigHashType.getBytes());
+        Hash.update(sigHashType.getBytes());
         for (CellInput cellInput : cellInputs) {
-            sha3.update(Numeric.hexStringToByteArray(cellInput.previousOutput.hash));
-            sha3.update((String.valueOf(cellInput.previousOutput.index)).getBytes());
-            sha3.update(Numeric.hexStringToByteArray(cellInput.unlock.getTypeHash()));
+            Hash.update(Numeric.hexStringToByteArray(cellInput.previousOutput.hash));
+            Hash.update((String.valueOf(cellInput.previousOutput.index)).getBytes());
+            Hash.update(Numeric.hexStringToByteArray(cellInput.unlock.getTypeHash()));
         }
 
         for (CellOutput cellOutput : cellOutputs) {
-            sha3.update((String.valueOf(cellOutput.capacity)).getBytes());
-            sha3.update(Numeric.hexStringToByteArray(cellOutput.lock));
+            Hash.update((String.valueOf(cellOutput.capacity)).getBytes());
+            Hash.update(Numeric.hexStringToByteArray(cellOutput.lock));
             if (cellOutput.type != null) {
-                sha3.update(Numeric.hexStringToByteArray(cellOutput.type.getTypeHash()));
+                Hash.update(Numeric.hexStringToByteArray(cellOutput.type.getTypeHash()));
             }
         }
-        byte[] messageHash = sha3.digest();
+        byte[] messageHash = Hash.doFinalBytes();
 
         for (CellInput cellInput : cellInputs) {
             List<String> args = new ArrayList<>();
