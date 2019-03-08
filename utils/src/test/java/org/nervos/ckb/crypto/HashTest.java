@@ -20,17 +20,6 @@ public class HashTest {
     }
 
     @Test
-    public void testBlake2bUpdate() {
-        Hash.update("".getBytes(StandardCharsets.UTF_8));
-        assertThat(Hash.doFinalString(),
-                is("0x44f4c69744d5f8c55d642062949dcae49bc4e7ef43d388c5a12f42b5633d163e"));
-
-        Hash.update("The quick brown fox jumps over the lazy dog".getBytes(StandardCharsets.UTF_8));
-        assertThat(Hash.doFinalString(),
-                is("0xabfa2c08d62f6f567d088d6ba41d3bbbb9a45c241a8e3789ef39700060b5cee2"));
-    }
-
-    @Test
     public void testByte() {
         assertThat(asByte(0x0, 0x0), is((byte) 0x0));
         assertThat(asByte(0x1, 0x0), is((byte) 0x10));

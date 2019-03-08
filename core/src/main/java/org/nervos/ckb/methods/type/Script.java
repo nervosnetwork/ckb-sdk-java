@@ -1,6 +1,7 @@
 package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
 
@@ -35,17 +36,18 @@ public class Script {
     }
 
     public String getTypeHash() {
+        Blake2b blake2b = Blake2b.getInstance();
         if (reference != null) {
-            Hash.update(Numeric.hexStringToByteArray(reference));
+            blake2b.update(Numeric.hexStringToByteArray(reference));
         }
-        Hash.update("|".getBytes(StandardCharsets.UTF_8));
+        blake2b.update("|".getBytes(StandardCharsets.UTF_8));
         if (binary != null) {
-            Hash.update(Numeric.hexStringToByteArray(binary));
+            blake2b.update(Numeric.hexStringToByteArray(binary));
         }
         for (String arg: signedArgs) {
-            Hash.update(Numeric.hexStringToByteArray(arg));
+            blake2b.update(Numeric.hexStringToByteArray(arg));
         }
-        return Hash.doFinalString();
+        return blake2b.doFinalString();
     }
 
 }

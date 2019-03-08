@@ -1,5 +1,6 @@
 package org.nervos.ckb.utils;
 
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.ECKeyPair;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.Sign;
@@ -17,21 +18,22 @@ public class SignUtils {
 
     public static List<CellInput> signSigHashAllInputs(List<CellInput> cellInputs, List<CellOutput> cellOutputs, String privateKey) {
         String sigHashType = "1";
-        Hash.update(sigHashType.getBytes());
+        Blake2b blake2b = Blake2b.getInstance();
+        blake2b.update(sigHashType.getBytes());
         for (CellInput cellInput : cellInputs) {
-            Hash.update(Numeric.hexStringToByteArray(cellInput.previousOutput.hash));
-            Hash.update((String.valueOf(cellInput.previousOutput.index)).getBytes());
-            Hash.update(Numeric.hexStringToByteArray(cellInput.unlock.getTypeHash()));
+            blake2b.update(Numeric.hexStringToByteArray(cellInput.previousOutput.hash));
+            blake2b.update((String.valueOf(cellInput.previousOutput.index)).getBytes());
+            blake2b.update(Numeric.hexStringToByteArray(cellInput.unlock.getTypeHash()));
         }
 
         for (CellOutput cellOutput : cellOutputs) {
-            Hash.update((String.valueOf(cellOutput.capacity)).getBytes());
-            Hash.update(Numeric.hexStringToByteArray(cellOutput.lock));
+            blake2b.update((String.valueOf(cellOutput.capacity)).getBytes());
+            blake2b.update(Numeric.hexStringToByteArray(cellOutput.lock));
             if (cellOutput.type != null) {
-                Hash.update(Numeric.hexStringToByteArray(cellOutput.type.getTypeHash()));
+                blake2b.update(Numeric.hexStringToByteArray(cellOutput.type.getTypeHash()));
             }
         }
-        byte[] messageHash = Hash.doFinalBytes();
+        byte[] messageHash = blake2b.doFinalBytes();
 
         for (CellInput cellInput : cellInputs) {
             List<String> args = new ArrayList<>();
