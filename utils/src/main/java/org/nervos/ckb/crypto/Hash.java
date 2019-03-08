@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
  * Cryptographic hash functions.
  */
 public class Hash {
+    private static final byte[] CKB_HASH_PERSONALIZATION = "ckb-default-hash".getBytes(StandardCharsets.UTF_8);
+
     private Hash() { }
 
     /**
@@ -32,7 +34,7 @@ public class Hash {
      * @return hash value
      */
     public static byte[] blake2b(byte[] input, int offset, int length) {
-        Blake2bDigest blake2b = new Blake2bDigest(256);
+        Blake2bDigest blake2b = new Blake2bDigest(null, 32, null, CKB_HASH_PERSONALIZATION);
         blake2b.update(input, offset, length);
         byte[] out = new byte[32];
         blake2b.doFinal(out, 0);
@@ -63,7 +65,7 @@ public class Hash {
     private static Blake2bDigest blake2bDigest;
     public static Blake2bDigest update(byte[] input) {
         if (blake2bDigest == null) {
-            blake2bDigest = new Blake2bDigest(256);
+            blake2bDigest = new Blake2bDigest(null, 32, null, CKB_HASH_PERSONALIZATION);
         }
         blake2bDigest.update(input, 0, input.length);
         return blake2bDigest;

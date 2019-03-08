@@ -13,18 +13,21 @@ public class HashTest {
     @Test
     public void testBlake2b() {
         assertThat(Hash.blake2b(""),
-                is("0x0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8"));
+                is("0x44f4c69744d5f8c55d642062949dcae49bc4e7ef43d388c5a12f42b5633d163e"));
 
         assertThat(Hash.blake2bString("The quick brown fox jumps over the lazy dog"),
-                is("0x01718cec35cd3d796dd00020e0bfecb473ad23457d063b75eff29c0ffa2e58a9"));
+                is("0xabfa2c08d62f6f567d088d6ba41d3bbbb9a45c241a8e3789ef39700060b5cee2"));
+    }
 
+    @Test
+    public void testBlake2bUpdate() {
         Hash.update("".getBytes(StandardCharsets.UTF_8));
         assertThat(Hash.doFinalString(),
-                is("0x0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8"));
+                is("0x44f4c69744d5f8c55d642062949dcae49bc4e7ef43d388c5a12f42b5633d163e"));
 
         Hash.update("The quick brown fox jumps over the lazy dog".getBytes(StandardCharsets.UTF_8));
         assertThat(Hash.doFinalString(),
-                is("0x01718cec35cd3d796dd00020e0bfecb473ad23457d063b75eff29c0ffa2e58a9"));
+                is("0xabfa2c08d62f6f567d088d6ba41d3bbbb9a45c241a8e3789ef39700060b5cee2"));
     }
 
     @Test
