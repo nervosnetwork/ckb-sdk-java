@@ -78,7 +78,7 @@ public class RpcRequest {
         if (systemCells.isEmpty() || systemCells.get(0) == null) {
             throw new APIErrorException("Cannot find always success cellOutputWithOutPoint");
         }
-        return Hash.sha3(systemCells.get(0).data);
+        return Hash.blake2b(systemCells.get(0).data);
     }
 
     public static List<OutPoint> alwaysSuccessScriptOutPoint() throws IOException {
