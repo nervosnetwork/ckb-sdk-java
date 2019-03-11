@@ -11,15 +11,7 @@ public class Blake2b {
 
     private Blake2bDigest blake2bDigest;
 
-    public static Blake2b getInstance() {
-        return Blake2bHolder.instance;
-    }
-
-    private static class Blake2bHolder {
-        private static final Blake2b instance = new Blake2b();
-    }
-
-    private Blake2b() {
+    public Blake2b() {
         blake2bDigest = new Blake2bDigest(null, 32, null, Hash.CKB_HASH_PERSONALIZATION);
     }
 

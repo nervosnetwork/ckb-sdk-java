@@ -18,7 +18,7 @@ public class SignUtils {
 
     public static List<CellInput> signSigHashAllInputs(List<CellInput> cellInputs, List<CellOutput> cellOutputs, String privateKey) {
         String sigHashType = "1";
-        Blake2b blake2b = Blake2b.getInstance();
+        Blake2b blake2b = new Blake2b();
         blake2b.update(sigHashType.getBytes());
         for (CellInput cellInput : cellInputs) {
             blake2b.update(Numeric.hexStringToByteArray(cellInput.previousOutput.hash));

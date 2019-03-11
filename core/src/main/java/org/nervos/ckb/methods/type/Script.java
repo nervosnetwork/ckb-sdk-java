@@ -36,7 +36,7 @@ public class Script {
     }
 
     public String getTypeHash() {
-        Blake2b blake2b = Blake2b.getInstance();
+        Blake2b blake2b = new Blake2b();
         if (reference != null) {
             blake2b.update(Numeric.hexStringToByteArray(reference));
         }
