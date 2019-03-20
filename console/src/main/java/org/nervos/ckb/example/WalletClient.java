@@ -12,8 +12,8 @@ import org.nervos.ckb.wallet.VerifyWallet;
  */
 public class WalletClient {
 
-    private static String MRUBY_CELL_HASH = "0x2165b10c4f6c55302158a17049b9dad4fef0acaf1065c63c02ddeccbce97ac47";
-    private static String MRUBY_OUT_POINT_HASH = "0x4a4b909a6ac3116f7c0eb9eb07292fa1cacbb3041910623a6a5827dfd9ec4625";
+    private static String MRUBY_CELL_HASH = "0x828d1e109a79964521bf5fbbedb4f6e695a9c4b6b674a58887f30c7398e93a76";
+    private static String MRUBY_OUT_POINT_HASH = "0x765273ea8ca662eb38c66b307779968a031cf5242f72972a7352dbaed6e9fecb";
 
     public static void main(String[] args) throws Exception {
 

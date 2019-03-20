@@ -92,9 +92,7 @@ public class VerifyWallet extends BaseWallet {
 
     @Override
     protected Script getUnlockScript() {
-        String verifyScript = FileUtils.readFile("console/src/main/resources/bitcoin_unlock.rb");
         List<String> signedArgs = new ArrayList<>();
-        signedArgs.add(verifyScript);
         signedArgs.add(String.format("%066x", Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true)));
         return new Script(Constant.VERSION, MRUBY_CELL_HASH, signedArgs, Collections.emptyList());
     }
