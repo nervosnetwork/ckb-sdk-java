@@ -34,7 +34,7 @@ public class Sign {
     public static SignatureData signMessage(byte[] message, ECKeyPair keyPair, boolean isHash) {
         BigInteger publicKey = keyPair.getPublicKey();
 
-        byte[] messageHash = isHash? Hash.sha3(message) : message;
+        byte[] messageHash = isHash? Hash.blake2b(message) : message;
 
         ECDSASignature sig = keyPair.sign(messageHash);
         // Now we have to work backwards to figure out the recId needed to recover the signature.
@@ -179,7 +179,7 @@ public class Sign {
                 new BigInteger(1, signatureData.getR()),
                 new BigInteger(1, signatureData.getS()));
 
-        byte[] messageHash = Hash.sha3(message);
+        byte[] messageHash = Hash.blake2b(message);
         int recId = header;
         BigInteger key = recoverFromSignature(recId, sig, messageHash);
         if (key == null) {

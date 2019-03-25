@@ -1,9 +1,11 @@
 package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.bouncycastle.jcajce.provider.digest.SHA3;
+import org.nervos.ckb.crypto.Blake2b;
+import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -21,24 +23,31 @@ public class Script {
 
     public Script(){}
 
-    public Script(int version, String reference, List<String> signedArgs, List<String> args) {
+    public Script(int version, String binary, String reference, List<String> signedArgs, List<String> args) {
         this.version = version;
+        this.binary = binary;
         this.reference = reference;
         this.signedArgs = signedArgs;
         this.args = args;
     }
 
+    public Script(int version, String reference, List<String> signedArgs, List<String> args) {
+        this(version, null, reference, signedArgs, args);
+    }
+
     public String getTypeHash() {
-        SHA3.DigestSHA3 sha3 = new SHA3.Digest256();
-        sha3.update(Numeric.hexStringToByteArray(reference));
-        sha3.update("|".getBytes());
+        Blake2b blake2b = new Blake2b();
+        if (reference != null) {
+            blake2b.update(Numeric.hexStringToByteArray(reference));
+        }
+        blake2b.update("|".getBytes(StandardCharsets.UTF_8));
         if (binary != null) {
-            sha3.update(Numeric.hexStringToByteArray(binary));
+            blake2b.update(Numeric.hexStringToByteArray(binary));
         }
         for (String arg: signedArgs) {
-            sha3.update(arg.getBytes());
+            blake2b.update(Numeric.hexStringToByteArray(arg));
         }
-        return Numeric.toHexString(sha3.digest());
+        return blake2b.doFinalString();
     }
 
 }

@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.7.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.6.0...rc/v0.7.0) (2019-03-25)
+
+### Feature
+
+* add transaction trace RPC
+* replace SHA3 with Blake2b
+
 # [v0.6.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.5.0...rc/v0.6.0) (2019-02-25)
 
 ### Refactor

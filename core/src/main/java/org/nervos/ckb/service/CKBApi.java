@@ -29,4 +29,8 @@ public interface CKBApi {
 
     Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 
+    Request<?, CkbTransactionHash> traceTransaction(Transaction transaction);
+
+    Request<?, CkbTxTrace> getTransactionTrace(String transactionHash);
+
 }

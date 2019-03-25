@@ -1,22 +1,22 @@
 buildscript {
 
-    ext.bouncycastleVersion = '1.60'
-    ext.rxjavaVersion = '2.2.6'
+    ext.bouncycastleVersion = '1.61'
+    ext.rxjavaVersion = '2.2.7'
     ext.gsonVersion = '2.8.5'
     ext.jacksonVersion = '2.8.5'
     ext.okhttpVersion = '3.13.1'
     ext.loggingOkhttpVersion = '3.13.1'
-    ext.slf4jVersion = '1.7.25'
+    ext.slf4jVersion = '1.7.26'
 
     ext.junitVersion = '4.12'
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
     }
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '4.0.3'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
     id 'java'
 }
 
@@ -34,7 +34,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.6.0'
+    version '0.7.0'
 
     apply plugin: 'java'
 
