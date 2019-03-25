@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class APITest {
 
-    private static final String NODE_URL = "http://localhost:8114/";
+    private static final String NODE_URL = "http://localhost:8114";
 
     private CKBService ckbService;
 
@@ -69,18 +69,18 @@ public class APITest {
 
     @Test
     public void testGetCellsByTypeHash() throws IOException {
-        List<Cell> cellOutputWithOutPoints = ckbService.getCellsByTypeHash(
-                "0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674", 1, 100
+        List<CellOutputWithOutPoint> cellOutputWithOutPoints = ckbService.getCellsByTypeHash(
+                "0x8954a4ac5e5c33eb7aa8bb91e0a000179708157729859bd8cf7e2278e1e12980", 1, 100
         ).send().getCells();
         Assert.assertTrue("Cells is null", cellOutputWithOutPoints.size() > 0);
     }
 
     @Test
     public void testGetCurrentCell() throws IOException {
-        Cell cellOutputWithOutPoint = ckbService.getLiveCell(
-                new Cell.OutPoint("0x10262d4d6918774ae939a55b88f1b2c847f75489e36cd58cca03bad5c216db4f", 0)
+        Cell cell = ckbService.getLiveCell(
+                new OutPoint("0x8954a4ac5e5c33eb7aa8bb91e0a000179708157729859bd8cf7e2278e1e12980", 0)
         ).send().getCell();
-        Assert.assertNotNull("Cell is null", cellOutputWithOutPoint);
+        Assert.assertNotNull("Cell is null", cell);
     }
 
     @Test
@@ -91,5 +91,12 @@ public class APITest {
         Assert.assertNotNull("Transaction hash is null", transactionHash);
     }
 
+
+    @Test
+    public void testGetTransactionTrace() throws IOException {
+        List<TxTrace> txTraces = ckbService.getTransactionTrace(
+                "0x1704f772f11c4c2fcb543f22cad66adad5a555e21f14c975c37d1d4bad096d47").send().getTxTrace();
+        Assert.assertTrue("Transaction hash is null", txTraces.size() > 0);
+    }
 
 }
