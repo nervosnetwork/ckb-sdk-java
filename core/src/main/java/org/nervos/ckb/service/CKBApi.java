@@ -19,7 +19,7 @@ public interface CKBApi {
 
     Request<?, CkbHeader> getTipHeader();
 
-    Request<?, CkbCells> getCellsByLockHash(String typeHash, long fromBlockNumber, long toBlockNumber);
+    Request<?, CkbCells> getCellsByLockHash(String lockHash, long fromBlockNumber, long toBlockNumber);
 
     Request<?, CkbCell> getLiveCell(OutPoint outPoint);
 

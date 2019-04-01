@@ -28,7 +28,7 @@ public class APIClient {
 
         System.out.println("Local host: " + gson.toJson(RpcRequest.localNodeInfo()));
 
-        System.out.println("Cells: " + gson.toJson(RpcRequest.getCellsByTypeHash("0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674", 1, 100)));
+        System.out.println("Cells: " + gson.toJson(RpcRequest.getCellsByLockHash("0x0da2fe99fe549e082d4ed483c2e968a89ea8d11aabf5d79e5cbf06522de6e674", 1, 100)));
 
         System.out.println("CellOutputWithOutPoint: " + gson.toJson(RpcRequest.getLiveCell()));
 

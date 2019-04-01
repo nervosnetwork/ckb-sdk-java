@@ -21,8 +21,8 @@ hs_err_pid*
 
 gradle.properties
 
-# Ignore APITest because loachost can not visit
-RpcTest.java
+# Ignore RPCTest because loachost can not visit
+RpcTest
 
 # Ignore Gradle GUI config
 gradle-app.setting

@@ -52,8 +52,8 @@ public class RpcRequest {
         return ckbService.localNodeInfo().send().getNodeInfo();
     }
 
-    public static List<CellOutputWithOutPoint> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber) throws IOException {
-        return ckbService.getCellsByLockHash(typeHash, fromBlockNumber, toBlockNumber).send().getCells();
+    public static List<CellOutputWithOutPoint> getCellsByLockHash(String lockHash, long fromBlockNumber, long toBlockNumber) throws IOException {
+        return ckbService.getCellsByLockHash(lockHash, fromBlockNumber, toBlockNumber).send().getCells();
     }
 
     public static Cell getLiveCell() throws IOException {
