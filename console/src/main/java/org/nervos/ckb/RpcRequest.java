@@ -1,11 +1,10 @@
-package org.nervos.ckb.rpc;
+package org.nervos.ckb;
 
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
-import org.nervos.ckb.wallet.Constant;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -18,11 +17,13 @@ import java.util.List;
  */
 public class RpcRequest {
 
+    private static final String NODE_URL = "http://localhost:8114/";
+
     private static CKBService ckbService;
 
     static {
         HttpService.setDebug(false);
-        ckbService = CKBService.build(new HttpService(Constant.NODE_URL));
+        ckbService = CKBService.build(new HttpService(NODE_URL));
     }
 
     public static String getBlockHash(long blockNumber) throws IOException {
@@ -52,7 +53,7 @@ public class RpcRequest {
     }
 
     public static List<CellOutputWithOutPoint> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber) throws IOException {
-        return ckbService.getCellsByTypeHash(typeHash, fromBlockNumber, toBlockNumber).send().getCells();
+        return ckbService.getCellsByLockHash(typeHash, fromBlockNumber, toBlockNumber).send().getCells();
     }
 
     public static Cell getLiveCell() throws IOException {

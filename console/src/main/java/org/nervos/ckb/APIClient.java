@@ -1,8 +1,7 @@
-package org.nervos.ckb.example;
+package org.nervos.ckb;
 
 import com.google.gson.Gson;
 import org.nervos.ckb.methods.type.*;
-import org.nervos.ckb.rpc.RpcRequest;
 
 import java.io.IOException;
 import java.util.Collections;

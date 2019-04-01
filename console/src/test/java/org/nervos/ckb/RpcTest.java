@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by duanyytop on 2018-12-25.
+ * Created by duanyytop on 2019-4-1.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
  */
 public class RpcTest {
@@ -69,7 +69,7 @@ public class RpcTest {
 
     @Test
     public void testGetCellsByTypeHash() throws IOException {
-        List<CellOutputWithOutPoint> cellOutputWithOutPoints = ckbService.getCellsByTypeHash(
+        List<CellOutputWithOutPoint> cellOutputWithOutPoints = ckbService.getCellsByLockHash(
                 "0x8954a4ac5e5c33eb7aa8bb91e0a000179708157729859bd8cf7e2278e1e12980", 1, 100
         ).send().getCells();
         Assert.assertTrue("Cells is null", cellOutputWithOutPoints.size() > 0);
@@ -86,7 +86,7 @@ public class RpcTest {
     @Test
     public void testSendTransaction() throws IOException {
         String transactionHash = ckbService.sendTransaction(
-               new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
+                new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList())
         ).send().getTransactionHash();
         Assert.assertNotNull("Transaction hash is null", transactionHash);
     }
