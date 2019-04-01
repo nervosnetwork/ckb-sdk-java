@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Numeric;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  */
 public class Script {
 
-    private static final String ALWAYS_SUCCESS_HASH = "0000000000000000000000000000000000000000000000000000000000000001";
+    public static final String ALWAYS_SUCCESS_HASH = "0000000000000000000000000000000000000000000000000000000000000001";
 
     public int version;
     @JsonProperty("binary_hash")

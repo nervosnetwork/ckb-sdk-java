@@ -68,17 +68,17 @@ public class RpcTest {
     }
 
     @Test
-    public void testGetCellsByTypeHash() throws IOException {
+    public void testGetCellsByLockHash() throws IOException {
         List<CellOutputWithOutPoint> cellOutputWithOutPoints = ckbService.getCellsByLockHash(
-                "0x8954a4ac5e5c33eb7aa8bb91e0a000179708157729859bd8cf7e2278e1e12980", 1, 100
+                "0x321c1ca2887fb8eddaaa7e917399f71e63e03a1c83ff75ed12099a01115ea2ff", 1, 100
         ).send().getCells();
         Assert.assertTrue("Cells is null", cellOutputWithOutPoints.size() > 0);
     }
 
     @Test
-    public void testGetCurrentCell() throws IOException {
+    public void testGetLiveCell() throws IOException {
         Cell cell = ckbService.getLiveCell(
-                new OutPoint("0x8954a4ac5e5c33eb7aa8bb91e0a000179708157729859bd8cf7e2278e1e12980", 0)
+                new OutPoint("0x321c1ca2887fb8eddaaa7e917399f71e63e03a1c83ff75ed12099a01115ea2ff", 0)
         ).send().getCell();
         Assert.assertNotNull("Cell is null", cell);
     }
