@@ -15,12 +15,12 @@ public class CellOutput {
 
     public long capacity;
     public Script type;
-    public String lock;
+    public Script lock;
     public String data;
 
     public CellOutput(){}
 
-    public CellOutput(long capacity, String data, String lock) {
+    public CellOutput(long capacity, String data, Script lock) {
         this.capacity = capacity;
         this.data = data;
         this.lock = lock;

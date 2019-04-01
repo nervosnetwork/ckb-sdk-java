@@ -2,10 +2,9 @@ package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
 
-import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,37 +13,31 @@ import java.util.List;
  */
 public class Script {
 
+    public static final String ALWAYS_SUCCESS_HASH = "0000000000000000000000000000000000000000000000000000000000000001";
+
     public int version;
-    public String binary;
-    public String reference;
-    @JsonProperty("signed_args")
-    public List<String> signedArgs;
+    @JsonProperty("binary_hash")
+    public String binaryHash;
     public List<String> args;
 
     public Script(){}
 
-    public Script(int version, String binary, String reference, List<String> signedArgs, List<String> args) {
+    public Script(int version, String binaryHash, List<String> args) {
         this.version = version;
-        this.binary = binary;
-        this.reference = reference;
-        this.signedArgs = signedArgs;
+        this.binaryHash = binaryHash;
         this.args = args;
     }
 
-    public Script(int version, String reference, List<String> signedArgs, List<String> args) {
-        this(version, null, reference, signedArgs, args);
+    public static Script alwaysSuccess() {
+        return new Script(0, ALWAYS_SUCCESS_HASH, Collections.emptyList());
     }
 
     public String getTypeHash() {
         Blake2b blake2b = new Blake2b();
-        if (reference != null) {
-            blake2b.update(Numeric.hexStringToByteArray(reference));
+        if (binaryHash != null) {
+            blake2b.update(Numeric.hexStringToByteArray(binaryHash));
         }
-        blake2b.update("|".getBytes(StandardCharsets.UTF_8));
-        if (binary != null) {
-            blake2b.update(Numeric.hexStringToByteArray(binary));
-        }
-        for (String arg: signedArgs) {
+        for (String arg: args) {
             blake2b.update(Numeric.hexStringToByteArray(arg));
         }
         return blake2b.doFinalString();

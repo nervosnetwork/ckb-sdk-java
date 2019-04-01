@@ -1,10 +1,10 @@
-package org.nervos.ckb;
+package org.nervos.ckb.crypto.secp256k1;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.nervos.ckb.crypto.ECKeyPair;
-import org.nervos.ckb.crypto.Sign;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
+import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.utils.Numeric;
 
 /**

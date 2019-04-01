@@ -61,10 +61,10 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
 
     @Override
-    public Request<?, CkbCells> getCellsByTypeHash(String typeHash, long fromBlockNumber, long toBlockNumber) {
+    public Request<?, CkbCells> getCellsByLockHash(String lockHash, long fromBlockNumber, long toBlockNumber) {
         return new Request<>(
-                "get_cells_by_type_hash",
-                Arrays.asList(typeHash, fromBlockNumber, toBlockNumber),
+                "get_cells_by_lock_hash",
+                Arrays.asList(lockHash, fromBlockNumber, toBlockNumber),
                 apiService,
                 CkbCells.class);
     }
