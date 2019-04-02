@@ -44,6 +44,9 @@ public class Header {
     @JsonProperty("txs_proposal")
     public String txsProposal;
 
+    @JsonProperty("witnesses_root")
+    public String witnessesRoot;
+
     @JsonProperty("uncles_count")
     public int unclesCount;
 

@@ -32,7 +32,7 @@ public class APIClient {
 
         System.out.println("CellOutputWithOutPoint: " + gson.toJson(RpcRequest.getLiveCell()));
 
-        System.out.println("Transaction hash: " + RpcRequest.sendTransaction(new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList())));
+        System.out.println("Transaction hash: " + RpcRequest.sendTransaction(new Transaction(0, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), Collections.emptyList())));
 
         System.out.println("Always Success CellOutputWithOutPoint Hash: " + RpcRequest.alwaysSuccessCellHash());
 
