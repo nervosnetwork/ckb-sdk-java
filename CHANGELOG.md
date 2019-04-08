@@ -1,12 +1,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.7.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.6.0...rc/v0.7.0) (2019-03-25)
+# [v0.8.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.7.0...v0.8.0) (2019-4-8)
 
-### Feature
+### Features
 
-* add transaction trace RPC
-* replace SHA3 with Blake2b
+- Adapt CKB v0.8.0
+
+
+# [v0.7.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.6.0...v0.7.0) (2019-03-25)
+
+### Features
+
+- rpc: implement trace rpc trace_transaction and get_transaction_trace ([dc56e9](https://github.com/nervosnetwork/ckb-sdk-java/commit/dc56e9812a865bcc233344e3497722a0c1686315))
+
+### BREAKING CHANGES
+
+- Repalce SHA3 with Blake2b.
+- Remove bitcoin_unblock.rb.
+
 
 # [v0.6.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.5.0...rc/v0.6.0) (2019-02-25)
 
