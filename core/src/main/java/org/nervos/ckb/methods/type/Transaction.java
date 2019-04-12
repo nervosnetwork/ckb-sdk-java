@@ -20,16 +20,18 @@ public class Transaction {
     public List<OutPoint> deps;
     public List<CellInput> inputs;
     public List<CellOutput> outputs;
+    public List<Witness> witnesses;
 
-    public Transaction(){
+    public Transaction() {
 
     }
 
-    public Transaction(int version, List<OutPoint> deps, List<CellInput> cellInputs, List<CellOutput> cellOutputs) {
+    public Transaction(int version, List<OutPoint> deps, List<CellInput> cellInputs, List<CellOutput> cellOutputs, List<Witness> witnesses) {
         this.version = version;
         this.deps = deps;
         this.inputs = cellInputs;
         this.outputs = cellOutputs;
+        this.witnesses = witnesses;
     }
 
 
