@@ -41,7 +41,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
 
     @Override
-    public Request<?, CkbBlockHash> getBlockHash(long blockNumber) {
+    public Request<?, CkbBlockHash> getBlockHash(String blockNumber) {
         return new Request<>(
                 "get_block_hash",
                 Collections.singletonList(blockNumber),
@@ -61,7 +61,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
 
     @Override
-    public Request<?, CkbCells> getCellsByLockHash(String lockHash, long fromBlockNumber, long toBlockNumber) {
+    public Request<?, CkbCells> getCellsByLockHash(String lockHash, String fromBlockNumber, String toBlockNumber) {
         return new Request<>(
                 "get_cells_by_lock_hash",
                 Arrays.asList(lockHash, fromBlockNumber, toBlockNumber),

@@ -26,7 +26,7 @@ public class RpcRequest {
         ckbService = CKBService.build(new HttpService(NODE_URL));
     }
 
-    public static String getBlockHash(long blockNumber) throws IOException {
+    public static String getBlockHash(String blockNumber) throws IOException {
         return ckbService.getBlockHash(blockNumber).send().getBlockHash();
     }
 
@@ -52,7 +52,7 @@ public class RpcRequest {
         return ckbService.localNodeInfo().send().getNodeInfo();
     }
 
-    public static List<CellOutputWithOutPoint> getCellsByLockHash(String lockHash, long fromBlockNumber, long toBlockNumber) throws IOException {
+    public static List<CellOutputWithOutPoint> getCellsByLockHash(String lockHash, String fromBlockNumber, String toBlockNumber) throws IOException {
         return ckbService.getCellsByLockHash(lockHash, fromBlockNumber, toBlockNumber).send().getCells();
     }
 
@@ -69,7 +69,7 @@ public class RpcRequest {
 
 
     public static Block genesisBlock() throws IOException {
-        String blockHash = ckbService.getBlockHash(0).send().getBlockHash();
+        String blockHash = ckbService.getBlockHash("0").send().getBlockHash();
         return ckbService.getBlock(blockHash).send().getBlock();
     }
 
