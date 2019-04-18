@@ -15,11 +15,11 @@ public interface CKBApi {
 
     Request<?, CkbTransaction> getTransaction(String transactionHash);
 
-    Request<?, CkbBlockHash> getBlockHash(long blockNumber);
+    Request<?, CkbBlockHash> getBlockHash(String blockNumber);
 
     Request<?, CkbHeader> getTipHeader();
 
-    Request<?, CkbCells> getCellsByLockHash(String lockHash, long fromBlockNumber, long toBlockNumber);
+    Request<?, CkbCells> getCellsByLockHash(String lockHash, String fromBlockNumber, String toBlockNumber);
 
     Request<?, CkbCell> getLiveCell(OutPoint outPoint);
 
