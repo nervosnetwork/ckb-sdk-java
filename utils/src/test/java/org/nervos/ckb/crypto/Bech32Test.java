@@ -24,4 +24,5 @@ public class Bech32Test {
         Assert.assertEquals(Numeric.toHexString(data), Numeric.toHexString(bech32Data.data));
     }
 
+
 }
