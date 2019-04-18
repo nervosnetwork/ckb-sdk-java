@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Header {
 
     /**
-     * "cellbase_id": "0x3abd21e6e51674bb961bb4c5f3cee9faa5da30e64be10628dc1cef292cbae324",
      * "difficulty": "0x100",
      * "hash": "0x087c25e23e42f5d1e00e6984241b3711742d5e0eaf75d79a427276473e1de3f9",
      * "number": 1,
@@ -25,9 +24,6 @@ public class Header {
      * "uncles_hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
      * "version": 0
      */
-
-    @JsonProperty("cellbase_id")
-    public String cellbaseId;
 
     public String difficulty;
     public String hash;
