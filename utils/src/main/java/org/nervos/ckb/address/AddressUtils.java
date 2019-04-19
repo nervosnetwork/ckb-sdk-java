@@ -41,7 +41,7 @@ public class AddressUtils {
     }
 
     private String prefix() {
-        return network == Network.MAINNET? "ckb" : "ckt";
+        return network == Network.MAINNET ? "ckb" : "ckt";
     }
 
     public String blake160(String value) {
