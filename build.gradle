@@ -8,7 +8,7 @@ buildscript {
     ext.loggingOkhttpVersion = '3.14.0'
     ext.slf4jVersion = '1.7.26'
 
-    ext.junitVersion = '4.12'
+    ext.junitVersion = '5.4.2'
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
@@ -48,6 +48,6 @@ subprojects {
     apply plugin: 'java'
 
     dependencies {
-        testCompile "junit:junit:$junitVersion"
+        testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     }
 }
