@@ -1,7 +1,7 @@
 package org.nervos.ckb.crypto;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
@@ -17,7 +17,8 @@ public class Bech32Test {
           4, 15, 24, 20, 6, 14, 30, 22
         };
     System.out.println(data.length);
-    Assert.assertEquals("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4", Bech32.encode("bc", data));
+    Assertions.assertEquals(
+        "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4", Bech32.encode("bc", data));
   }
 
   @Test
@@ -28,7 +29,7 @@ public class Bech32Test {
           4, 15, 24, 20, 6, 14, 30, 22
         };
     Bech32.Bech32Data bech32Data = Bech32.decode("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4");
-    Assert.assertEquals(Numeric.toHexString(data), Numeric.toHexString(bech32Data.data));
+    Assertions.assertEquals(Numeric.toHexString(data), Numeric.toHexString(bech32Data.data));
   }
 
   @Test
@@ -44,7 +45,7 @@ public class Bech32Test {
         };
     for (String address : validAddresses) {
       Bech32.Bech32Data bech32Data = Bech32.decode(address);
-      Assert.assertNotNull(bech32Data);
+      Assertions.assertNotNull(bech32Data);
     }
   }
 
@@ -60,11 +61,11 @@ public class Bech32Test {
         };
     for (String address : validChecksums) {
       Bech32.Bech32Data bech32Data = Bech32.decode(address);
-      Assert.assertNotNull(bech32Data);
+      Assertions.assertNotNull(bech32Data);
     }
   }
 
-  @Test(expected = AddressFormatException.class)
+  @Test
   public void testInvalidChecksums() {
     String[] invalidChecksums =
         new String[] {
@@ -78,7 +79,7 @@ public class Bech32Test {
           "de1lg7wt\0xff"
         };
     for (String address : invalidChecksums) {
-      Bech32.decode(address);
+      Assertions.assertThrows(AddressFormatException.class, () -> Bech32.decode(address));
     }
   }
 }
