@@ -39,9 +39,10 @@ public class AddressTest {
     @Test
     public void testAddressParse() {
         String address = "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf";
+        String payload = "0x015032504836c329ed630d6ce750712a477543672adab57f4c";
         AddressUtils utils = new AddressUtils(Network.TESTNET);
         Bech32.Bech32Data bech32Data = utils.parse(address);
-        Assert.assertEquals(address, Numeric.toHexString(bech32Data.data));
+        Assert.assertEquals(payload, Numeric.toHexString(bech32Data.data));
     }
 
     @Test
