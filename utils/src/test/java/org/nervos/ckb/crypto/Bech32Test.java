@@ -37,11 +37,8 @@ public class Bech32Test {
                 "tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy"
         };
         for (String address: validAddresses) {
-            try {
-                Bech32.decode(address);
-            } catch (AddressFormatException e) {
-                Assert.assertNull(e);
-            }
+            Bech32.Bech32Data bech32Data = Bech32.decode(address);
+            Assert.assertNotNull(bech32Data);
         }
     }
 
@@ -56,11 +53,8 @@ public class Bech32Test {
                 "split1checkupstagehandshakeupstreamerranterredcaperred2y9e3w"
         };
         for (String address: validChecksums) {
-            try {
-                Bech32.decode(address);
-            } catch (AddressFormatException e) {
-                Assert.assertNull(e);
-            }
+            Bech32.Bech32Data bech32Data = Bech32.decode(address);
+            Assert.assertNotNull(bech32Data);
         }
     }
 

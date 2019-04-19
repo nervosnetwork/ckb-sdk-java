@@ -31,7 +31,7 @@ public class AddressUtils {
         return Bech32.encode(prefix(), convertBits(data, 8, 5, true));
     }
 
-    public Bech32.Bech32Data parse(String address) {
+    public Bech32.Bech32Data parse(String address) throws AddressFormatException {
         Bech32.Bech32Data parsed = Bech32.decode(address);
         byte[] data = convertBits(parsed.data, 5, 8, false);
         if (data.length == 0) {
