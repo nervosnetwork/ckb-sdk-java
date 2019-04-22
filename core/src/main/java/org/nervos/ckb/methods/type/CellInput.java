@@ -2,6 +2,8 @@ package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  * Created by duanyytop on 2019-01-08.
  * Copyright © 2018 Nervos Foundation. All rights reserved.
@@ -15,13 +17,13 @@ public class CellInput {
 
     @JsonProperty("previous_output")
     public PreviousOutput previousOutput;
-    public Script unlock;
+    public List<String> args;
 
     public CellInput(){}
 
-    public CellInput(PreviousOutput previousOutput, Script unlock) {
+    public CellInput(PreviousOutput previousOutput, List<String> args) {
         this.previousOutput = previousOutput;
-        this.unlock = unlock;
+        this.args = args;
     }
 
     public static class PreviousOutput {

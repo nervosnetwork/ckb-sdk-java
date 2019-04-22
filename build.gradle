@@ -1,14 +1,14 @@
 buildscript {
 
     ext.bouncycastleVersion = '1.61'
-    ext.rxjavaVersion = '2.2.7'
+    ext.rxjavaVersion = '2.2.8'
     ext.gsonVersion = '2.8.5'
     ext.jacksonVersion = '2.8.5'
-    ext.okhttpVersion = '3.14.0'
+    ext.okhttpVersion = '3.14.1'
     ext.loggingOkhttpVersion = '3.14.0'
     ext.slf4jVersion = '1.7.26'
 
-    ext.junitVersion = '4.12'
+    ext.junitVersion = '5.4.2'
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
@@ -34,7 +34,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.8.0'
+    version '0.9.0'
 
     apply plugin: 'java'
 
@@ -48,6 +48,6 @@ subprojects {
     apply plugin: 'java'
 
     dependencies {
-        testCompile "junit:junit:$junitVersion"
+        testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     }
 }

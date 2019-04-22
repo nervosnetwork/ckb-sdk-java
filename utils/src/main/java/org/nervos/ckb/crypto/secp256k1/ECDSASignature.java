@@ -1,4 +1,4 @@
-package org.nervos.ckb.crypto;
+package org.nervos.ckb.crypto.secp256k1;
 
 import java.math.BigInteger;
 

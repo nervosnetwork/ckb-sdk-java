@@ -1,4 +1,4 @@
-package org.nervos.ckb.crypto;
+package org.nervos.ckb.crypto.secp256k1;
 
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
