@@ -23,7 +23,6 @@ public class Block {
     public static class Uncle {
 
         public Header header;
-        public Transaction cellbase;
 
         @JsonProperty("proposal_transactions")
         public List<Byte[]> proposalTransactions;

@@ -25,7 +25,6 @@ public class Header {
      * "version": 0
      */
 
-
     public String difficulty;
     public String hash;
     public String number;
