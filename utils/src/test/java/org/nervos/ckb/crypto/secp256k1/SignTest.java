@@ -3,9 +3,11 @@ package org.nervos.ckb.crypto.secp256k1;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.utils.Numeric;
 
 /** Created by duanyytop on 2019-02-01. Copyright © 2018 Nervos Foundation. All rights reserved. */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SignTest {
 
   private ECKeyPair ecKeyPair;
@@ -18,6 +20,13 @@ public class SignTest {
     message =
         Numeric.hexStringToByteArray(
             "85a1feafb48eae47b88308f525b759d651986e5a4d80a5915cb5d28566d6c7c5");
+  }
+
+  @Test
+  public void compressedPublicKeyTest() {
+    String privateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
+    String publicKey = Numeric.toHexStringNoPrefix(Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true));
+    Assertions.assertEquals("24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01", publicKey);
   }
 
   @Test

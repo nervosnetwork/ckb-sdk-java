@@ -198,7 +198,7 @@ public class Sign {
     public static BigInteger publicKeyFromPrivate(BigInteger privKey) {
         ECPoint point = publicPointFromPrivate(privKey);
 
-        byte[] encoded = point.getEncoded(false);
+        byte[] encoded = point.getEncoded(true);
         return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
     }
 
