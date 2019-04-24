@@ -8,7 +8,7 @@ public class Block {
 
   public List<Transaction> transactions;
 
-  public List<Byte[]> proposals; // Fixed 10-element array representing short hash.
+  public List<String> proposals; // Fixed 10-element array representing short hash.
 
   public List<Uncle> uncles;
 
@@ -16,6 +16,6 @@ public class Block {
 
     public Header header;
 
-    public List<Byte[]> proposals;
+    public List<String> proposals;
   }
 }
