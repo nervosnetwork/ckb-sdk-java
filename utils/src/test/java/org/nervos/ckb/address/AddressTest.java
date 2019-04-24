@@ -2,6 +2,8 @@ package org.nervos.ckb.address;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
+import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
@@ -58,4 +60,15 @@ public class AddressTest {
         "ckb1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6vqdd7em",
         utils.generate("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
+
+  @Test
+  public void testPrivateKeyHashToAddressTestnet() {
+    AddressUtils utils = new AddressUtils(Network.TESTNET);
+    String publicKey = Sign.publicKeyFromPrivate(Numeric.toBigInt("e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3"),
+            true).toString(16);
+    Assertions.assertEquals(
+            "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf",
+            utils.generate(publicKey));
+  }
+
 }
