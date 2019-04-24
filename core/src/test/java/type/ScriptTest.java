@@ -6,7 +6,7 @@ import org.nervos.ckb.methods.type.Script;
 
 import java.util.Collections;
 
-/** Created by duanyytop on 2019-03-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Created by duanyytop on 2019-03-08. Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class ScriptTest {
 
   private static final String ZERO_HASH =

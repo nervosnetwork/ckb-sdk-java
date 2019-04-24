@@ -2,13 +2,12 @@ package org.nervos.ckb.address;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
-/** Created by duanyytop on 2019-04-18. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Created by duanyytop on 2019-04-18. Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressTest {
 
   @Test

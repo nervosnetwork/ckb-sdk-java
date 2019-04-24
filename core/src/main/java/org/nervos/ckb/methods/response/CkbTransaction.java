@@ -5,7 +5,7 @@ import org.nervos.ckb.methods.type.Transaction;
 
 /**
  * Created by duanyytop on 2019-01-07.
- * Copyright © 2018 Nervos Foundation. All rights reserved.
+ * Copyright © 2019 Nervos Foundation. All rights reserved.
  */
 public class CkbTransaction extends Response<Transaction> {
 

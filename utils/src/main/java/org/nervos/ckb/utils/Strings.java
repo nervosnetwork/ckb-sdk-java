@@ -4,7 +4,7 @@ import java.util.Collections;
 
 /**
  * Created by duanyytop on 2019-01-29.
- * Copyright © 2018 Nervos Foundation. All rights reserved.
+ * Copyright © 2019 Nervos Foundation. All rights reserved.
  *
  * String utility functions.
  */

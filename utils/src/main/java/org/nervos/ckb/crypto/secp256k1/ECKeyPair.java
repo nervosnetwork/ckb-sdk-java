@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * Created by duanyytop on 2019-01-31.
- * Copyright © 2018 Nervos Foundation. All rights reserved.
+ * Copyright © 2019 Nervos Foundation. All rights reserved.
  */
 public class ECKeyPair {
     private final BigInteger privateKey;

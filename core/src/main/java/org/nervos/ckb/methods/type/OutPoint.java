@@ -2,7 +2,7 @@ package org.nervos.ckb.methods.type;
 
 /**
  * Created by duanyytop on 2019-01-08.
- * Copyright © 2018 Nervos Foundation. All rights reserved.
+ * Copyright © 2019 Nervos Foundation. All rights reserved.
  */
 public class OutPoint {
 

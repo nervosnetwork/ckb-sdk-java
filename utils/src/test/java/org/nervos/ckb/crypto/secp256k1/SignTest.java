@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.utils.Numeric;
 
-/** Created by duanyytop on 2019-02-01. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Created by duanyytop on 2019-02-01. Copyright © 2019 Nervos Foundation. All rights reserved. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SignTest {
 

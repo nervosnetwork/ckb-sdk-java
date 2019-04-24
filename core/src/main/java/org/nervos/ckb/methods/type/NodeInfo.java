@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Created by duanyytop on 2019-02-12.
- * Copyright © 2018 Nervos Foundation. All rights reserved.
+ * Copyright © 2019 Nervos Foundation. All rights reserved.
  */
 public class NodeInfo {
 
