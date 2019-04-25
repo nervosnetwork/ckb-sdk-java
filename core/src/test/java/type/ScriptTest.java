@@ -1,10 +1,9 @@
 package type;
 
+import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.methods.type.Script;
-
-import java.util.Collections;
 
 /** Created by duanyytop on 2019-03-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class ScriptTest {

@@ -1,9 +1,8 @@
 package org.nervos.ckb.crypto;
 
+import java.nio.charset.StandardCharsets;
 import org.bouncycastle.crypto.digests.Blake2bDigest;
 import org.nervos.ckb.utils.Numeric;
-
-import java.nio.charset.StandardCharsets;
 
 /** Cryptographic hash functions. */
 public class Hash {

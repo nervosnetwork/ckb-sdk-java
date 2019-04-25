@@ -1,15 +1,14 @@
 package org.nervos.ckb;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.List;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.List;
 
 /** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class RpcRequest {

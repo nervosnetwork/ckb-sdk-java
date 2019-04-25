@@ -1,14 +1,13 @@
 package org.nervos.ckb.service;
 
-import okhttp3.*;
-import okhttp3.logging.HttpLoggingInterceptor;
-import org.nervos.ckb.exceptions.ClientConnectionException;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+import okhttp3.*;
+import okhttp3.logging.HttpLoggingInterceptor;
+import org.nervos.ckb.exceptions.ClientConnectionException;
 
 /** HTTP implementation of our services API. */
 public class HttpService extends APIServiceImpl {

@@ -1,10 +1,9 @@
 package org.nervos.ckb.service;
 
 import io.reactivex.Flowable;
-import org.nervos.ckb.utils.Async;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import org.nervos.ckb.utils.Async;
 
 /**
  * A common type for wrapping remote requests.

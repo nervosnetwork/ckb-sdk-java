@@ -1,5 +1,9 @@
 package org.nervos.ckb.crypto.secp256k1;
 
+import java.math.BigInteger;
+import java.security.KeyPair;
+import java.util.Arrays;
+import java.util.Objects;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
 import org.bouncycastle.crypto.signers.ECDSASigner;
@@ -7,11 +11,6 @@ import org.bouncycastle.crypto.signers.HMacDSAKCalculator;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.nervos.ckb.utils.Numeric;
-
-import java.math.BigInteger;
-import java.security.KeyPair;
-import java.util.Arrays;
-import java.util.Objects;
 
 /** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class ECKeyPair {

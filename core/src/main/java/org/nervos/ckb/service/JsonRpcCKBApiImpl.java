@@ -1,12 +1,11 @@
 package org.nervos.ckb.service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Transaction;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 /** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class JsonRpcCKBApiImpl implements CKBService {

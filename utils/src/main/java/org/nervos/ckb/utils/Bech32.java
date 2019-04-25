@@ -16,10 +16,9 @@
 
 package org.nervos.ckb.utils;
 
-import org.nervos.ckb.exceptions.AddressFormatException;
-
 import java.util.Arrays;
 import java.util.Locale;
+import org.nervos.ckb.exceptions.AddressFormatException;
 
 public class Bech32 {
   /** The Bech32 character set for encoding. */

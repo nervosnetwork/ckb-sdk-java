@@ -7,4 +7,5 @@ dependencies {
     compile "org.slf4j:slf4j-api:$slf4jVersion"
 }
 
+apply from: rootProject.file('gradle/checkstyle.gradle')
 apply plugin: 'com.github.johnrengelman.shadow'

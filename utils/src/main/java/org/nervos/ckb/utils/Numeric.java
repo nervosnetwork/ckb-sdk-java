@@ -1,11 +1,10 @@
 package org.nervos.ckb.utils;
 
-import org.nervos.ckb.exceptions.MessageDecodingException;
-import org.nervos.ckb.exceptions.MessageEncodingException;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import org.nervos.ckb.exceptions.MessageDecodingException;
+import org.nervos.ckb.exceptions.MessageEncodingException;
 
 /** Message codec functions. */
 public final class Numeric {

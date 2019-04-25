@@ -1,9 +1,8 @@
 package org.nervos.ckb.crypto;
 
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.nio.charset.StandardCharsets;
 
 /** Created by duanyytop on 2019-03-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Blake2bTest {

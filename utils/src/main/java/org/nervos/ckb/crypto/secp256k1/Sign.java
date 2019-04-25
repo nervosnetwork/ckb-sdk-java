@@ -1,5 +1,10 @@
 package org.nervos.ckb.crypto.secp256k1;
 
+import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
+
+import java.math.BigInteger;
+import java.security.SignatureException;
+import java.util.Arrays;
 import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.asn1.x9.X9IntegerConverter;
 import org.bouncycastle.crypto.ec.CustomNamedCurves;
@@ -10,12 +15,6 @@ import org.bouncycastle.math.ec.FixedPointCombMultiplier;
 import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
-
-import java.math.BigInteger;
-import java.security.SignatureException;
-import java.util.Arrays;
-
-import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
 
 /** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Sign {

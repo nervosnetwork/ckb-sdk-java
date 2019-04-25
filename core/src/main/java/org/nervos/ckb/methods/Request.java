@@ -1,13 +1,12 @@
 package org.nervos.ckb.methods;
 
 import io.reactivex.Flowable;
-import org.nervos.ckb.service.APIService;
-import org.nervos.ckb.service.RemoteCall;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
+import org.nervos.ckb.service.APIService;
+import org.nervos.ckb.service.RemoteCall;
 
 /** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Request<S, T extends Response> {
