@@ -12,6 +12,7 @@ import org.nervos.ckb.service.HttpService;
 
 /** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class RpcRequest {
+
   private static final String NODE_URL = "http://localhost:8114/";
 
   private static CKBService ckbService;
@@ -71,7 +72,7 @@ public class RpcRequest {
   }
 
   public static String alwaysSuccessCellHash() throws IOException {
-    List<CellOutput> systemCells = genesisBlock().commitTransactions.get(0).outputs;
+    List<CellOutput> systemCells = genesisBlock().transactions.get(0).outputs;
     if (systemCells.isEmpty() || systemCells.get(0) == null) {
       throw new APIErrorException("Cannot find always success cellOutputWithOutPoint");
     }
@@ -79,7 +80,7 @@ public class RpcRequest {
   }
 
   public static List<OutPoint> alwaysSuccessScriptOutPoint() throws IOException {
-    String hash = genesisBlock().commitTransactions.get(0).hash;
+    String hash = genesisBlock().transactions.get(0).hash;
     return Collections.singletonList(new OutPoint(hash, 0));
   }
 }
