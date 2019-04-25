@@ -16,6 +16,6 @@ You will get `console-{version}-all.jar` from console module.
 We use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping) and [google checkstyle](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml) to develop.
 
 If `verifyGoogleJavaFormat FAILED` happens when you build this project, please reformat your code with [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping) 
-or execute `./gradlew goJF` in mac and linux or `gradlew goJF` in windows.
+or execute `./gradlew goJF` on macOS and Linux,  or `gradlew goJF` on Windows.
 
 If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code automatically.
