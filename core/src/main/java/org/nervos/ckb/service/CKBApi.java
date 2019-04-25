@@ -5,32 +5,29 @@ import org.nervos.ckb.methods.response.*;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Transaction;
 
-/**
- * Created by duanyytop on 2018-12-20.
- * Copyright © 2018 Nervos Foundation. All rights reserved.
- */
+/** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public interface CKBApi {
 
-    Request<?, CkbBlock> getBlock(String blockHash);
+  Request<?, CkbBlock> getBlock(String blockHash);
 
-    Request<?, CkbTransaction> getTransaction(String transactionHash);
+  Request<?, CkbTransaction> getTransaction(String transactionHash);
 
-    Request<?, CkbBlockHash> getBlockHash(String blockNumber);
+  Request<?, CkbBlockHash> getBlockHash(String blockNumber);
 
-    Request<?, CkbHeader> getTipHeader();
+  Request<?, CkbHeader> getTipHeader();
 
-    Request<?, CkbCells> getCellsByLockHash(String lockHash, String fromBlockNumber, String toBlockNumber);
+  Request<?, CkbCells> getCellsByLockHash(
+      String lockHash, String fromBlockNumber, String toBlockNumber);
 
-    Request<?, CkbCell> getLiveCell(OutPoint outPoint);
+  Request<?, CkbCell> getLiveCell(OutPoint outPoint);
 
-    Request<?, CkbBlockNumber> getTipBlockNumber();
+  Request<?, CkbBlockNumber> getTipBlockNumber();
 
-    Request<?, CkbNodeInfo> localNodeInfo();
+  Request<?, CkbNodeInfo> localNodeInfo();
 
-    Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
+  Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 
-    Request<?, CkbTransactionHash> traceTransaction(Transaction transaction);
+  Request<?, CkbTransactionHash> traceTransaction(Transaction transaction);
 
-    Request<?, CkbTxTrace> getTransactionTrace(String transactionHash);
-
+  Request<?, CkbTxTrace> getTransactionTrace(String transactionHash);
 }

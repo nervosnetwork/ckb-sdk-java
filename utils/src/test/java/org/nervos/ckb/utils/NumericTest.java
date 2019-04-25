@@ -1,13 +1,12 @@
 package org.nervos.ckb.utils;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.nervos.ckb.exceptions.MessageDecodingException;
+import static org.nervos.ckb.utils.Numeric.asByte;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-import static org.nervos.ckb.utils.Numeric.asByte;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.nervos.ckb.exceptions.MessageDecodingException;
 
 public class NumericTest {
 

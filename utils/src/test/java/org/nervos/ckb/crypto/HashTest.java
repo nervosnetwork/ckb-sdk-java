@@ -1,9 +1,9 @@
 package org.nervos.ckb.crypto;
 
+import static org.nervos.ckb.utils.Numeric.asByte;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.nervos.ckb.utils.Numeric.asByte;
 
 public class HashTest {
 

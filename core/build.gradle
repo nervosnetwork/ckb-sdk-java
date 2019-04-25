@@ -1,4 +1,3 @@
-
 description 'ckb-sdk-java is a lightweight Java library for integration with nervos CKB.'
 
 dependencies {
@@ -10,5 +9,5 @@ dependencies {
     compile "com.squareup.okhttp3:logging-interceptor:$loggingOkhttpVersion"
 }
 
-
+apply from: rootProject.file('gradle/checkstyle.gradle')
 apply plugin: 'com.github.johnrengelman.shadow'
