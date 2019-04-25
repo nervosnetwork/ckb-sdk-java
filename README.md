@@ -18,4 +18,4 @@ We use [Google Java Code Format](https://google.github.io/styleguide/javaguide.h
 If `verifyGoogleJavaFormat FAILED` happens when you build this project, please reformat your code with [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping) 
 or execute `./gradlew goJF` in mac and linux or `gradlew goJF` in windows.
 
-If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to reformat code automatically.
+If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code automatically.
