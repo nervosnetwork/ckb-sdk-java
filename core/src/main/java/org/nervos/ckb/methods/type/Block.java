@@ -8,7 +8,7 @@ public class Block {
 
   public List<Transaction> transactions;
 
-  public List<String> proposals; // Fixed 10-element array representing short hash.
+  public List<String> proposals;
 
   public List<Uncle> uncles;
 
