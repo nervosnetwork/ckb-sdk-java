@@ -4,7 +4,6 @@
 git stash -q --keep-index
 
 # run the tests with the gradle wrapper
-./gradlew goJF
 ./gradlew clean build
 
 # store the last exit code in a variable
