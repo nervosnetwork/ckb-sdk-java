@@ -1,11 +1,10 @@
 package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.utils.Numeric;
-
 import java.util.Collections;
 import java.util.List;
+import org.nervos.ckb.crypto.Blake2b;
+import org.nervos.ckb.utils.Numeric;
 
 /** Created by duanyytop on 2019-01-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Script {

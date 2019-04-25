@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CellOutputWithOutPoint {
   public long capacity;
 
-  public String lock;
+  public Script lock;
 
   @JsonProperty("out_point")
   public OutPoint outPoint;
