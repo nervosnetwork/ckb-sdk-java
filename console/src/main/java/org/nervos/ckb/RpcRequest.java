@@ -31,7 +31,7 @@ public class RpcRequest {
   }
 
   public static Transaction getTransaction(String transactionHash) throws IOException {
-    return ckbService.getTransaction(transactionHash).send().getTransaction();
+    return ckbService.getTransaction(transactionHash).send().getTransaction().transaction;
   }
 
   public static Header getTipHeader() throws IOException {
