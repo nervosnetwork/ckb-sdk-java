@@ -13,13 +13,14 @@ public class CellInput {
   public List<String> args;
 
   @JsonProperty("valid_since")
-  public long validSince;
+  public String validSince;
 
   public CellInput() {}
 
-  public CellInput(PreviousOutput previousOutput, List<String> args) {
+  public CellInput(PreviousOutput previousOutput, List<String> args, String validSince) {
     this.previousOutput = previousOutput;
     this.args = args;
+    this.validSince = validSince;
   }
 
   public static class PreviousOutput {
