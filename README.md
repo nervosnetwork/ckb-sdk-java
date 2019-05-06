@@ -19,3 +19,11 @@ If `verifyGoogleJavaFormat FAILED` happens when you build this project, please f
 or execute `./gradlew goJF` on macOS and Linux,  or `gradlew goJF` on Windows.
 
 If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code automatically.
+
+## License
+
+The SDK is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Changelog
+
+See [CHANGELOG](CHANGELOG.md) for more information.
