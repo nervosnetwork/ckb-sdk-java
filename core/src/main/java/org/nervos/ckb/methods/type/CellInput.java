@@ -1,7 +1,6 @@
 package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** Created by duanyytop on 2019-01-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
@@ -12,29 +11,26 @@ public class CellInput {
 
   public List<String> args;
 
-  @JsonProperty("valid_since")
-  public String validSince;
+  public String since;
 
   public CellInput() {}
 
-  public CellInput(PreviousOutput previousOutput, List<String> args, String validSince) {
+  public CellInput(PreviousOutput previousOutput, List<String> args, String since) {
     this.previousOutput = previousOutput;
     this.args = args;
-    this.validSince = validSince;
+    this.since = since;
   }
 
   public static class PreviousOutput {
-    /**
-     * hash : 0x0000000000000000000000000000000000000000000000000000000000000000 index : 4294967295
-     */
-    public String hash;
+    @JsonProperty("tx_hash")
+    public String txHash;
 
     public long index;
 
     public PreviousOutput() {}
 
-    public PreviousOutput(String hash, long index) {
-      this.hash = hash;
+    public PreviousOutput(String txHash, long index) {
+      this.txHash = txHash;
       this.index = index;
     }
   }
