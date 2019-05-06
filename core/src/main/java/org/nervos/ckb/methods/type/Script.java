@@ -15,21 +15,19 @@ public class Script {
 
     public static final String ALWAYS_SUCCESS_HASH = "0000000000000000000000000000000000000000000000000000000000000001";
 
-    public int version;
     @JsonProperty("binary_hash")
     public String binaryHash;
     public List<String> args;
 
     public Script(){}
 
-    public Script(int version, String binaryHash, List<String> args) {
-        this.version = version;
+    public Script(String binaryHash, List<String> args) {
         this.binaryHash = binaryHash;
         this.args = args;
     }
 
     public static Script alwaysSuccess() {
-        return new Script(0, ALWAYS_SUCCESS_HASH, Collections.emptyList());
+        return new Script(ALWAYS_SUCCESS_HASH, Collections.emptyList());
     }
 
     public String getTypeHash() {

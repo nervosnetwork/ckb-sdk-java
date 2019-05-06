@@ -5,7 +5,7 @@ buildscript {
     ext.gsonVersion = '2.8.5'
     ext.jacksonVersion = '2.8.5'
     ext.okhttpVersion = '3.14.1'
-    ext.loggingOkhttpVersion = '3.14.0'
+    ext.loggingOkhttpVersion = '3.14.1'
     ext.slf4jVersion = '1.7.26'
 
     ext.junitVersion = '5.4.2'
@@ -34,7 +34,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.9.0'
+    version '0.10.0'
 
     apply plugin: 'java'
 
