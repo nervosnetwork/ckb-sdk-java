@@ -10,6 +10,8 @@ public interface CKBApi {
 
   Request<?, CkbBlock> getBlock(String blockHash);
 
+  Request<?, CkbBlock> getBlockByNumber(String blockNumber);
+
   Request<?, CkbTransaction> getTransaction(String transactionHash);
 
   Request<?, CkbBlockHash> getBlockHash(String blockNumber);

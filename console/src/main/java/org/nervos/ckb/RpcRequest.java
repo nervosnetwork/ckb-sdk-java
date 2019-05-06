@@ -30,6 +30,10 @@ public class RpcRequest {
     return ckbService.getBlock(blockHash).send().getBlock();
   }
 
+  public static Block getBlockByNumber(String blockNumber) throws IOException {
+    return ckbService.getBlockByNumber(blockNumber).send().getBlock();
+  }
+
   public static Transaction getTransaction(String transactionHash) throws IOException {
     return ckbService.getTransaction(transactionHash).send().getTransaction().transaction;
   }
