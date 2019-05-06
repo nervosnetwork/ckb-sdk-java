@@ -11,11 +11,14 @@ public class CellInput {
 
   public List<String> args;
 
+  public String since;
+
   public CellInput() {}
 
-  public CellInput(PreviousOutput previousOutput, List<String> args) {
+  public CellInput(PreviousOutput previousOutput, List<String> args, String since) {
     this.previousOutput = previousOutput;
     this.args = args;
+    this.since = since;
   }
 
   public static class PreviousOutput {
