@@ -22,7 +22,7 @@ A `console-{version}-all.jar` package will be generated, which you can put into 
 
 #### JSON-RPC
 
-You can make JSON-RPC request  to your CKB node URL with this SDK. Below are some examples:
+You can make JSON-RPC request to your CKB node URL with this SDK. Below are some examples:
 
 ```Java
 CkbService ckbService = CKBService.build(new HttpService("your-ckb-node-url"));
