@@ -86,6 +86,18 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void getPeers() throws IOException {
+    List<NodeInfo> peers = ckbService.getPeers().send().getPeers();
+    Assertions.assertNotNull(peers);
+  }
+
+  @Test
+  public void txPoolInfo() throws IOException {
+    TxPoolInfo txPoolInfo = ckbService.txPoolInfo().send().getTxPoolInfo();
+    Assertions.assertNotNull(txPoolInfo);
+  }
+
+  @Test
   public void testGetCellsByLockHash() throws IOException {
     List<CellOutputWithOutPoint> cellOutputWithOutPoints =
         ckbService
