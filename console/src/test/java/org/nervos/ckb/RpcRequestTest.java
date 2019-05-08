@@ -68,6 +68,12 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetCurrentEpoch() throws IOException {
+    Epoch epoch = ckbService.getCurrentEpoch().send().getEpoch();
+    Assertions.assertNotNull(epoch);
+  }
+
+  @Test
   public void localNodeInfo() throws IOException {
     NodeInfo nodeInfo = ckbService.localNodeInfo().send().getNodeInfo();
     Assertions.assertNotNull(nodeInfo);

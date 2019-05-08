@@ -72,6 +72,12 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
+  public Request<?, CkbEpoch> getCurrentEpoch() {
+    return new Request<>(
+        "get_current_epoch", Collections.<String>emptyList(), apiService, CkbEpoch.class);
+  }
+
+  @Override
   public Request<?, CkbNodeInfo> localNodeInfo() {
     return new Request<>(
         "local_node_info", Collections.<String>emptyList(), apiService, CkbNodeInfo.class);

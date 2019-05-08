@@ -8,6 +8,7 @@ public class Header {
   public String difficulty;
   public String hash;
   public String number;
+  public String epoch;
 
   @JsonProperty("parent_hash")
   public String parentHash;

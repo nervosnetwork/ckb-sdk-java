@@ -46,6 +46,10 @@ public class RpcRequest {
     return ckbService.getTipBlockNumber().send().getBlockNumber();
   }
 
+  public static Epoch getCurrentEpoch() throws IOException {
+    return ckbService.getCurrentEpoch().send().getEpoch();
+  }
+
   public static NodeInfo localNodeInfo() throws IOException {
     return ckbService.localNodeInfo().send().getNodeInfo();
   }
