@@ -50,6 +50,10 @@ public class RpcRequest {
     return ckbService.getCurrentEpoch().send().getEpoch();
   }
 
+  public static Epoch getEpochByNumber(String number) throws IOException {
+    return ckbService.getEpochByNumber(number).send().getEpoch();
+  }
+
   public static NodeInfo localNodeInfo() throws IOException {
     return ckbService.localNodeInfo().send().getNodeInfo();
   }
