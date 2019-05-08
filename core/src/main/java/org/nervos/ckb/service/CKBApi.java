@@ -27,6 +27,8 @@ public interface CKBApi {
 
   Request<?, CkbEpoch> getCurrentEpoch();
 
+  Request<?, CkbEpoch> getEpochByNumber(String epochNumber);
+
   Request<?, CkbNodeInfo> localNodeInfo();
 
   Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
