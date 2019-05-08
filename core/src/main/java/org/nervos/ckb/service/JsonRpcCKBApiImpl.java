@@ -90,6 +90,11 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
+  public Request<?, CkbPeers> getPeers() {
+    return new Request<>("get_peers", Collections.<String>emptyList(), apiService, CkbPeers.class);
+  }
+
+  @Override
   public Request<?, CkbTransactionHash> sendTransaction(Transaction transaction) {
     return new Request<>(
         "send_transaction",

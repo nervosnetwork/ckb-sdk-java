@@ -58,6 +58,10 @@ public class RpcRequest {
     return ckbService.localNodeInfo().send().getNodeInfo();
   }
 
+  public static List<NodeInfo> getPeers() throws IOException {
+    return ckbService.getPeers().send().getPeers();
+  }
+
   public static List<CellOutputWithOutPoint> getCellsByLockHash(
       String lockHash, String fromBlockNumber, String toBlockNumber) throws IOException {
     return ckbService

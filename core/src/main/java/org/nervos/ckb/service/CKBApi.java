@@ -31,6 +31,8 @@ public interface CKBApi {
 
   Request<?, CkbNodeInfo> localNodeInfo();
 
+  Request<?, CkbPeers> getPeers();
+
   Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 
   Request<?, CkbTransactionHash> traceTransaction(Transaction transaction);
