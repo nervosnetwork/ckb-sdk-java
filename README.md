@@ -27,7 +27,7 @@ You can make JSON-RPC request  to your CKB node URL with this SDK. Below are som
 ```Java
 CkbService ckbService = CKBService.build(new HttpService("your-ckb-node-url"));
 
-// using RPC `get_tip_block_number`, it will return latest block number
+// using RPC `get_tip_block_number`, it will return the latest block number
 BigInteger blockNumber = ckbService.getTipBlockNumber().send().getBlockNumber();
 
 // using RPC `get_block_hash` with block number as parameter, it will return block hash
