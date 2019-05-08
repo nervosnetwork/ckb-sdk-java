@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 
 /** Created by duanyytop on 2019-04-24. Copyright © 2019 Nervos Foundation. All rights reserved. */
-// @Ignore
+@Ignore
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RpcRequestTest {
 
@@ -21,7 +22,7 @@ public class RpcRequestTest {
 
   @BeforeAll
   public void initService() {
-    HttpService.setDebug(true);
+    HttpService.setDebug(false);
     ckbService = CKBService.build(new HttpService("http://localhost:8114"));
   }
 
@@ -88,6 +89,12 @@ public class RpcRequestTest {
   public void getPeers() throws IOException {
     List<NodeInfo> peers = ckbService.getPeers().send().getPeers();
     Assertions.assertNotNull(peers);
+  }
+
+  @Test
+  public void txPoolInfo() throws IOException {
+    TxPoolInfo txPoolInfo = ckbService.txPoolInfo().send().getTxPoolInfo();
+    Assertions.assertNotNull(txPoolInfo);
   }
 
   @Test

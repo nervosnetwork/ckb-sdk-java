@@ -82,6 +82,10 @@ public class RpcRequest {
     return ckbService.sendTransaction(transaction).send().getTransactionHash();
   }
 
+  public static TxPoolInfo txPoolInfo() throws IOException {
+    return ckbService.txPoolInfo().send().getTxPoolInfo();
+  }
+
   public static Block genesisBlock() throws IOException {
     String blockHash = ckbService.getBlockHash("0").send().getBlockHash();
     return ckbService.getBlock(blockHash).send().getBlock();
