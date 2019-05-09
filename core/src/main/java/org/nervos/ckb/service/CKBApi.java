@@ -35,6 +35,8 @@ public interface CKBApi {
 
   Request<?, CkbBlockchainInfo> getBlockchainInfo();
 
+  Request<?, CkbPeersState> getPeersState();
+
   Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 
   Request<?, CkbTxPoolInfo> txPoolInfo();
