@@ -104,6 +104,12 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
+  public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
+    return new Request<>(
+        "get_blockchain_info", Collections.emptyList(), apiService, CkbBlockchainInfo.class);
+  }
+
+  @Override
   public Request<?, CkbTxPoolInfo> txPoolInfo() {
     return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
   }

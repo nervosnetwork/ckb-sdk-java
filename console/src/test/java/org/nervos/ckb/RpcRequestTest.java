@@ -98,6 +98,12 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void getBlockchainInfo() throws IOException {
+    BlockchainInfo blockchainInfo = ckbService.getBlockchainInfo().send().getBlockchainInfo();
+    Assertions.assertNotNull(blockchainInfo);
+  }
+
+  @Test
   public void testGetCellsByLockHash() throws IOException {
     List<CellOutputWithOutPoint> cellOutputWithOutPoints =
         ckbService
