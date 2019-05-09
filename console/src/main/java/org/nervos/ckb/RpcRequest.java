@@ -86,6 +86,14 @@ public class RpcRequest {
     return ckbService.txPoolInfo().send().getTxPoolInfo();
   }
 
+  public static BlockchainInfo getBlockchainInfo() throws IOException {
+    return ckbService.getBlockchainInfo().send().getBlockchainInfo();
+  }
+
+  public static List<PeerState> getPeersState() throws IOException {
+    return ckbService.getPeersState().send().getPeersState();
+  }
+
   public static Block genesisBlock() throws IOException {
     String blockHash = ckbService.getBlockHash("0").send().getBlockHash();
     return ckbService.getBlock(blockHash).send().getBlock();
