@@ -15,4 +15,9 @@ public class OutPoint {
   public OutPoint(CellOutPoint cellOutPoint) {
     this.cell = cellOutPoint;
   }
+
+  public OutPoint(String blockHash, CellOutPoint cellOutPoint) {
+    this.blockHash = blockHash;
+    this.cell = cellOutPoint;
+  }
 }
