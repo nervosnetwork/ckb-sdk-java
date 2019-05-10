@@ -42,4 +42,6 @@ public interface CKBApi {
   Request<?, CkbCycles> dryRunTransaction(Transaction transaction);
 
   Request<?, CkbTxPoolInfo> txPoolInfo();
+
+  Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction);
 }
