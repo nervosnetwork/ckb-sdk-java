@@ -119,22 +119,4 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbTxPoolInfo> txPoolInfo() {
     return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
   }
-
-  @Override
-  public Request<?, CkbTransactionHash> traceTransaction(Transaction transaction) {
-    return new Request<>(
-        "trace_transaction",
-        Collections.singletonList(transaction),
-        apiService,
-        CkbTransactionHash.class);
-  }
-
-  @Override
-  public Request<?, CkbTxTrace> getTransactionTrace(String transactionHash) {
-    return new Request<>(
-        "get_transaction_trace",
-        Collections.singletonList(transactionHash),
-        apiService,
-        CkbTxTrace.class);
-  }
 }
