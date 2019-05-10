@@ -136,4 +136,20 @@ public class RpcRequestTest {
             .getTransactionHash();
     Assertions.assertNotNull(transactionHash);
   }
+
+  @Test
+  public void testComputeTransactionHash() throws IOException {
+    String transactionHash =
+        ckbService
+            .computeTransactionHash(
+                new Transaction(
+                    0,
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()))
+            .send()
+            .getTransactionHash();
+    Assertions.assertNotNull(transactionHash);
+  }
 }

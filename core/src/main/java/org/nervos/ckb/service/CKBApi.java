@@ -37,6 +37,8 @@ public interface CKBApi {
 
   Request<?, CkbTxPoolInfo> txPoolInfo();
 
+  Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction);
+
   Request<?, CkbTransactionHash> traceTransaction(Transaction transaction);
 
   Request<?, CkbTxTrace> getTransactionTrace(String transactionHash);
