@@ -104,6 +104,12 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
+  public Request<?, CkbCycles> dryRunTransaction(Transaction transaction) {
+    return new Request<>(
+        "dry_run_transaction", Collections.singletonList(transaction), apiService, CkbCycles.class);
+  }
+
+  @Override
   public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
     return new Request<>(
         "get_blockchain_info", Collections.emptyList(), apiService, CkbBlockchainInfo.class);

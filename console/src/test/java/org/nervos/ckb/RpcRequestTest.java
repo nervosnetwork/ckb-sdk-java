@@ -139,7 +139,7 @@ public class RpcRequestTest {
         ckbService
             .sendTransaction(
                 new Transaction(
-                    0,
+                    "0",
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -147,5 +147,21 @@ public class RpcRequestTest {
             .send()
             .getTransactionHash();
     Assertions.assertNotNull(transactionHash);
+  }
+
+  @Test
+  public void testDryRunTransaction() throws IOException {
+    Cycles cycles =
+        ckbService
+            .dryRunTransaction(
+                new Transaction(
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()))
+            .send()
+            .getCycles();
+    Assertions.assertNotNull(cycles);
   }
 }
