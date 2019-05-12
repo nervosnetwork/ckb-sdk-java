@@ -5,7 +5,7 @@ import java.util.List;
 /** Created by duanyytop on 2018-12-21. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Transaction {
 
-  public int version;
+  public String version;
   public String hash;
   public List<OutPoint> deps;
   public List<CellInput> inputs;
@@ -15,7 +15,7 @@ public class Transaction {
   public Transaction() {}
 
   public Transaction(
-      int version,
+      String version,
       List<OutPoint> deps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
