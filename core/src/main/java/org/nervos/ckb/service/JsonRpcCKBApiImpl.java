@@ -23,6 +23,12 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
+  public Request<?, CkbBlock> getBlockByNumber(String blockNumber) {
+    return new Request<>(
+        "get_block_by_number", Collections.singletonList(blockNumber), apiService, CkbBlock.class);
+  }
+
+  @Override
   public Request<?, CkbTransaction> getTransaction(String transactionHash) {
     return new Request<>(
         "get_transaction",
