@@ -109,6 +109,14 @@ public class JsonRpcCKBApiImpl implements CKBService {
         "dry_run_transaction", Collections.singletonList(transaction), apiService, CkbCycles.class);
   }
 
+  public Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction) {
+    return new Request<>(
+        "_compute_transaction_hash",
+        Collections.singletonList(transaction),
+        apiService,
+        CkbTransactionHash.class);
+  }
+
   @Override
   public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
     return new Request<>(

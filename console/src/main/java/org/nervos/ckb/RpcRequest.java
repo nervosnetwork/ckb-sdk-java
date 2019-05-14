@@ -82,6 +82,10 @@ public class RpcRequest {
     return ckbService.sendTransaction(transaction).send().getTransactionHash();
   }
 
+  public static String computeTransactionHash(Transaction transaction) throws IOException {
+    return ckbService.computeTransactionHash(transaction).send().getTransactionHash();
+  }
+
   public static Cycles dryRunTransaction(Transaction transaction) throws IOException {
     return ckbService.dryRunTransaction(transaction).send().getCycles();
   }
