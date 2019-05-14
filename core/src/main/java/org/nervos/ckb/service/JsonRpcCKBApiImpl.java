@@ -113,11 +113,6 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
-  public Request<?, CkbTxPoolInfo> txPoolInfo() {
-    return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
-  }
-  
-  @Override
   public Request<?, CkbCycles> dryRunTransaction(Transaction transaction) {
     return new Request<>(
         "dry_run_transaction", Collections.singletonList(transaction), apiService, CkbCycles.class);
