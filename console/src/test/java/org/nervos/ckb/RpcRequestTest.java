@@ -98,6 +98,18 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetBlockchainInfo() throws IOException {
+    BlockchainInfo blockchainInfo = ckbService.getBlockchainInfo().send().getBlockchainInfo();
+    Assertions.assertNotNull(blockchainInfo);
+  }
+
+  @Test
+  public void testGetPeersState() throws IOException {
+    List<PeerState> peerStates = ckbService.getPeersState().send().getPeersState();
+    Assertions.assertNotNull(peerStates);
+  }
+
+  @Test
   public void testGetCellsByLockHash() throws IOException {
     List<CellOutputWithOutPoint> cellOutputWithOutPoints =
         ckbService
@@ -127,7 +139,7 @@ public class RpcRequestTest {
         ckbService
             .sendTransaction(
                 new Transaction(
-                    0,
+                    "0",
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -138,12 +150,28 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testDryRunTransaction() throws IOException {
+    Cycles cycles =
+        ckbService
+            .dryRunTransaction(
+                new Transaction(
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()))
+            .send()
+            .getCycles();
+    Assertions.assertNotNull(cycles);
+  }
+
+  @Test
   public void testComputeTransactionHash() throws IOException {
     String transactionHash =
         ckbService
             .computeTransactionHash(
                 new Transaction(
-                    0,
+                    "0",
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),

@@ -33,13 +33,15 @@ public interface CKBApi {
 
   Request<?, CkbPeers> getPeers();
 
-  Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
+  Request<?, CkbBlockchainInfo> getBlockchainInfo();
 
-  Request<?, CkbTxPoolInfo> txPoolInfo();
+  Request<?, CkbPeersState> getPeersState();
 
   Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction);
 
-  Request<?, CkbTransactionHash> traceTransaction(Transaction transaction);
+  Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 
-  Request<?, CkbTxTrace> getTransactionTrace(String transactionHash);
+  Request<?, CkbCycles> dryRunTransaction(Transaction transaction);
+
+  Request<?, CkbTxPoolInfo> txPoolInfo();
 }

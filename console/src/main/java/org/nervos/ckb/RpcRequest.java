@@ -85,9 +85,21 @@ public class RpcRequest {
   public static String computeTransactionHash(Transaction transaction) throws IOException {
     return ckbService.computeTransactionHash(transaction).send().getTransactionHash();
   }
+  
+  public static Cycles dryRunTransaction(Transaction transaction) throws IOException {
+    return ckbService.dryRunTransaction(transaction).send().getCycles();
+  }
 
   public static TxPoolInfo txPoolInfo() throws IOException {
     return ckbService.txPoolInfo().send().getTxPoolInfo();
+  }
+
+  public static BlockchainInfo getBlockchainInfo() throws IOException {
+    return ckbService.getBlockchainInfo().send().getBlockchainInfo();
+  }
+
+  public static List<PeerState> getPeersState() throws IOException {
+    return ckbService.getPeersState().send().getPeersState();
   }
 
   public static Block genesisBlock() throws IOException {

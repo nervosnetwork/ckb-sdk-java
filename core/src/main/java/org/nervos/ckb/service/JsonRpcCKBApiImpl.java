@@ -116,22 +116,27 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbTxPoolInfo> txPoolInfo() {
     return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
   }
-
+  
   @Override
-  public Request<?, CkbTransactionHash> traceTransaction(Transaction transaction) {
+  public Request<?, CkbCycles> dryRunTransaction(Transaction transaction) {
     return new Request<>(
-        "trace_transaction",
-        Collections.singletonList(transaction),
-        apiService,
-        CkbTransactionHash.class);
+        "dry_run_transaction", Collections.singletonList(transaction), apiService, CkbCycles.class);
   }
 
   @Override
-  public Request<?, CkbTxTrace> getTransactionTrace(String transactionHash) {
+  public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
     return new Request<>(
-        "get_transaction_trace",
-        Collections.singletonList(transactionHash),
-        apiService,
-        CkbTxTrace.class);
+        "get_blockchain_info", Collections.emptyList(), apiService, CkbBlockchainInfo.class);
+  }
+
+  @Override
+  public Request<?, CkbPeersState> getPeersState() {
+    return new Request<>(
+        "get_peers_state", Collections.emptyList(), apiService, CkbPeersState.class);
+  }
+
+  @Override
+  public Request<?, CkbTxPoolInfo> txPoolInfo() {
+    return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
   }
 }
