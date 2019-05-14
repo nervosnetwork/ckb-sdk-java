@@ -18,7 +18,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - Add development to README
 
-
 # [v0.10.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.9.0...v0.10.0) (2019-05-06)
 
 ### Bug Fixes
