@@ -8,11 +8,11 @@ public class CellOutPoint {
   @JsonProperty("tx_hash")
   public String txHash;
 
-  public int index;
+  public String index;
 
   public CellOutPoint() {}
 
-  public CellOutPoint(String txHash, int index) {
+  public CellOutPoint(String txHash, String index) {
     this.txHash = txHash;
     this.index = index;
   }
