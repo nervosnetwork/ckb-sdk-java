@@ -5,11 +5,11 @@ package org.nervos.ckb.exceptions;
  * transaction to execute.
  */
 public class TransactionException extends Exception {
-    public TransactionException(String message) {
-        super(message);
-    }
+  public TransactionException(String message) {
+    super(message);
+  }
 
-    public TransactionException(Throwable cause) {
-        super(cause);
-    }
+  public TransactionException(Throwable cause) {
+    super(cause);
+  }
 }

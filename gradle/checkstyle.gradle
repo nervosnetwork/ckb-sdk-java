@@ -1,0 +1,21 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = 8.13
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    ignoreFailures = false
+    showViolations = true
+}
+
+task checkStyle(type: Checkstyle) {
+    source = 'src/main/java'
+    include '**/*.java'
+
+    classpath = files()
+}
+
+afterEvaluate {
+    if (project.tasks.getByName("check")) {
+        check.dependsOn('checkStyle')
+    }
+}
