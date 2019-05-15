@@ -7,7 +7,7 @@ import java.util.List;
 public class CellInput {
 
   @JsonProperty("previous_output")
-  public PreviousOutput previousOutput;
+  public OutPoint previousOutput;
 
   public List<String> args;
 
@@ -15,23 +15,9 @@ public class CellInput {
 
   public CellInput() {}
 
-  public CellInput(PreviousOutput previousOutput, List<String> args, String since) {
+  public CellInput(OutPoint previousOutput, List<String> args, String since) {
     this.previousOutput = previousOutput;
     this.args = args;
     this.since = since;
-  }
-
-  public static class PreviousOutput {
-    @JsonProperty("tx_hash")
-    public String txHash;
-
-    public long index;
-
-    public PreviousOutput() {}
-
-    public PreviousOutput(String txHash, long index) {
-      this.txHash = txHash;
-      this.index = index;
-    }
   }
 }
