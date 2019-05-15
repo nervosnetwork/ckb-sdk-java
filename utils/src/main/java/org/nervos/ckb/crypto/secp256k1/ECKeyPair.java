@@ -43,6 +43,10 @@ public class ECKeyPair {
     return new ECKeyPair(privateKeyValue, publicKeyValue);
   }
 
+  public static ECKeyPair createWithPrivateKey(BigInteger privateKey, boolean compressed) {
+    return new ECKeyPair(privateKey, Sign.publicKeyFromPrivate(privateKey, compressed));
+  }
+
   public static ECKeyPair createWithPrivateKey(BigInteger privateKey) {
     return new ECKeyPair(privateKey, Sign.publicKeyFromPrivate(privateKey));
   }
