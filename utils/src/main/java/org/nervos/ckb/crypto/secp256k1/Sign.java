@@ -194,7 +194,7 @@ public class Sign {
     ECPoint point = publicPointFromPrivate(privKey);
 
     byte[] encoded = point.getEncoded(true);
-    return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
+    return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
   }
 
   /**
@@ -207,7 +207,11 @@ public class Sign {
     ECPoint point = publicPointFromPrivate(privKey);
 
     byte[] encoded = point.getEncoded(compressed);
-    return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
+    if (compressed) {
+      return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
+    } else {
+      return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
+    }
   }
 
   /** Returns public key point from the given private key. */
