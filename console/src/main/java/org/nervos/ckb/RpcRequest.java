@@ -74,7 +74,7 @@ public class RpcRequest {
     OutPoint outPoint =
         new OutPoint(
             new CellOutPoint(
-                "0x15c809f08c7bca63d2b661e1dbc26c74551a6f982f7631c718dc43bd2bb5c90e", 0));
+                "0x15c809f08c7bca63d2b661e1dbc26c74551a6f982f7631c718dc43bd2bb5c90e", "0"));
     return ckbService.getLiveCell(outPoint).send().getCell();
   }
 
@@ -117,6 +117,6 @@ public class RpcRequest {
 
   public static List<OutPoint> alwaysSuccessScriptOutPoint() throws IOException {
     String hash = genesisBlock().transactions.get(0).hash;
-    return Collections.singletonList(new OutPoint(new CellOutPoint(hash, 0)));
+    return Collections.singletonList(new OutPoint(new CellOutPoint(hash, "0")));
   }
 }
