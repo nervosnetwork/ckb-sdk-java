@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.nervos.ckb.methods.response.CkbSystemContract;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
+import org.nervos.ckb.utils.Network;
 
 /** Created by duanyytop on 2019-04-24. Copyright © 2019 Nervos Foundation. All rights reserved. */
 @Ignore
@@ -23,7 +25,13 @@ public class RpcRequestTest {
   @BeforeAll
   public void initService() {
     HttpService.setDebug(false);
-    ckbService = CKBService.build(new HttpService("http://localhost:8114"));
+    ckbService = CKBService.build(new HttpService("http://localhost:8114"), Network.TESTNET);
+  }
+
+  @Test
+  public void testGetSystemContract() throws IOException {
+    CkbSystemContract ckbSystemContract = ckbService.getSystemContract();
+    Assertions.assertNotNull(ckbSystemContract);
   }
 
   @Test

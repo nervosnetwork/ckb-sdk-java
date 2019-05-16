@@ -9,6 +9,7 @@ import org.nervos.ckb.exceptions.APIErrorException;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
+import org.nervos.ckb.utils.Network;
 
 /** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class RpcRequest {
@@ -19,7 +20,7 @@ public class RpcRequest {
 
   static {
     HttpService.setDebug(false);
-    ckbService = CKBService.build(new HttpService(NODE_URL));
+    ckbService = CKBService.build(new HttpService(NODE_URL), Network.TESTNET);
   }
 
   public static String getBlockHash(String blockNumber) throws IOException {
