@@ -52,9 +52,8 @@ class TransactionExample {
 
     SystemScriptCell systemScriptCell =
         SystemContract.getSystemScriptCell(ckbService, Network.TESTNET);
-    CellInputsAndBalanceSum cellInputsAndBalanceSum =
-        getCellInputsWithBalanceSum(inputLockScript.scriptHash(), needCapacities);
-    if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) < 0) {
+    CellInputs cellInputs = getCellInputs(inputLockScript.scriptHash(), needCapacities);
+    if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
     List<CellOutput> cellOutputs = new ArrayList<>();
@@ -68,31 +67,28 @@ class TransactionExample {
                   "0x",
                   new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
         }));
-    if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) > 0) {
+    if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
           new CellOutput(
-              cellInputsAndBalanceSum.capacity.subtract(needCapacities).toString(10),
-              "0x",
-              inputLockScript));
+              cellInputs.capacity.subtract(needCapacities).toString(10), "0x", inputLockScript));
     }
     Transaction transaction =
         new Transaction(
             "0",
             Arrays.asList(new OutPoint(null, systemScriptCell.outPoint)),
-            cellInputsAndBalanceSum.inputs,
+            cellInputs.inputs,
             cellOutputs,
             new ArrayList<>());
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
     Witness witness = new Witness(Numeric.toBigInt(privateKeyHex), txHash);
-    cellInputsAndBalanceSum.inputs.forEach(
+    cellInputs.inputs.forEach(
         cellInput -> {
           transaction.witnesses.add(witness);
         });
     return transaction;
   }
 
-  private CellInputsAndBalanceSum getCellInputsWithBalanceSum(
-      String lockHash, BigInteger needCapacities) throws Exception {
+  private CellInputs getCellInputs(String lockHash, BigInteger needCapacities) throws Exception {
     List<CellInput> cellInputs = new ArrayList<>();
     BigInteger inputsCapacities = BigInteger.ZERO;
     long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
@@ -120,14 +116,14 @@ class TransactionExample {
       }
       fromBlockNumber = currentToBlockNumber + 1;
     }
-    return new CellInputsAndBalanceSum(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
+    return new CellInputs(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
   }
 
-  class CellInputsAndBalanceSum {
+  class CellInputs {
     List<CellInput> inputs;
     BigInteger capacity;
 
-    public CellInputsAndBalanceSum(List<CellInput> inputs, BigInteger capacity) {
+    public CellInputs(List<CellInput> inputs, BigInteger capacity) {
       this.inputs = inputs;
       this.capacity = capacity;
     }
