@@ -30,9 +30,9 @@ public class TransactionExampleTest {
 
   @Test
   public void testSendCapacity() throws Exception {
-    TransactionExample.Receiver receiver1 =
+    TransactionExample.Receiver receiver =
         new TransactionExample.Receiver(receiverAddress, "6000000000");
-    String hash = transactionManager.sendCapacity(Arrays.asList(receiver1));
+    String hash = transactionManager.sendCapacity(Arrays.asList(receiver));
     Assertions.assertNotNull(hash);
   }
 }

@@ -40,10 +40,10 @@ class TransactionExample {
     return temp.getTransactionHash();
   }
 
-  private Transaction generateTx(List<Receiver> receiverBeanList) throws Exception {
+  private Transaction generateTx(List<Receiver> receiverList) throws Exception {
     BigInteger needCapacities = BigInteger.ZERO;
-    for (Receiver receiverBean : receiverBeanList) {
-      BigDecimal bigDecimal = new BigDecimal(receiverBean.capacity);
+    for (Receiver receiver : receiverList) {
+      BigDecimal bigDecimal = new BigDecimal(receiver.capacity);
       needCapacities = needCapacities.add(bigDecimal.toBigInteger());
     }
     if (needCapacities.compareTo(new BigDecimal(MIN_CAPACITY).toBigInteger()) < 0) {
@@ -58,13 +58,13 @@ class TransactionExample {
       throw new Exception("No enough Capacities");
     }
     List<CellOutput> cellOutputs = new ArrayList<>();
-    receiverBeanList.forEach(
-        (receiverBean -> {
+    receiverList.forEach(
+        (receiver -> {
           AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
-          String blake2b = addressUtils.getBlake160FromAddress(receiverBean.address);
+          String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
           cellOutputs.add(
               new CellOutput(
-                  receiverBean.capacity,
+                  receiver.capacity,
                   "0x",
                   new Script(systemContract.systemScriptCellHash, Arrays.asList(blake2b))));
         }));
