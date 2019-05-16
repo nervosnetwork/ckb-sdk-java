@@ -16,7 +16,7 @@ import org.nervos.ckb.system.bean.CkbSystemContract;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
-class TransactionExample {
+public class TransactionExample {
 
   private static String MIN_CAPACITY = "6000000000";
   private static final String NODE_URL = "http://localhost:8114";
