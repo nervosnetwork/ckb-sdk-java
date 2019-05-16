@@ -5,7 +5,7 @@ import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.methods.type.CellOutPoint;
 import org.nervos.ckb.methods.type.Transaction;
 import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.system.bean.CkbSystemContract;
+import org.nervos.ckb.system.type.CkbSystemContract;
 import org.nervos.ckb.utils.Network;
 
 public class SystemContract {

@@ -12,7 +12,7 @@ import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.system.SystemContract;
-import org.nervos.ckb.system.bean.CkbSystemContract;
+import org.nervos.ckb.system.type.CkbSystemContract;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
