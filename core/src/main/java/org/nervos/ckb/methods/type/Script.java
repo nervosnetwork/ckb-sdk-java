@@ -27,7 +27,7 @@ public class Script {
     return new Script(ALWAYS_SUCCESS_HASH, Collections.emptyList());
   }
 
-  public String getTypeHash() {
+  public String scriptHash() {
     Blake2b blake2b = new Blake2b();
     if (codeHash != null) {
       blake2b.update(Numeric.hexStringToByteArray(codeHash));
