@@ -194,4 +194,10 @@ public class NumericTest {
     Assertions.assertFalse(Numeric.isIntegerValue(BigDecimal.valueOf(1.1)));
     Assertions.assertFalse(Numeric.isIntegerValue(BigDecimal.valueOf(-1.1)));
   }
+
+  @Test
+  public void testLittleEndian() {
+    String littleEndian = Numeric.littleEndian(71);
+    Assertions.assertEquals("0x4700000000000000", littleEndian);
+  }
 }
