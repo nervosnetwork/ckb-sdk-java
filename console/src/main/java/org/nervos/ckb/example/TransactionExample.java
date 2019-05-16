@@ -31,8 +31,8 @@ class TransactionExample {
     ckbService = CKBService.build(new HttpService(NODE_URL));
   }
 
-  public String sendCapacity(List<Receiver> receiverList) throws Exception {
-    Transaction transaction = generateTx(receiverList);
+  public String sendCapacity(List<Receiver> receivers) throws Exception {
+    Transaction transaction = generateTx(receivers);
     CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
     if (ckbTransactionHash.result == null) {
       System.out.println(ckbTransactionHash.error.message);
@@ -40,9 +40,9 @@ class TransactionExample {
     return ckbTransactionHash.getTransactionHash();
   }
 
-  private Transaction generateTx(List<Receiver> receiverList) throws Exception {
+  private Transaction generateTx(List<Receiver> receivers) throws Exception {
     BigInteger needCapacities = BigInteger.ZERO;
-    for (Receiver receiver : receiverList) {
+    for (Receiver receiver : receivers) {
       BigDecimal bigDecimal = new BigDecimal(receiver.capacity);
       needCapacities = needCapacities.add(bigDecimal.toBigInteger());
     }
@@ -56,22 +56,24 @@ class TransactionExample {
     if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
+
     List<CellOutput> cellOutputs = new ArrayList<>();
-    receiverList.forEach(
-        (receiver -> {
-          AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
-          String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
-          cellOutputs.add(
-              new CellOutput(
-                  receiver.capacity,
-                  "0x",
-                  new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
-        }));
+    for (Receiver receiver : receivers) {
+      AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
+      String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
+      cellOutputs.add(
+          new CellOutput(
+              receiver.capacity,
+              "0x",
+              new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
+    }
+
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
           new CellOutput(
               cellInputs.capacity.subtract(needCapacities).toString(10), "0x", inputLockScript));
     }
+
     Transaction transaction =
         new Transaction(
             "0",
@@ -79,12 +81,10 @@ class TransactionExample {
             cellInputs.inputs,
             cellOutputs,
             new ArrayList<>());
+
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
     Witness witness = new Witness(Numeric.toBigInt(privateKeyHex), txHash);
-    cellInputs.inputs.forEach(
-        cellInput -> {
-          transaction.witnesses.add(witness);
-        });
+    transaction.witnesses.add(witness);
     return transaction;
   }
 
@@ -93,6 +93,7 @@ class TransactionExample {
     BigInteger inputsCapacities = BigInteger.ZERO;
     long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
     long fromBlockNumber = 1;
+
     while (fromBlockNumber <= toBlockNumber && inputsCapacities.compareTo(needCapacities) < 0) {
       long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
       List<CellOutputWithOutPoint> cellOutputs =
