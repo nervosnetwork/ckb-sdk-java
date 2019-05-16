@@ -39,6 +39,14 @@ public class AddressUtils {
     return new Bech32.Bech32Data(parsed.hrp, data);
   }
 
+  public String getBlake160FromAddress(String address) throws AddressFormatException {
+    Bech32.Bech32Data bech32Data = parse(address);
+    String payload = Numeric.toHexString(bech32Data.data);
+    String prefix = TYPE + strToAscii(BIN_IDX);
+    String blake160 = payload.replace(prefix, "");
+    return blake160;
+  }
+
   private String prefix() {
     return network == Network.MAINNET ? "ckb" : "ckt";
   }
