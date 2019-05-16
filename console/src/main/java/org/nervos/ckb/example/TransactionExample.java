@@ -12,7 +12,7 @@ import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.system.SystemContract;
-import org.nervos.ckb.system.bean.CkbSystemContract;
+import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
@@ -31,8 +31,8 @@ class TransactionExample {
     ckbService = CKBService.build(new HttpService(NODE_URL));
   }
 
-  public String sendCapacity(List<Receiver> receiverList) throws Exception {
-    Transaction transaction = generateTx(receiverList);
+  public String sendCapacity(List<Receiver> receivers) throws Exception {
+    Transaction transaction = generateTx(receivers);
     CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
     if (ckbTransactionHash.result == null) {
       System.out.println(ckbTransactionHash.error.message);
@@ -40,9 +40,9 @@ class TransactionExample {
     return ckbTransactionHash.getTransactionHash();
   }
 
-  private Transaction generateTx(List<Receiver> receiverList) throws Exception {
+  private Transaction generateTx(List<Receiver> receivers) throws Exception {
     BigInteger needCapacities = BigInteger.ZERO;
-    for (Receiver receiver : receiverList) {
+    for (Receiver receiver : receivers) {
       BigDecimal bigDecimal = new BigDecimal(receiver.capacity);
       needCapacities = needCapacities.add(bigDecimal.toBigInteger());
     }
@@ -50,53 +50,52 @@ class TransactionExample {
       throw new Exception("Less than min capacity");
     }
 
-    CkbSystemContract systemContract =
-        SystemContract.getSystemContract(ckbService, Network.TESTNET);
-    CellInputsAndBalanceSum cellInputsAndBalanceSum =
-        getCellInputsWithBalanceSum(inputLockScript.scriptHash(), needCapacities);
-    if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) < 0) {
+    SystemScriptCell systemScriptCell =
+        SystemContract.getSystemScriptCell(ckbService, Network.TESTNET);
+    CellInputs cellInputs = getCellInputs(inputLockScript.scriptHash(), needCapacities);
+    if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
+
     List<CellOutput> cellOutputs = new ArrayList<>();
-    receiverList.forEach(
-        (receiver -> {
-          AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
-          String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
-          cellOutputs.add(
-              new CellOutput(
-                  receiver.capacity,
-                  "0x",
-                  new Script(systemContract.systemScriptCellHash, Arrays.asList(blake2b))));
-        }));
-    if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) > 0) {
+    for (Receiver receiver : receivers) {
+      AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
+      String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
       cellOutputs.add(
           new CellOutput(
-              cellInputsAndBalanceSum.capacity.subtract(needCapacities).toString(10),
+              receiver.capacity,
               "0x",
-              inputLockScript));
+              new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
     }
+
+    if (cellInputs.capacity.compareTo(needCapacities) > 0) {
+      cellOutputs.add(
+          new CellOutput(
+              cellInputs.capacity.subtract(needCapacities).toString(10), "0x", inputLockScript));
+    }
+
     Transaction transaction =
         new Transaction(
             "0",
-            Arrays.asList(new OutPoint(null, systemContract.systemScriptOutPoint)),
-            cellInputsAndBalanceSum.inputs,
+            Arrays.asList(new OutPoint(null, systemScriptCell.outPoint)),
+            cellInputs.inputs,
             cellOutputs,
             new ArrayList<>());
+
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
     Witness witness = new Witness(Numeric.toBigInt(privateKeyHex), txHash);
-    cellInputsAndBalanceSum.inputs.forEach(
-        cellInput -> {
-          transaction.witnesses.add(witness);
-        });
+    for (CellInput cellInput : cellInputs.inputs) {
+      transaction.witnesses.add(witness);
+    }
     return transaction;
   }
 
-  private CellInputsAndBalanceSum getCellInputsWithBalanceSum(
-      String lockHash, BigInteger needCapacities) throws Exception {
+  private CellInputs getCellInputs(String lockHash, BigInteger needCapacities) throws Exception {
     List<CellInput> cellInputs = new ArrayList<>();
     BigInteger inputsCapacities = BigInteger.ZERO;
     long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
     long fromBlockNumber = 1;
+
     while (fromBlockNumber <= toBlockNumber && inputsCapacities.compareTo(needCapacities) < 0) {
       long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
       List<CellOutputWithOutPoint> cellOutputs =
@@ -120,14 +119,14 @@ class TransactionExample {
       }
       fromBlockNumber = currentToBlockNumber + 1;
     }
-    return new CellInputsAndBalanceSum(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
+    return new CellInputs(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
   }
 
-  class CellInputsAndBalanceSum {
+  class CellInputs {
     List<CellInput> inputs;
     BigInteger capacity;
 
-    public CellInputsAndBalanceSum(List<CellInput> inputs, BigInteger capacity) {
+    public CellInputs(List<CellInput> inputs, BigInteger capacity) {
       this.inputs = inputs;
       this.capacity = capacity;
     }
