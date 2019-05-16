@@ -33,11 +33,11 @@ class TransactionExample {
 
   public String sendCapacity(List<Receiver> receiverList) throws Exception {
     Transaction transaction = generateTx(receiverList);
-    CkbTransactionHash temp = ckbService.sendTransaction(transaction).send();
-    if (temp.result == null) {
-      System.out.println(temp.error.message);
+    CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
+    if (ckbTransactionHash.result == null) {
+      System.out.println(ckbTransactionHash.error.message);
     }
-    return temp.getTransactionHash();
+    return ckbTransactionHash.getTransactionHash();
   }
 
   private Transaction generateTx(List<Receiver> receiverList) throws Exception {
@@ -53,7 +53,7 @@ class TransactionExample {
     CkbSystemContract systemContract =
         SystemContract.getSystemContract(ckbService, Network.TESTNET);
     CellInputsAndBalanceSum cellInputsAndBalanceSum =
-        generateInputs(inputLockScript.scriptHash(), needCapacities);
+        getCellInputsWithBalanceSum(inputLockScript.scriptHash(), needCapacities);
     if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
@@ -91,8 +91,8 @@ class TransactionExample {
     return transaction;
   }
 
-  private CellInputsAndBalanceSum generateInputs(String lockHash, BigInteger needCapacities)
-      throws Exception {
+  private CellInputsAndBalanceSum getCellInputsWithBalanceSum(
+      String lockHash, BigInteger needCapacities) throws Exception {
     List<CellInput> cellInputs = new ArrayList<>();
     BigInteger inputsCapacities = BigInteger.ZERO;
     long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
