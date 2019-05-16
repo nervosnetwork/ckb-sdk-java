@@ -19,16 +19,15 @@ import org.nervos.ckb.utils.Numeric;
 public class TransactionExample {
 
   private static String MIN_CAPACITY = "6000000000";
-  private static final String NODE_URL = "http://localhost:8114";
 
   private Script inputLockScript;
   private String privateKeyHex;
   private CKBService ckbService;
 
-  public TransactionExample(String privateKeyHex, Script inputLockScript) {
+  public TransactionExample(String privateKeyHex, Script inputLockScript, String nodeUrl) {
     this.privateKeyHex = privateKeyHex;
     this.inputLockScript = inputLockScript;
-    ckbService = CKBService.build(new HttpService(NODE_URL));
+    ckbService = CKBService.build(new HttpService(nodeUrl));
   }
 
   public String sendCapacity(List<Receiver> receivers) throws Exception {

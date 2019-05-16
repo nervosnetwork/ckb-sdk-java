@@ -28,7 +28,7 @@ public class TransactionExampleTest {
     String blake160 =
         Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
     Script inputLockScript = new Script(CODE_HASH, Arrays.asList(blake160));
-    transaction = new TransactionExample(PRIVATE_KEY, inputLockScript);
+    transaction = new TransactionExample(PRIVATE_KEY, inputLockScript, "http://localhost:8114");
   }
 
   @Test
