@@ -72,4 +72,20 @@ public class AddressTest {
     Assertions.assertEquals(
         "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf", utils.generate(publicKey));
   }
+
+  @Test
+  public void testBlake160FromAddressTestnet() {
+    AddressUtils utils = new AddressUtils(Network.TESTNET);
+    String blake160 =
+        utils.getBlake160FromAddress("ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf");
+    Assertions.assertEquals(blake160, "0x36c329ed630d6ce750712a477543672adab57f4c");
+  }
+
+  @Test
+  public void testBlake160FromAddressMainnet() {
+    AddressUtils utils = new AddressUtils(Network.MAINNET);
+    String blake160 =
+        utils.getBlake160FromAddress("ckb1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6vqdd7em");
+    Assertions.assertEquals(blake160, "0x36c329ed630d6ce750712a477543672adab57f4c");
+  }
 }
