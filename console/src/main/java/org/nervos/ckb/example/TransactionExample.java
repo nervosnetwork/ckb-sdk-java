@@ -1,10 +1,11 @@
 package org.nervos.ckb.example;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.methods.response.CkbTransactionHash;
 import org.nervos.ckb.methods.type.*;
@@ -30,34 +31,30 @@ class TransactionExample {
     ckbService = CKBService.build(new HttpService(NODE_URL));
   }
 
-  public String sendCapacity(List<ReceiverBean> receiverBeanList) {
-    try {
-      Transaction transaction = generateTx(receiverBeanList);
-      CkbTransactionHash temp = ckbService.sendTransaction(transaction).send();
-      if (temp.result == null) {
-        System.out.println(temp.error.message);
-      }
-      return temp.getTransactionHash();
-    } catch (Exception e) {
-      e.printStackTrace();
-      return "";
+  public String sendCapacity(List<Receiver> receiverList) throws Exception {
+    Transaction transaction = generateTx(receiverList);
+    CkbTransactionHash temp = ckbService.sendTransaction(transaction).send();
+    if (temp.result == null) {
+      System.out.println(temp.error.message);
     }
+    return temp.getTransactionHash();
   }
 
-  public Transaction generateTx(List<ReceiverBean> receiverBeanList) throws Exception {
-    long needCapacities =
-        receiverBeanList
-            .stream()
-            .mapToLong(receiverBean -> Long.valueOf(receiverBean.capacity))
-            .sum();
-    if (needCapacities < Long.valueOf(MIN_CAPACITY)) {
+  private Transaction generateTx(List<Receiver> receiverBeanList) throws Exception {
+    BigInteger needCapacities = BigInteger.ZERO;
+    for (Receiver receiverBean : receiverBeanList) {
+      BigDecimal bigDecimal = new BigDecimal(receiverBean.capacity);
+      needCapacities = needCapacities.add(bigDecimal.toBigInteger());
+    }
+    if (needCapacities.compareTo(new BigDecimal(MIN_CAPACITY).toBigInteger()) < 0) {
       throw new Exception("Less than min capacity");
     }
 
     CkbSystemContract systemContract =
         SystemContract.getSystemContract(ckbService, Network.TESTNET);
-    InputsBean inputsBean = generateInputs(inputLockScript.scriptHash(), needCapacities);
-    if (inputsBean.capacity < Long.valueOf(needCapacities)) {
+    CellInputsAndBalanceSum cellInputsAndBalanceSum =
+        generateInputs(inputLockScript.scriptHash(), needCapacities);
+    if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
     List<CellOutput> cellOutputs = new ArrayList<>();
@@ -71,31 +68,36 @@ class TransactionExample {
                   "0x",
                   new Script(systemContract.systemScriptCellHash, Arrays.asList(blake2b))));
         }));
-    cellOutputs.add(
-        new CellOutput(
-            String.valueOf(inputsBean.capacity - needCapacities), "0x", inputLockScript));
+    if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) > 0) {
+      cellOutputs.add(
+          new CellOutput(
+              cellInputsAndBalanceSum.capacity.subtract(needCapacities).toString(10),
+              "0x",
+              inputLockScript));
+    }
     Transaction transaction =
         new Transaction(
             "0",
             Arrays.asList(new OutPoint(null, systemContract.systemScriptOutPoint)),
-            inputsBean.inputs,
+            cellInputsAndBalanceSum.inputs,
             cellOutputs,
             new ArrayList<>());
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
     Witness witness = new Witness(Numeric.toBigInt(privateKeyHex), txHash);
-    inputsBean.inputs.forEach(
+    cellInputsAndBalanceSum.inputs.forEach(
         cellInput -> {
           transaction.witnesses.add(witness);
         });
     return transaction;
   }
 
-  public InputsBean generateInputs(String lockHash, long needCapacities) throws Exception {
+  private CellInputsAndBalanceSum generateInputs(String lockHash, BigInteger needCapacities)
+      throws Exception {
     List<CellInput> cellInputs = new ArrayList<>();
-    AtomicLong inputsCapacities = new AtomicLong();
+    BigInteger inputsCapacities = BigInteger.ZERO;
     long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
     long fromBlockNumber = 1;
-    while (fromBlockNumber <= toBlockNumber && inputsCapacities.get() < needCapacities) {
+    while (fromBlockNumber <= toBlockNumber && inputsCapacities.compareTo(needCapacities) < 0) {
       long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
       List<CellOutputWithOutPoint> cellOutputs =
           ckbService
@@ -103,38 +105,39 @@ class TransactionExample {
                   lockHash, String.valueOf(fromBlockNumber), String.valueOf(currentToBlockNumber))
               .send()
               .getCells();
-      if (cellOutputs != null && cellOutputs.size() > 0) {
 
+      if (cellOutputs != null && cellOutputs.size() > 0) {
         for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputs) {
           CellInput cellInput =
               new CellInput(cellOutputWithOutPoint.outPoint, Collections.emptyList(), "0");
-          inputsCapacities.addAndGet(Long.valueOf(cellOutputWithOutPoint.capacity));
+          inputsCapacities =
+              inputsCapacities.add(new BigDecimal(cellOutputWithOutPoint.capacity).toBigInteger());
           cellInputs.add(cellInput);
-          if (inputsCapacities.get() > needCapacities) {
+          if (inputsCapacities.compareTo(needCapacities) > 0) {
             break;
           }
         }
       }
       fromBlockNumber = currentToBlockNumber + 1;
     }
-    return new InputsBean(cellInputs, inputsCapacities.get());
+    return new CellInputsAndBalanceSum(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
   }
 
-  class InputsBean {
+  class CellInputsAndBalanceSum {
     List<CellInput> inputs;
-    long capacity;
+    BigInteger capacity;
 
-    public InputsBean(List<CellInput> inputs, long capacity) {
+    public CellInputsAndBalanceSum(List<CellInput> inputs, BigInteger capacity) {
       this.inputs = inputs;
       this.capacity = capacity;
     }
   }
 
-  public static class ReceiverBean {
+  public static class Receiver {
     String address;
     String capacity;
 
-    public ReceiverBean(String address, String capacity) {
+    public Receiver(String address, String capacity) {
       this.address = address;
       this.capacity = capacity;
     }
