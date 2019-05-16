@@ -84,7 +84,9 @@ class TransactionExample {
 
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
     Witness witness = new Witness(Numeric.toBigInt(privateKeyHex), txHash);
-    transaction.witnesses.add(witness);
+    for (CellInput cellInput : cellInputs.inputs) {
+      transaction.witnesses.add(witness);
+    }
     return transaction;
   }
 
