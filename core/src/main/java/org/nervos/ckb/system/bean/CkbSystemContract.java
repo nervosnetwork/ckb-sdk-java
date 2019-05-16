@@ -1,9 +1,8 @@
-package org.nervos.ckb.methods.response;
+package org.nervos.ckb.system.bean;
 
-import org.nervos.ckb.methods.Response;
 import org.nervos.ckb.methods.type.CellOutPoint;
 
-public class CkbSystemContract extends Response<CkbSystemContract> {
+public class CkbSystemContract {
   public String systemScriptCellHash;
   public CellOutPoint systemScriptOutPoint;
 

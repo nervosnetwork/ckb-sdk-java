@@ -1,39 +1,19 @@
 package org.nervos.ckb.service;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
-import org.nervos.ckb.methods.type.CellOutPoint;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Transaction;
-import org.nervos.ckb.utils.Network;
 
 /** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class JsonRpcCKBApiImpl implements CKBService {
 
   protected final APIService apiService;
-  protected CkbSystemContract systemContract;
-  protected Network network;
 
-  public JsonRpcCKBApiImpl(APIService apiService, Network network) {
+  public JsonRpcCKBApiImpl(APIService apiService) {
     this.apiService = apiService;
-    this.network = network;
-  }
-
-  public CkbSystemContract getSystemContract() throws IOException {
-    if (systemContract == null) {
-      if (network == Network.TESTNET) {
-        Transaction sysContractTx = getBlockByNumber("0").send().getBlock().transactions.get(0);
-        systemContract =
-            new CkbSystemContract(
-                Hash.blake2b(sysContractTx.outputs.get(1).data),
-                new CellOutPoint(sysContractTx.hash, "1"));
-      }
-    }
-    return systemContract;
   }
 
   @Override

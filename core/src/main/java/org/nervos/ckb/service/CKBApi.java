@@ -1,6 +1,5 @@
 package org.nervos.ckb.service;
 
-import java.io.IOException;
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
 import org.nervos.ckb.methods.type.OutPoint;
@@ -45,6 +44,4 @@ public interface CKBApi {
   Request<?, CkbTxPoolInfo> txPoolInfo();
 
   Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction);
-
-  CkbSystemContract getSystemContract() throws IOException;
 }
