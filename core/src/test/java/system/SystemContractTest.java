@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.system.SystemContract;
-import org.nervos.ckb.system.type.CkbSystemContract;
+import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.utils.Network;
 
 public class SystemContractTest {
   @Test
   public void testGetSystemContract() throws IOException {
-    CkbSystemContract ckbSystemContract =
-        SystemContract.getSystemContract(
+    SystemScriptCell systemScriptCell =
+        SystemContract.getSystemScriptCell(
             CKBService.build(new HttpService("http://localhost:8114/")), Network.TESTNET);
-    Assertions.assertNotNull(ckbSystemContract);
+    Assertions.assertNotNull(systemScriptCell);
   }
 }

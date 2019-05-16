@@ -12,7 +12,7 @@ import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.system.SystemContract;
-import org.nervos.ckb.system.type.CkbSystemContract;
+import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
@@ -50,8 +50,8 @@ class TransactionExample {
       throw new Exception("Less than min capacity");
     }
 
-    CkbSystemContract systemContract =
-        SystemContract.getSystemContract(ckbService, Network.TESTNET);
+    SystemScriptCell systemScriptCell =
+        SystemContract.getSystemScriptCell(ckbService, Network.TESTNET);
     CellInputsAndBalanceSum cellInputsAndBalanceSum =
         getCellInputsWithBalanceSum(inputLockScript.scriptHash(), needCapacities);
     if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) < 0) {
@@ -66,7 +66,7 @@ class TransactionExample {
               new CellOutput(
                   receiver.capacity,
                   "0x",
-                  new Script(systemContract.systemScriptCellHash, Arrays.asList(blake2b))));
+                  new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
         }));
     if (cellInputsAndBalanceSum.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
@@ -78,7 +78,7 @@ class TransactionExample {
     Transaction transaction =
         new Transaction(
             "0",
-            Arrays.asList(new OutPoint(null, systemContract.systemScriptOutPoint)),
+            Arrays.asList(new OutPoint(null, systemScriptCell.outPoint)),
             cellInputsAndBalanceSum.inputs,
             cellOutputs,
             new ArrayList<>());
