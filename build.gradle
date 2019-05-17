@@ -24,7 +24,7 @@ plugins {
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'application'
 
-mainClassName = 'org.nervos.ckb.example.APIClient'
+mainClassName = 'org.nervos.ckb.RpcClient'
 applicationName = 'ckb-sdk-java'
 
 description 'ckb-sdk-java base project'

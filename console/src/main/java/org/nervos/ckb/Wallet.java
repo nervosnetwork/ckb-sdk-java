@@ -1,4 +1,4 @@
-package org.nervos.ckb.example;
+package org.nervos.ckb;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -16,17 +16,17 @@ import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
-public class TransactionExample {
+public class Wallet {
 
-  private static String MIN_CAPACITY = "6000000000";
+  private static final String MIN_CAPACITY = "6000000000";
 
-  private Script inputLockScript;
-  private String privateKeyHex;
+  private Script lockScript;
+  private String privateKey;
   private CKBService ckbService;
 
-  public TransactionExample(String privateKeyHex, Script inputLockScript, String nodeUrl) {
-    this.privateKeyHex = privateKeyHex;
-    this.inputLockScript = inputLockScript;
+  public Wallet(String privateKey, Script lockScript, String nodeUrl) {
+    this.privateKey = privateKey;
+    this.lockScript = lockScript;
     ckbService = CKBService.build(new HttpService(nodeUrl));
   }
 
@@ -42,27 +42,26 @@ public class TransactionExample {
   private Transaction generateTx(List<Receiver> receivers) throws Exception {
     BigInteger needCapacities = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
-      BigDecimal bigDecimal = new BigDecimal(receiver.capacity);
-      needCapacities = needCapacities.add(bigDecimal.toBigInteger());
+      needCapacities = needCapacities.add(receiver.capacity);
     }
-    if (needCapacities.compareTo(new BigDecimal(MIN_CAPACITY).toBigInteger()) < 0) {
+    if (needCapacities.compareTo(new BigInteger(MIN_CAPACITY)) < 0) {
       throw new Exception("Less than min capacity");
     }
 
-    SystemScriptCell systemScriptCell =
-        SystemContract.getSystemScriptCell(ckbService, Network.TESTNET);
-    CellInputs cellInputs = getCellInputs(inputLockScript.scriptHash(), needCapacities);
+    CellInputs cellInputs = getCellInputs(lockScript.scriptHash(), needCapacities);
     if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
 
+    SystemScriptCell systemScriptCell =
+        SystemContract.getSystemScriptCell(ckbService, Network.TESTNET);
     List<CellOutput> cellOutputs = new ArrayList<>();
+    AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
     for (Receiver receiver : receivers) {
-      AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
       String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
       cellOutputs.add(
           new CellOutput(
-              receiver.capacity,
+              receiver.capacity.toString(),
               "0x",
               new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
     }
@@ -70,19 +69,19 @@ public class TransactionExample {
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
           new CellOutput(
-              cellInputs.capacity.subtract(needCapacities).toString(10), "0x", inputLockScript));
+              cellInputs.capacity.subtract(needCapacities).toString(10), "0x", lockScript));
     }
 
     Transaction transaction =
         new Transaction(
             "0",
-            Arrays.asList(new OutPoint(null, systemScriptCell.outPoint)),
+            Collections.singletonList(new OutPoint(null, systemScriptCell.outPoint)),
             cellInputs.inputs,
             cellOutputs,
             new ArrayList<>());
 
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
-    Witness witness = new Witness(Numeric.toBigInt(privateKeyHex), txHash);
+    Witness witness = new Witness(Numeric.toBigInt(privateKey), txHash);
     for (CellInput cellInput : cellInputs.inputs) {
       transaction.witnesses.add(witness);
     }
@@ -133,9 +132,9 @@ public class TransactionExample {
 
   public static class Receiver {
     String address;
-    String capacity;
+    BigInteger capacity;
 
-    public Receiver(String address, String capacity) {
+    public Receiver(String address, BigInteger capacity) {
       this.address = address;
       this.capacity = capacity;
     }
