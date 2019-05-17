@@ -25,11 +25,23 @@ public interface CKBApi {
 
   Request<?, CkbBlockNumber> getTipBlockNumber();
 
+  Request<?, CkbEpoch> getCurrentEpoch();
+
+  Request<?, CkbEpoch> getEpochByNumber(String epochNumber);
+
   Request<?, CkbNodeInfo> localNodeInfo();
+
+  Request<?, CkbPeers> getPeers();
+
+  Request<?, CkbBlockchainInfo> getBlockchainInfo();
+
+  Request<?, CkbPeersState> getPeersState();
 
   Request<?, CkbTransactionHash> sendTransaction(Transaction transaction);
 
-  Request<?, CkbTransactionHash> traceTransaction(Transaction transaction);
+  Request<?, CkbCycles> dryRunTransaction(Transaction transaction);
 
-  Request<?, CkbTxTrace> getTransactionTrace(String transactionHash);
+  Request<?, CkbTxPoolInfo> txPoolInfo();
+
+  Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction);
 }

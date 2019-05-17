@@ -1,4 +1,4 @@
-package org.nervos.ckb;
+package service;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -68,9 +68,45 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetCurrentEpoch() throws IOException {
+    Epoch epoch = ckbService.getCurrentEpoch().send().getEpoch();
+    Assertions.assertNotNull(epoch);
+  }
+
+  @Test
+  public void testGetEpochByNumber() throws IOException {
+    Epoch epoch = ckbService.getEpochByNumber("0").send().getEpoch();
+    Assertions.assertNotNull(epoch);
+  }
+
+  @Test
   public void localNodeInfo() throws IOException {
     NodeInfo nodeInfo = ckbService.localNodeInfo().send().getNodeInfo();
     Assertions.assertNotNull(nodeInfo);
+  }
+
+  @Test
+  public void getPeers() throws IOException {
+    List<NodeInfo> peers = ckbService.getPeers().send().getPeers();
+    Assertions.assertNotNull(peers);
+  }
+
+  @Test
+  public void txPoolInfo() throws IOException {
+    TxPoolInfo txPoolInfo = ckbService.txPoolInfo().send().getTxPoolInfo();
+    Assertions.assertNotNull(txPoolInfo);
+  }
+
+  @Test
+  public void testGetBlockchainInfo() throws IOException {
+    BlockchainInfo blockchainInfo = ckbService.getBlockchainInfo().send().getBlockchainInfo();
+    Assertions.assertNotNull(blockchainInfo);
+  }
+
+  @Test
+  public void testGetPeersState() throws IOException {
+    List<PeerState> peerStates = ckbService.getPeersState().send().getPeersState();
+    Assertions.assertNotNull(peerStates);
   }
 
   @Test
@@ -90,7 +126,8 @@ public class RpcRequestTest {
         ckbService
             .getLiveCell(
                 new OutPoint(
-                    "0x321c1ca2887fb8eddaaa7e917399f71e63e03a1c83ff75ed12099a01115ea2ff", 0))
+                    new CellOutPoint(
+                        "0x321c1ca2887fb8eddaaa7e917399f71e63e03a1c83ff75ed12099a01115ea2ff", "0")))
             .send()
             .getCell();
     Assertions.assertNotNull(cell);
@@ -102,7 +139,39 @@ public class RpcRequestTest {
         ckbService
             .sendTransaction(
                 new Transaction(
-                    0,
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()))
+            .send()
+            .getTransactionHash();
+    Assertions.assertNotNull(transactionHash);
+  }
+
+  @Test
+  public void testDryRunTransaction() throws IOException {
+    Cycles cycles =
+        ckbService
+            .dryRunTransaction(
+                new Transaction(
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()))
+            .send()
+            .getCycles();
+    Assertions.assertNotNull(cycles);
+  }
+
+  @Test
+  public void testComputeTransactionHash() throws IOException {
+    String transactionHash =
+        ckbService
+            .computeTransactionHash(
+                new Transaction(
+                    "0",
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),

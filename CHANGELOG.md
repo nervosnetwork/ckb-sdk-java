@@ -1,6 +1,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.12.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.11.0...v0.12.0) (2019-05-18)
+
+### Features
+
+- Add example of sending capacity ([8f25ae7](https://github.com/nervosnetwork/ckb-sdk-java/pull/80/commits/8f25ae79aa281b0479ad7c081685326ab540a93d))
+
+- Generalize OutPoint struct to reference headers ([3bc8146](https://github.com/nervosnetwork/ckb-sdk-java/pull/80/commits/3bc81469fa8f735fe7da086220ddeac6b9b50b12))
+
+- Implement get_current_epoch RPC method ([a74ad7d](https://github.com/nervosnetwork/ckb-sdk-java/pull/80/commits/a74ad7def8f42dfbec30b89a87867034ad85eb09))
+
+- Implement get_epoch_by_number RPC method ([88723c3](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/88723c346a6c78468bdb4c1ac8f02aa29d2158df))
+
+- Implement get_peers RPC method ([2583cb8](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/2583cb867a1d1510d01e877a8b03ab0f803e45e4))
+
+- Implement State RPC methods ([e461a3f](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/e461a3f23f4b00a958b00ca82b57ca85ebb69781))
+
+- Secp256k1: Implement ECDSA sign ([d41b683](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/d41b683e6cea946d9d10cbab7bd481ab34a8b5c6))
+
+- Remove always success script ([f39a106](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/f39a1065be6c7d5edf9a75f691588cc7073ae7ae))
+
+- Implement tx_pool_info RPC method ([fee7130](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/fee7130ac2a840860a293f36586c71f23200c46f))
+
+- Implement dry_run_transaction RPC method  ([b8b48f6](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/b8b48f62c45e12d64bae928ba67673fbcba6b795))
+
+- Implement compute_transaction_hash RPC method  ([3edcb9c](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/3edcb9c1989e1f4f0c557df1c6faa18397d6164d))
+
+- Rename proposalsRoot to proposalsHash ([4e55ef9](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/4e55ef9e69485f56ecdf089117d93414358eb916))
+
+- Update the parameter of OutPoint ([7eeebad](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/7eeebad71b806841c76fc1950ce3c9808a6dc7d1))
+
+- Remove trace RPC methods ([be29cac](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/be29cac5cb3d5ea8074b24ed9def34ee203f0b10))
+
+- Add Prerequisites and Installation and Usage for README ([931f1af](https://github.com/nervosnetwork/ckb-sdk-java/pull/49/commits/931f1afdcb1d62f2bc4076af149c7a5f29a6d7ff))
+
+### Bug Fixes
+
+- Update transaction version data type to string
+
+### BREAKING CHANGES
+
+- Trace RPC methods are removed.
+
+
 # [v0.11.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.10.0...v0.11.0) (2019-05-14)
 
 ### Features

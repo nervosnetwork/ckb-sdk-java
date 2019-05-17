@@ -72,9 +72,26 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
+  public Request<?, CkbEpoch> getCurrentEpoch() {
+    return new Request<>(
+        "get_current_epoch", Collections.<String>emptyList(), apiService, CkbEpoch.class);
+  }
+
+  @Override
+  public Request<?, CkbEpoch> getEpochByNumber(String epochNumber) {
+    return new Request<>(
+        "get_epoch_by_number", Collections.singletonList(epochNumber), apiService, CkbEpoch.class);
+  }
+
+  @Override
   public Request<?, CkbNodeInfo> localNodeInfo() {
     return new Request<>(
         "local_node_info", Collections.<String>emptyList(), apiService, CkbNodeInfo.class);
+  }
+
+  @Override
+  public Request<?, CkbPeers> getPeers() {
+    return new Request<>("get_peers", Collections.<String>emptyList(), apiService, CkbPeers.class);
   }
 
   @Override
@@ -87,20 +104,33 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
-  public Request<?, CkbTransactionHash> traceTransaction(Transaction transaction) {
+  public Request<?, CkbCycles> dryRunTransaction(Transaction transaction) {
     return new Request<>(
-        "trace_transaction",
+        "dry_run_transaction", Collections.singletonList(transaction), apiService, CkbCycles.class);
+  }
+
+  public Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction) {
+    return new Request<>(
+        "_compute_transaction_hash",
         Collections.singletonList(transaction),
         apiService,
         CkbTransactionHash.class);
   }
 
   @Override
-  public Request<?, CkbTxTrace> getTransactionTrace(String transactionHash) {
+  public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
     return new Request<>(
-        "get_transaction_trace",
-        Collections.singletonList(transactionHash),
-        apiService,
-        CkbTxTrace.class);
+        "get_blockchain_info", Collections.emptyList(), apiService, CkbBlockchainInfo.class);
+  }
+
+  @Override
+  public Request<?, CkbPeersState> getPeersState() {
+    return new Request<>(
+        "get_peers_state", Collections.emptyList(), apiService, CkbPeersState.class);
+  }
+
+  @Override
+  public Request<?, CkbTxPoolInfo> txPoolInfo() {
+    return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
   }
 }

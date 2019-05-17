@@ -145,6 +145,16 @@ public final class Numeric {
     return result;
   }
 
+  public static String littleEndian(long number) {
+    byte[] bytes = Numeric.toBytesPadded(BigInteger.valueOf(number), 8);
+    for (int i = 0; i < bytes.length / 2; i++) {
+      byte temp = bytes[i];
+      bytes[i] = bytes[bytes.length - 1 - i];
+      bytes[bytes.length - 1 - i] = temp;
+    }
+    return toHexString(bytes);
+  }
+
   public static byte[] hexStringToByteArray(String input) {
     String cleanInput = cleanHexPrefix(input);
 

@@ -8,6 +8,7 @@ public class Header {
   public String difficulty;
   public String hash;
   public String number;
+  public String epoch;
 
   @JsonProperty("parent_hash")
   public String parentHash;
@@ -17,8 +18,8 @@ public class Header {
   @JsonProperty("transactions_root")
   public String transactionsRoot;
 
-  @JsonProperty("proposals_root")
-  public String proposalsRoot;
+  @JsonProperty("proposals_hash")
+  public String proposalsHash;
 
   @JsonProperty("witnesses_root")
   public String witnessesRoot;
