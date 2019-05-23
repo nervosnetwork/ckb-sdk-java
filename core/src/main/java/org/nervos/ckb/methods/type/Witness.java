@@ -10,6 +10,8 @@ import org.nervos.ckb.utils.Numeric;
 public class Witness {
   public List<String> data;
 
+  public Witness() {}
+
   public Witness(List<String> data) {
     this.data = data;
   }
