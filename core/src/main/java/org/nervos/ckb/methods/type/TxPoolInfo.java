@@ -11,4 +11,10 @@ public class TxPoolInfo {
 
   @JsonProperty("last_txs_updated_at")
   public String lastTxsUpdatedAt;
+
+  @JsonProperty("total_tx_cycles")
+  public String totalTxCycles;
+
+  @JsonProperty("total_tx_size")
+  public String totalTxSize;
 }
