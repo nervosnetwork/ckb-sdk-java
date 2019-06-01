@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.13.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.12.0...v0.13.0) (2019-06-01)
+
+### Features
+
+- Update tx_pool_info response data type ([beb4488](https://github.com/nervosnetwork/ckb-sdk-java/commit/beb4488562176bc4655e9575fcca47db8c4573cd))
+
+### BugFix
+
+- Add non-parameter constructor to witness ([6da731e](https://github.com/nervosnetwork/ckb-sdk-java/pull/87/commits/6da731eff63c860143585f7825f0d225f1806430))
+
+
 # [v0.12.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.11.0...v0.12.0) (2019-05-18)
 
 ### Features
