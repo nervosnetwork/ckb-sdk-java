@@ -5,7 +5,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-- Adapt CKB v0.13.0
+- Update tx_pool_info response data type
+
+### BugFix
+
+- Add non-parameter constructor to witness
+
 
 # [v0.12.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.11.0...v0.12.0) (2019-05-18)
 
