@@ -81,11 +81,7 @@ public class Wallet {
             new ArrayList<>());
 
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
-    Witness witness = new Witness(Numeric.toBigInt(privateKey), txHash);
-    for (int i = 0; i < cellInputs.inputs.size(); i++) {
-      transaction.witnesses.add(witness);
-    }
-    return transaction;
+    return transaction.sign(Numeric.toBigInt(privateKey), txHash);
   }
 
   private CellInputs getCellInputs(String lockHash, BigInteger needCapacities) throws Exception {
