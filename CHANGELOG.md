@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.14.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.13.0...v0.14.0) (2019-06-15)
+
+### Features
+
+- Add sign method for transaction ([8b66b05](https://github.com/nervosnetwork/ckb-sdk-java/commit/8b66b05bcfce07eabb161dcafb45f2371678100f))
+- Remove `args` from `CellInput` ([ce55fc3](https://github.com/nervosnetwork/ckb-sdk-java/pull/89/commits/ce55fc33aa912fe497678d1d05530bb99d9f759a))
+
 # [v0.13.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.12.0...v0.13.0) (2019-06-01)
 
 ### Features
