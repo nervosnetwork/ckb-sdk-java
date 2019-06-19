@@ -1,6 +1,7 @@
 package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Created by duanyytop on 2019-05-09. Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class BlockchainInfo {
@@ -16,5 +17,5 @@ public class BlockchainInfo {
 
   public String chain;
 
-  public AlertMessage alerts;
+  public List<AlertMessage> alerts;
 }
