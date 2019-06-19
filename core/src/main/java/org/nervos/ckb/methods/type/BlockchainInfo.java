@@ -15,5 +15,6 @@ public class BlockchainInfo {
   public String medianTime;
 
   public String chain;
-  public String warnings;
+
+  public AlertMessage alerts;
 }
