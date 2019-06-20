@@ -148,6 +148,14 @@ public class JsonRpcCKBApiImpl implements CKBService {
         CkbLockHashIndexState.class);
   }
 
+  public Request<?, CkbLockHashIndexState> indexLockHash(String lockHash) {
+    return new Request<>(
+        "index_lock_hash",
+        Collections.singletonList(lockHash),
+        apiService,
+        CkbLockHashIndexState.class);
+  }
+
   public Request<?, CkbLockHashs> deindexLockHash(String lockHash) {
     return new Request<>(
         "deindex_lock_hash", Collections.singletonList(lockHash), apiService, CkbLockHashs.class);

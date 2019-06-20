@@ -53,6 +53,8 @@ public interface CKBApi {
   /* Indexer RPC */
   Request<?, CkbLockHashIndexState> indexLockHash(String lockHash, String blockNumber);
 
+  Request<?, CkbLockHashIndexState> indexLockHash(String lockHash);
+
   Request<?, CkbLockHashs> deindexLockHash(String lockHash);
 
   Request<?, CkbLockHashIndexStates> getLockHashIndexStates();
