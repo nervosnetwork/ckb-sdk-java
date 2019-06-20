@@ -1,4 +1,6 @@
-package org.nervos.ckb.methods.type;
+package org.nervos.ckb.methods.type.cell;
+
+import org.nervos.ckb.methods.type.Script;
 
 /** Created by duanyytop on 2019-01-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class CellOutput {

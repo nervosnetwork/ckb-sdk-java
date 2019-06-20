@@ -2,8 +2,8 @@ package org.nervos.ckb.system;
 
 import java.io.IOException;
 import org.nervos.ckb.crypto.Hash;
-import org.nervos.ckb.methods.type.CellOutPoint;
-import org.nervos.ckb.methods.type.Transaction;
+import org.nervos.ckb.methods.type.cell.CellOutPoint;
+import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.utils.Network;

@@ -10,6 +10,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.methods.type.*;
+import org.nervos.ckb.methods.type.cell.Cell;
+import org.nervos.ckb.methods.type.cell.CellOutPoint;
+import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
+import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 

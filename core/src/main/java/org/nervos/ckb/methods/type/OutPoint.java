@@ -1,6 +1,7 @@
 package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.nervos.ckb.methods.type.cell.CellOutPoint;
 
 /** Created by duanyytop on 2019-01-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class OutPoint {

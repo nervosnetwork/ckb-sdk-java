@@ -7,7 +7,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
-import org.nervos.ckb.methods.type.*;
+import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.methods.type.Script;
+import org.nervos.ckb.methods.type.Witness;
+import org.nervos.ckb.methods.type.cell.CellInput;
+import org.nervos.ckb.methods.type.cell.CellOutPoint;
+import org.nervos.ckb.methods.type.cell.CellOutput;
+import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 /** Created by duanyytop on 2019-06-04. Copyright © 2019 Nervos Foundation. All rights reserved. */
