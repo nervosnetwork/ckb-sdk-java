@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.15.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.14.0...v0.15.0) (2019-06-29)
+
+### Features
+
+- Add index related rpc ([b77194c](https://github.com/nervosnetwork/ckb-sdk-java/commit/b77194c8fcbaf81dda44877d28307ed761335137))
+- Update `get_blockchain_info` rpc ([80dbfe2](https://github.com/nervosnetwork/ckb-sdk-java/commit/80dbfe2c442c3718c080a4b6a4d576dbf8957d77))
+
 # [v0.14.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.13.0...v0.14.0) (2019-06-15)
 
 ### Features
