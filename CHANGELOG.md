@@ -7,6 +7,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - Add index related rpc ([b77194c](https://github.com/nervosnetwork/ckb-sdk-java/commit/b77194c8fcbaf81dda44877d28307ed761335137))
 - Update `get_blockchain_info` rpc ([80dbfe2](https://github.com/nervosnetwork/ckb-sdk-java/commit/80dbfe2c442c3718c080a4b6a4d576dbf8957d77))
+- Use signRecoverable method to sign transaction ([e004f98](https://github.com/nervosnetwork/ckb-sdk-java/commit/e004f986cb6ec5f3ac141663e933b1ff1e632957))
 
 # [v0.14.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.13.0...v0.14.0) (2019-06-15)
 
