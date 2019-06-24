@@ -6,20 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Epoch {
   public String number;
 
-  @JsonProperty("block_reward")
-  public String blockReward;
-
-  @JsonProperty("last_block_hash_in_previous_epoch")
-  public String lastBlockHashInPreviousEpoch;
+  @JsonProperty("epoch_reward")
+  public String epochReward;
 
   @JsonProperty("start_number")
   public String startNumber;
 
   public String length;
   public String difficulty;
-
-  @JsonProperty("remainder_reward")
-  public String remainderReward;
 
   public Epoch() {}
 }
