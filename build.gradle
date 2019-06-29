@@ -1,7 +1,7 @@
 buildscript {
 
-    ext.bouncycastleVersion = '1.61'
-    ext.rxjavaVersion = '2.2.8'
+    ext.bouncycastleVersion = '1.62'
+    ext.rxjavaVersion = '2.2.9'
     ext.gsonVersion = '2.8.5'
     ext.jacksonVersion = '2.9.9'
     ext.okhttpVersion = '3.14.2'
@@ -35,7 +35,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.14.0'
+    version '0.15.0'
 
     apply plugin: 'java'
 

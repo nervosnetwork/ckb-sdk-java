@@ -1,4 +1,4 @@
-package org.nervos.ckb.methods.type;
+package org.nervos.ckb.methods.type.transaction;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -7,6 +7,10 @@ import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
+import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.methods.type.Witness;
+import org.nervos.ckb.methods.type.cell.CellInput;
+import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 
 /** Created by duanyytop on 2018-12-21. Copyright © 2018 Nervos Foundation. All rights reserved. */
@@ -68,9 +72,8 @@ public class Transaction {
 
       String signature =
           Numeric.toHexString(
-              Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getDerSignature());
+              Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
       witness.data = new ArrayList<>();
-      witness.data.add(publicKey);
       witness.data.add(signature);
       witness.data.addAll(oldData);
       signedWitnesses.add(witness);

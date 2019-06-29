@@ -5,7 +5,7 @@ import java.util.Collections;
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
 import org.nervos.ckb.methods.type.OutPoint;
-import org.nervos.ckb.methods.type.Transaction;
+import org.nervos.ckb.methods.type.transaction.Transaction;
 
 /** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class JsonRpcCKBApiImpl implements CKBService {
@@ -16,6 +16,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
     this.apiService = apiService;
   }
 
+  /** Chain RPC */
   @Override
   public Request<?, CkbBlock> getBlock(String blockHash) {
     return new Request<>(
@@ -83,15 +84,23 @@ public class JsonRpcCKBApiImpl implements CKBService {
         "get_epoch_by_number", Collections.singletonList(epochNumber), apiService, CkbEpoch.class);
   }
 
+  /** Stats RPC */
   @Override
-  public Request<?, CkbNodeInfo> localNodeInfo() {
+  public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
     return new Request<>(
-        "local_node_info", Collections.<String>emptyList(), apiService, CkbNodeInfo.class);
+        "get_blockchain_info", Collections.emptyList(), apiService, CkbBlockchainInfo.class);
   }
 
   @Override
-  public Request<?, CkbPeers> getPeers() {
-    return new Request<>("get_peers", Collections.<String>emptyList(), apiService, CkbPeers.class);
+  public Request<?, CkbPeersState> getPeersState() {
+    return new Request<>(
+        "get_peers_state", Collections.emptyList(), apiService, CkbPeersState.class);
+  }
+
+  /** Pool RPC */
+  @Override
+  public Request<?, CkbTxPoolInfo> txPoolInfo() {
+    return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
   }
 
   @Override
@@ -103,6 +112,19 @@ public class JsonRpcCKBApiImpl implements CKBService {
         CkbTransactionHash.class);
   }
 
+  /** Net RPC */
+  @Override
+  public Request<?, CkbNodeInfo> localNodeInfo() {
+    return new Request<>(
+        "local_node_info", Collections.<String>emptyList(), apiService, CkbNodeInfo.class);
+  }
+
+  @Override
+  public Request<?, CkbPeers> getPeers() {
+    return new Request<>("get_peers", Collections.<String>emptyList(), apiService, CkbPeers.class);
+  }
+
+  /** Experiment RPC */
   @Override
   public Request<?, CkbCycles> dryRunTransaction(Transaction transaction) {
     return new Request<>(
@@ -117,20 +139,51 @@ public class JsonRpcCKBApiImpl implements CKBService {
         CkbTransactionHash.class);
   }
 
-  @Override
-  public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
+  /* Indexer RPC */
+  public Request<?, CkbLockHashIndexState> indexLockHash(String lockHash, String blockNumber) {
     return new Request<>(
-        "get_blockchain_info", Collections.emptyList(), apiService, CkbBlockchainInfo.class);
+        "index_lock_hash",
+        Arrays.asList(lockHash, blockNumber),
+        apiService,
+        CkbLockHashIndexState.class);
   }
 
-  @Override
-  public Request<?, CkbPeersState> getPeersState() {
+  public Request<?, CkbLockHashIndexState> indexLockHash(String lockHash) {
     return new Request<>(
-        "get_peers_state", Collections.emptyList(), apiService, CkbPeersState.class);
+        "index_lock_hash",
+        Collections.singletonList(lockHash),
+        apiService,
+        CkbLockHashIndexState.class);
   }
 
-  @Override
-  public Request<?, CkbTxPoolInfo> txPoolInfo() {
-    return new Request<>("tx_pool_info", Collections.emptyList(), apiService, CkbTxPoolInfo.class);
+  public Request<?, CkbLockHashs> deindexLockHash(String lockHash) {
+    return new Request<>(
+        "deindex_lock_hash", Collections.singletonList(lockHash), apiService, CkbLockHashs.class);
+  }
+
+  public Request<?, CkbLockHashIndexStates> getLockHashIndexStates() {
+    return new Request<>(
+        "get_lock_hash_index_states",
+        Collections.emptyList(),
+        apiService,
+        CkbLockHashIndexStates.class);
+  }
+
+  public Request<?, CkbLiveCells> getLiveCellsByLockHash(
+      String lockHash, String page, String pageSize, boolean reverseOrder) {
+    return new Request<>(
+        "get_live_cells_by_lock_hash",
+        Arrays.asList(lockHash, page, pageSize, reverseOrder),
+        apiService,
+        CkbLiveCells.class);
+  }
+
+  public Request<?, CkbCellTransactions> getTransactionsByLockHash(
+      String lockHash, String page, String pageSize, boolean reverseOrder) {
+    return new Request<>(
+        "get_transactions_by_lock_hash",
+        Arrays.asList(lockHash, page, pageSize, reverseOrder),
+        apiService,
+        CkbCellTransactions.class);
   }
 }

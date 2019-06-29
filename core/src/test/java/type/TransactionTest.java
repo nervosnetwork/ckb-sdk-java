@@ -7,7 +7,13 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
-import org.nervos.ckb.methods.type.*;
+import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.methods.type.Script;
+import org.nervos.ckb.methods.type.Witness;
+import org.nervos.ckb.methods.type.cell.CellInput;
+import org.nervos.ckb.methods.type.cell.CellOutPoint;
+import org.nervos.ckb.methods.type.cell.CellOutput;
+import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 /** Created by duanyytop on 2019-06-04. Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -59,10 +65,7 @@ class TransactionTest {
     Assertions.assertEquals(signedTx.witnesses.size(), tx.inputs.size());
     Assertions.assertEquals(
         signedTx.witnesses.get(0).data.get(0),
-        "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
-    Assertions.assertEquals(
-        signedTx.witnesses.get(0).data.get(1),
-        "0x304402202c643579e47045be050d3842ed9270151af8885e33954bddad0e53e81d1c2dbe02202dc637877a8302110846ebc6a16d9148c106e25f945063ad1c4d4db2b6952408");
+        "0x2c643579e47045be050d3842ed9270151af8885e33954bddad0e53e81d1c2dbe2dc637877a8302110846ebc6a16d9148c106e25f945063ad1c4d4db2b695240800");
   }
 
   @Test
@@ -117,16 +120,14 @@ class TransactionTest {
     Assertions.assertEquals(signedTx.witnesses.size(), tx.inputs.size());
 
     List<String> expectedData = new ArrayList<>();
-    expectedData.add("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
     expectedData.add(
-        "0x3044022068a57373f4e98aecfb9501ec1cc4a78c048361332e4b6706bdc1469d30bd52ea022042feca657dd1de1eff384e6ed24a6910b011d49d855bd1ed209f5ce77d8116ac");
+        "0x68a57373f4e98aecfb9501ec1cc4a78c048361332e4b6706bdc1469d30bd52ea42feca657dd1de1eff384e6ed24a6910b011d49d855bd1ed209f5ce77d8116ac01");
     expectedData.add("0x4107bd23eedb9f2a2a749108f6bb9720d745d50f044cc4814bafe189a01fe6fb");
     Assertions.assertEquals(signedTx.witnesses.get(0).data, expectedData);
 
     expectedData = new ArrayList<>();
-    expectedData.add("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
     expectedData.add(
-        "0x304402203b13c362f254e7becb0e731e4756e742bfddbf2f5d7c16cd609ba127d2b7e07f02201d588c3a7132fc20c478e2de14f6370fbb9e4402d240e4b32c8d671177e1f311");
+        "0x3b13c362f254e7becb0e731e4756e742bfddbf2f5d7c16cd609ba127d2b7e07f1d588c3a7132fc20c478e2de14f6370fbb9e4402d240e4b32c8d671177e1f31101");
     Assertions.assertEquals(signedTx.witnesses.get(1).data, expectedData);
   }
 
