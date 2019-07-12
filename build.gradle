@@ -4,7 +4,7 @@ buildscript {
     ext.rxjavaVersion = '2.2.10'
     ext.gsonVersion = '2.8.5'
     ext.jacksonVersion = '2.9.9.1'
-    ext.okhttpVersion = '3.14.2'
+    ext.okhttpVersion = '4.0.0'
     ext.loggingOkhttpVersion = '4.0.0'
     ext.slf4jVersion = '1.7.26'
 
