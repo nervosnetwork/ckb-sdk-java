@@ -11,7 +11,7 @@ buildscript {
     ext.junitVersion = '5.4.2'
 
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
     }
 }
 
