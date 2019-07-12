@@ -8,7 +8,7 @@ buildscript {
     ext.loggingOkhttpVersion = '4.0.0'
     ext.slf4jVersion = '1.7.26'
 
-    ext.junitVersion = '5.4.2'
+    ext.junitVersion = '5.5.0'
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
