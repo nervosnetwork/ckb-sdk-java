@@ -3,6 +3,7 @@ package org.nervos.ckb.address;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
@@ -16,15 +17,6 @@ public class AddressTest {
     String hash =
         utils.blake160("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
     Assertions.assertEquals("36c329ed630d6ce750712a477543672adab57f4c", hash);
-  }
-
-  @Test
-  public void testConvertBits() {
-    byte[] from = {(byte) 0b11001101, (byte) 0b11011101};
-    byte[] expectedTo = {0b00011001, 0b00010111, 0b00001110, 0b00010000};
-    AddressUtils utils = new AddressUtils(Network.TESTNET);
-    byte[] convertBits = utils.convertBits(from, 8, 5, false);
-    Assertions.assertArrayEquals(expectedTo, convertBits);
   }
 
   @Test
@@ -45,11 +37,21 @@ public class AddressTest {
   }
 
   @Test
+  public void testArgToAddressTestnet() throws AddressFormatException {
+    String expected = "ckt1q9gry5zg95w42h05rnvm50g0x8c2rt9reu0zjkhltdzxlsz47hacdwv77jds9waehx";
+    String args = "0x2d1d555df41cd9ba3d0f31f0a1aca3cf1e295aff5b446fc055f5fb86b99ef49b";
+    AddressUtils utils = new AddressUtils(Network.TESTNET);
+    String actual = utils.generate(args);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
   public void testPublicKeyHashToAddressTestnet() {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     Assertions.assertEquals(
         "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf",
-        utils.generate("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
+        utils.generateFromPublicKey(
+            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
 
   @Test
@@ -57,7 +59,8 @@ public class AddressTest {
     AddressUtils utils = new AddressUtils(Network.MAINNET);
     Assertions.assertEquals(
         "ckb1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6vqdd7em",
-        utils.generate("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
+        utils.generateFromPublicKey(
+            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
 
   @Test
@@ -70,7 +73,8 @@ public class AddressTest {
                 true)
             .toString(16);
     Assertions.assertEquals(
-        "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf", utils.generate(publicKey));
+        "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf",
+        utils.generateFromPublicKey(publicKey));
   }
 
   @Test
