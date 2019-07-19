@@ -26,16 +26,13 @@ public class AddressUtils {
     this.network = network;
   }
 
-  public String generate(String publicKey) throws AddressFormatException {
-    // Payload: type(01) | bin-idx("P2PH") | pubkey blake160
-    String payload = TYPE + strToAscii(BIN_IDX) + blake160(publicKey);
-    byte[] data = Numeric.hexStringToByteArray(payload);
-    return Bech32.encode(prefix(), convertBits(Bytes.asList(data), 8, 5, true));
+  public String generateFromPublicKey(String publicKey) throws AddressFormatException {
+    return generate(blake160(publicKey));
   }
 
-  public String generateFromArg(String arg) throws AddressFormatException {
-    // Payload: type(01) | bin-idx("P2PH") | arg
-    String payload = TYPE + strToAscii(BIN_IDX) + Numeric.cleanHexPrefix(arg);
+  public String generate(String args) throws AddressFormatException {
+    // Payload: type(01) | bin-idx("P2PH") | args
+    String payload = TYPE + strToAscii(BIN_IDX) + Numeric.cleanHexPrefix(args);
     byte[] data = Numeric.hexStringToByteArray(payload);
     return Bech32.encode(prefix(), convertBits(Bytes.asList(data), 8, 5, true));
   }

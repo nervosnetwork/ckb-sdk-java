@@ -39,9 +39,9 @@ public class AddressTest {
   @Test
   public void testArgToAddressTestnet() throws AddressFormatException {
     String expected = "ckt1q9gry5zg95w42h05rnvm50g0x8c2rt9reu0zjkhltdzxlsz47hacdwv77jds9waehx";
-    String arg = "0x2d1d555df41cd9ba3d0f31f0a1aca3cf1e295aff5b446fc055f5fb86b99ef49b";
+    String args = "0x2d1d555df41cd9ba3d0f31f0a1aca3cf1e295aff5b446fc055f5fb86b99ef49b";
     AddressUtils utils = new AddressUtils(Network.TESTNET);
-    String actual = utils.generateFromArg(arg);
+    String actual = utils.generate(args);
     Assertions.assertEquals(expected, actual);
   }
 
@@ -50,7 +50,8 @@ public class AddressTest {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     Assertions.assertEquals(
         "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf",
-        utils.generate("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
+        utils.generateFromPublicKey(
+            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
 
   @Test
@@ -58,7 +59,8 @@ public class AddressTest {
     AddressUtils utils = new AddressUtils(Network.MAINNET);
     Assertions.assertEquals(
         "ckb1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6vqdd7em",
-        utils.generate("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
+        utils.generateFromPublicKey(
+            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
 
   @Test
@@ -71,7 +73,8 @@ public class AddressTest {
                 true)
             .toString(16);
     Assertions.assertEquals(
-        "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf", utils.generate(publicKey));
+        "ckt1q9gry5zgxmpjnmtrp4kww5r39frh2sm89tdt2l6v234ygf",
+        utils.generateFromPublicKey(publicKey));
   }
 
   @Test
