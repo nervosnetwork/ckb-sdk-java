@@ -9,7 +9,7 @@ buildscript {
     ext.slf4jVersion = '1.7.26'
     ext.guavaVersion = '28.0-jre'
 
-    ext.junitVersion = '5.5.0'
+    ext.junitVersion = '5.5.1'
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
