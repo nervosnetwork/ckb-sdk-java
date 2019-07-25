@@ -13,12 +13,13 @@ import org.nervos.ckb.utils.Numeric;
  * Created by duanyytop on 2019-04-18. Copyright © 2018 Nervos Foundation. All rights reserved.
  *
  * <p>AddressUtils based on CKB Address Format
- * [RFC](https://github.com/nervosnetwork/rfcs/blob/4f87099a0b1a02a8bc077fc7bea15ce3d9def120/rfcs/0000-address-format/0000-address-format.md),
+ * [RFC](https://github.com/nervosnetwork/rfcs/blob/c6b74309e071fd631c12c5f7152a265d7db833f6/rfcs/0000-address-format/0000-address-format.md),
  * and [Common Address Format](https://github.com/nervosnetwork/ckb/wiki/Common-Address-Format).
+ * Currently we implement the predefined format for type 0x01 and code hash index 0x00.
  */
 public class AddressUtils {
   private static final String TYPE = "01";
-  private static final String BIN_IDX = "P2PH";
+  private static final String CODE_HASH_IDX = "00";
 
   private Network network;
 
@@ -31,8 +32,8 @@ public class AddressUtils {
   }
 
   public String generate(String args) throws AddressFormatException {
-    // Payload: type(01) | bin-idx("P2PH") | args
-    String payload = TYPE + strToAscii(BIN_IDX) + Numeric.cleanHexPrefix(args);
+    // Payload: type(01) | code hash index(00, P2PH) | args
+    String payload = TYPE + CODE_HASH_IDX + Numeric.cleanHexPrefix(args);
     byte[] data = Numeric.hexStringToByteArray(payload);
     return Bech32.encode(prefix(), convertBits(Bytes.asList(data), 8, 5, true));
   }
@@ -49,7 +50,7 @@ public class AddressUtils {
   public String getBlake160FromAddress(String address) throws AddressFormatException {
     Bech32.Bech32Data bech32Data = parse(address);
     String payload = Numeric.toHexString(bech32Data.data);
-    String prefix = TYPE + strToAscii(BIN_IDX);
+    String prefix = TYPE + CODE_HASH_IDX;
     String blake160 = payload.replace(prefix, "");
     return blake160;
   }
