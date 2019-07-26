@@ -32,6 +32,10 @@ public interface CKBApi {
 
   Request<?, CkbEpoch> getEpochByNumber(String epochNumber);
 
+  Request<?, CkbHeader> getHeader(String blockHash);
+
+  Request<?, CkbHeader> getHeaderByNumber(String blockNumber);
+
   /** Stats RPC */
   Request<?, CkbBlockchainInfo> getBlockchainInfo();
 

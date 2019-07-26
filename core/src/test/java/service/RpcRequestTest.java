@@ -90,6 +90,19 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetHeader() throws IOException {
+    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    Header header = ckbService.getHeader(blockHash).send().getHeader();
+    Assertions.assertNotNull(header);
+  }
+
+  @Test
+  public void testGetHeaderByNumber() throws IOException {
+    Header header = ckbService.getHeaderByNumber("1").send().getHeader();
+    Assertions.assertNotNull(header);
+  }
+
+  @Test
   public void localNodeInfo() throws IOException {
     NodeInfo nodeInfo = ckbService.localNodeInfo().send().getNodeInfo();
     Assertions.assertNotNull(nodeInfo);

@@ -93,6 +93,21 @@ public class JsonRpcCKBApiImpl implements CKBService {
         "get_epoch_by_number", Collections.singletonList(epochNumber), apiService, CkbEpoch.class);
   }
 
+  @Override
+  public Request<?, CkbHeader> getHeader(String blockHash) {
+    return new Request<>(
+        "get_header", Collections.singletonList(blockHash), apiService, CkbHeader.class);
+  }
+
+  @Override
+  public Request<?, CkbHeader> getHeaderByNumber(String blockNumber) {
+    return new Request<>(
+        "get_header_by_number",
+        Collections.singletonList(blockNumber),
+        apiService,
+        CkbHeader.class);
+  }
+
   /** Stats RPC */
   @Override
   public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
