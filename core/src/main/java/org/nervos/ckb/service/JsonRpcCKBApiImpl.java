@@ -45,6 +45,15 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
+  public Request<?, CkbCellbaseOutputCapacity> getCellbaseOutputCapacityDetails(String blockHash) {
+    return new Request<>(
+        "get_cellbase_output_capacity_details",
+        Collections.singletonList(blockHash),
+        apiService,
+        CkbCellbaseOutputCapacity.class);
+  }
+
+  @Override
   public Request<?, CkbHeader> getTipHeader() {
     return new Request<>(
         "get_tip_header", Collections.<String>emptyList(), apiService, CkbHeader.class);

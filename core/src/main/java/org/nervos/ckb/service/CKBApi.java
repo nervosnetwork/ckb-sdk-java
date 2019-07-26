@@ -17,6 +17,8 @@ public interface CKBApi {
 
   Request<?, CkbBlockHash> getBlockHash(String blockNumber);
 
+  Request<?, CkbCellbaseOutputCapacity> getCellbaseOutputCapacityDetails(String blockHash);
+
   Request<?, CkbHeader> getTipHeader();
 
   Request<?, CkbCells> getCellsByLockHash(

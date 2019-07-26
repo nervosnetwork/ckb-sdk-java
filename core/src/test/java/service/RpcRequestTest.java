@@ -41,6 +41,14 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetCellbaseOutputCapacityDetails() throws IOException {
+    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    CellbaseOutputCapacity cellbaseOutputCapacity =
+        ckbService.getCellbaseOutputCapacityDetails(blockHash).send().getCellbaseOutputCapacity();
+    Assertions.assertNotNull(cellbaseOutputCapacity);
+  }
+
+  @Test
   public void testBlockAndTransaction() throws IOException {
     String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
     Block block = ckbService.getBlock(blockHash).send().getBlock();
