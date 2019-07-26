@@ -10,6 +10,17 @@ public class BannedAddress {
   @JsonProperty("ban_time")
   public String banTime;
 
-  public String absolute;
+  public boolean absolute;
   public String reason;
+
+  public BannedAddress() {}
+
+  public BannedAddress(
+      String address, String command, String banTime, boolean absolute, String reason) {
+    this.address = address;
+    this.command = command;
+    this.banTime = banTime;
+    this.absolute = absolute;
+    this.reason = reason;
+  }
 }

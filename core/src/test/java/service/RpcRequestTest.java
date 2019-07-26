@@ -116,7 +116,8 @@ public class RpcRequestTest {
 
   @Test
   public void testSetBan() throws IOException {
-    BannedAddress bannedAddress = new BannedAddress();
+    BannedAddress bannedAddress =
+        new BannedAddress("192.168.0.2", "insert", "1840546800000", true, "test set_ban rpc");
     String banResult = ckbService.setBan(bannedAddress).send().getBanResult();
     Assertions.assertNull(banResult);
   }
