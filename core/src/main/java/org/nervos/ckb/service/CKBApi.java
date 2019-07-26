@@ -52,7 +52,7 @@ public interface CKBApi {
 
   Request<?, CkbBannedResult> setBan(BannedAddress bannedAddress);
 
-  Request<?, CkbBannedAddresses> getBannedAddress();
+  Request<?, CkbBannedResultAddresses> getBannedAddress();
 
   Request<?, CkbPeers> getPeers();
 

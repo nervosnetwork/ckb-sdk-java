@@ -124,7 +124,8 @@ public class RpcRequestTest {
 
   @Test
   public void testGetBannedAddress() throws IOException {
-    List<BannedAddress> bannedAddresses = ckbService.getBannedAddress().send().getBannedAddress();
+    List<BannedResultAddress> bannedAddresses =
+        ckbService.getBannedAddress().send().getBannedResultAddress();
     Assertions.assertNotNull(bannedAddresses);
   }
 

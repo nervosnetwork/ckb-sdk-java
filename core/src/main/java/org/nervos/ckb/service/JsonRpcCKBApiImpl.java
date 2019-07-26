@@ -129,9 +129,9 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
-  public Request<?, CkbBannedAddresses> getBannedAddress() {
+  public Request<?, CkbBannedResultAddresses> getBannedAddress() {
     return new Request<>(
-        "get_banned_address", Collections.emptyList(), apiService, CkbBannedAddresses.class);
+        "get_banned_address", Collections.emptyList(), apiService, CkbBannedResultAddresses.class);
   }
 
   /** Pool RPC */
