@@ -41,6 +41,14 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetCellbaseOutputCapacityDetails() throws IOException {
+    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    CellbaseOutputCapacity cellbaseOutputCapacity =
+        ckbService.getCellbaseOutputCapacityDetails(blockHash).send().getCellbaseOutputCapacity();
+    Assertions.assertNotNull(cellbaseOutputCapacity);
+  }
+
+  @Test
   public void testBlockAndTransaction() throws IOException {
     String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
     Block block = ckbService.getBlock(blockHash).send().getBlock();
@@ -82,6 +90,19 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetHeader() throws IOException {
+    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    Header header = ckbService.getHeader(blockHash).send().getHeader();
+    Assertions.assertNotNull(header);
+  }
+
+  @Test
+  public void testGetHeaderByNumber() throws IOException {
+    Header header = ckbService.getHeaderByNumber("1").send().getHeader();
+    Assertions.assertNotNull(header);
+  }
+
+  @Test
   public void localNodeInfo() throws IOException {
     NodeInfo nodeInfo = ckbService.localNodeInfo().send().getNodeInfo();
     Assertions.assertNotNull(nodeInfo);
@@ -91,6 +112,21 @@ public class RpcRequestTest {
   public void getPeers() throws IOException {
     List<NodeInfo> peers = ckbService.getPeers().send().getPeers();
     Assertions.assertNotNull(peers);
+  }
+
+  @Test
+  public void testSetBan() throws IOException {
+    BannedAddress bannedAddress =
+        new BannedAddress("192.168.0.2", "insert", "1840546800000", true, "test set_ban rpc");
+    String banResult = ckbService.setBan(bannedAddress).send().getBanResult();
+    Assertions.assertNull(banResult);
+  }
+
+  @Test
+  public void testGetBannedAddress() throws IOException {
+    List<BannedResultAddress> bannedAddresses =
+        ckbService.getBannedAddress().send().getBannedResultAddresses();
+    Assertions.assertNotNull(bannedAddresses);
   }
 
   @Test
