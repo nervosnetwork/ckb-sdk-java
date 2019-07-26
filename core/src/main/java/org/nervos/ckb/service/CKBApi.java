@@ -2,6 +2,7 @@ package org.nervos.ckb.service;
 
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
+import org.nervos.ckb.methods.type.BannedAddress;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 
@@ -48,6 +49,10 @@ public interface CKBApi {
 
   /** Net RPC */
   Request<?, CkbNodeInfo> localNodeInfo();
+
+  Request<?, CkbBannedResult> setBan(BannedAddress bannedAddress);
+
+  Request<?, CkbBannedAddresses> getBannedAddress();
 
   Request<?, CkbPeers> getPeers();
 

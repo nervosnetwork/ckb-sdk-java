@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
+import org.nervos.ckb.methods.type.BannedAddress;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 
@@ -119,6 +120,18 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbPeersState> getPeersState() {
     return new Request<>(
         "get_peers_state", Collections.emptyList(), apiService, CkbPeersState.class);
+  }
+
+  @Override
+  public Request<?, CkbBannedResult> setBan(BannedAddress bannedAddress) {
+    return new Request<>(
+        "set_ban", Collections.singletonList(bannedAddress), apiService, CkbBannedResult.class);
+  }
+
+  @Override
+  public Request<?, CkbBannedAddresses> getBannedAddress() {
+    return new Request<>(
+        "get_banned_address", Collections.emptyList(), apiService, CkbBannedAddresses.class);
   }
 
   /** Pool RPC */

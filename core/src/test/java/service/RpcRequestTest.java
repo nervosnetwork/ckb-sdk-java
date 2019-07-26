@@ -115,6 +115,19 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testSetBan() throws IOException {
+    BannedAddress bannedAddress = new BannedAddress();
+    String banResult = ckbService.setBan(bannedAddress).send().getBanResult();
+    Assertions.assertNull(banResult);
+  }
+
+  @Test
+  public void testGetBannedAddress() throws IOException {
+    List<BannedAddress> bannedAddresses = ckbService.getBannedAddress().send().getBannedAddress();
+    Assertions.assertNotNull(bannedAddresses);
+  }
+
+  @Test
   public void txPoolInfo() throws IOException {
     TxPoolInfo txPoolInfo = ckbService.txPoolInfo().send().getTxPoolInfo();
     Assertions.assertNotNull(txPoolInfo);
