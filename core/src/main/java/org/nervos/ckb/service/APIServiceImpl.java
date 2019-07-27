@@ -9,11 +9,7 @@ import org.nervos.ckb.methods.Response;
 import org.nervos.ckb.utils.Async;
 import org.nervos.ckb.utils.ObjectMapperFactory;
 
-/**
- * Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved.
- *
- * <p>Base api service implementation.
- */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public abstract class APIServiceImpl implements APIService {
 
   private final ObjectMapper objectMapper;

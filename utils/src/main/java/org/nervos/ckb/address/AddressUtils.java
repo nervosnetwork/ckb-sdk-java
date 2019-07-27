@@ -10,7 +10,7 @@ import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
 /**
- * Created by duanyytop on 2019-04-18. Copyright © 2018 Nervos Foundation. All rights reserved.
+ * Copyright © 2018 Nervos Foundation. All rights reserved.
  *
  * <p>AddressUtils based on CKB Address Format
  * [RFC](https://github.com/nervosnetwork/rfcs/blob/c6b74309e071fd631c12c5f7152a265d7db833f6/rfcs/0000-address-format/0000-address-format.md),

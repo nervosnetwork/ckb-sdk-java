@@ -15,7 +15,7 @@ import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 
-/** Created by duanyytop on 2019-04-24. Copyright © 2019 Nervos Foundation. All rights reserved. */
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @Ignore
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RpcRequestTest {
