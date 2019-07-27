@@ -5,11 +5,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Feature
 
-* Add hash_type to Script
+* Add hash_type to Script ([6c84642](https://github.com/nervosnetwork/ckb-sdk-java/commit/6c84642a413e15cba82a62e67277cc507d4efca1))
+* Update address format generator according recent RFC ([cd93318](https://github.com/nervosnetwork/ckb-sdk-java/commit/cd93318d470d8437201b004a3834720f95b74861))
+* Add get_cellbase_output_capacity_details rpc ([4d15c22](https://github.com/nervosnetwork/ckb-sdk-java/commit/4d15c22508edb79c1b8e8117c52573376da0427d))
+* Add get_header and get_header_by_number rpcs ([52663f0](https://github.com/nervosnetwork/ckb-sdk-java/commit/52663f0b87832550107ddcd880c25c8068ca1a03))
+* Add set_ban and get_banned_address rpcs ([ea424e5](https://github.com/nervosnetwork/ckb-sdk-java/commit/ea424e5a9e4ae4d048c888e2f2009b6717abbe1b))
 
 ### Bugfix
 
-* Fix bech32 covertBits with any length parameter
+* Fix bech32 covertBits with any length parameter ([217897f](https://github.com/nervosnetwork/ckb-sdk-java/commit/217897f3b5ab3b8bea775886832f09e5c9691823))
 
 # [v0.16.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.15.0...v0.16.0) (2019-07-13)
 
