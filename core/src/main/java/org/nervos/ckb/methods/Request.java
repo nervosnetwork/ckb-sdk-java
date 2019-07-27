@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.nervos.ckb.service.APIService;
 import org.nervos.ckb.service.RemoteCall;
 
-/** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Request<S, T extends Response> {
   private static AtomicLong nextId = new AtomicLong(0);
 

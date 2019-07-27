@@ -2,7 +2,7 @@ package org.nervos.ckb.crypto.secp256k1;
 
 import java.math.BigInteger;
 
-/** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class ECDSASignature {
   public final BigInteger r;
   public final BigInteger s;

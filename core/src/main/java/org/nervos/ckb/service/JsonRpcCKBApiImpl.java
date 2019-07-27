@@ -4,10 +4,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
+import org.nervos.ckb.methods.type.BannedAddress;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 
-/** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class JsonRpcCKBApiImpl implements CKBService {
 
   protected final APIService apiService;
@@ -42,6 +43,15 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbBlockHash> getBlockHash(String blockNumber) {
     return new Request<>(
         "get_block_hash", Collections.singletonList(blockNumber), apiService, CkbBlockHash.class);
+  }
+
+  @Override
+  public Request<?, CkbCellbaseOutputCapacity> getCellbaseOutputCapacityDetails(String blockHash) {
+    return new Request<>(
+        "get_cellbase_output_capacity_details",
+        Collections.singletonList(blockHash),
+        apiService,
+        CkbCellbaseOutputCapacity.class);
   }
 
   @Override
@@ -84,6 +94,21 @@ public class JsonRpcCKBApiImpl implements CKBService {
         "get_epoch_by_number", Collections.singletonList(epochNumber), apiService, CkbEpoch.class);
   }
 
+  @Override
+  public Request<?, CkbHeader> getHeader(String blockHash) {
+    return new Request<>(
+        "get_header", Collections.singletonList(blockHash), apiService, CkbHeader.class);
+  }
+
+  @Override
+  public Request<?, CkbHeader> getHeaderByNumber(String blockNumber) {
+    return new Request<>(
+        "get_header_by_number",
+        Collections.singletonList(blockNumber),
+        apiService,
+        CkbHeader.class);
+  }
+
   /** Stats RPC */
   @Override
   public Request<?, CkbBlockchainInfo> getBlockchainInfo() {
@@ -95,6 +120,18 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbPeersState> getPeersState() {
     return new Request<>(
         "get_peers_state", Collections.emptyList(), apiService, CkbPeersState.class);
+  }
+
+  @Override
+  public Request<?, CkbBannedResult> setBan(BannedAddress bannedAddress) {
+    return new Request<>(
+        "set_ban", Collections.singletonList(bannedAddress), apiService, CkbBannedResult.class);
+  }
+
+  @Override
+  public Request<?, CkbBannedResultAddresses> getBannedAddress() {
+    return new Request<>(
+        "get_banned_address", Collections.emptyList(), apiService, CkbBannedResultAddresses.class);
   }
 
   /** Pool RPC */

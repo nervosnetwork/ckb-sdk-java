@@ -13,7 +13,7 @@ import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 
-/** Created by duanyytop on 2018-12-21. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Transaction {
 
   public String version;

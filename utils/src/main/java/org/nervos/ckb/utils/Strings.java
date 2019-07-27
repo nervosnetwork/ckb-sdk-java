@@ -2,11 +2,7 @@ package org.nervos.ckb.utils;
 
 import java.util.Collections;
 
-/**
- * Created by duanyytop on 2019-01-29. Copyright © 2018 Nervos Foundation. All rights reserved.
- *
- * <p>String utility functions.
- */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Strings {
   public static String zeros(int n) {
     return repeat('0', n);

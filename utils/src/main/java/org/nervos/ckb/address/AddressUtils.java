@@ -1,5 +1,8 @@
 package org.nervos.ckb.address;
 
+import com.google.common.primitives.Bytes;
+import java.util.ArrayList;
+import java.util.List;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
@@ -7,15 +10,16 @@ import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
 /**
- * Created by duanyytop on 2019-04-18. Copyright © 2018 Nervos Foundation. All rights reserved.
+ * Copyright © 2018 Nervos Foundation. All rights reserved.
  *
  * <p>AddressUtils based on CKB Address Format
- * [RFC](https://github.com/nervosnetwork/rfcs/blob/4f87099a0b1a02a8bc077fc7bea15ce3d9def120/rfcs/0000-address-format/0000-address-format.md),
+ * [RFC](https://github.com/nervosnetwork/rfcs/blob/c6b74309e071fd631c12c5f7152a265d7db833f6/rfcs/0000-address-format/0000-address-format.md),
  * and [Common Address Format](https://github.com/nervosnetwork/ckb/wiki/Common-Address-Format).
+ * Currently we implement the predefined format for type 0x01 and code hash index 0x00.
  */
 public class AddressUtils {
   private static final String TYPE = "01";
-  private static final String BIN_IDX = "P2PH";
+  private static final String CODE_HASH_IDX = "00";
 
   private Network network;
 
@@ -23,16 +27,20 @@ public class AddressUtils {
     this.network = network;
   }
 
-  public String generate(String publicKey) {
-    // Payload: type(01) | bin-idx("P2PH") | pubkey blake160
-    String payload = TYPE + strToAscii(BIN_IDX) + blake160(publicKey);
+  public String generateFromPublicKey(String publicKey) throws AddressFormatException {
+    return generate(blake160(publicKey));
+  }
+
+  public String generate(String args) throws AddressFormatException {
+    // Payload: type(01) | code hash index(00, P2PH) | args
+    String payload = TYPE + CODE_HASH_IDX + Numeric.cleanHexPrefix(args);
     byte[] data = Numeric.hexStringToByteArray(payload);
-    return Bech32.encode(prefix(), convertBits(data, 8, 5, true));
+    return Bech32.encode(prefix(), convertBits(Bytes.asList(data), 8, 5, true));
   }
 
   public Bech32.Bech32Data parse(String address) throws AddressFormatException {
     Bech32.Bech32Data parsed = Bech32.decode(address);
-    byte[] data = convertBits(parsed.data, 5, 8, false);
+    byte[] data = convertBits(Bytes.asList(parsed.data), 5, 8, false);
     if (data.length == 0) {
       return null;
     }
@@ -42,7 +50,7 @@ public class AddressUtils {
   public String getBlake160FromAddress(String address) throws AddressFormatException {
     Bech32.Bech32Data bech32Data = parse(address);
     String payload = Numeric.toHexString(bech32Data.data);
-    String prefix = TYPE + strToAscii(BIN_IDX);
+    String prefix = TYPE + CODE_HASH_IDX;
     String blake160 = payload.replace(prefix, "");
     return blake160;
   }
@@ -64,37 +72,30 @@ public class AddressUtils {
     return sb.toString();
   }
 
-  public byte[] convertBits(byte[] data, int fromBits, int toBits, boolean pad) {
-    int length =
-        (int)
-            (pad
-                ? Math.floor((double) data.length * fromBits / toBits)
-                : Math.ceil((double) data.length * fromBits / toBits));
-    int mask = ((1 << toBits) - 1) & 0xff;
-    byte[] result = new byte[length];
-    int index = 0;
-    int accumulator = 0;
+  public byte[] convertBits(List<Byte> data, int fromBits, int toBits, boolean pad)
+      throws AddressFormatException {
+    int acc = 0;
     int bits = 0;
-    for (int i = 0; i < data.length; i++) {
-      byte value = data[i];
-      accumulator = (((accumulator & 0xff) << fromBits) | (value & 0xff));
+    int maxv = (1 << toBits) - 1;
+    List<Byte> ret = new ArrayList<>();
+    for (Byte value : data) {
+      short b = (short) (value & 0xff);
+      if ((b >> fromBits) > 0) {
+        throw new AddressFormatException();
+      }
+      acc = (acc << fromBits) | b;
       bits += fromBits;
       while (bits >= toBits) {
         bits -= toBits;
-        result[index] = (byte) ((accumulator >> bits) & mask);
-        ++index;
+        ret.add((byte) ((acc >> bits) & maxv));
       }
     }
-    if (!pad) {
-      if (bits > 0) {
-        result[index] = (byte) ((accumulator << (toBits - bits)) & mask);
-      }
-    } else {
-      if (!(bits < fromBits && ((accumulator << (toBits - bits)) & mask) == 0)) {
-        throw new AddressFormatException(
-            "Strict mode was used but input couldn't be converted without padding");
-      }
+    if (pad && (bits > 0)) {
+      ret.add((byte) ((acc << (toBits - bits)) & maxv));
+    } else if (bits >= fromBits || (byte) (((acc << (toBits - bits)) & maxv)) != 0) {
+      throw new AddressFormatException(
+          "Strict mode was used but input couldn't be converted without padding");
     }
-    return result;
+    return Bytes.toArray(ret);
   }
 }

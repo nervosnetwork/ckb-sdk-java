@@ -16,7 +16,7 @@ import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
-/** Created by duanyytop on 2019-06-04. Copyright © 2019 Nervos Foundation. All rights reserved. */
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 class TransactionTest {
 
   @Test

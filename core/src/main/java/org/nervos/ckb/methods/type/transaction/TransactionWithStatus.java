@@ -2,7 +2,7 @@ package org.nervos.ckb.methods.type.transaction;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Created by duanyytop on 2019-04-28. Copyright © 2019 Nervos Foundation. All rights reserved. */
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionWithStatus {
 
   @JsonProperty("tx_status")

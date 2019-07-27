@@ -16,7 +16,7 @@ import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
 
-/** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Sign {
 
   private static final X9ECParameters CURVE_PARAMS = CustomNamedCurves.getByName("secp256k1");

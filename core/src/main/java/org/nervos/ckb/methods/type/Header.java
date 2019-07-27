@@ -2,9 +2,10 @@ package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Created by duanyytop on 2018-12-21. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Header {
 
+  public String dao;
   public String difficulty;
   public String hash;
   public String number;

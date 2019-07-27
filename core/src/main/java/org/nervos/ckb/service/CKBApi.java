@@ -2,10 +2,11 @@ package org.nervos.ckb.service;
 
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
+import org.nervos.ckb.methods.type.BannedAddress;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 
-/** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public interface CKBApi {
 
   /** Chain RPC */
@@ -16,6 +17,8 @@ public interface CKBApi {
   Request<?, CkbTransaction> getTransaction(String transactionHash);
 
   Request<?, CkbBlockHash> getBlockHash(String blockNumber);
+
+  Request<?, CkbCellbaseOutputCapacity> getCellbaseOutputCapacityDetails(String blockHash);
 
   Request<?, CkbHeader> getTipHeader();
 
@@ -30,6 +33,10 @@ public interface CKBApi {
 
   Request<?, CkbEpoch> getEpochByNumber(String epochNumber);
 
+  Request<?, CkbHeader> getHeader(String blockHash);
+
+  Request<?, CkbHeader> getHeaderByNumber(String blockNumber);
+
   /** Stats RPC */
   Request<?, CkbBlockchainInfo> getBlockchainInfo();
 
@@ -42,6 +49,10 @@ public interface CKBApi {
 
   /** Net RPC */
   Request<?, CkbNodeInfo> localNodeInfo();
+
+  Request<?, CkbBannedResult> setBan(BannedAddress bannedAddress);
+
+  Request<?, CkbBannedResultAddresses> getBannedAddress();
 
   Request<?, CkbPeers> getPeers();
 
