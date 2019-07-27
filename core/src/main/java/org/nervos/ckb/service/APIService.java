@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.Response;
 
-/** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public interface APIService {
 
   /**

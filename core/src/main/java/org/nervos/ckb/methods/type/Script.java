@@ -6,7 +6,7 @@ import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.exceptions.InvalidHashTypeException;
 import org.nervos.ckb.utils.Numeric;
 
-/** Created by duanyytop on 2019-01-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
 
   public static final String DATA = "Data";
