@@ -1,6 +1,6 @@
 package org.nervos.ckb.service;
 
-/** Created by duanyytop on 2018-12-20. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public interface CKBService extends CKBApi {
 
   /**

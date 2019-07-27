@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.methods.type.Script;
 
-/** Created by duanyytop on 2019-03-08. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class ScriptTest {
 
   private static final String ZERO_HASH =

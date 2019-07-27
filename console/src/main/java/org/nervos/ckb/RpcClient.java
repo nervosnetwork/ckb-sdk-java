@@ -8,7 +8,7 @@ import org.nervos.ckb.methods.type.BlockchainInfo;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 
-/** Created by duanyytop on 2019-01-31. Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class RpcClient {
 
   private static final String NODE_URL = "http://localhost:8114";
