@@ -10,6 +10,7 @@ import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.methods.response.CkbTransactionHash;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Script;
+import org.nervos.ckb.methods.type.Witness;
 import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
@@ -77,13 +78,19 @@ public class Wallet {
               cellInputs.capacity.subtract(needCapacities).toString(10), "0x", lockScript));
     }
 
+    List<Witness> witnesses = new ArrayList<>();
+    int len = cellInputs.inputs.size();
+    for (int i = 0; i < len; i++) {
+      witnesses.add(new Witness());
+    }
+
     Transaction transaction =
         new Transaction(
             "0",
             Collections.singletonList(new OutPoint(null, systemScriptCell.outPoint)),
             cellInputs.inputs,
             cellOutputs,
-            new ArrayList<>());
+            witnesses);
 
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
     return transaction.sign(Numeric.toBigInt(privateKey), txHash);

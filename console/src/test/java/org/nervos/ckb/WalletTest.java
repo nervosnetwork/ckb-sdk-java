@@ -16,12 +16,11 @@ public class WalletTest {
 
   private Wallet transaction;
   private static final String PRIVATE_KEY =
-      "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e4";
+      "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
 
-  private static final String RECEIVE_ADDRESS =
-      "ckt1q9gry5zgaqtljzuuptt987pncdu9txh5570myf9amk0q3v";
+  private static final String RECEIVE_ADDRESS = "ckt1qyqqtdpzfjwq7e667ktjwnv3hngrqkmwyhhqpa8dav";
   private static final String CODE_HASH =
-      "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08";
+      "0x54811ce986d5c3e57eaafab22cdd080e32209e39590e204a99b32935f835a13c";
 
   @BeforeAll
   public void init() {
@@ -34,7 +33,7 @@ public class WalletTest {
 
   @Test
   public void testSendCapacity() throws Exception {
-    Wallet.Receiver receiver = new Wallet.Receiver(RECEIVE_ADDRESS, new BigInteger("6000000000"));
+    Wallet.Receiver receiver = new Wallet.Receiver(RECEIVE_ADDRESS, new BigInteger("10000000000"));
     String hash = transaction.sendCapacity(Collections.singletonList(receiver));
     Assertions.assertNotNull(hash);
   }

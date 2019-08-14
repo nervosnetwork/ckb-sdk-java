@@ -29,7 +29,7 @@ public class RpcClient {
     System.out.println("Current block number: " + currentBlockNumber.toString());
     System.out.println(
         "Current block information: "
-            + new Gson().toJson(client.getBlockByNumber(currentBlockNumber.toString(16))));
+            + new Gson().toJson(client.getBlockByNumber(currentBlockNumber.toString())));
   }
 
   public Block getBlockByNumber(String blockNumber) throws IOException {
