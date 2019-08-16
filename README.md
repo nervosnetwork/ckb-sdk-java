@@ -18,7 +18,7 @@ gradle shadowJar  // ./gradlew shadowJar
 ```
 A `console-{version}-all.jar` package will be generated, which you can put into your project to develop with it.
 
-If you don't want to generate the jar by yourself, you can download jar from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
+If you don't want to generate the jar by yourself, you can download a build from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
 
 #### Import Jar to Project
 
