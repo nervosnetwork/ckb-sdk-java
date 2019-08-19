@@ -17,8 +17,7 @@ public class SystemContract {
           ckbService.getBlockByNumber("0").send().getBlock().transactions.get(0);
       return new SystemScriptCell(
           Hash.blake2b(sysContractTx.outputsData.get(1)), new OutPoint(sysContractTx.hash, "1"));
-    } else {
-      return null;
     }
+    return null;
   }
 }
