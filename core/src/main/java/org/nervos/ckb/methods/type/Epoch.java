@@ -6,9 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Epoch {
   public String number;
 
-  @JsonProperty("epoch_reward")
-  public String epochReward;
-
   @JsonProperty("start_number")
   public String startNumber;
 
