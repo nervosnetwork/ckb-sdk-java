@@ -9,6 +9,7 @@ public class CellDep {
   @JsonProperty("out_point")
   public OutPoint outPoint;
 
+  @JsonProperty("is_dep_group")
   public boolean isDepGroup;
 
   public CellDep(OutPoint outPoint, boolean isDepGroup) {

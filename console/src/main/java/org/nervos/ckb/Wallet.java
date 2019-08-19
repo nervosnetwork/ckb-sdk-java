@@ -76,14 +76,16 @@ public class Wallet {
       cellOutputs.add(
           new CellOutput(
               receiver.capacity.toString(),
-              "0x",
+              "0x0000000000000000000000000000000000000000000000000000000000000000",
               new Script(systemScriptCell.cellHash, Collections.singletonList(blake2b))));
     }
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
           new CellOutput(
-              cellInputs.capacity.subtract(needCapacities).toString(10), "0x", lockScript));
+              cellInputs.capacity.subtract(needCapacities).toString(10),
+              "0x0000000000000000000000000000000000000000000000000000000000000000",
+              lockScript));
     }
 
     List<Witness> witnesses = new ArrayList<>();
