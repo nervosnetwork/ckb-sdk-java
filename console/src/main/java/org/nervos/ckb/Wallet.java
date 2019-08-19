@@ -3,14 +3,13 @@ package org.nervos.ckb;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.methods.response.CkbTransactionHash;
-import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.Witness;
+import org.nervos.ckb.methods.type.cell.CellDep;
 import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
@@ -69,7 +68,7 @@ public class Wallet {
           new CellOutput(
               receiver.capacity.toString(),
               "0x",
-              new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
+              new Script(systemScriptCell.cellHash, Collections.singletonList(blake2b))));
     }
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
@@ -84,12 +83,19 @@ public class Wallet {
       witnesses.add(new Witness());
     }
 
+    List<String> cellOutputsData = new ArrayList<>();
+    for (int i = 0; i < cellOutputs.size(); i++) {
+      cellOutputsData.add("0x");
+    }
+
     Transaction transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new OutPoint(null, systemScriptCell.outPoint)),
+            Collections.singletonList(new CellDep(systemScriptCell.outPoint, false)),
+            Collections.emptyList(),
             cellInputs.inputs,
             cellOutputs,
+            cellOutputsData,
             witnesses);
 
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
@@ -127,7 +133,7 @@ public class Wallet {
     return new CellInputs(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
   }
 
-  class CellInputs {
+  static class CellInputs {
     List<CellInput> inputs;
     BigInteger capacity;
 

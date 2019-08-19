@@ -2,7 +2,7 @@ package org.nervos.ckb.system;
 
 import java.io.IOException;
 import org.nervos.ckb.crypto.Hash;
-import org.nervos.ckb.methods.type.cell.CellOutPoint;
+import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.system.type.SystemScriptCell;
@@ -16,8 +16,7 @@ public class SystemContract {
       Transaction sysContractTx =
           ckbService.getBlockByNumber("0").send().getBlock().transactions.get(0);
       return new SystemScriptCell(
-          Hash.blake2b(sysContractTx.outputs.get(1).data),
-          new CellOutPoint(sysContractTx.hash, "1"));
+          Hash.blake2b(sysContractTx.outputsData.get(1)), new OutPoint(sysContractTx.hash, "1"));
     } else {
       return null;
     }
