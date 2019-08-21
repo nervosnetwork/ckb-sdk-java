@@ -35,7 +35,7 @@ public class Wallet {
 
   public Wallet(String privateKey, String nodeUrl) {
     this.privateKey = privateKey;
-    HttpService.setDebug(true);
+    HttpService.setDebug(false);
     ckbService = CKBService.build(new HttpService(nodeUrl));
 
     try {
@@ -76,16 +76,13 @@ public class Wallet {
       cellOutputs.add(
           new CellOutput(
               receiver.capacity.toString(),
-              "0x0000000000000000000000000000000000000000000000000000000000000000",
               new Script(systemScriptCell.cellHash, Collections.singletonList(blake2b))));
     }
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
           new CellOutput(
-              cellInputs.capacity.subtract(needCapacities).toString(10),
-              "0x0000000000000000000000000000000000000000000000000000000000000000",
-              lockScript));
+              "0x0000000000000000000000000000000000000000000000000000000000000000", lockScript));
     }
 
     List<Witness> witnesses = new ArrayList<>();
@@ -152,7 +149,7 @@ public class Wallet {
   }
 
   private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
-    return SystemContract.getSystemScriptCell(ckbService, Network.TESTNET);
+    return SystemContract.getSystemScriptCell(ckbService);
   }
 
   static class CellInputs {
