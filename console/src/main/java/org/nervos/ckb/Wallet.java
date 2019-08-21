@@ -64,7 +64,7 @@ public class Wallet {
       throw new Exception("Less than min capacity");
     }
 
-    CellInputs cellInputs = getCellInputs(lockScript.scriptHash(), needCapacities);
+    CellInputs cellInputs = getCellInputs(getLockHash(lockScript), needCapacities);
     if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
@@ -81,8 +81,7 @@ public class Wallet {
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
-          new CellOutput(
-              "0x0000000000000000000000000000000000000000000000000000000000000000", lockScript));
+          new CellOutput(cellInputs.capacity.subtract(needCapacities).toString(10), lockScript));
     }
 
     List<Witness> witnesses = new ArrayList<>();
@@ -99,7 +98,7 @@ public class Wallet {
     Transaction transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new CellDep(systemScriptCell.outPoint, false)),
+            Collections.singletonList(new CellDep(systemScriptCell.outPoint, true)),
             Collections.emptyList(),
             cellInputs.inputs,
             cellOutputs,
@@ -146,6 +145,10 @@ public class Wallet {
     String blake160 =
         Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
     return new Script(codeHash, Collections.singletonList(blake160));
+  }
+
+  private String getLockHash(Script script) throws IOException {
+    return ckbService.computeScriptHash(script).send().getLockHash();
   }
 
   private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {

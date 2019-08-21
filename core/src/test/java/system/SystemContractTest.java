@@ -11,9 +11,10 @@ import org.nervos.ckb.system.type.SystemScriptCell;
 public class SystemContractTest {
   @Test
   public void testGetSystemContract() throws IOException {
+    HttpService.setDebug(false);
     SystemScriptCell systemScriptCell =
         SystemContract.getSystemScriptCell(
-            CKBService.build(new HttpService("http://localhost:8114/")));
+            CKBService.build(new HttpService("http://localhost:8114")));
     Assertions.assertNotNull(systemScriptCell);
   }
 }
