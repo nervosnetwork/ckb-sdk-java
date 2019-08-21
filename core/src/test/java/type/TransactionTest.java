@@ -26,14 +26,12 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "100000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0xe2193df51d78411601796b35b17b4f8f2cd85bd0"))));
     cellOutputs.add(
         new CellOutput(
             "4900000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0x36c329ed630d6ce750712a477543672adab57f4c"))));
@@ -83,7 +81,6 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "10000009045634",
-            "0x",
             new Script(
                 "0xf1951123466e4479842387a66fabfd6b65fc87fd84ae8e6cd3053edb27fff2fd",
                 Collections.singletonList("0x36c329ed630d6ce750712a477543672adab57f4c"))));
@@ -134,14 +131,12 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "100000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0xe2193df51d78411601796b35b17b4f8f2cd85bd0"))));
     cellOutputs.add(
         new CellOutput(
             "4900000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0x36c329ed630d6ce750712a477543672adab57f4c"))));
