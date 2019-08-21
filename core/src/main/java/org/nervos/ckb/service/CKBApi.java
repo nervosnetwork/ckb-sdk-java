@@ -4,6 +4,7 @@ import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
 import org.nervos.ckb.methods.type.BannedAddress;
 import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
@@ -60,6 +61,8 @@ public interface CKBApi {
   Request<?, CkbCycles> dryRunTransaction(Transaction transaction);
 
   Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction);
+
+  Request<?, CkbLockHash> computeScriptHash(Script script);
 
   /* Indexer RPC */
   Request<?, CkbLockHashIndexState> indexLockHash(String lockHash, String blockNumber);

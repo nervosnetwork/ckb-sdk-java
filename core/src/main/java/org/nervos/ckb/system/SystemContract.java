@@ -1,6 +1,7 @@
 package org.nervos.ckb.system;
 
 import java.io.IOException;
+import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.methods.type.Block;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
@@ -14,11 +15,12 @@ public class SystemContract {
     if (block == null) {
       throw new IOException("Genesis block not found");
     }
-    Transaction transaction = block.transactions.get(1);
-    if (transaction == null) {
-      throw new IOException("Genesis block second transaction not found");
+    Transaction transaction0 = block.transactions.get(0);
+    Transaction transaction1 = block.transactions.get(1);
+    if (transaction0 == null || transaction1 == null) {
+      throw new IOException("Genesis block transactions not found");
     }
     return new SystemScriptCell(
-        transaction.outputs.get(0).lock.scriptHash(), new OutPoint(transaction.hash, "0"));
+        Hash.blake2b(transaction0.outputsData.get(1)), new OutPoint(transaction1.hash, "0"));
   }
 }

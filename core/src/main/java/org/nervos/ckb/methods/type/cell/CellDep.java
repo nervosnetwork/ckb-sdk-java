@@ -12,6 +12,8 @@ public class CellDep {
   @JsonProperty("is_dep_group")
   public boolean isDepGroup;
 
+  public CellDep() {}
+
   public CellDep(OutPoint outPoint, boolean isDepGroup) {
     this.outPoint = outPoint;
     this.isDepGroup = isDepGroup;
