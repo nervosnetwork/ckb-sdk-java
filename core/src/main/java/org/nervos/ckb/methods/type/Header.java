@@ -8,6 +8,7 @@ public class Header {
   public String dao;
   public String difficulty;
   public String hash;
+  public String nonce;
   public String number;
   public String epoch;
 
