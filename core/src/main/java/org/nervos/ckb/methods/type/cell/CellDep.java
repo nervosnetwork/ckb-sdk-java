@@ -19,6 +19,6 @@ public class CellDep {
 
   public CellDep(OutPoint outPoint, String depGroup) {
     this.outPoint = outPoint;
-    this.depGroup = depGroup;
+    this.depType = depType;
   }
 }
