@@ -13,7 +13,7 @@ public class CellDep {
   public OutPoint outPoint;
 
   @JsonProperty("dep_type")
-  public String depGroup;
+  public String depType;
 
   public CellDep() {}
 
