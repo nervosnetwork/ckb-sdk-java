@@ -177,9 +177,9 @@ public class JsonRpcCKBApiImpl implements CKBService {
         CkbTransactionHash.class);
   }
 
-  public Request<?, CkbLockHash> computeScriptHash(Script script) {
+  public Request<?, CkbScriptHash> computeScriptHash(Script script) {
     return new Request<>(
-        "_compute_script_hash", Collections.singletonList(script), apiService, CkbLockHash.class);
+        "_compute_script_hash", Collections.singletonList(script), apiService, CkbScriptHash.class);
   }
 
   /* Indexer RPC */

@@ -149,7 +149,7 @@ public class Wallet {
   }
 
   private String getLockHash(Script script) throws IOException {
-    return ckbService.computeScriptHash(script).send().getLockHash();
+    return ckbService.computeScriptHash(script).send().getScriptHash();
   }
 
   private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {

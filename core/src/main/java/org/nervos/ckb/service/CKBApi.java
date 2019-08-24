@@ -62,7 +62,7 @@ public interface CKBApi {
 
   Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction);
 
-  Request<?, CkbLockHash> computeScriptHash(Script script);
+  Request<?, CkbScriptHash> computeScriptHash(Script script);
 
   /* Indexer RPC */
   Request<?, CkbLockHashIndexState> indexLockHash(String lockHash, String blockNumber);

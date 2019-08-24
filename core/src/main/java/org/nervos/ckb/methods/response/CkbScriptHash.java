@@ -3,9 +3,9 @@ package org.nervos.ckb.methods.response;
 import org.nervos.ckb.methods.Response;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class CkbLockHash extends Response<String> {
+public class CkbScriptHash extends Response<String> {
 
-  public String getLockHash() {
+  public String getScriptHash() {
     return result;
   }
 }
