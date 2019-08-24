@@ -144,7 +144,7 @@ public class Wallet {
     String publicKey = Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true).toString(16);
     String blake160 =
         Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
-    return new Script(codeHash, Collections.singletonList(blake160));
+    return new Script(codeHash, Collections.singletonList(blake160), Script.TYPE);
   }
 
   private String getLockHash(Script script) throws IOException {
