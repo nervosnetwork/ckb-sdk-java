@@ -32,12 +32,4 @@ public class Header {
   public String unclesHash;
 
   public int version;
-
-  public Seal seal;
-
-  public static class Seal {
-    public String nonce;
-
-    public String proof;
-  }
 }
