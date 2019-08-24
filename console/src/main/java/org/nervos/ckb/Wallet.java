@@ -98,7 +98,7 @@ public class Wallet {
     Transaction transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new CellDep(systemScriptCell.outPoint, true)),
+            Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.GROUP)),
             Collections.emptyList(),
             cellInputs.inputs,
             cellOutputs,

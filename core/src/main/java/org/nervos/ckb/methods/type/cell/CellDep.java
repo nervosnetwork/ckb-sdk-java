@@ -6,16 +6,19 @@ import org.nervos.ckb.methods.type.OutPoint;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellDep {
 
+  public static final String CODE = "code";
+  public static final String GROUP = "group";
+
   @JsonProperty("out_point")
   public OutPoint outPoint;
 
-  @JsonProperty("is_dep_group")
-  public boolean isDepGroup;
+  @JsonProperty("dep_group")
+  public String depGroup;
 
   public CellDep() {}
 
-  public CellDep(OutPoint outPoint, boolean isDepGroup) {
+  public CellDep(OutPoint outPoint, String depGroup) {
     this.outPoint = outPoint;
-    this.isDepGroup = isDepGroup;
+    this.depGroup = depGroup;
   }
 }
