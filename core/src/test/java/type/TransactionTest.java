@@ -43,7 +43,7 @@ class TransactionTest {
                 new CellDep(
                     new OutPoint(
                         "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
-                    CellDep.GROUP)),
+                    CellDep.DEP_GROUP)),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
@@ -99,7 +99,7 @@ class TransactionTest {
                 new CellDep(
                     new OutPoint(
                         "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
-                    CellDep.GROUP)),
+                    CellDep.DEP_GROUP)),
             Collections.singletonList("0x"),
             cellInputs,
             cellOutputs,
@@ -148,7 +148,7 @@ class TransactionTest {
                 new CellDep(
                     new OutPoint(
                         "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
-                    CellDep.GROUP)),
+                    CellDep.DEP_GROUP)),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(

@@ -76,7 +76,8 @@ public class Wallet {
       cellOutputs.add(
           new CellOutput(
               receiver.capacity.toString(),
-              new Script(systemScriptCell.cellHash, Collections.singletonList(blake2b))));
+              new Script(
+                  systemScriptCell.cellHash, Collections.singletonList(blake2b), Script.TYPE)));
     }
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
@@ -98,7 +99,7 @@ public class Wallet {
     Transaction transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.GROUP)),
+            Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP)),
             Collections.emptyList(),
             cellInputs.inputs,
             cellOutputs,
