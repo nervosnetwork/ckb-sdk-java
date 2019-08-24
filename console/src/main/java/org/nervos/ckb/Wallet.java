@@ -1,16 +1,18 @@
 package org.nervos.ckb;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
+import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.methods.response.CkbTransactionHash;
-import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.Witness;
+import org.nervos.ckb.methods.type.cell.CellDep;
 import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
@@ -26,21 +28,29 @@ public class Wallet {
 
   private static final String MIN_CAPACITY = "6000000000";
 
-  private Script lockScript;
   private String privateKey;
+  private Script lockScript;
+  private SystemScriptCell systemScriptCell;
   private CKBService ckbService;
 
-  public Wallet(String privateKey, Script lockScript, String nodeUrl) {
+  public Wallet(String privateKey, String nodeUrl) {
     this.privateKey = privateKey;
-    this.lockScript = lockScript;
+    HttpService.setDebug(false);
     ckbService = CKBService.build(new HttpService(nodeUrl));
+
+    try {
+      systemScriptCell = getSystemScriptCell(ckbService);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    lockScript = generateLockScript(privateKey, systemScriptCell.cellHash);
   }
 
   public String sendCapacity(List<Receiver> receivers) throws Exception {
     Transaction transaction = generateTx(receivers);
     CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
-    if (ckbTransactionHash.result == null) {
-      System.out.println(ckbTransactionHash.error.message);
+    if (ckbTransactionHash.error != null) {
+      throw new IOException(ckbTransactionHash.error.message);
     }
     return ckbTransactionHash.getTransactionHash();
   }
@@ -54,13 +64,11 @@ public class Wallet {
       throw new Exception("Less than min capacity");
     }
 
-    CellInputs cellInputs = getCellInputs(lockScript.scriptHash(), needCapacities);
+    CellInputs cellInputs = getCellInputs(getLockHash(lockScript), needCapacities);
     if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new Exception("No enough Capacities");
     }
 
-    SystemScriptCell systemScriptCell =
-        SystemContract.getSystemScriptCell(ckbService, Network.TESTNET);
     List<CellOutput> cellOutputs = new ArrayList<>();
     AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
     for (Receiver receiver : receivers) {
@@ -68,14 +76,13 @@ public class Wallet {
       cellOutputs.add(
           new CellOutput(
               receiver.capacity.toString(),
-              "0x",
-              new Script(systemScriptCell.cellHash, Arrays.asList(blake2b))));
+              new Script(
+                  systemScriptCell.cellHash, Collections.singletonList(blake2b), Script.TYPE)));
     }
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
-          new CellOutput(
-              cellInputs.capacity.subtract(needCapacities).toString(10), "0x", lockScript));
+          new CellOutput(cellInputs.capacity.subtract(needCapacities).toString(10), lockScript));
     }
 
     List<Witness> witnesses = new ArrayList<>();
@@ -84,12 +91,19 @@ public class Wallet {
       witnesses.add(new Witness());
     }
 
+    List<String> cellOutputsData = new ArrayList<>();
+    for (int i = 0; i < cellOutputs.size(); i++) {
+      cellOutputsData.add("0x");
+    }
+
     Transaction transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new OutPoint(null, systemScriptCell.outPoint)),
+            Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP)),
+            Collections.emptyList(),
             cellInputs.inputs,
             cellOutputs,
+            cellOutputsData,
             witnesses);
 
     String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
@@ -127,11 +141,26 @@ public class Wallet {
     return new CellInputs(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
   }
 
-  class CellInputs {
+  private Script generateLockScript(String privateKey, String codeHash) {
+    String publicKey = Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true).toString(16);
+    String blake160 =
+        Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
+    return new Script(codeHash, Collections.singletonList(blake160), Script.TYPE);
+  }
+
+  private String getLockHash(Script script) throws IOException {
+    return ckbService.computeScriptHash(script).send().getScriptHash();
+  }
+
+  private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
+    return SystemContract.getSystemScriptCell(ckbService);
+  }
+
+  static class CellInputs {
     List<CellInput> inputs;
     BigInteger capacity;
 
-    public CellInputs(List<CellInput> inputs, BigInteger capacity) {
+    CellInputs(List<CellInput> inputs, BigInteger capacity) {
       this.inputs = inputs;
       this.capacity = capacity;
     }

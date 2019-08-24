@@ -2,6 +2,7 @@ package type;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -10,8 +11,8 @@ import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.Witness;
+import org.nervos.ckb.methods.type.cell.CellDep;
 import org.nervos.ckb.methods.type.cell.CellInput;
-import org.nervos.ckb.methods.type.cell.CellOutPoint;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
@@ -25,14 +26,12 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "100000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0xe2193df51d78411601796b35b17b4f8f2cd85bd0"))));
     cellOutputs.add(
         new CellOutput(
             "4900000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0x36c329ed630d6ce750712a477543672adab57f4c"))));
@@ -41,20 +40,18 @@ class TransactionTest {
         new Transaction(
             "0",
             Collections.singletonList(
-                new OutPoint(
-                    null,
-                    new CellOutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a",
-                        "1"))),
+                new CellDep(
+                    new OutPoint(
+                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
+                    CellDep.DEP_GROUP)),
+            Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        null,
-                        new CellOutPoint(
-                            "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50",
-                            "0")),
+                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
                     "0")),
             cellOutputs,
+            Arrays.asList("0x", "0x"),
             Collections.singletonList(new Witness(Collections.emptyList())));
 
     BigInteger privateKey =
@@ -73,24 +70,17 @@ class TransactionTest {
     List<CellInput> cellInputs = new ArrayList<>();
     cellInputs.add(
         new CellInput(
-            new OutPoint(
-                "0x23abf65800d048ed9e3eb67e0258e0d616148e9cb1116ceee532a202b4c30e09",
-                new CellOutPoint(
-                    "0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4", "0")),
+            new OutPoint("0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4", "0"),
             "113"));
     cellInputs.add(
         new CellInput(
-            new OutPoint(
-                null,
-                new CellOutPoint(
-                    "0x00000000000000000000000000004e4552564f5344414f494e50555430303031", "0")),
+            new OutPoint("0x00000000000000000000000000004e4552564f5344414f494e50555430303031", "0"),
             "0"));
 
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
             "10000009045634",
-            "0x",
             new Script(
                 "0xf1951123466e4479842387a66fabfd6b65fc87fd84ae8e6cd3053edb27fff2fd",
                 Collections.singletonList("0x36c329ed630d6ce750712a477543672adab57f4c"))));
@@ -106,10 +96,14 @@ class TransactionTest {
         new Transaction(
             "0",
             Collections.singletonList(
-                new OutPoint(
-                    "0x4107bd23eedb9f2a2a749108f6bb9720d745d50f044cc4814bafe189a01fe6fb", null)),
+                new CellDep(
+                    new OutPoint(
+                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
+                    CellDep.DEP_GROUP)),
+            Collections.singletonList("0x"),
             cellInputs,
             cellOutputs,
+            Collections.singletonList("0x"),
             witnesses);
 
     BigInteger privateKey =
@@ -137,14 +131,12 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "100000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0xe2193df51d78411601796b35b17b4f8f2cd85bd0"))));
     cellOutputs.add(
         new CellOutput(
             "4900000000000",
-            "0x",
             new Script(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 Collections.singletonList("0x36c329ed630d6ce750712a477543672adab57f4c"))));
@@ -153,20 +145,18 @@ class TransactionTest {
         new Transaction(
             "0",
             Collections.singletonList(
-                new OutPoint(
-                    null,
-                    new CellOutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a",
-                        "1"))),
+                new CellDep(
+                    new OutPoint(
+                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
+                    CellDep.DEP_GROUP)),
+            Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        null,
-                        new CellOutPoint(
-                            "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50",
-                            "0")),
+                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
                     "0")),
             cellOutputs,
+            Collections.singletonList("0x"),
             Collections.emptyList());
 
     BigInteger privateKey =

@@ -9,8 +9,8 @@ import org.nervos.ckb.utils.Numeric;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
 
-  public static final String DATA = "Data";
-  public static final String TYPE = "Type";
+  public static final String DATA = "data";
+  public static final String TYPE = "type";
 
   @JsonProperty("code_hash")
   public String codeHash;

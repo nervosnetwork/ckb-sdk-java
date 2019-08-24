@@ -8,6 +8,7 @@ public class Header {
   public String dao;
   public String difficulty;
   public String hash;
+  public String nonce;
   public String number;
   public String epoch;
 
@@ -32,12 +33,4 @@ public class Header {
   public String unclesHash;
 
   public int version;
-
-  public Seal seal;
-
-  public static class Seal {
-    public String nonce;
-
-    public String proof;
-  }
 }

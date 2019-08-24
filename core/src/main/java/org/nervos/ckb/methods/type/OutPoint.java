@@ -1,24 +1,19 @@
 package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.nervos.ckb.methods.type.cell.CellOutPoint;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class OutPoint {
 
-  @JsonProperty("block_hash")
-  public String blockHash;
+  @JsonProperty("tx_hash")
+  public String txHash;
 
-  public CellOutPoint cell;
+  public String index;
 
   public OutPoint() {}
 
-  public OutPoint(CellOutPoint cellOutPoint) {
-    this.cell = cellOutPoint;
-  }
-
-  public OutPoint(String blockHash, CellOutPoint cellOutPoint) {
-    this.blockHash = blockHash;
-    this.cell = cellOutPoint;
+  public OutPoint(String txHash, String index) {
+    this.txHash = txHash;
+    this.index = index;
   }
 }

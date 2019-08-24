@@ -1,25 +1,23 @@
 package org.nervos.ckb.system;
 
 import java.io.IOException;
-import org.nervos.ckb.crypto.Hash;
-import org.nervos.ckb.methods.type.cell.CellOutPoint;
-import org.nervos.ckb.methods.type.transaction.Transaction;
+import org.nervos.ckb.methods.type.Block;
+import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.system.type.SystemScriptCell;
-import org.nervos.ckb.utils.Network;
 
 public class SystemContract {
 
-  public static SystemScriptCell getSystemScriptCell(CKBService ckbService, Network network)
-      throws IOException {
-    if (network == Network.TESTNET) {
-      Transaction sysContractTx =
-          ckbService.getBlockByNumber("0").send().getBlock().transactions.get(0);
-      return new SystemScriptCell(
-          Hash.blake2b(sysContractTx.outputs.get(1).data),
-          new CellOutPoint(sysContractTx.hash, "1"));
-    } else {
-      return null;
+  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
+    Block block = ckbService.getBlockByNumber("0").send().getBlock();
+    if (block == null) {
+      throw new IOException("Genesis block not found");
     }
+    if (block.transactions == null || block.transactions.size() < 2) {
+      throw new IOException("Genesis block transactions system script not found");
+    }
+    return new SystemScriptCell(
+        block.transactions.get(0).outputs.get(1).type.scriptHash(),
+        new OutPoint(block.transactions.get(1).hash, "0"));
   }
 }
