@@ -7,7 +7,7 @@ import org.nervos.ckb.methods.type.OutPoint;
 public class CellDep {
 
   public static final String CODE = "code";
-  public static final String GROUP = "group";
+  public static final String DEP_GROUP = "dep_group";
 
   @JsonProperty("out_point")
   public OutPoint outPoint;
