@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.19.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.18.0...v0.19.0) (2019-08-24)
+# [v0.19.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.18.0...v0.19.0) (2019-08-27)
 
 ### Feature
 
@@ -23,12 +23,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Breaking Changes
 
-* Remove Header Seal and add nonce to Header
+* Remove header seal and add nonce to header
 * Update script hash generator
 * Update genesis block system cell and code hash
-* Remove CellOutput data and add OutputsData to Transaction
-* Remove epoch_reward of Epoch
-* Update Cell Dep(cell_dep and header_dep)
+* Remove cell_output data and add outputs_data to transaction
+* Remove epoch_reward of epoch
+* Update cell dep(cell_dep and header_dep)
 
 # [v0.18.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.17.0...v0.18.0) (2019-08-10)
 
