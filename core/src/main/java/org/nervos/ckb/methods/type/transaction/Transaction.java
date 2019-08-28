@@ -1,5 +1,6 @@
 package org.nervos.ckb.methods.type.transaction;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +8,8 @@ import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
-import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Witness;
+import org.nervos.ckb.methods.type.cell.CellDep;
 import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
@@ -18,38 +19,56 @@ public class Transaction {
 
   public String version;
   public String hash;
-  public List<OutPoint> deps;
+
+  @JsonProperty("cell_deps")
+  public List<CellDep> cellDeps;
+
+  @JsonProperty("header_deps")
+  public List<String> headerDeps;
+
   public List<CellInput> inputs;
   public List<CellOutput> outputs;
+
+  @JsonProperty("outputs_data")
+  public List<String> outputsData;
+
   public List<Witness> witnesses;
 
   public Transaction() {}
 
   public Transaction(
       String version,
-      List<OutPoint> deps,
+      List<CellDep> cellDeps,
+      List<String> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
+      List<String> outputsData,
       List<Witness> witnesses) {
     this.version = version;
-    this.deps = deps;
+    this.cellDeps = cellDeps;
+    this.headerDeps = headerDeps;
     this.inputs = cellInputs;
     this.outputs = cellOutputs;
+    this.outputsData = outputsData;
     this.witnesses = witnesses;
   }
 
   public Transaction(
       String version,
       String hash,
-      List<OutPoint> deps,
+      List<CellDep> cellDeps,
+      List<String> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
+      List<String> outputsData,
       List<Witness> witnesses) {
     this.version = version;
     this.hash = hash;
-    this.deps = deps;
+    this.cellDeps = cellDeps;
+    this.headerDeps = headerDeps;
     this.inputs = cellInputs;
     this.outputs = cellOutputs;
+    this.outputsData = outputsData;
     this.witnesses = witnesses;
   }
 
@@ -58,8 +77,6 @@ public class Transaction {
       throw new InvalidNumberOfWitnessesException("Invalid number of witnesses");
     }
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    String publicKey =
-        Numeric.toHexStringWithPrefixZeroPadded(Sign.publicKeyFromPrivate(privateKey, true), 66);
     List<Witness> signedWitnesses = new ArrayList<>();
     for (Witness witness : witnesses) {
       List<String> oldData = witness.data;
@@ -78,6 +95,7 @@ public class Transaction {
       witness.data.addAll(oldData);
       signedWitnesses.add(witness);
     }
-    return new Transaction(version, txHash, deps, inputs, outputs, signedWitnesses);
+    return new Transaction(
+        version, txHash, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitnesses);
   }
 }

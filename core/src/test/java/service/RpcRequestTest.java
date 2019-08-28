@@ -10,7 +10,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.methods.type.*;
-import org.nervos.ckb.methods.type.cell.*;
+import org.nervos.ckb.methods.type.cell.Cell;
+import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
+import org.nervos.ckb.methods.type.cell.CellTransaction;
+import org.nervos.ckb.methods.type.cell.LiveCell;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
@@ -164,8 +167,7 @@ public class RpcRequestTest {
         ckbService
             .getLiveCell(
                 new OutPoint(
-                    new CellOutPoint(
-                        "0x321c1ca2887fb8eddaaa7e917399f71e63e03a1c83ff75ed12099a01115ea2ff", "0")))
+                    "0x321c1ca2887fb8eddaaa7e917399f71e63e03a1c83ff75ed12099a01115ea2ff", "0"))
             .send()
             .getCell();
     Assertions.assertNotNull(cell);
@@ -178,6 +180,8 @@ public class RpcRequestTest {
             .sendTransaction(
                 new Transaction(
                     "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -197,6 +201,8 @@ public class RpcRequestTest {
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
                     Collections.emptyList()))
             .send()
             .getCycles();
@@ -210,6 +216,8 @@ public class RpcRequestTest {
             .computeTransactionHash(
                 new Transaction(
                     "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),

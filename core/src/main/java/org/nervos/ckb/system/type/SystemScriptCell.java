@@ -1,13 +1,13 @@
 package org.nervos.ckb.system.type;
 
-import org.nervos.ckb.methods.type.cell.CellOutPoint;
+import org.nervos.ckb.methods.type.OutPoint;
 
 public class SystemScriptCell {
 
   public String cellHash;
-  public CellOutPoint outPoint;
+  public OutPoint outPoint;
 
-  public SystemScriptCell(String cellHash, CellOutPoint outPoint) {
+  public SystemScriptCell(String cellHash, OutPoint outPoint) {
     this.cellHash = cellHash;
     this.outPoint = outPoint;
   }

@@ -6,6 +6,7 @@ import org.nervos.ckb.methods.Request;
 import org.nervos.ckb.methods.response.*;
 import org.nervos.ckb.methods.type.BannedAddress;
 import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
@@ -174,6 +175,11 @@ public class JsonRpcCKBApiImpl implements CKBService {
         Collections.singletonList(transaction),
         apiService,
         CkbTransactionHash.class);
+  }
+
+  public Request<?, CkbScriptHash> computeScriptHash(Script script) {
+    return new Request<>(
+        "_compute_script_hash", Collections.singletonList(script), apiService, CkbScriptHash.class);
   }
 
   /* Indexer RPC */
