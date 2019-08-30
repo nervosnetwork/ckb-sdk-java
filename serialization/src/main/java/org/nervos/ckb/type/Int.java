@@ -3,7 +3,7 @@ package org.nervos.ckb.type;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Int implements Type<Integer> {
 
-  public static final int HEX_SIZE = 8;
+  public static final int BYTE_SIZE = 4;
 
   private Integer value;
 
@@ -36,5 +36,10 @@ public class Int implements Type<Integer> {
   @Override
   public Integer getValue() {
     return value;
+  }
+
+  @Override
+  public int getLength() {
+    return BYTE_SIZE;
   }
 }

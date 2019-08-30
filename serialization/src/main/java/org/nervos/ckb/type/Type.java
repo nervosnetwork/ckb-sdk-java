@@ -6,4 +6,6 @@ public interface Type<T> {
   byte[] toBytes();
 
   T getValue();
+
+  int getLength();
 }
