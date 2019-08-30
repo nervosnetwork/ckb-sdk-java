@@ -1,6 +1,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.19.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.18.0...v0.19.0) (2019-08-28)
+
+### Feature
+
+* Update transaction related data type([e36173d](https://github.com/nervosnetwork/ckb-sdk-java/commit/e36173dc0936ee838fc0ff29740c394c477b897d))
+* Update transaction related data type([e5bbf46](https://github.com/nervosnetwork/ckb-sdk-java/commit/e5bbf46ac7cc80fb276e86fd91cf3540cf934899))
+* Update transaction related data type([1087071](https://github.com/nervosnetwork/ckb-sdk-java/commit/108707191a69f1a49a4b505db032c53d6071481a))
+* Remove epoch_reward of Epoch([ce2cdbb](https://github.com/nervosnetwork/ckb-sdk-java/commit/ce2cdbba4e3341f555f278f5103d05d5471a7336))
+* Update genesis block system cell and code hash([4a81810](https://github.com/nervosnetwork/ckb-sdk-java/commit/4a8181066f1a9b1662b5f98d53d5e1af09dd8a95))
+* Update genesis block system cell and code hash([3cb10bb](https://github.com/nervosnetwork/ckb-sdk-java/commit/3cb10bb9956ecd6b347dd9dfcdab08349621e903))
+* Add compute lock hash rpc([3cb10bb](https://github.com/nervosnetwork/ckb-sdk-java/commit/5548addd05cc5aaff7d5bfab9865050884ac862c))
+
+### Bugfix
+
+* Fix transaction witness bug([77b7f67](https://github.com/nervosnetwork/ckb-sdk-java/commit/77b7f674eb95cafb126ccfabf9f9f41fa70797e3))
+
+### Test
+
+* Refactor wallet and sendCapacity test cases([05428e0](https://github.com/nervosnetwork/ckb-sdk-java/commit/05428e0cb5b953f196fd8c244457ffc2f5cb58a4))
+
+### Breaking Changes
+
+* Remove header seal and add nonce to header
+* Update script hash generator
+* Update genesis block system cell and code hash
+* Remove cell_output data and add outputs_data to transaction
+* Remove epoch_reward of epoch
+* Update cell dep(cell_dep and header_dep)
+
 # [v0.18.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.17.0...v0.18.0) (2019-08-10)
 
 * Update to support CKB v0.18.0.
