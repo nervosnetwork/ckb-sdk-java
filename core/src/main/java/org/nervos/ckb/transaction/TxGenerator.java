@@ -1,15 +1,8 @@
-package org.nervos.ckb;
+package org.nervos.ckb.transaction;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.Sign;
-import org.nervos.ckb.methods.response.CkbTransactionHash;
 import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.Witness;
 import org.nervos.ckb.methods.type.cell.CellDep;
@@ -18,13 +11,20 @@ import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
-public class Wallet {
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+public class TxGenerator {
 
   private static final String MIN_CAPACITY = "6000000000";
 
@@ -33,40 +33,30 @@ public class Wallet {
   private SystemScriptCell systemScriptCell;
   private CKBService ckbService;
 
-  public Wallet(String privateKey, String nodeUrl) {
+  public TxGenerator(String privateKey, CKBService ckbService) {
     this.privateKey = privateKey;
-    HttpService.setDebug(false);
-    ckbService = CKBService.build(new HttpService(nodeUrl));
+    this.ckbService = ckbService;
 
     try {
-      systemScriptCell = getSystemScriptCell(ckbService);
+      this.systemScriptCell = getSystemScriptCell(ckbService);
     } catch (Exception e) {
       e.printStackTrace();
     }
-    lockScript = generateLockScript(privateKey, systemScriptCell.cellHash);
+    this.lockScript = generateLockScript(privateKey, systemScriptCell.cellHash);
   }
 
-  public String sendCapacity(List<Receiver> receivers) throws Exception {
-    Transaction transaction = generateTx(receivers);
-    CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
-    if (ckbTransactionHash.error != null) {
-      throw new IOException(ckbTransactionHash.error.message);
-    }
-    return ckbTransactionHash.getTransactionHash();
-  }
-
-  private Transaction generateTx(List<Receiver> receivers) throws Exception {
+  public Transaction generateTx(List<Receiver> receivers) throws IOException {
     BigInteger needCapacities = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
       needCapacities = needCapacities.add(receiver.capacity);
     }
     if (needCapacities.compareTo(new BigInteger(MIN_CAPACITY)) < 0) {
-      throw new Exception("Less than min capacity");
+      throw new IOException("Less than min capacity");
     }
 
-    CellInputs cellInputs = getCellInputs(getLockHash(lockScript), needCapacities);
+    Cells cellInputs = getCellInputs(getLockHash(lockScript), needCapacities);
     if (cellInputs.capacity.compareTo(needCapacities) < 0) {
-      throw new Exception("No enough Capacities");
+      throw new IOException("No enough Capacities");
     }
 
     List<CellOutput> cellOutputs = new ArrayList<>();
@@ -110,7 +100,7 @@ public class Wallet {
     return transaction.sign(Numeric.toBigInt(privateKey), txHash);
   }
 
-  private CellInputs getCellInputs(String lockHash, BigInteger needCapacities) throws Exception {
+  private Cells getCellInputs(String lockHash, BigInteger needCapacities) throws IOException {
     List<CellInput> cellInputs = new ArrayList<>();
     BigInteger inputsCapacities = BigInteger.ZERO;
     long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
@@ -138,7 +128,7 @@ public class Wallet {
       }
       fromBlockNumber = currentToBlockNumber + 1;
     }
-    return new CellInputs(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
+    return new Cells(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
   }
 
   private Script generateLockScript(String privateKey, String codeHash) {
@@ -154,25 +144,5 @@ public class Wallet {
 
   private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws Exception {
     return SystemContract.getSystemScriptCell(ckbService);
-  }
-
-  static class CellInputs {
-    List<CellInput> inputs;
-    BigInteger capacity;
-
-    CellInputs(List<CellInput> inputs, BigInteger capacity) {
-      this.inputs = inputs;
-      this.capacity = capacity;
-    }
-  }
-
-  public static class Receiver {
-    String address;
-    BigInteger capacity;
-
-    public Receiver(String address, BigInteger capacity) {
-      this.address = address;
-      this.capacity = capacity;
-    }
   }
 }
