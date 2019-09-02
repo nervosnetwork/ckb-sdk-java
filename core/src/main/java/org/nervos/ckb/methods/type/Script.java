@@ -37,7 +37,7 @@ public class Script {
   public String scriptHash() {
     ArrayList<Type> types = new ArrayList<>();
     types.add(new Byte32(this.codeHash));
-    types.add(new Byte1(Script.DATA.equals(this.hashType) ? "00" : "0x01"));
+    types.add(new Byte1(Script.DATA.equals(this.hashType) ? "00" : "01"));
     List<Bytes> argList = new ArrayList<>();
     for (String arg : this.args) {
       argList.add(new Bytes(arg));
