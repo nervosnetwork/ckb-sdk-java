@@ -15,13 +15,9 @@ import org.nervos.ckb.transaction.TxGenerator;
 public class TransactionClient {
 
   private static final String NODE_URL = "http://localhost:8114";
-  private static final String PRIVATE_KEY =
-      "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-
-  private static CKBService ckbService;
 
   public static void main(String[] args) throws Exception {
-    ckbService = CKBService.build(new HttpService(NODE_URL));
+    String senderPrivateKey = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
     List<Receiver> receivers =
         Arrays.asList(
             new Receiver(
@@ -30,10 +26,11 @@ public class TransactionClient {
                 "ckt1qyq9ngn77wagfurp29738apv738dqgrpqpssfhr0l6", new BigInteger("12000000000")),
             new Receiver(
                 "ckt1qyq2pmuxkr0xwx8kp3ya2juryrygf27dregs44skek", new BigInteger("15000000000")));
-    sendCapacity(PRIVATE_KEY, receivers);
+    sendCapacity(senderPrivateKey, receivers);
   }
 
   private static void sendCapacity(String privateKey, List<Receiver> receivers) throws IOException {
+    CKBService ckbService = CKBService.build(new HttpService(NODE_URL));
     TxGenerator txGenerator = new TxGenerator(privateKey, ckbService);
     Transaction transaction = txGenerator.generateTx(receivers);
     CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
