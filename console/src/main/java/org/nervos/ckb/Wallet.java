@@ -40,7 +40,7 @@ public class Wallet {
 
     try {
       systemScriptCell = getSystemScriptCell(ckbService);
-    } catch (IOException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     lockScript = generateLockScript(privateKey, systemScriptCell.cellHash);
@@ -152,7 +152,7 @@ public class Wallet {
     return ckbService.computeScriptHash(script).send().getScriptHash();
   }
 
-  private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
+  private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws Exception {
     return SystemContract.getSystemScriptCell(ckbService);
   }
 

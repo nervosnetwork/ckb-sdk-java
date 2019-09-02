@@ -2,37 +2,33 @@ package type;
 
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.methods.type.Script;
+import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.service.HttpService;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ScriptTest {
 
-  private static final String ZERO_HASH =
-      "0000000000000000000000000000000000000000000000000000000000000000";
+  private CKBService ckbService;
 
-  @Test
-  public void testEmptyScriptHash() {
-    Script script = new Script(ZERO_HASH, Collections.emptyList());
-    Assertions.assertEquals(
-        "0xc371c8d6a0aed6018e91202d047c35055cfb0228e6709f1cd1d5f756525628b9", script.scriptHash());
+  @BeforeAll
+  private void init() {
+    ckbService = CKBService.build(new HttpService("http://localhost:8114"));
   }
 
   @Test
-  public void testScriptHash() {
-    Script script = new Script(ZERO_HASH, Collections.singletonList("0x01"));
-    Assertions.assertEquals(
-        "0xcd5b0c29b8f5528d3a75e3918576db4d962a1d4b315dff7d3c50818cc373b3f5", script.scriptHash());
-  }
-
-  @Test
-  public void testScriptHashWithCodeHash() {
+  public void testScriptHashWithCodeHash() throws Exception {
     String codeHash =
         Hash.blake2b(
             "0x1400000000000e00100000000c000800000004000e0000000c00000014000000740100000000000000000600080004000600000004000000580100007f454c460201010000000000000000000200f3000100000078000100000000004000000000000000980000000000000005000000400038000100400003000200010000000500000000000000000000000000010000000000000001000000000082000000000000008200000000000000001000000000000001459308d00573000000002e7368737472746162002e74657874000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b000000010000000600000000000000780001000000000078000000000000000a000000000000000000000000000000020000000000000000000000000000000100000003000000000000000000000000000000000000008200000000000000110000000000000000000000000000000100000000000000000000000000000000000000");
     Script script = new Script(codeHash, Collections.emptyList());
     Assertions.assertEquals(
-        "0xc00073200d2b2f4ad816a8d04bb2431ce0d3ebd49141b086eda4ab4e06bc3a21", script.scriptHash());
+        "0xd0e22f863da970a3ff51a937ae78ba490bbdcede7272d658a053b9f80e30305d",
+        script.scriptHash(ckbService));
   }
 }
