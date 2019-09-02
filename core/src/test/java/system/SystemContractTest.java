@@ -1,6 +1,5 @@
 package system;
 
-import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.service.CKBService;
@@ -10,7 +9,7 @@ import org.nervos.ckb.system.type.SystemScriptCell;
 
 public class SystemContractTest {
   @Test
-  public void testGetSystemContract() throws IOException {
+  public void testGetSystemContract() throws Exception {
     HttpService.setDebug(false);
     SystemScriptCell systemScriptCell =
         SystemContract.getSystemScriptCell(

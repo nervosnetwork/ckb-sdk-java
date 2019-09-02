@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.19.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.19.0...v0.19.1) (2019-09-02)
+
+### Bugfix
+
+* Fix script hash bug([342365c](https://github.com/nervosnetwork/ckb-sdk-java/commit/342365c488bb4dfee751bbabaf4e1dc6dc3592c9))
+
 # [v0.19.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.18.0...v0.19.0) (2019-08-28)
 
 ### Feature
