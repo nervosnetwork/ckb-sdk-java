@@ -1,18 +1,18 @@
 package org.nervos.ckb.type;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class UInt implements Type<Integer> {
+public class UInt32 implements Type<Integer> {
 
   public static final int BYTE_SIZE = 4;
 
   private Integer value;
 
-  UInt(Integer value) {
+  UInt32(Integer value) {
     this.value = value;
   }
 
   // generate int value from little endian bytes
-  UInt(byte[] bytes) {
+  UInt32(byte[] bytes) {
     int result = 0;
     for (int i = 3; i >= 0; i--) {
       result += ((int) bytes[i] & 0xff) << 8 * i;

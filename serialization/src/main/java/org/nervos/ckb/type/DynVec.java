@@ -3,11 +3,11 @@ package org.nervos.ckb.type;
 import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class BytesVec implements Type<List<Bytes>> {
+public class DynVec implements Type<List<Bytes>> {
 
   private List<Bytes> value;
 
-  public BytesVec(List<Bytes> value) {
+  public DynVec(List<Bytes> value) {
     this.value = value;
   }
 
@@ -18,20 +18,20 @@ public class BytesVec implements Type<List<Bytes>> {
     byte[] dest = new byte[fullLength];
 
     // full length bytes
-    byte[] lens = new UInt(fullLength).toBytes();
-    System.arraycopy(lens, 0, dest, 0, UInt.BYTE_SIZE);
+    byte[] lens = new UInt32(fullLength).toBytes();
+    System.arraycopy(lens, 0, dest, 0, UInt32.BYTE_SIZE);
 
-    int offset = UInt.BYTE_SIZE;
-    int bytesOffset = UInt.BYTE_SIZE * (1 + value.size());
+    int offset = UInt32.BYTE_SIZE;
+    int bytesOffset = UInt32.BYTE_SIZE * (1 + value.size());
     for (Bytes bytes : value) {
       // offset of every Bytes
-      byte[] offsetBytes = new UInt(bytesOffset).toBytes();
-      System.arraycopy(offsetBytes, 0, dest, offset, UInt.BYTE_SIZE);
+      byte[] offsetBytes = new UInt32(bytesOffset).toBytes();
+      System.arraycopy(offsetBytes, 0, dest, offset, UInt32.BYTE_SIZE);
 
       // Bytes through offset
       System.arraycopy(bytes.toBytes(), 0, dest, bytesOffset, bytes.getLength());
 
-      offset += UInt.BYTE_SIZE;
+      offset += UInt32.BYTE_SIZE;
       bytesOffset += bytes.getLength();
     }
     return dest;
@@ -44,7 +44,7 @@ public class BytesVec implements Type<List<Bytes>> {
 
   @Override
   public int getLength() {
-    int length = (1 + value.size()) * UInt.BYTE_SIZE;
+    int length = (1 + value.size()) * UInt32.BYTE_SIZE;
     for (Bytes bytes : value) {
       length += bytes.toBytes().length;
     }

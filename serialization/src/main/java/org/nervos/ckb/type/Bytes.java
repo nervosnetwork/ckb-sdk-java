@@ -16,17 +16,17 @@ public class Bytes implements Type<byte[]> {
   }
 
   public static Bytes fromBytes(byte[] bytes) {
-    byte[] dest = new byte[bytes.length - UInt.BYTE_SIZE];
-    System.arraycopy(bytes, UInt.BYTE_SIZE, dest, 0, dest.length);
+    byte[] dest = new byte[bytes.length - UInt32.BYTE_SIZE];
+    System.arraycopy(bytes, UInt32.BYTE_SIZE, dest, 0, dest.length);
     return new Bytes(dest);
   }
 
   @Override
   public byte[] toBytes() {
-    byte[] lens = new UInt(value.length).toBytes();
-    byte[] dest = new byte[UInt.BYTE_SIZE + value.length];
-    System.arraycopy(lens, 0, dest, 0, UInt.BYTE_SIZE);
-    System.arraycopy(value, 0, dest, UInt.BYTE_SIZE, value.length);
+    byte[] lens = new UInt32(value.length).toBytes();
+    byte[] dest = new byte[UInt32.BYTE_SIZE + value.length];
+    System.arraycopy(lens, 0, dest, 0, UInt32.BYTE_SIZE);
+    System.arraycopy(value, 0, dest, UInt32.BYTE_SIZE, value.length);
     return dest;
   }
 
@@ -37,6 +37,6 @@ public class Bytes implements Type<byte[]> {
 
   @Override
   public int getLength() {
-    return UInt.BYTE_SIZE + value.length;
+    return UInt32.BYTE_SIZE + value.length;
   }
 }

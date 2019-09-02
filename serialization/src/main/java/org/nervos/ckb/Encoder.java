@@ -18,7 +18,7 @@ public class Encoder {
       for (String arg : script.args) {
         argList.add(new Bytes(arg));
       }
-      types.add(new BytesVec(argList));
+      types.add(new DynVec(argList));
       return new Table(types);
     }
     return null;
