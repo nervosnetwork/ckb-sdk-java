@@ -24,7 +24,12 @@ public class Byte32 implements Type<byte[]> {
 
   @Override
   public byte[] toBytes() {
-    return value;
+    int length = getLength();
+    byte[] littleEnds = new byte[length];
+    for (int i = 0; i < length; i++) {
+      littleEnds[length - 1 - i] = value[i];
+    }
+    return littleEnds;
   }
 
   @Override
