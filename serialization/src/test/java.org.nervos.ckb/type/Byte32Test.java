@@ -49,7 +49,7 @@ public class Byte32Test {
     Byte32 byte32 = new Byte32("68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88");
     byte[] expected =
         Numeric.hexStringToByteArray(
-            "0x888e7d436797bf8e6dbf1c3c7f2ce837a546795279f8ab84f5d252c98a43d568");
+            "68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88");
     Assertions.assertArrayEquals(expected, byte32.toBytes());
   }
 }

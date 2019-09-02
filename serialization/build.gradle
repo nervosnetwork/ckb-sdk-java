@@ -1,7 +1,6 @@
 description 'Minimal set of ckb serialization classes'
 
 dependencies {
-    compile project(":core")
     compile project(":utils")
 }
 

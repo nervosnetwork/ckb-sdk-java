@@ -2,6 +2,7 @@ description 'ckb-sdk-java is a lightweight Java library for integration with ner
 
 dependencies {
     compile project(":utils")
+    compile project(":serialization")
     compile "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
