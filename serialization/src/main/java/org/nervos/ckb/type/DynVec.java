@@ -18,8 +18,7 @@ public class DynVec implements Type<List<Bytes>> {
     byte[] dest = new byte[fullLength];
 
     // full length bytes
-    byte[] lens = new UInt32(fullLength).toBytes();
-    System.arraycopy(lens, 0, dest, 0, UInt32.BYTE_SIZE);
+    System.arraycopy(new UInt32(fullLength).toBytes(), 0, dest, 0, UInt32.BYTE_SIZE);
 
     int offset = UInt32.BYTE_SIZE;
     int bytesOffset = UInt32.BYTE_SIZE * (1 + value.size());

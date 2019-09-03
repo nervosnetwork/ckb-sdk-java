@@ -23,9 +23,8 @@ public class Bytes implements Type<byte[]> {
 
   @Override
   public byte[] toBytes() {
-    byte[] lens = new UInt32(value.length).toBytes();
     byte[] dest = new byte[UInt32.BYTE_SIZE + value.length];
-    System.arraycopy(lens, 0, dest, 0, UInt32.BYTE_SIZE);
+    System.arraycopy(new UInt32(value.length).toBytes(), 0, dest, 0, UInt32.BYTE_SIZE);
     System.arraycopy(value, 0, dest, UInt32.BYTE_SIZE, value.length);
     return dest;
   }
