@@ -59,9 +59,7 @@ class TransactionTest {
 
     BigInteger privateKey =
         Numeric.toBigInt("0xe79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
-    String txHash = "0xac1bb95455cdfb89b6e977568744e09b6b80e08cab9477936a09c4ca07f5b8ab";
-    Transaction signedTx = tx.sign(privateKey, txHash);
-    Assertions.assertEquals(signedTx.hash, txHash);
+    Transaction signedTx = tx.sign(privateKey);
     Assertions.assertEquals(signedTx.witnesses.size(), tx.inputs.size());
     Assertions.assertEquals(
         signedTx.witnesses.get(0).data.get(0),
@@ -111,9 +109,7 @@ class TransactionTest {
 
     BigInteger privateKey =
         Numeric.toBigInt("0xe79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
-    String txHash = "0x985772e541c23d4e7dbf9844a9b9d93fcdc62273fa1f4ae1ae82703962dc1a4e";
-    Transaction signedTx = tx.sign(privateKey, txHash);
-    Assertions.assertEquals(signedTx.hash, txHash);
+    Transaction signedTx = tx.sign(privateKey);
     Assertions.assertEquals(signedTx.witnesses.size(), tx.inputs.size());
 
     List<String> expectedData = new ArrayList<>();
@@ -165,8 +161,7 @@ class TransactionTest {
     BigInteger privateKey =
         Numeric.toBigInt("0xe79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
     String txHash = "0xac1bb95455cdfb89b6e977568744e09b6b80e08cab9477936a09c4ca07f5b8ab";
-    Assertions.assertThrows(
-        InvalidNumberOfWitnessesException.class, () -> tx.sign(privateKey, txHash));
+    Assertions.assertThrows(InvalidNumberOfWitnessesException.class, () -> tx.sign(privateKey));
   }
 
   @Test
@@ -218,7 +213,7 @@ class TransactionTest {
 
   @Test
   public void serializationTxTest() throws IOException {
-    CKBService ckbService = CKBService.build(new HttpService("http://18.162.80.155:8114"));
+    CKBService ckbService = CKBService.build(new HttpService("http://localhost:8114"));
     Transaction transaction =
         ckbService.getBlockByNumber("1").send().getBlock().transactions.get(0);
     Assertions.assertEquals(

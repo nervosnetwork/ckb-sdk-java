@@ -80,10 +80,11 @@ public class Transaction {
     return blake2b.doFinalString();
   }
 
-  public Transaction sign(BigInteger privateKey, String txHash) {
+  public Transaction sign(BigInteger privateKey) {
     if (witnesses.size() < inputs.size()) {
       throw new InvalidNumberOfWitnessesException("Invalid number of witnesses");
     }
+    String txHash = serialization();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     List<Witness> signedWitnesses = new ArrayList<>();
     for (Witness witness : witnesses) {
