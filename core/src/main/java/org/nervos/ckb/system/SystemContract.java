@@ -17,7 +17,7 @@ public class SystemContract {
       throw new IOException("Genesis block transactions system script not found");
     }
     return new SystemScriptCell(
-        block.transactions.get(0).outputs.get(1).type.scriptHash(ckbService),
+        block.transactions.get(0).outputs.get(1).type.scriptHash(),
         new OutPoint(block.transactions.get(1).hash, "0"));
   }
 }
