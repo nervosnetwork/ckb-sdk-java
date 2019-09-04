@@ -1,5 +1,6 @@
 package type;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,8 @@ import org.nervos.ckb.methods.type.cell.CellDep;
 import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.transaction.Transaction;
+import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -164,5 +167,62 @@ class TransactionTest {
     String txHash = "0xac1bb95455cdfb89b6e977568744e09b6b80e08cab9477936a09c4ca07f5b8ab";
     Assertions.assertThrows(
         InvalidNumberOfWitnessesException.class, () -> tx.sign(privateKey, txHash));
+  }
+
+  @Test
+  public void serializationTest() {
+    Transaction tx =
+        new Transaction(
+            "0",
+            Arrays.asList(
+                new CellDep(
+                    new OutPoint(
+                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b", "0"),
+                    CellDep.DEP_GROUP),
+                new CellDep(
+                    new OutPoint(
+                        "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60", "2"),
+                    CellDep.CODE)),
+            Collections.emptyList(),
+            Collections.singletonList(
+                new CellInput(
+                    new OutPoint(
+                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65", "1"),
+                    "0")),
+            Arrays.asList(
+                new CellOutput(
+                    "100000000000",
+                    new Script(
+                        "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
+                        Collections.singletonList("0x59a27ef3ba84f061517d13f42cf44ed020610061"),
+                        Script.TYPE),
+                    new Script(
+                        "0xece45e0979030e2f8909f76258631c42333b1e906fd9701ec3600a464a90b8f6",
+                        Collections.emptyList(),
+                        Script.DATA)),
+                new CellOutput(
+                    "98824000000000",
+                    new Script(
+                        "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
+                        Collections.singletonList("0x59a27ef3ba84f061517d13f42cf44ed020610061"),
+                        Script.TYPE))),
+            Arrays.asList("0x", "0x"),
+            Collections.singletonList(
+                new Witness(
+                    Collections.singletonList(
+                        "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"))));
+
+    Assertions.assertEquals(
+        "0x09ce2223304a5f48d5ce2b6ee2777d96503591279671460fa39ae894ea9e2b87", tx.serialization());
+  }
+
+  @Test
+  public void serializationTxTest() throws IOException {
+    CKBService ckbService = CKBService.build(new HttpService("http://18.162.80.155:8114"));
+    Transaction transaction =
+        ckbService.getBlockByNumber("1").send().getBlock().transactions.get(0);
+    Assertions.assertEquals(
+        ckbService.computeTransactionHash(transaction).send().getTransactionHash(),
+        transaction.serialization());
   }
 }
