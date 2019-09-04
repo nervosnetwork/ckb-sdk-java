@@ -1,21 +1,31 @@
-package org.nervos.ckb.type;
+package org.nervos.ckb.type.fixed;
+
+import org.nervos.ckb.type.base.FixedType;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class UInt32 implements Type<Integer> {
+public class UInt32 extends FixedType<Long> {
 
   public static final int BYTE_SIZE = 4;
 
-  private Integer value;
+  private Long value;
 
-  UInt32(Integer value) {
+  public UInt32(Long value) {
     this.value = value;
+  }
+
+  public UInt32(int value) {
+    this.value = (long) value;
+  }
+
+  public UInt32(String value) {
+    this.value = Long.valueOf(value);
   }
 
   // generate int value from little endian bytes
   UInt32(byte[] bytes) {
-    int result = 0;
+    long result = 0;
     for (int i = 3; i >= 0; i--) {
-      result += ((int) bytes[i] & 0xff) << 8 * i;
+      result += ((long) bytes[i] & 0xff) << 8 * i;
     }
     this.value = result;
   }
@@ -34,7 +44,7 @@ public class UInt32 implements Type<Integer> {
   }
 
   @Override
-  public Integer getValue() {
+  public Long getValue() {
     return value;
   }
 

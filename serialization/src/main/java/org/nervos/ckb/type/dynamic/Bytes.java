@@ -1,9 +1,11 @@
-package org.nervos.ckb.type;
+package org.nervos.ckb.type.dynamic;
 
+import org.nervos.ckb.type.base.DynType;
+import org.nervos.ckb.type.fixed.UInt32;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class Bytes implements Type<byte[]> {
+public class Bytes extends DynType<byte[]> {
 
   private byte[] value;
 

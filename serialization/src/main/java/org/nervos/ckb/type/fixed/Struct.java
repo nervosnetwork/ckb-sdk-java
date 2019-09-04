@@ -1,14 +1,21 @@
-package org.nervos.ckb.type;
+package org.nervos.ckb.type.fixed;
 
+import java.util.Arrays;
 import java.util.List;
+import org.nervos.ckb.type.base.FixedType;
+import org.nervos.ckb.type.base.Type;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class Struct implements Type<List<Type>> {
+public class Struct extends FixedType<List<Type>> {
 
   private List<Type> value;
 
   public Struct(List<Type> value) {
     this.value = value;
+  }
+
+  public Struct(Type... value) {
+    this.value = Arrays.asList(value);
   }
 
   @Override
