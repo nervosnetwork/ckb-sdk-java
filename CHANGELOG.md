@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.20.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.19.1...v0.20.0) (2019-09-07)
+
+### Feature
+
+* Move wallet to core module([1bd1050](https://github.com/nervosnetwork/ckb-sdk-java/commit/1bd1050d9263f54250cbe282d1bd090ca2624e05))
+
 # [v0.19.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.19.0...v0.19.1) (2019-09-02)
 
 ### Bugfix
