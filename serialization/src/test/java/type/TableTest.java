@@ -1,13 +1,17 @@
 package type;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.Encoder;
-import org.nervos.ckb.type.*;
+import org.nervos.ckb.type.base.Type;
+import org.nervos.ckb.type.dynamic.Bytes;
+import org.nervos.ckb.type.dynamic.Dynamic;
+import org.nervos.ckb.type.dynamic.Table;
+import org.nervos.ckb.type.fixed.Byte1;
+import org.nervos.ckb.type.fixed.Byte32;
 import org.nervos.ckb.utils.Numeric;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TableTest {
@@ -19,7 +23,7 @@ public class TableTest {
     types.add(new Byte1("01"));
     List<Bytes> argList = new ArrayList<>();
     argList.add(new Bytes("3954acece65096bfa81258983ddb83915fc56bd8"));
-    types.add(new DynBytes(argList));
+    types.add(new Dynamic<>(argList));
     Table table = new Table(types);
     byte[] result = Encoder.encode(table);
     Assertions.assertEquals(
@@ -34,7 +38,7 @@ public class TableTest {
     types.add(new Byte1("01"));
     List<Bytes> argList = new ArrayList<>();
     argList.add(new Bytes("3954acece65096bfa81258983ddb83915fc56bd8"));
-    types.add(new DynBytes(argList));
+    types.add(new Dynamic<>(argList));
     Table table = new Table(types);
     byte[] result = Encoder.encode(table);
     Assertions.assertEquals(81, result.length);
