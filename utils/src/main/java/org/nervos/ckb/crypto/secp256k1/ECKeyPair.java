@@ -1,15 +1,15 @@
 package org.nervos.ckb.crypto.secp256k1;
 
+import static org.nervos.ckb.crypto.secp256k1.Sign.CURVE;
+
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.util.Arrays;
 import java.util.Objects;
-import org.bouncycastle.crypto.digests.SHA256Digest;
-import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
-import org.bouncycastle.crypto.signers.ECDSASigner;
-import org.bouncycastle.crypto.signers.HMacDSAKCalculator;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
+import org.bouncycastle.math.ec.ECPoint;
+import org.bouncycastle.math.ec.FixedPointCombMultiplier;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
@@ -44,11 +44,11 @@ public class ECKeyPair {
   }
 
   public static ECKeyPair createWithPrivateKey(BigInteger privateKey, boolean compressed) {
-    return new ECKeyPair(privateKey, Sign.publicKeyFromPrivate(privateKey, compressed));
+    return new ECKeyPair(privateKey, publicKeyFromPrivate(privateKey, compressed));
   }
 
   public static ECKeyPair createWithPrivateKey(BigInteger privateKey) {
-    return new ECKeyPair(privateKey, Sign.publicKeyFromPrivate(privateKey));
+    return new ECKeyPair(privateKey, publicKeyFromPrivate(privateKey));
   }
 
   public static ECKeyPair createWithPrivateKey(byte[] privateKey) {
@@ -56,19 +56,42 @@ public class ECKeyPair {
   }
 
   /**
-   * Sign a hash with the private key of this key pair.
+   * Returns public key from the given private key.
    *
-   * @param transactionHash the hash to sign
-   * @return An {@link ECDSASignature} of the hash
+   * @param privateKey the private key to derive the public key from
+   * @return BigInteger encoded public key
    */
-  public ECDSASignature sign(byte[] transactionHash) {
-    ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
+  public static BigInteger publicKeyFromPrivate(BigInteger privateKey) {
+    return publicKeyFromPrivate(privateKey, true);
+  }
 
-    ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(privateKey, Sign.CURVE);
-    signer.init(true, privKey);
-    BigInteger[] components = signer.generateSignature(transactionHash);
+  public static BigInteger publicKeyFromPrivate(String privateKeyHex) {
+    return publicKeyFromPrivate(Numeric.toBigInt(privateKeyHex), true);
+  }
 
-    return new ECDSASignature(components[0], components[1]).toCanonicalised();
+  /**
+   * Returns public key from the given private key.
+   *
+   * @param privateKey the private key to derive the public key from
+   * @return BigInteger encoded public key
+   */
+  public static BigInteger publicKeyFromPrivate(BigInteger privateKey, boolean compressed) {
+    ECPoint point = publicPointFromPrivate(privateKey);
+
+    byte[] encoded = point.getEncoded(compressed);
+    if (compressed) {
+      return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
+    } else {
+      return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
+    }
+  }
+
+  /** Returns public key point from the given private key. */
+  private static ECPoint publicPointFromPrivate(BigInteger privateKey) {
+    if (privateKey.bitLength() > CURVE.getN().bitLength()) {
+      privateKey = privateKey.mod(CURVE.getN());
+    }
+    return new FixedPointCombMultiplier().multiply(CURVE.getG(), privateKey);
   }
 
   @Override

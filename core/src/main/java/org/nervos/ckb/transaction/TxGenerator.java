@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.crypto.Hash;
-import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.Witness;
 import org.nervos.ckb.methods.type.cell.CellDep;
@@ -131,7 +131,7 @@ public class TxGenerator {
   }
 
   private Script generateLockScript(String privateKey, String codeHash) {
-    String publicKey = Sign.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true).toString(16);
+    String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey).toString(16);
     String blake160 =
         Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
     return new Script(codeHash, Collections.singletonList(blake160), Script.TYPE);
