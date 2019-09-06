@@ -79,19 +79,19 @@ public class Serializer {
   }
 
   public static Dynamic<Bytes> serializeBytes(List<String> bytes) {
-    List<Bytes> outputsDataList = new ArrayList<>();
+    List<Bytes> bytesList = new ArrayList<>();
     for (String data : bytes) {
-      outputsDataList.add(new Bytes(data));
+      bytesList.add(new Bytes(data));
     }
-    return new Dynamic<>(outputsDataList);
+    return new Dynamic<>(bytesList);
   }
 
   public static Fixed<Byte32> serializeByte32(List<String> bytes) {
-    List<Byte32> outputsDataList = new ArrayList<>();
+    List<Byte32> byte32List = new ArrayList<>();
     for (String data : bytes) {
-      outputsDataList.add(new Byte32(data));
+      byte32List.add(new Byte32(data));
     }
-    return new Fixed<>(outputsDataList);
+    return new Fixed<>(byte32List);
   }
 
   public static Table serializeTransaction(Transaction transaction) {

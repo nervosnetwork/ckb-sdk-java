@@ -34,7 +34,7 @@ public class Script {
     this.hashType = hashType;
   }
 
-  public String scriptHash() {
+  public String computeHash() {
     Blake2b blake2b = new Blake2b();
     blake2b.update(Encoder.encode(Serializer.serializeScript(this)));
     return blake2b.doFinalString();

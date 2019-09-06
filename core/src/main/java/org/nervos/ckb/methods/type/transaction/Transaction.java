@@ -74,7 +74,7 @@ public class Transaction {
     this.witnesses = witnesses;
   }
 
-  public String serialization() {
+  public String computeHash() {
     Blake2b blake2b = new Blake2b();
     blake2b.update(Encoder.encode(Serializer.serializeTransaction(this)));
     return blake2b.doFinalString();
@@ -84,7 +84,7 @@ public class Transaction {
     if (witnesses.size() < inputs.size()) {
       throw new InvalidNumberOfWitnessesException("Invalid number of witnesses");
     }
-    String txHash = serialization();
+    String txHash = computeHash();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     List<Witness> signedWitnesses = new ArrayList<>();
     for (Witness witness : witnesses) {

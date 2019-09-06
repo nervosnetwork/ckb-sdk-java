@@ -208,7 +208,7 @@ class TransactionTest {
                         "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"))));
 
     Assertions.assertEquals(
-        "0x09ce2223304a5f48d5ce2b6ee2777d96503591279671460fa39ae894ea9e2b87", tx.serialization());
+        "0x09ce2223304a5f48d5ce2b6ee2777d96503591279671460fa39ae894ea9e2b87", tx.computeHash());
   }
 
   @Test
@@ -218,6 +218,6 @@ class TransactionTest {
         ckbService.getBlockByNumber("1").send().getBlock().transactions.get(0);
     Assertions.assertEquals(
         ckbService.computeTransactionHash(transaction).send().getTransactionHash(),
-        transaction.serialization());
+        transaction.computeHash());
   }
 }
