@@ -1,13 +1,15 @@
-package org.nervos.ckb.type;
+package org.nervos.ckb.type.dynamic;
 
 import java.util.List;
+import org.nervos.ckb.type.base.DynType;
+import org.nervos.ckb.type.base.Type;
+import org.nervos.ckb.type.fixed.UInt32;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class DynVec implements Type<List<Bytes>> {
+public class Dynamic<T extends DynType> implements Type<List<T>> {
+  private List<T> value;
 
-  private List<Bytes> value;
-
-  public DynVec(List<Bytes> value) {
+  public Dynamic(List<T> value) {
     this.value = value;
   }
 
@@ -22,30 +24,31 @@ public class DynVec implements Type<List<Bytes>> {
 
     int offset = UInt32.BYTE_SIZE;
     int bytesOffset = UInt32.BYTE_SIZE * (1 + value.size());
-    for (Bytes bytes : value) {
+
+    for (DynType type : value) {
       // offset of every Bytes
       byte[] offsetBytes = new UInt32(bytesOffset).toBytes();
       System.arraycopy(offsetBytes, 0, dest, offset, UInt32.BYTE_SIZE);
 
       // Bytes through offset
-      System.arraycopy(bytes.toBytes(), 0, dest, bytesOffset, bytes.getLength());
+      System.arraycopy(type.toBytes(), 0, dest, bytesOffset, type.getLength());
 
       offset += UInt32.BYTE_SIZE;
-      bytesOffset += bytes.getLength();
+      bytesOffset += type.getLength();
     }
     return dest;
   }
 
   @Override
-  public List<Bytes> getValue() {
+  public List<T> getValue() {
     return value;
   }
 
   @Override
   public int getLength() {
     int length = (1 + value.size()) * UInt32.BYTE_SIZE;
-    for (Bytes bytes : value) {
-      length += bytes.toBytes().length;
+    for (DynType type : value) {
+      length += type.getLength();
     }
     return length;
   }

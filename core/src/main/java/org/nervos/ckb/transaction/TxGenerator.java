@@ -95,8 +95,7 @@ public class TxGenerator {
             cellOutputsData,
             witnesses);
 
-    String txHash = ckbService.computeTransactionHash(transaction).send().getTransactionHash();
-    return transaction.sign(Numeric.toBigInt(privateKey), txHash);
+    return transaction.sign(Numeric.toBigInt(privateKey));
   }
 
   private Cells getCellInputs(String lockHash, BigInteger needCapacities) throws IOException {
