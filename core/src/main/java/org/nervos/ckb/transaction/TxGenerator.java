@@ -131,7 +131,7 @@ public class TxGenerator {
   }
 
   private Script generateLockScript(String privateKey, String codeHash) {
-    String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey).toString(16);
+    String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey);
     String blake160 =
         Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
     return new Script(codeHash, Collections.singletonList(blake160), Script.TYPE);

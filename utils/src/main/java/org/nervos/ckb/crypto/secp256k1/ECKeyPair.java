@@ -65,8 +65,8 @@ public class ECKeyPair {
     return publicKeyFromPrivate(privateKey, true);
   }
 
-  public static BigInteger publicKeyFromPrivate(String privateKeyHex) {
-    return publicKeyFromPrivate(Numeric.toBigInt(privateKeyHex), true);
+  public static String publicKeyFromPrivate(String privateKeyHex) {
+    return publicKeyFromPrivate(Numeric.toBigInt(privateKeyHex), true).toString(16);
   }
 
   /**
