@@ -79,12 +79,7 @@ public class ECKeyPair {
     ECPoint point = publicPointFromPrivate(privateKey);
 
     byte[] encoded = point.getEncoded(compressed);
-    if (compressed) {
-      int from = compressed ? 0 : 1;
-      return new BigInteger(1, Arrays.copyOfRange(encoded, from, encoded.length));
-    } else {
-      return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
-    }
+    return new BigInteger(1, Arrays.copyOfRange(encoded, compressed ? 0 : 1, encoded.length));
   }
 
   /** Returns public key point from the given private key. */
