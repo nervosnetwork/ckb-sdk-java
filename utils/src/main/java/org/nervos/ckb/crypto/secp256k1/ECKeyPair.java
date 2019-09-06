@@ -80,7 +80,8 @@ public class ECKeyPair {
 
     byte[] encoded = point.getEncoded(compressed);
     if (compressed) {
-      return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
+      int from = compressed ? 0 : 1;
+      return new BigInteger(1, Arrays.copyOfRange(encoded, from, encoded.length));
     } else {
       return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
     }
