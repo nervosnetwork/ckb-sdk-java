@@ -2,7 +2,9 @@ package org.nervos.ckb.methods.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.Encoder;
+import org.nervos.ckb.crypto.Blake2b;
+import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
@@ -32,7 +34,9 @@ public class Script {
     this.hashType = hashType;
   }
 
-  public String scriptHash(CKBService ckbService) throws Exception {
-    return ckbService.computeScriptHash(this).send().getScriptHash();
+  public String computeHash() {
+    Blake2b blake2b = new Blake2b();
+    blake2b.update(Encoder.encode(Serializer.serializeScript(this)));
+    return blake2b.doFinalString();
   }
 }

@@ -14,4 +14,10 @@ public class CellOutput {
     this.capacity = capacity;
     this.lock = lock;
   }
+
+  public CellOutput(String capacity, Script lock, Script type) {
+    this.capacity = capacity;
+    this.lock = lock;
+    this.type = type;
+  }
 }

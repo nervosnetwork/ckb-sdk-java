@@ -7,11 +7,14 @@ import java.security.SignatureException;
 import java.util.Arrays;
 import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.asn1.x9.X9IntegerConverter;
+import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.ec.CustomNamedCurves;
 import org.bouncycastle.crypto.params.ECDomainParameters;
+import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
+import org.bouncycastle.crypto.signers.ECDSASigner;
+import org.bouncycastle.crypto.signers.HMacDSAKCalculator;
 import org.bouncycastle.math.ec.ECAlgorithms;
 import org.bouncycastle.math.ec.ECPoint;
-import org.bouncycastle.math.ec.FixedPointCombMultiplier;
 import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
@@ -34,7 +37,7 @@ public class Sign {
 
     byte[] messageHash = isHash ? Hash.blake2b(message) : message;
 
-    ECDSASignature sig = keyPair.sign(messageHash);
+    ECDSASignature sig = sign(keyPair, messageHash);
     // Now we have to work backwards to figure out the recId needed to recover the signature.
     int recId = -1;
     for (int i = 0; i < 4; i++) {
@@ -185,41 +188,19 @@ public class Sign {
   }
 
   /**
-   * Returns public key from the given private key.
+   * Sign a hash with the private key of this key pair.
    *
-   * @param privKey the private key to derive the public key from
-   * @return BigInteger encoded public key
+   * @param transactionHash the hash to sign
+   * @return An {@link ECDSASignature} of the hash
    */
-  public static BigInteger publicKeyFromPrivate(BigInteger privKey) {
-    ECPoint point = publicPointFromPrivate(privKey);
+  private static ECDSASignature sign(ECKeyPair ecKeyPair, byte[] transactionHash) {
+    ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
-    byte[] encoded = point.getEncoded(true);
-    return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
-  }
+    ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(ecKeyPair.getPrivateKey(), CURVE);
+    signer.init(true, privKey);
+    BigInteger[] components = signer.generateSignature(transactionHash);
 
-  /**
-   * Returns public key from the given private key.
-   *
-   * @param privKey the private key to derive the public key from
-   * @return BigInteger encoded public key
-   */
-  public static BigInteger publicKeyFromPrivate(BigInteger privKey, boolean compressed) {
-    ECPoint point = publicPointFromPrivate(privKey);
-
-    byte[] encoded = point.getEncoded(compressed);
-    if (compressed) {
-      return new BigInteger(1, Arrays.copyOfRange(encoded, 0, encoded.length));
-    } else {
-      return new BigInteger(1, Arrays.copyOfRange(encoded, 1, encoded.length));
-    }
-  }
-
-  /** Returns public key point from the given private key. */
-  private static ECPoint publicPointFromPrivate(BigInteger privKey) {
-    if (privKey.bitLength() > CURVE.getN().bitLength()) {
-      privKey = privKey.mod(CURVE.getN());
-    }
-    return new FixedPointCombMultiplier().multiply(CURVE.getG(), privKey);
+    return new ECDSASignature(components[0], components[1]).toCanonicalised();
   }
 
   public static class SignatureData {
