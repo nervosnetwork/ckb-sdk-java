@@ -1,6 +1,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.20.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.19.1...v0.20.0) (2019-09-07)
+
+**This version SDK supports computing script hash and transaction hash offline through script and transaction serialization.**
+
+### Feature
+
+* Move wallet to core module([1bd1050](https://github.com/nervosnetwork/ckb-sdk-java/commit/1bd1050d9263f54250cbe282d1bd090ca2624e05))
+* Implement serialization schema ([195a234](https://github.com/nervosnetwork/ckb-sdk-java/pull/147/commits/195a2345a1ee52af8cab68272d9e31134aefda57))
+* Implement serialization schema ([2d55ea0](https://github.com/nervosnetwork/ckb-sdk-java/pull/147/commits/2d55ea0f086a65c329d5298f2c1240f261cda240))
+* Implement serialization schema ([384d555](https://github.com/nervosnetwork/ckb-sdk-java/pull/147/commits/384d55528cb69e717baed2df90ac90da4b1c38d0))
+* Implement serialization schema ([9433c56](https://github.com/nervosnetwork/ckb-sdk-java/pull/147/commits/9433c56904fbca083d91855512a01e5d7a46b286))
+* Add serialization for script and transaction ([2aaa141](https://github.com/nervosnetwork/ckb-sdk-java/pull/147/commits/2aaa141185d640cc665cb85a9747412c7a054645))
+* Refactor secp256k1 sign and key method ([f8d48c2](https://github.com/nervosnetwork/ckb-sdk-java/pull/147/commits/f8d48c23ce824886e153826c0227ca311d2777b5))
+
 # [v0.19.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.19.0...v0.19.1) (2019-09-02)
 
 ### Bugfix
