@@ -35,7 +35,7 @@ public class TxGenerator {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    this.lockScript = Utils.generateLockScript(privateKey, systemScriptCell.cellHash);
+    this.lockScript = Utils.generateLockScriptWithPrivateKey(privateKey, systemScriptCell.cellHash);
   }
 
   public Transaction generateTx(List<Receiver> receivers) throws IOException {

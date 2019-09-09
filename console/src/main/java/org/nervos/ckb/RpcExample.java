@@ -9,20 +9,20 @@ import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
-public class RpcClient {
+public class RpcExample {
 
   private static final String NODE_URL = "http://localhost:8114";
 
   private static CKBService ckbService;
 
-  public RpcClient() {
+  public RpcExample() {
     HttpService.setDebug(false);
     ckbService = CKBService.build(new HttpService(NODE_URL));
   }
 
   public static void main(String[] args) throws IOException {
     System.out.println("Welcome to use SDK to visit CKB Blockchain");
-    RpcClient client = new RpcClient();
+    RpcExample client = new RpcExample();
     System.out.println(
         "CKB Blockchain information: " + new Gson().toJson(client.getBlockchainInfo()));
     BigInteger currentBlockNumber = client.getTipBlockNumber();

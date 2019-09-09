@@ -51,9 +51,9 @@ public class CellGatherer {
     return new Cells(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
   }
 
-  public BigInteger getCapacitiesWithPrivateKey(String privateKey) throws IOException {
+  public BigInteger getCapacitiesWithAddress(String address) throws IOException {
     SystemScriptCell systemScriptCell = Utils.getSystemScriptCell(ckbService);
-    Script lockScript = Utils.generateLockScript(privateKey, systemScriptCell.cellHash);
+    Script lockScript = Utils.generateLockScriptWithAddress(address, systemScriptCell.cellHash);
     return getCapacitiesWithLockHash(lockScript.computeHash());
   }
 
