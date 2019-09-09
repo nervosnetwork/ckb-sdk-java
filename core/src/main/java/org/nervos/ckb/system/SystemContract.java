@@ -8,7 +8,7 @@ import org.nervos.ckb.system.type.SystemScriptCell;
 
 public class SystemContract {
 
-  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws Exception {
+  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
     Block block = ckbService.getBlockByNumber("0").send().getBlock();
     if (block == null) {
       throw new IOException("Genesis block not found");
