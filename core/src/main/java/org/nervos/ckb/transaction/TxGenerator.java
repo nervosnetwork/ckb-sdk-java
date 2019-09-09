@@ -47,8 +47,8 @@ public class TxGenerator {
       throw new IOException("Less than min capacity");
     }
 
-    CellGatherer cellGatherer = new CellGatherer(ckbService);
-    Cells cellInputs = cellGatherer.getCellInputs(lockScript.computeHash(), needCapacities);
+    Cells cellInputs =
+        new CellGatherer(ckbService).getCellInputs(lockScript.computeHash(), needCapacities);
     if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new IOException("No enough Capacities");
     }

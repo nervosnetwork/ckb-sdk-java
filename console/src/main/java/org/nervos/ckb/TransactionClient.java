@@ -30,6 +30,7 @@ public class TransactionClient {
                 "ckt1qyq2pmuxkr0xwx8kp3ya2juryrygf27dregs44skek", new BigInteger("15000000000")));
     System.out.println("Sender's balance: " + getBalance(senderPrivateKey).toString(10));
     sendCapacity(senderPrivateKey, receivers);
+    Thread.sleep(10000); // waiting transaction into block
     System.out.println("Sender's balance: " + getBalance(senderPrivateKey).toString(10));
   }
 
