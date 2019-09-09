@@ -1,23 +1,17 @@
 package org.nervos.ckb.transaction;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
-import org.nervos.ckb.crypto.Hash;
-import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.Witness;
 import org.nervos.ckb.methods.type.cell.CellDep;
-import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutput;
-import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
@@ -37,11 +31,11 @@ public class TxGenerator {
     this.ckbService = ckbService;
 
     try {
-      this.systemScriptCell = getSystemScriptCell(ckbService);
+      this.systemScriptCell = Utils.getSystemScriptCell(ckbService);
     } catch (Exception e) {
       e.printStackTrace();
     }
-    this.lockScript = generateLockScript(privateKey, systemScriptCell.cellHash);
+    this.lockScript = Utils.generateLockScriptWithPrivateKey(privateKey, systemScriptCell.cellHash);
   }
 
   public Transaction generateTx(List<Receiver> receivers) throws IOException {
@@ -53,7 +47,8 @@ public class TxGenerator {
       throw new IOException("Less than min capacity");
     }
 
-    Cells cellInputs = getCellInputs(getLockHash(lockScript), needCapacities);
+    Cells cellInputs =
+        new CellGatherer(ckbService).getCellInputs(lockScript.computeHash(), needCapacities);
     if (cellInputs.capacity.compareTo(needCapacities) < 0) {
       throw new IOException("No enough Capacities");
     }
@@ -96,51 +91,5 @@ public class TxGenerator {
             witnesses);
 
     return transaction.sign(Numeric.toBigInt(privateKey));
-  }
-
-  private Cells getCellInputs(String lockHash, BigInteger needCapacities) throws IOException {
-    List<CellInput> cellInputs = new ArrayList<>();
-    BigInteger inputsCapacities = BigInteger.ZERO;
-    long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();
-    long fromBlockNumber = 1;
-
-    while (fromBlockNumber <= toBlockNumber && inputsCapacities.compareTo(needCapacities) < 0) {
-      long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-      List<CellOutputWithOutPoint> cellOutputs =
-          ckbService
-              .getCellsByLockHash(
-                  lockHash, String.valueOf(fromBlockNumber), String.valueOf(currentToBlockNumber))
-              .send()
-              .getCells();
-
-      if (cellOutputs != null && cellOutputs.size() > 0) {
-        for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputs) {
-          CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0");
-          inputsCapacities =
-              inputsCapacities.add(new BigDecimal(cellOutputWithOutPoint.capacity).toBigInteger());
-          cellInputs.add(cellInput);
-          if (inputsCapacities.compareTo(needCapacities) > 0) {
-            break;
-          }
-        }
-      }
-      fromBlockNumber = currentToBlockNumber + 1;
-    }
-    return new Cells(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
-  }
-
-  private Script generateLockScript(String privateKey, String codeHash) {
-    String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey);
-    String blake160 =
-        Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
-    return new Script(codeHash, Collections.singletonList(blake160), Script.TYPE);
-  }
-
-  private String getLockHash(Script script) throws IOException {
-    return ckbService.computeScriptHash(script).send().getScriptHash();
-  }
-
-  private SystemScriptCell getSystemScriptCell(CKBService ckbService) throws Exception {
-    return SystemContract.getSystemScriptCell(ckbService);
   }
 }

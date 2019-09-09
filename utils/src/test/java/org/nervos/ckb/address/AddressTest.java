@@ -2,6 +2,7 @@ package org.nervos.ckb.address;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Network;
@@ -65,7 +66,8 @@ public class AddressTest {
   @Test
   public void testPrivateKeyHashToAddressTestnet() {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
-    String publicKey = "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01";
+    String privateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
+    String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey);
     Assertions.assertEquals(
         "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83", utils.generateFromPublicKey(publicKey));
   }
