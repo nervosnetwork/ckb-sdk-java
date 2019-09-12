@@ -22,7 +22,7 @@ public class TransactionExample {
   private static CKBService ckbService;
 
   static {
-    HttpService.setDebug(true);
+    HttpService.setDebug(false);
     ckbService = CKBService.build(new HttpService(NODE_URL));
   }
 
