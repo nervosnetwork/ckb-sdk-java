@@ -5,11 +5,11 @@ buildscript {
     ext.gsonVersion = '2.8.5'
     ext.jacksonVersion = '2.10.0.pr2'
     ext.okhttpVersion = '4.2.0'
-    ext.loggingOkhttpVersion = '4.1.0'
+    ext.loggingOkhttpVersion = '4.2.0'
     ext.slf4jVersion = '1.7.28'
     ext.guavaVersion = '28.1-jre'
 
-    ext.junitVersion = '5.5.1'
+    ext.junitVersion = '5.5.2'
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
