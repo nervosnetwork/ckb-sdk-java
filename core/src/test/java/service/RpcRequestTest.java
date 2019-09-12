@@ -33,19 +33,19 @@ public class RpcRequestTest {
 
   @Test
   public void testGetBlockByNumber() throws IOException {
-    Block block = ckbService.getBlockByNumber("1").send().getBlock();
+    Block block = ckbService.getBlockByNumber("0x1").send().getBlock();
     Assertions.assertNotNull(block);
   }
 
   @Test
   public void testGetBlockHashByNumber() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     Assertions.assertNotNull(blockHash);
   }
 
   @Test
   public void testGetCellbaseOutputCapacityDetails() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     CellbaseOutputCapacity cellbaseOutputCapacity =
         ckbService.getCellbaseOutputCapacityDetails(blockHash).send().getCellbaseOutputCapacity();
     Assertions.assertNotNull(cellbaseOutputCapacity);
@@ -53,7 +53,7 @@ public class RpcRequestTest {
 
   @Test
   public void testBlockAndTransaction() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     Block block = ckbService.getBlock(blockHash).send().getBlock();
     Assertions.assertNotNull(block);
     Assertions.assertNotNull(block.header);
@@ -62,7 +62,7 @@ public class RpcRequestTest {
   @Test
   public void testTransaction() throws IOException {
     String transactionHash =
-        ckbService.getBlockByNumber("1").send().getBlock().transactions.get(0).hash;
+        ckbService.getBlockByNumber("0x1").send().getBlock().transactions.get(0).hash;
     Transaction transaction =
         ckbService.getTransaction(transactionHash).send().getTransaction().transaction;
     Assertions.assertNotNull(transaction);
@@ -94,14 +94,14 @@ public class RpcRequestTest {
 
   @Test
   public void testGetHeader() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     Header header = ckbService.getHeader(blockHash).send().getHeader();
     Assertions.assertNotNull(header);
   }
 
   @Test
   public void testGetHeaderByNumber() throws IOException {
-    Header header = ckbService.getHeaderByNumber("1").send().getHeader();
+    Header header = ckbService.getHeaderByNumber("0x1").send().getHeader();
     Assertions.assertNotNull(header);
   }
 

@@ -2,6 +2,7 @@ package org.nervos.ckb.type.fixed;
 
 import java.math.BigInteger;
 import org.nervos.ckb.type.base.FixedType;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class UInt64 extends FixedType<BigInteger> {
@@ -17,7 +18,7 @@ public class UInt64 extends FixedType<BigInteger> {
   }
 
   public UInt64(String value) {
-    this.value = new BigInteger(value);
+    this.value = Numeric.toBigInt(value);
   }
 
   // generate int value from little endian bytes

@@ -1,7 +1,6 @@
 package org.nervos.ckb.transaction;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +9,7 @@ import org.nervos.ckb.methods.type.cell.CellInput;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.system.type.SystemScriptCell;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellGatherer {
@@ -31,15 +31,17 @@ public class CellGatherer {
       List<CellOutputWithOutPoint> cellOutputs =
           ckbService
               .getCellsByLockHash(
-                  lockHash, String.valueOf(fromBlockNumber), String.valueOf(currentToBlockNumber))
+                  lockHash,
+                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(fromBlockNumber)),
+                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(currentToBlockNumber)))
               .send()
               .getCells();
 
       if (cellOutputs != null && cellOutputs.size() > 0) {
         for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputs) {
-          CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0");
+          CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
           inputsCapacities =
-              inputsCapacities.add(new BigDecimal(cellOutputWithOutPoint.capacity).toBigInteger());
+              inputsCapacities.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
           cellInputs.add(cellInput);
           if (inputsCapacities.compareTo(needCapacities) > 0) {
             break;
@@ -48,7 +50,7 @@ public class CellGatherer {
       }
       fromBlockNumber = currentToBlockNumber + 1;
     }
-    return new Cells(cellInputs, new BigDecimal(inputsCapacities).toBigInteger());
+    return new Cells(cellInputs, inputsCapacities);
   }
 
   public BigInteger getCapacitiesWithAddress(String address) throws IOException {
@@ -67,13 +69,15 @@ public class CellGatherer {
       List<CellOutputWithOutPoint> cellOutputs =
           ckbService
               .getCellsByLockHash(
-                  lockHash, String.valueOf(fromBlockNumber), String.valueOf(currentToBlockNumber))
+                  lockHash,
+                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(fromBlockNumber)),
+                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(currentToBlockNumber)))
               .send()
               .getCells();
 
       if (cellOutputs != null && cellOutputs.size() > 0) {
         for (CellOutputWithOutPoint output : cellOutputs) {
-          capacity = capacity.add(new BigInteger(output.capacity));
+          capacity = capacity.add(Numeric.toBigInt(output.capacity));
         }
       }
       fromBlockNumber = currentToBlockNumber + 1;

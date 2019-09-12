@@ -41,18 +41,20 @@ class TransactionTest {
 
     Transaction tx =
         new Transaction(
-            "0",
+            "0x0",
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
+                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a",
+                        "0x1"),
                     CellDep.DEP_GROUP)),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
-                    "0")),
+                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50",
+                        "0x0"),
+                    "0x0")),
             cellOutputs,
             Arrays.asList("0x", "0x"),
             Collections.singletonList(new Witness(Collections.emptyList())));
@@ -71,12 +73,14 @@ class TransactionTest {
     List<CellInput> cellInputs = new ArrayList<>();
     cellInputs.add(
         new CellInput(
-            new OutPoint("0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4", "0"),
+            new OutPoint(
+                "0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4", "0x0"),
             "113"));
     cellInputs.add(
         new CellInput(
-            new OutPoint("0x00000000000000000000000000004e4552564f5344414f494e50555430303031", "0"),
-            "0"));
+            new OutPoint(
+                "0x00000000000000000000000000004e4552564f5344414f494e50555430303031", "0x0"),
+            "0x0"));
 
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
@@ -95,11 +99,12 @@ class TransactionTest {
 
     Transaction tx =
         new Transaction(
-            "0",
+            "0x0",
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
+                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a",
+                        "0x1"),
                     CellDep.DEP_GROUP)),
             Collections.singletonList("0x"),
             cellInputs,
@@ -142,18 +147,20 @@ class TransactionTest {
 
     Transaction tx =
         new Transaction(
-            "0",
+            "0x0",
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
+                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a",
+                        "0x1"),
                     CellDep.DEP_GROUP)),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
-                    "0")),
+                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50",
+                        "0x0"),
+                    "0x0")),
             cellOutputs,
             Collections.singletonList("0x"),
             Collections.emptyList());
@@ -168,22 +175,25 @@ class TransactionTest {
   public void serializationTest() {
     Transaction tx =
         new Transaction(
-            "0",
+            "0x0",
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b", "0"),
+                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b",
+                        "0x0"),
                     CellDep.DEP_GROUP),
                 new CellDep(
                     new OutPoint(
-                        "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60", "2"),
+                        "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60",
+                        "0x2"),
                     CellDep.CODE)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65", "1"),
-                    "0")),
+                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
+                        "0x1"),
+                    "0x0")),
             Arrays.asList(
                 new CellOutput(
                     "100000000000",
@@ -215,7 +225,7 @@ class TransactionTest {
   public void serializationTxTest() throws IOException {
     CKBService ckbService = CKBService.build(new HttpService("http://localhost:8114"));
     Transaction transaction =
-        ckbService.getBlockByNumber("1").send().getBlock().transactions.get(0);
+        ckbService.getBlockByNumber("0x1").send().getBlock().transactions.get(0);
     Assertions.assertEquals(
         ckbService.computeTransactionHash(transaction).send().getTransactionHash(),
         transaction.computeHash());

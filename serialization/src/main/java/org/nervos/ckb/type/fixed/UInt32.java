@@ -1,6 +1,7 @@
 package org.nervos.ckb.type.fixed;
 
 import org.nervos.ckb.type.base.FixedType;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class UInt32 extends FixedType<Long> {
@@ -17,8 +18,8 @@ public class UInt32 extends FixedType<Long> {
     this.value = (long) value;
   }
 
-  public UInt32(String value) {
-    this.value = Long.valueOf(value);
+  public UInt32(String hexValue) {
+    this.value = Numeric.toBigInt(hexValue).longValue();
   }
 
   // generate int value from little endian bytes
