@@ -59,14 +59,14 @@ public class TxGenerator {
       String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
       cellOutputs.add(
           new CellOutput(
-              receiver.capacity.toString(),
+              receiver.capacity.toString(16),
               new Script(
                   systemScriptCell.cellHash, Collections.singletonList(blake2b), Script.TYPE)));
     }
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
-          new CellOutput(cellInputs.capacity.subtract(needCapacities).toString(10), lockScript));
+          new CellOutput(cellInputs.capacity.subtract(needCapacities).toString(16), lockScript));
     }
 
     List<Witness> witnesses = new ArrayList<>();
