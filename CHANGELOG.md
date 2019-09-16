@@ -1,6 +1,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.21.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.20.0...v0.21.0) (2019-09-21)
+
+### Feature
+
+* Add getBalance method and example usage([a915e66](https://github.com/nervosnetwork/ckb-sdk-java/commit/a915e661df2a00451e44535e9733170f049d5c45))
+* Update header and nodeinfo data type to string([3f38f1](https://github.com/nervosnetwork/ckb-sdk-java/commit/3f38f1a791f57ced8ff8b1cf3a671e56e3b5dcd1))
+* Update transaction parameter to hex string([1847c7d](https://github.com/nervosnetwork/ckb-sdk-java/commit/1847c7dc78a28394b2b70f7d981bf7a47b126c75))
+* Update integer to hex string for jsonrpc([f93b5bd](https://github.com/nervosnetwork/ckb-sdk-java/commit/f93b5bd87579327cf409438449e730396021d167))
+* Update transaction generator and serializer data type to integer([96709a5](https://github.com/nervosnetwork/ckb-sdk-java/commit/96709a55eeacf7003462910db9e838660d37e838))
+
+### Bugfix
+
+* Fix gradle config of junit5([603dab7](https://github.com/nervosnetwork/ckb-sdk-java/commit/603dab7a9d41c9204c5d5a3a2f9bd4def01e78b2))
+* Fix some test cases can't be executed([1c8c32c](https://github.com/nervosnetwork/ckb-sdk-java/commit/1c8c32c8cd0a6770a286eebf9520bdd9e9cd7801))
+
 # [v0.20.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.19.1...v0.20.0) (2019-09-07)
 
 **This version SDK supports computing script hash and transaction hash offline through script and transaction serialization.**
