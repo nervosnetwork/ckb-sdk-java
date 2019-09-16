@@ -7,6 +7,7 @@ sudo: false  # as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-co
 
 script:
   - ./gradlew build --scan -s
+  - ./gradlew test
 
 # Avoid uploading cache after every build with Gradle - see https://docs.travis-ci.com/user/languages/java/#Caching
 before_cache:
