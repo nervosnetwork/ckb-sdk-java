@@ -1,6 +1,13 @@
 package type;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
 import org.nervos.ckb.methods.type.OutPoint;
@@ -13,13 +20,6 @@ import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.utils.Numeric;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 class TransactionTest {
@@ -221,6 +221,7 @@ class TransactionTest {
         "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5", tx.computeHash());
   }
 
+  @Disabled
   @Test
   public void serializationTxTest() throws IOException {
     CKBService ckbService = CKBService.build(new HttpService("http://localhost:8114"));

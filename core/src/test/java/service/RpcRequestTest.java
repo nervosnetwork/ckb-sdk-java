@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.methods.type.cell.Cell;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
@@ -19,7 +15,7 @@ import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-@Ignore
+@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RpcRequestTest {
 

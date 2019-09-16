@@ -35,7 +35,7 @@ public class Byte1Test {
   public void toByte1Test() {
     Byte1 byte1 = new Byte1("1");
     Byte1 byte2 = new Byte1("01");
-    byte[] expected = {0x00};
+    byte[] expected = {0x01};
     Assertions.assertArrayEquals(expected, byte1.toBytes());
     Assertions.assertArrayEquals(expected, byte2.toBytes());
   }
