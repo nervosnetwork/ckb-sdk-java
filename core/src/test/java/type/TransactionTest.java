@@ -1,11 +1,5 @@
 package type;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
@@ -19,6 +13,13 @@ import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.utils.Numeric;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 class TransactionTest {
@@ -65,7 +66,7 @@ class TransactionTest {
     Assertions.assertEquals(signedTx.witnesses.size(), tx.inputs.size());
     Assertions.assertEquals(
         signedTx.witnesses.get(0).data.get(0),
-        "0x2c643579e47045be050d3842ed9270151af8885e33954bddad0e53e81d1c2dbe2dc637877a8302110846ebc6a16d9148c106e25f945063ad1c4d4db2b695240800");
+        "0x4b14cdbb75709c7684e776b0b884d1660823748076801e1f64f07345ab00f63f36a94db155fe5d608b692e77fadd1959fd7c082a7f21325107068c97af07b09e01");
   }
 
   @Test
@@ -119,13 +120,13 @@ class TransactionTest {
 
     List<String> expectedData = new ArrayList<>();
     expectedData.add(
-        "0x68a57373f4e98aecfb9501ec1cc4a78c048361332e4b6706bdc1469d30bd52ea42feca657dd1de1eff384e6ed24a6910b011d49d855bd1ed209f5ce77d8116ac01");
+        "0x1f66468d906aaa197ea5f3031b85b9f0b2905050c60dd21cd89e7bcbab04c1884d90e025bd9fd1e5611321ab13e1d0d466c736d166757ca8f29f45eef66546f800");
     expectedData.add("0x4107bd23eedb9f2a2a749108f6bb9720d745d50f044cc4814bafe189a01fe6fb");
     Assertions.assertEquals(signedTx.witnesses.get(0).data, expectedData);
 
     expectedData = new ArrayList<>();
     expectedData.add(
-        "0x3b13c362f254e7becb0e731e4756e742bfddbf2f5d7c16cd609ba127d2b7e07f1d588c3a7132fc20c478e2de14f6370fbb9e4402d240e4b32c8d671177e1f31101");
+        "0xe66007bcc03e1b2e52784bb13e5a6b09acb41738a62c9426b1ca0c71a026c81e44b11a2fb4f821cb26bad7894e50ef5580f3700d1ac46fd0b94bdc8495b1483801");
     Assertions.assertEquals(signedTx.witnesses.get(1).data, expectedData);
   }
 
@@ -167,7 +168,6 @@ class TransactionTest {
 
     BigInteger privateKey =
         Numeric.toBigInt("0xe79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
-    String txHash = "0xac1bb95455cdfb89b6e977568744e09b6b80e08cab9477936a09c4ca07f5b8ab";
     Assertions.assertThrows(InvalidNumberOfWitnessesException.class, () -> tx.sign(privateKey));
   }
 
@@ -218,7 +218,7 @@ class TransactionTest {
                         "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"))));
 
     Assertions.assertEquals(
-        "0x09ce2223304a5f48d5ce2b6ee2777d96503591279671460fa39ae894ea9e2b87", tx.computeHash());
+        "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5", tx.computeHash());
   }
 
   @Test

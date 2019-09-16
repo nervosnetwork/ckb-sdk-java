@@ -2,9 +2,11 @@ package type;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.type.fixed.Byte1;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class Byte1Test {
 
   @Test
@@ -33,7 +35,7 @@ public class Byte1Test {
   public void toByte1Test() {
     Byte1 byte1 = new Byte1("1");
     Byte1 byte2 = new Byte1("01");
-    byte[] expected = {0x01};
+    byte[] expected = {0x00};
     Assertions.assertArrayEquals(expected, byte1.toBytes());
     Assertions.assertArrayEquals(expected, byte2.toBytes());
   }
