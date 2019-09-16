@@ -59,16 +59,14 @@ public class TxGenerator {
       String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
       cellOutputs.add(
           new CellOutput(
-              Numeric.toHexStringWithPrefix(receiver.capacity),
+              receiver.capacity.toString(),
               new Script(
                   systemScriptCell.cellHash, Collections.singletonList(blake2b), Script.TYPE)));
     }
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
-          new CellOutput(
-              Numeric.toHexStringWithPrefix(cellInputs.capacity.subtract(needCapacities)),
-              lockScript));
+          new CellOutput(cellInputs.capacity.subtract(needCapacities).toString(), lockScript));
     }
 
     List<Witness> witnesses = new ArrayList<>();
@@ -84,7 +82,7 @@ public class TxGenerator {
 
     Transaction transaction =
         new Transaction(
-            "0x0",
+            "0",
             Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP)),
             Collections.emptyList(),
             cellInputs.inputs,

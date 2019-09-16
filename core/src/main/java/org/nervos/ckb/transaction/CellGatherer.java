@@ -32,8 +32,8 @@ public class CellGatherer {
           ckbService
               .getCellsByLockHash(
                   lockHash,
-                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(fromBlockNumber)),
-                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(currentToBlockNumber)))
+                  BigInteger.valueOf(fromBlockNumber).toString(),
+                  BigInteger.valueOf(currentToBlockNumber).toString())
               .send()
               .getCells();
 
@@ -70,8 +70,8 @@ public class CellGatherer {
           ckbService
               .getCellsByLockHash(
                   lockHash,
-                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(fromBlockNumber)),
-                  Numeric.toHexStringWithPrefix(BigInteger.valueOf(currentToBlockNumber)))
+                  BigInteger.valueOf(fromBlockNumber).toString(),
+                  BigInteger.valueOf(currentToBlockNumber).toString())
               .send()
               .getCells();
 
