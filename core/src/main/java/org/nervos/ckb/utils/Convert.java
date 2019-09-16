@@ -11,6 +11,10 @@ import org.nervos.ckb.methods.type.transaction.Transaction;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Convert {
 
+  public static OutPoint parseOutPoint(OutPoint outPoint) {
+    return new OutPoint(outPoint.txHash, Numeric.toHexString(outPoint.index));
+  }
+
   public static Transaction parseTransaction(Transaction transaction) {
     List<CellDep> cellDeps = new ArrayList<>();
     for (CellDep cellDep : transaction.cellDeps) {

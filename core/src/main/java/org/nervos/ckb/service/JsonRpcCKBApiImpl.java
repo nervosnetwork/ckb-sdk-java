@@ -82,9 +82,11 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
   @Override
   public Request<?, CkbCell> getLiveCell(OutPoint outPoint) {
-    OutPoint outPoint1 = new OutPoint(outPoint.txHash, Numeric.toHexString(outPoint.index));
     return new Request<>(
-        "get_live_cell", Collections.singletonList(outPoint1), apiService, CkbCell.class);
+        "get_live_cell",
+        Collections.singletonList(Convert.parseOutPoint(outPoint)),
+        apiService,
+        CkbCell.class);
   }
 
   @Override
@@ -156,7 +158,6 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
   @Override
   public Request<?, CkbTransactionHash> sendTransaction(Transaction transaction) {
-
     return new Request<>(
         "send_transaction",
         Collections.singletonList(Convert.parseTransaction(transaction)),
@@ -231,7 +232,6 @@ public class JsonRpcCKBApiImpl implements CKBService {
 
   public Request<?, CkbLiveCells> getLiveCellsByLockHash(
       String lockHash, String page, String pageSize, boolean reverseOrder) {
-
     return new Request<>(
         "get_live_cells_by_lock_hash",
         Arrays.asList(
