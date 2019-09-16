@@ -200,6 +200,17 @@ public final class Numeric {
     return toHexString(input, 0, input.length, true);
   }
 
+  public static String toHexString(String input) {
+    try {
+      return Numeric.containsHexPrefix(input)
+          ? input
+          : Numeric.toHexStringWithPrefix(new BigInteger(input));
+    } catch (NumberFormatException e) {
+      throw new NumberFormatException(
+          "Input parameter format error, please input integer or hex string");
+    }
+  }
+
   public static byte asByte(int m, int n) {
     return (byte) ((m << 4) | n);
   }
