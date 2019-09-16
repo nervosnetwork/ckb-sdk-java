@@ -66,7 +66,7 @@ public class TxGenerator {
 
     if (cellInputs.capacity.compareTo(needCapacities) > 0) {
       cellOutputs.add(
-          new CellOutput(cellInputs.capacity.subtract(needCapacities).toString(10), lockScript));
+          new CellOutput(cellInputs.capacity.subtract(needCapacities).toString(), lockScript));
     }
 
     List<Witness> witnesses = new ArrayList<>();

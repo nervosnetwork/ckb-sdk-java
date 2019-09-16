@@ -8,6 +8,8 @@ import org.nervos.ckb.methods.type.BannedAddress;
 import org.nervos.ckb.methods.type.OutPoint;
 import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.transaction.Transaction;
+import org.nervos.ckb.utils.Convert;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class JsonRpcCKBApiImpl implements CKBService {
@@ -28,7 +30,10 @@ public class JsonRpcCKBApiImpl implements CKBService {
   @Override
   public Request<?, CkbBlock> getBlockByNumber(String blockNumber) {
     return new Request<>(
-        "get_block_by_number", Collections.singletonList(blockNumber), apiService, CkbBlock.class);
+        "get_block_by_number",
+        Collections.singletonList(Numeric.toHexString(blockNumber)),
+        apiService,
+        CkbBlock.class);
   }
 
   @Override
@@ -43,7 +48,10 @@ public class JsonRpcCKBApiImpl implements CKBService {
   @Override
   public Request<?, CkbBlockHash> getBlockHash(String blockNumber) {
     return new Request<>(
-        "get_block_hash", Collections.singletonList(blockNumber), apiService, CkbBlockHash.class);
+        "get_block_hash",
+        Collections.singletonList(Numeric.toHexString(blockNumber)),
+        apiService,
+        CkbBlockHash.class);
   }
 
   @Override
@@ -66,7 +74,8 @@ public class JsonRpcCKBApiImpl implements CKBService {
       String lockHash, String fromBlockNumber, String toBlockNumber) {
     return new Request<>(
         "get_cells_by_lock_hash",
-        Arrays.asList(lockHash, fromBlockNumber, toBlockNumber),
+        Arrays.asList(
+            lockHash, Numeric.toHexString(fromBlockNumber), Numeric.toHexString(toBlockNumber)),
         apiService,
         CkbCells.class);
   }
@@ -74,7 +83,10 @@ public class JsonRpcCKBApiImpl implements CKBService {
   @Override
   public Request<?, CkbCell> getLiveCell(OutPoint outPoint) {
     return new Request<>(
-        "get_live_cell", Collections.singletonList(outPoint), apiService, CkbCell.class);
+        "get_live_cell",
+        Collections.singletonList(Convert.parseOutPoint(outPoint)),
+        apiService,
+        CkbCell.class);
   }
 
   @Override
@@ -92,7 +104,10 @@ public class JsonRpcCKBApiImpl implements CKBService {
   @Override
   public Request<?, CkbEpoch> getEpochByNumber(String epochNumber) {
     return new Request<>(
-        "get_epoch_by_number", Collections.singletonList(epochNumber), apiService, CkbEpoch.class);
+        "get_epoch_by_number",
+        Collections.singletonList(Numeric.toHexString(epochNumber)),
+        apiService,
+        CkbEpoch.class);
   }
 
   @Override
@@ -105,7 +120,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbHeader> getHeaderByNumber(String blockNumber) {
     return new Request<>(
         "get_header_by_number",
-        Collections.singletonList(blockNumber),
+        Collections.singletonList(Numeric.toHexString(blockNumber)),
         apiService,
         CkbHeader.class);
   }
@@ -145,7 +160,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbTransactionHash> sendTransaction(Transaction transaction) {
     return new Request<>(
         "send_transaction",
-        Collections.singletonList(transaction),
+        Collections.singletonList(Convert.parseTransaction(transaction)),
         apiService,
         CkbTransactionHash.class);
   }
@@ -166,13 +181,16 @@ public class JsonRpcCKBApiImpl implements CKBService {
   @Override
   public Request<?, CkbCycles> dryRunTransaction(Transaction transaction) {
     return new Request<>(
-        "dry_run_transaction", Collections.singletonList(transaction), apiService, CkbCycles.class);
+        "dry_run_transaction",
+        Collections.singletonList(Convert.parseTransaction(transaction)),
+        apiService,
+        CkbCycles.class);
   }
 
   public Request<?, CkbTransactionHash> computeTransactionHash(Transaction transaction) {
     return new Request<>(
         "_compute_transaction_hash",
-        Collections.singletonList(transaction),
+        Collections.singletonList(Convert.parseTransaction(transaction)),
         apiService,
         CkbTransactionHash.class);
   }
@@ -186,7 +204,7 @@ public class JsonRpcCKBApiImpl implements CKBService {
   public Request<?, CkbLockHashIndexState> indexLockHash(String lockHash, String blockNumber) {
     return new Request<>(
         "index_lock_hash",
-        Arrays.asList(lockHash, blockNumber),
+        Arrays.asList(lockHash, Numeric.toHexString(blockNumber)),
         apiService,
         CkbLockHashIndexState.class);
   }
@@ -216,7 +234,8 @@ public class JsonRpcCKBApiImpl implements CKBService {
       String lockHash, String page, String pageSize, boolean reverseOrder) {
     return new Request<>(
         "get_live_cells_by_lock_hash",
-        Arrays.asList(lockHash, page, pageSize, reverseOrder),
+        Arrays.asList(
+            lockHash, Numeric.toHexString(page), Numeric.toHexString(pageSize), reverseOrder),
         apiService,
         CkbLiveCells.class);
   }
@@ -225,7 +244,8 @@ public class JsonRpcCKBApiImpl implements CKBService {
       String lockHash, String page, String pageSize, boolean reverseOrder) {
     return new Request<>(
         "get_transactions_by_lock_hash",
-        Arrays.asList(lockHash, page, pageSize, reverseOrder),
+        Arrays.asList(
+            lockHash, Numeric.toHexString(page), Numeric.toHexString(pageSize), reverseOrder),
         apiService,
         CkbCellTransactions.class);
   }

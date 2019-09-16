@@ -17,9 +17,10 @@ public class FixedTest {
     UInt64 sinceUInt64 = new UInt64(1L);
     Struct inputs = new Struct(sinceUInt64, new Struct(txHash, index));
     Fixed<Struct> structFixed = new Fixed<>(Collections.singletonList(inputs));
+    System.out.println(Numeric.toHexString(structFixed.toBytes()));
     Assertions.assertArrayEquals(
         Numeric.hexStringToByteArray(
-            "0100000001000000000000000000000000000000000000000000000000000000000000000000000000000000ffffffff"),
+            "0x010000000100000000000000000000000000000000000000000000000000000000000000000000000000000095729694"),
         structFixed.toBytes());
   }
 }

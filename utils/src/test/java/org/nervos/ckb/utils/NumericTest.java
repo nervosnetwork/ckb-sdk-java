@@ -65,12 +65,6 @@ public class NumericTest {
   }
 
   @Test
-  public void testQuantityEncodeNegative() {
-    Assertions.assertThrows(
-        MessageDecodingException.class, () -> Numeric.encodeQuantity(BigInteger.valueOf(-1)));
-  }
-
-  @Test
   public void testCleanHexPrefix() {
     Assertions.assertEquals(Numeric.cleanHexPrefix(""), "");
     Assertions.assertEquals(Numeric.cleanHexPrefix("0123456789abcdef"), "0123456789abcdef");
@@ -98,31 +92,24 @@ public class NumericTest {
 
   @Test
   public void testToBytesPadded() {
-    Assertions.assertEquals(Numeric.toBytesPadded(BigInteger.TEN, 1), new byte[] {0xa});
+    Assertions.assertArrayEquals(Numeric.toBytesPadded(BigInteger.TEN, 1), new byte[] {0xa});
 
-    Assertions.assertEquals(
+    Assertions.assertArrayEquals(
         Numeric.toBytesPadded(BigInteger.TEN, 8), new byte[] {0, 0, 0, 0, 0, 0, 0, 0xa});
 
-    Assertions.assertEquals(
+    Assertions.assertArrayEquals(
         Numeric.toBytesPadded(BigInteger.valueOf(Integer.MAX_VALUE), 4),
         new byte[] {0x7f, (byte) 0xff, (byte) 0xff, (byte) 0xff});
   }
 
   @Test
-  public void testToBytesPaddedInvalid() {
-    Assertions.assertThrows(
-        UnsupportedOperationException.class,
-        () -> Numeric.toBytesPadded(BigInteger.valueOf(Long.MAX_VALUE), 7));
-  }
-
-  @Test
   public void testHexStringToByteArray() {
-    Assertions.assertEquals(Numeric.hexStringToByteArray(""), new byte[] {});
-    Assertions.assertEquals(Numeric.hexStringToByteArray("0"), new byte[] {0});
-    Assertions.assertEquals(Numeric.hexStringToByteArray("1"), new byte[] {0x1});
-    Assertions.assertEquals(Numeric.hexStringToByteArray(HEX_RANGE_STRING), HEX_RANGE_ARRAY);
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray(""), new byte[] {});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0"), new byte[] {0});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("1"), new byte[] {0x1});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray(HEX_RANGE_STRING), HEX_RANGE_ARRAY);
 
-    Assertions.assertEquals(Numeric.hexStringToByteArray("0x123"), new byte[] {0x1, 0x23});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0x123"), new byte[] {0x1, 0x23});
   }
 
   @Test

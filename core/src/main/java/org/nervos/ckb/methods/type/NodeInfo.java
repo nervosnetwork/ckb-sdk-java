@@ -15,6 +15,6 @@ public class NodeInfo {
   public static class Address {
 
     public String address;
-    public int score;
+    public String score;
   }
 }

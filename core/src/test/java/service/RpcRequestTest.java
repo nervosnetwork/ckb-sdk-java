@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.nervos.ckb.methods.type.*;
 import org.nervos.ckb.methods.type.cell.Cell;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
@@ -19,7 +15,7 @@ import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-@Ignore
+@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RpcRequestTest {
 
@@ -33,19 +29,19 @@ public class RpcRequestTest {
 
   @Test
   public void testGetBlockByNumber() throws IOException {
-    Block block = ckbService.getBlockByNumber("1").send().getBlock();
+    Block block = ckbService.getBlockByNumber("0x1").send().getBlock();
     Assertions.assertNotNull(block);
   }
 
   @Test
   public void testGetBlockHashByNumber() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     Assertions.assertNotNull(blockHash);
   }
 
   @Test
   public void testGetCellbaseOutputCapacityDetails() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     CellbaseOutputCapacity cellbaseOutputCapacity =
         ckbService.getCellbaseOutputCapacityDetails(blockHash).send().getCellbaseOutputCapacity();
     Assertions.assertNotNull(cellbaseOutputCapacity);
@@ -53,7 +49,7 @@ public class RpcRequestTest {
 
   @Test
   public void testBlockAndTransaction() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     Block block = ckbService.getBlock(blockHash).send().getBlock();
     Assertions.assertNotNull(block);
     Assertions.assertNotNull(block.header);
@@ -62,7 +58,7 @@ public class RpcRequestTest {
   @Test
   public void testTransaction() throws IOException {
     String transactionHash =
-        ckbService.getBlockByNumber("1").send().getBlock().transactions.get(0).hash;
+        ckbService.getBlockByNumber("0x1").send().getBlock().transactions.get(0).hash;
     Transaction transaction =
         ckbService.getTransaction(transactionHash).send().getTransaction().transaction;
     Assertions.assertNotNull(transaction);
@@ -94,14 +90,14 @@ public class RpcRequestTest {
 
   @Test
   public void testGetHeader() throws IOException {
-    String blockHash = ckbService.getBlockHash("1").send().getBlockHash();
+    String blockHash = ckbService.getBlockHash("0x1").send().getBlockHash();
     Header header = ckbService.getHeader(blockHash).send().getHeader();
     Assertions.assertNotNull(header);
   }
 
   @Test
   public void testGetHeaderByNumber() throws IOException {
-    Header header = ckbService.getHeaderByNumber("1").send().getHeader();
+    Header header = ckbService.getHeaderByNumber("0x1").send().getHeader();
     Assertions.assertNotNull(header);
   }
 

@@ -2,9 +2,11 @@ package type;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.type.fixed.Byte1;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class Byte1Test {
 
   @Test

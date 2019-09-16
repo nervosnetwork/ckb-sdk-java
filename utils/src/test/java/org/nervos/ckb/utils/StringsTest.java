@@ -24,6 +24,6 @@ public class StringsTest {
   public void testEmptyString() {
     Assertions.assertTrue(isEmpty(null));
     Assertions.assertTrue(isEmpty(""));
-    Assertions.assertTrue(isEmpty("hello world"));
+    Assertions.assertFalse(isEmpty("hello world"));
   }
 }

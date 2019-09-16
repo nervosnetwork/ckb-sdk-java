@@ -95,12 +95,13 @@ public class Serializer {
   }
 
   public static Table serializeTransaction(Transaction transaction) {
-    UInt32 versionUInt32 = new UInt32(transaction.version);
-    Fixed<Struct> cellDepFixed = Serializer.serializeCellDeps(transaction.cellDeps);
-    Fixed<Byte32> headerDepFixed = Serializer.serializeByte32(transaction.headerDeps);
-    Fixed<Struct> inputsFixed = Serializer.serializeCellInputs(transaction.inputs);
-    Dynamic<Table> outputsVec = Serializer.serializeCellOutputs(transaction.outputs);
-    Dynamic<Bytes> dataVec = Serializer.serializeBytes(transaction.outputsData);
+    Transaction tx = Convert.parseTransaction(transaction);
+    UInt32 versionUInt32 = new UInt32(tx.version);
+    Fixed<Struct> cellDepFixed = Serializer.serializeCellDeps(tx.cellDeps);
+    Fixed<Byte32> headerDepFixed = Serializer.serializeByte32(tx.headerDeps);
+    Fixed<Struct> inputsFixed = Serializer.serializeCellInputs(tx.inputs);
+    Dynamic<Table> outputsVec = Serializer.serializeCellOutputs(tx.outputs);
+    Dynamic<Bytes> dataVec = Serializer.serializeBytes(tx.outputsData);
     return new Table(versionUInt32, cellDepFixed, headerDepFixed, inputsFixed, outputsVec, dataVec);
   }
 }

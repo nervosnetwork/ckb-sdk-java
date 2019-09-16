@@ -3,7 +3,6 @@ package type;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.fixed.UInt32;
-import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -17,7 +16,7 @@ public class UInt32Test {
 
   @Test
   void getLengthTest() {
-    UInt64 data = new UInt64(256L);
+    UInt32 data = new UInt32(256L);
     Assertions.assertEquals(4, data.toBytes().length);
   }
 }

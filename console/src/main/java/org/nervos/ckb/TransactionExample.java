@@ -19,7 +19,12 @@ import org.nervos.ckb.utils.Network;
 public class TransactionExample {
 
   private static final String NODE_URL = "http://localhost:8114";
-  private static CKBService ckbService = CKBService.build(new HttpService(NODE_URL));
+  private static CKBService ckbService;
+
+  static {
+    HttpService.setDebug(false);
+    ckbService = CKBService.build(new HttpService(NODE_URL));
+  }
 
   public static void main(String[] args) throws Exception {
     String senderPrivateKey = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
