@@ -108,6 +108,6 @@ public class Transaction {
       signedWitnesses.add(witness);
     }
     return new Transaction(
-        version, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitnesses);
+        version, txHash, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitnesses);
   }
 }
