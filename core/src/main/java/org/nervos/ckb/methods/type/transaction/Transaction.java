@@ -1,5 +1,6 @@
 package org.nervos.ckb.methods.type.transaction;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import org.nervos.ckb.utils.Serializer;
 public class Transaction {
 
   public String version;
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   public String hash;
 
   @JsonProperty("cell_deps")
@@ -105,6 +108,6 @@ public class Transaction {
       signedWitnesses.add(witness);
     }
     return new Transaction(
-        version, txHash, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitnesses);
+        version, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitnesses);
   }
 }
