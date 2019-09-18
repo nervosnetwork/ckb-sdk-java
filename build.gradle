@@ -3,7 +3,7 @@ buildscript {
     ext.bouncycastleVersion = '1.63'
     ext.rxjavaVersion = '2.2.12'
     ext.gsonVersion = '2.8.5'
-    ext.jacksonVersion = '2.10.0.pr2'
+    ext.jacksonVersion = '2.10.0.pr3'
     ext.okhttpVersion = '4.2.0'
     ext.loggingOkhttpVersion = '4.2.0'
     ext.slf4jVersion = '1.7.28'
