@@ -26,7 +26,7 @@ public interface CKBApi {
   Request<?, CkbCells> getCellsByLockHash(
       String lockHash, String fromBlockNumber, String toBlockNumber);
 
-  Request<?, CkbCell> getLiveCell(OutPoint outPoint, boolean withData);
+  Request<?, CkbCellWithStatus> getLiveCell(OutPoint outPoint, boolean withData);
 
   Request<?, CkbBlockNumber> getTipBlockNumber();
 

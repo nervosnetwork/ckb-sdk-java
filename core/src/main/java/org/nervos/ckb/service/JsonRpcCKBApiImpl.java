@@ -81,12 +81,12 @@ public class JsonRpcCKBApiImpl implements CKBService {
   }
 
   @Override
-  public Request<?, CkbCell> getLiveCell(OutPoint outPoint, boolean withData) {
+  public Request<?, CkbCellWithStatus> getLiveCell(OutPoint outPoint, boolean withData) {
     return new Request<>(
         "get_live_cell",
         Arrays.asList(Convert.parseOutPoint(outPoint), withData),
         apiService,
-        CkbCell.class);
+        CkbCellWithStatus.class);
   }
 
   @Override

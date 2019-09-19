@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.*;
 import org.nervos.ckb.methods.type.*;
-import org.nervos.ckb.methods.type.cell.Cell;
 import org.nervos.ckb.methods.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.methods.type.cell.CellTransaction;
+import org.nervos.ckb.methods.type.cell.CellWithStatus;
 import org.nervos.ckb.methods.type.cell.LiveCell;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
@@ -159,15 +159,15 @@ public class RpcRequestTest {
 
   @Test
   public void testGetLiveCell() throws IOException {
-    Cell cell =
+    CellWithStatus cellWithStatus =
         ckbService
             .getLiveCell(
                 new OutPoint(
                     "0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
                 true)
             .send()
-            .getCell();
-    Assertions.assertNotNull(cell);
+            .getCellWithStatus();
+    Assertions.assertNotNull(cellWithStatus);
   }
 
   @Test
