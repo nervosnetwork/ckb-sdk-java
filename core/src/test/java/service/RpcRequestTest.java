@@ -163,7 +163,8 @@ public class RpcRequestTest {
         ckbService
             .getLiveCell(
                 new OutPoint(
-                    "0x321c1ca2887fb8eddaaa7e917399f71e63e03a1c83ff75ed12099a01115ea2ff", "0"))
+                    "0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+                true)
             .send()
             .getCell();
     Assertions.assertNotNull(cell);
