@@ -1,6 +1,6 @@
 package org.nervos.ckb.methods.type.cell;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellWithStatus {
   public CellInfo cell;
   public String status;

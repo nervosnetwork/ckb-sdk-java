@@ -171,6 +171,32 @@ public class RpcRequestTest {
   }
 
   @Test
+  public void testGetLiveCellWithData() throws IOException {
+    CellWithStatus cellWithStatus =
+        ckbService
+            .getLiveCell(
+                new OutPoint(
+                    "0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+                true)
+            .send()
+            .getCellWithStatus();
+    Assertions.assertNotNull(cellWithStatus.cell.data);
+  }
+
+  @Test
+  public void testGetLiveCellWithoutData() throws IOException {
+    CellWithStatus cellWithStatus =
+        ckbService
+            .getLiveCell(
+                new OutPoint(
+                    "0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+                false)
+            .send()
+            .getCellWithStatus();
+    Assertions.assertNull(cellWithStatus.cell.data);
+  }
+
+  @Test
   public void testSendTransaction() throws IOException {
     String transactionHash =
         ckbService
