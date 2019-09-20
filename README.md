@@ -1,6 +1,8 @@
 # CKB SDK Java
 
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/LICENSE)
 [![Build Status](https://travis-ci.com/nervosnetwork/ckb-sdk-java.svg?branch=develop)](https://travis-ci.com/nervosnetwork/ckb-sdk-java)
+[![Telegram Group](https://cdn.rawgit.com/Patrolavia/telegram-badge/8fe3382b/chat.svg)](https://t.me/nervos_ckb_dev)
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
@@ -14,9 +16,12 @@ Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 You can generate the jar and import manually.
 ```shell
 git clone https://github.com/nervosnetwork/ckb-sdk-java.git
+
+cd ckb-sdk-java
+
 gradle shadowJar  // ./gradlew shadowJar 
 ```
-A `console-{version}-all.jar` package will be generated, which you can put into your project to develop with it.
+A `console-{version}-all.jar` package will be generated in `console/build/libs`, which you can put into your project to develop with it.
 
 If you don't want to generate the jar by yourself, you can download a build from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
 

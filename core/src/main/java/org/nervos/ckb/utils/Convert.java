@@ -43,7 +43,6 @@ public class Convert {
 
     return new Transaction(
         Numeric.toHexString(transaction.version),
-        transaction.hash,
         cellDeps,
         transaction.headerDeps,
         inputs,
