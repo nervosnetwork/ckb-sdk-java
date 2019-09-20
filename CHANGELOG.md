@@ -10,6 +10,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * Update transaction parameter to hex string([1847c7d](https://github.com/nervosnetwork/ckb-sdk-java/commit/1847c7dc78a28394b2b70f7d981bf7a47b126c75))
 * Update integer to hex string for jsonrpc([f93b5bd](https://github.com/nervosnetwork/ckb-sdk-java/commit/f93b5bd87579327cf409438449e730396021d167))
 * Update transaction generator and serializer data type to integer([96709a5](https://github.com/nervosnetwork/ckb-sdk-java/commit/96709a55eeacf7003462910db9e838660d37e838))
+* Remove hash for sendTransaction([9718b79](https://github.com/nervosnetwork/ckb-sdk-java/commit/9718b79b7fb664cca6f85eb8595a8edd716f15e8))
+* Update get_live_cell request parameters and response([25227d9](https://github.com/nervosnetwork/ckb-sdk-java/commit/25227d979a101fa7c6e6192698026f46082a92be))
+* Update get_live_cell request parameters and response([d88ded8](https://github.com/nervosnetwork/ckb-sdk-java/commit/d88ded8fb1193a6335c54750600a68523a69b5c4))
 
 ### Bugfix
 
