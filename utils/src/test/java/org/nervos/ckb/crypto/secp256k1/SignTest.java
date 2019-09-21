@@ -35,15 +35,15 @@ public class SignTest {
   @Test
   public void signMessageTest() {
     String signResult =
-        "0x3045022100c795b2b3c48d370324e5053f4509d4f1f18f80aec4a8cba68ebae922b9f882d8022045ae312bd84e25eed818ef84e7ed61a774f208fe2b2fe3588b60b46860862082";
-    String signature = Numeric.toHexString(Sign.signMessage(message, ecKeyPair).getDerSignature());
+        "0xc795b2b3c48d370324e5053f4509d4f1f18f80aec4a8cba68ebae922b9f882d845ae312bd84e25eed818ef84e7ed61a774f208fe2b2fe3588b60b4686086208200";
+    String signature = Numeric.toHexString(Sign.signMessage(message, ecKeyPair).getSignature());
     Assertions.assertEquals(signResult, signature);
   }
 
   @Test
   public void signMessageForDerFormatTest() {
     String signResult =
-        "0x3045022100be85e76bf2c9ce4042dc9e1d12209ad552e826e83e1e4e8c06198a0fa28de17f02205dd2b43723d7f819f26de60ef275d793229fd0b310c393d30584947f811ff376";
+        "0x3045022100c795b2b3c48d370324e5053f4509d4f1f18f80aec4a8cba68ebae922b9f882d8022045ae312bd84e25eed818ef84e7ed61a774f208fe2b2fe3588b60b46860862082";
     String signature = Numeric.toHexString(Sign.signMessage(message, ecKeyPair).getDerSignature());
     Assertions.assertEquals(signResult, signature);
   }

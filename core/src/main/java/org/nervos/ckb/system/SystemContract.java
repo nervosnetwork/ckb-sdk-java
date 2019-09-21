@@ -8,8 +8,8 @@ import org.nervos.ckb.system.type.SystemScriptCell;
 
 public class SystemContract {
 
-  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws Exception {
-    Block block = ckbService.getBlockByNumber("0").send().getBlock();
+  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
+    Block block = ckbService.getBlockByNumber("0x0").send().getBlock();
     if (block == null) {
       throw new IOException("Genesis block not found");
     }
@@ -18,6 +18,6 @@ public class SystemContract {
     }
     return new SystemScriptCell(
         block.transactions.get(0).outputs.get(1).type.computeHash(),
-        new OutPoint(block.transactions.get(1).hash, "0"));
+        new OutPoint(block.transactions.get(1).hash, "0x0"));
   }
 }

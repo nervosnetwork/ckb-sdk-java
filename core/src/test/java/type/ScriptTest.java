@@ -3,6 +3,7 @@ package type;
 import java.io.IOException;
 import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.methods.type.Script;
@@ -10,6 +11,7 @@ import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
+@Disabled
 public class ScriptTest {
 
   @Test

@@ -1,13 +1,16 @@
 package system;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 
+@Disabled
 public class SystemContractTest {
+
   @Test
   public void testGetSystemContract() throws Exception {
     HttpService.setDebug(false);

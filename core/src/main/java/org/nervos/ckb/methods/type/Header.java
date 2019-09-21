@@ -27,10 +27,10 @@ public class Header {
   public String witnessesRoot;
 
   @JsonProperty("uncles_count")
-  public int unclesCount;
+  public String unclesCount;
 
   @JsonProperty("uncles_hash")
   public String unclesHash;
 
-  public int version;
+  public String version;
 }

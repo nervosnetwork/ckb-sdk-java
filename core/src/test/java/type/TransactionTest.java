@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
 import org.nervos.ckb.methods.type.OutPoint;
@@ -36,7 +37,7 @@ class TransactionTest {
         new CellOutput(
             "4900000000000",
             new Script(
-                "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
+                "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5",
                 Collections.singletonList("0x36c329ed630d6ce750712a477543672adab57f4c"))));
 
     Transaction tx =
@@ -63,7 +64,7 @@ class TransactionTest {
     Assertions.assertEquals(signedTx.witnesses.size(), tx.inputs.size());
     Assertions.assertEquals(
         signedTx.witnesses.get(0).data.get(0),
-        "0x2c643579e47045be050d3842ed9270151af8885e33954bddad0e53e81d1c2dbe2dc637877a8302110846ebc6a16d9148c106e25f945063ad1c4d4db2b695240800");
+        "0xb6acbe173f69ac1ce6f88c6792cd657eccd8d94732ec86a2d8f965771fc62ac01524fb068242cded51dee87a2fd7b4606747a2960ea07539b2233d427c0d86f501");
   }
 
   @Test
@@ -114,13 +115,13 @@ class TransactionTest {
 
     List<String> expectedData = new ArrayList<>();
     expectedData.add(
-        "0x68a57373f4e98aecfb9501ec1cc4a78c048361332e4b6706bdc1469d30bd52ea42feca657dd1de1eff384e6ed24a6910b011d49d855bd1ed209f5ce77d8116ac01");
+        "0xc612efdce8af3526f20a3a39b623aa8d4fa9136c332d44690b928f2f566feb1f0f550399c9e59456c54c6328f4e77e7f82956c510da3788bba006dbda11ffb5800");
     expectedData.add("0x4107bd23eedb9f2a2a749108f6bb9720d745d50f044cc4814bafe189a01fe6fb");
     Assertions.assertEquals(signedTx.witnesses.get(0).data, expectedData);
 
     expectedData = new ArrayList<>();
     expectedData.add(
-        "0x3b13c362f254e7becb0e731e4756e742bfddbf2f5d7c16cd609ba127d2b7e07f1d588c3a7132fc20c478e2de14f6370fbb9e4402d240e4b32c8d671177e1f31101");
+        "0xdd770d3c286573d49613ce2cbf2eeade7a603c157cff212ca10e16e8f88e1aa1358e0e245e55391da779aa6de987404eaafbe4f9c9cd73af963ca01f9499917001");
     Assertions.assertEquals(signedTx.witnesses.get(1).data, expectedData);
   }
 
@@ -160,7 +161,6 @@ class TransactionTest {
 
     BigInteger privateKey =
         Numeric.toBigInt("0xe79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
-    String txHash = "0xac1bb95455cdfb89b6e977568744e09b6b80e08cab9477936a09c4ca07f5b8ab";
     Assertions.assertThrows(InvalidNumberOfWitnessesException.class, () -> tx.sign(privateKey));
   }
 
@@ -211,6 +211,7 @@ class TransactionTest {
         "0x09ce2223304a5f48d5ce2b6ee2777d96503591279671460fa39ae894ea9e2b87", tx.computeHash());
   }
 
+  @Disabled
   @Test
   public void serializationTxTest() throws IOException {
     CKBService ckbService = CKBService.build(new HttpService("http://localhost:8114"));

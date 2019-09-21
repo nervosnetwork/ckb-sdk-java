@@ -1,18 +1,19 @@
 buildscript {
 
-    ext.bouncycastleVersion = '1.62'
+    ext.bouncycastleVersion = '1.63'
     ext.rxjavaVersion = '2.2.12'
     ext.gsonVersion = '2.8.5'
-    ext.jacksonVersion = '2.10.0.pr2'
-    ext.okhttpVersion = '4.1.0'
-    ext.loggingOkhttpVersion = '4.1.0'
+    ext.jacksonVersion = '2.10.0.pr3'
+    ext.okhttpVersion = '4.2.0'
+    ext.loggingOkhttpVersion = '4.2.0'
     ext.slf4jVersion = '1.7.28'
     ext.guavaVersion = '28.1-jre'
 
-    ext.junitVersion = '5.5.1'
+    ext.junitVersion = '5.5.2'
 
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
     }
 }
 
@@ -24,6 +25,7 @@ plugins {
 
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'application'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
 mainClassName = 'org.nervos.ckb.RpcClient'
 applicationName = 'ckb-sdk-java'
@@ -36,23 +38,27 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.20.0'
+    version '0.21.0'
 
     apply plugin: 'java'
 
     repositories {
         mavenCentral()
-        jcenter()
+    }
+
+    dependencies {
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
 }
 
 subprojects {
     apply plugin: 'java'
-
-    dependencies {
-        testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-    }
 
     task installGitHooks(type: Copy) {
         from new File(rootProject.rootDir, 'config/pre-commit')
