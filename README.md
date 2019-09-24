@@ -126,7 +126,7 @@ You can reference detail example in `console/TransactionExample.java`.
             + getBalance(receivers.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
-    // fund accounts send capacity to three receiver accounts with 4000, 15000 and 2000 CKB
+    // fund accounts send capacity to three receiver accounts with 400, 500 and 600 CKB
     sendCapacityWithMultiPrivateKey(fundSenders, receivers);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
