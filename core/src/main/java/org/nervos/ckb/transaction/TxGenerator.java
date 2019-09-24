@@ -64,7 +64,7 @@ public class TxGenerator {
 
     // gather cell inputs through senders' addresses
     // and put cellInput and related private key to a list
-    BigInteger collectCapacity = BigInteger.ZERO;
+    BigInteger collectedCapacity = BigInteger.ZERO;
     List<Transaction.CellWithPrivateKey> cellWithPrivateKeys = new ArrayList<>();
     List<CellInput> cellInputs = new ArrayList<>();
     List<Witness> witnesses = new ArrayList<>();
@@ -77,7 +77,7 @@ public class TxGenerator {
       if (collectedCells.capacity.compareTo(sender.capacity) < 0) {
         throw new IOException("No enough Capacities with sender private key: " + sender.privateKey);
       }
-      collectCapacity = collectCapacity.add(collectedCells.capacity);
+      collectedCapacity = collectedCapacity.add(collectedCells.capacity);
       collectedCells.privateKey = sender.privateKey;
       cellInputs.addAll(collectedCells.inputs);
 
@@ -103,12 +103,12 @@ public class TxGenerator {
     }
 
     // set first sender's public key blake160 to change cell output
-    if (collectCapacity.compareTo(needCapacities) > 0) {
+    if (collectedCapacity.compareTo(needCapacities) > 0) {
       String firstSenderBlake160 =
           addressUtils.blake160(ECKeyPair.publicKeyFromPrivate(senders.get(0).privateKey));
       cellOutputs.add(
           new CellOutput(
-              collectCapacity.subtract(needCapacities).toString(),
+              collectedCapacity.subtract(needCapacities).toString(),
               new Script(
                   systemSecpCell.cellHash,
                   Collections.singletonList(Numeric.prependHexPrefix(firstSenderBlake160)),
