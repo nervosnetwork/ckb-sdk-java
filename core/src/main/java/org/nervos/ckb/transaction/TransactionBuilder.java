@@ -19,14 +19,14 @@ import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class TxGenerator {
+public class TransactionBuilder {
 
   private static final BigInteger MIN_CAPACITY = new BigInteger("6000000000");
 
   private SystemScriptCell systemSecpCell;
   private CKBService ckbService;
 
-  public TxGenerator(CKBService ckbService) {
+  public TransactionBuilder(CKBService ckbService) {
     this.ckbService = ckbService;
 
     try {
@@ -37,15 +37,24 @@ public class TxGenerator {
   }
 
   public Transaction generateTx(String privateKey, List<Receiver> receivers) throws IOException {
+    AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
+    String changeAddress =
+        addressUtils.generate(addressUtils.blake160(ECKeyPair.publicKeyFromPrivate(privateKey)));
+    return generateTx(privateKey, receivers, changeAddress);
+  }
+
+  public Transaction generateTx(String privateKey, List<Receiver> receivers, String changeAddress)
+      throws IOException {
     BigInteger needCapacities = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
       needCapacities = needCapacities.add(receiver.capacity);
     }
     Sender sender = new Sender(privateKey, needCapacities);
-    return generateTx(Collections.singletonList(sender), receivers);
+    return generateTx(Collections.singletonList(sender), receivers, changeAddress);
   }
 
-  public Transaction generateTx(List<Sender> senders, List<Receiver> receivers) throws IOException {
+  public Transaction generateTx(
+      List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
     BigInteger needCapacities = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
       needCapacities = needCapacities.add(receiver.capacity);
@@ -94,24 +103,23 @@ public class TxGenerator {
     List<CellOutput> cellOutputs = new ArrayList<>();
     AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
     for (Receiver receiver : receivers) {
-      String blake2b = addressUtils.getBlake160FromAddress(receiver.address);
+      String blake160 = addressUtils.getBlake160FromAddress(receiver.address);
       cellOutputs.add(
           new CellOutput(
               receiver.capacity.toString(),
               new Script(
-                  systemSecpCell.cellHash, Collections.singletonList(blake2b), Script.TYPE)));
+                  systemSecpCell.cellHash, Collections.singletonList(blake160), Script.TYPE)));
     }
 
-    // set first sender's public key blake160 to change cell output
+    // set change cell output
     if (collectedCapacity.compareTo(needCapacities) > 0) {
-      String firstSenderBlake160 =
-          addressUtils.blake160(ECKeyPair.publicKeyFromPrivate(senders.get(0).privateKey));
+      String changeAddressBlake160 = addressUtils.getBlake160FromAddress(changeAddress);
       cellOutputs.add(
           new CellOutput(
               collectedCapacity.subtract(needCapacities).toString(),
               new Script(
                   systemSecpCell.cellHash,
-                  Collections.singletonList(Numeric.prependHexPrefix(firstSenderBlake160)),
+                  Collections.singletonList(Numeric.prependHexPrefix(changeAddressBlake160)),
                   Script.TYPE)));
     }
 

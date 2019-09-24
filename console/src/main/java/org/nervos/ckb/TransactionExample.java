@@ -11,7 +11,7 @@ import org.nervos.ckb.service.HttpService;
 import org.nervos.ckb.transaction.CellGatherer;
 import org.nervos.ckb.transaction.Receiver;
 import org.nervos.ckb.transaction.Sender;
-import org.nervos.ckb.transaction.TxGenerator;
+import org.nervos.ckb.transaction.TransactionBuilder;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionExample {
@@ -39,6 +39,7 @@ public class TransactionExample {
 
   public static void main(String[] args) throws Exception {
     String minerPrivateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
+    String minerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     List<Receiver> receivers1 =
         Arrays.asList(
             new Receiver(Accounts.get(0).address, new BigInteger("800").multiply(UnitCKB)),
@@ -51,7 +52,7 @@ public class TransactionExample {
             + " CKB");
 
     // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
-    sendCapacityWithSinglePrivateKey(minerPrivateKey, receivers1);
+    sendCapacityWithSinglePrivateKey(minerPrivateKey, receivers1, minerAddress);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
@@ -75,6 +76,7 @@ public class TransactionExample {
             new Receiver(
                 "ckt1qyq2pmuxkr0xwx8kp3ya2juryrygf27dregs44skek",
                 new BigInteger("600").multiply(UnitCKB)));
+    String changeAddress = "ckt1qyqfnym6semhw2vzm33fjvk3ngxuf5433l9qz3af8a";
 
     System.out.println(
         "Before transfer, first receiver2's balance: "
@@ -82,7 +84,7 @@ public class TransactionExample {
             + " CKB");
 
     // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
-    sendCapacityWithMultiPrivateKey(senders1, receivers2);
+    sendCapacityWithMultiPrivateKey(senders1, receivers2, changeAddress);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
@@ -96,10 +98,10 @@ public class TransactionExample {
     return cellGatherer.getCapacitiesWithAddress(address);
   }
 
-  private static void sendCapacityWithSinglePrivateKey(String privateKey, List<Receiver> receivers)
-      throws IOException {
-    TxGenerator txGenerator = new TxGenerator(ckbService);
-    Transaction transaction = txGenerator.generateTx(privateKey, receivers);
+  private static void sendCapacityWithSinglePrivateKey(
+      String privateKey, List<Receiver> receivers, String changeAddress) throws IOException {
+    TransactionBuilder transactionBuilder = new TransactionBuilder(ckbService);
+    Transaction transaction = transactionBuilder.generateTx(privateKey, receivers, changeAddress);
     CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
     if (ckbTransactionHash.error != null) {
       throw new IOException(ckbTransactionHash.error.message);
@@ -109,9 +111,9 @@ public class TransactionExample {
   }
 
   private static void sendCapacityWithMultiPrivateKey(
-      List<Sender> senders, List<Receiver> receivers) throws IOException {
-    TxGenerator txGenerator = new TxGenerator(ckbService);
-    Transaction transaction = txGenerator.generateTx(senders, receivers);
+      List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
+    TransactionBuilder transactionBuilder = new TransactionBuilder(ckbService);
+    Transaction transaction = transactionBuilder.generateTx(senders, receivers, changeAddress);
     CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
     if (ckbTransactionHash.error != null) {
       throw new IOException(ckbTransactionHash.error.message);
