@@ -85,31 +85,32 @@ You can reference detail example in `console/TransactionExample.java`.
 
   public static void main(String[] args) throws Exception {
     String minerPrivateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-    List<Receiver> funds =
+    List<Receiver> receivers1 =
         Arrays.asList(
             new Receiver(Accounts.get(0).address, new BigInteger("800").multiply(UnitCKB)),
             new Receiver(Accounts.get(1).address, new BigInteger("900").multiply(UnitCKB)),
             new Receiver(Accounts.get(2).address, new BigInteger("1000").multiply(UnitCKB)));
 
     System.out.println(
-        "Before transfer, first fund's balance: "
+        "Before transfer, first receiver1's balance: "
             + getBalance(Accounts.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
-    // miner send capacity to three fund accounts with 800, 900 and 1000 CKB
-    sendCapacityWithSinglePrivateKey(minerPrivateKey, funds);
+    // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
+    sendCapacityWithSinglePrivateKey(minerPrivateKey, receivers1);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, first fund's balance: "
+        "After transfer, first receiver1's balance: "
             + getBalance(Accounts.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
-    List<Sender> fundSenders =
+
+    List<Sender> senders1 =
         Arrays.asList(
             new Sender(Accounts.get(0).privateKey, new BigInteger("500").multiply(UnitCKB)),
             new Sender(Accounts.get(1).privateKey, new BigInteger("600").multiply(UnitCKB)),
             new Sender(Accounts.get(2).privateKey, new BigInteger("700").multiply(UnitCKB)));
-    List<Receiver> receivers =
+    List<Receiver> receivers2 =
         Arrays.asList(
             new Receiver(
                 "ckt1qyqqtdpzfjwq7e667ktjwnv3hngrqkmwyhhqpa8dav",
@@ -122,17 +123,17 @@ You can reference detail example in `console/TransactionExample.java`.
                 new BigInteger("600").multiply(UnitCKB)));
 
     System.out.println(
-        "Before transfer, first receiver's balance: "
-            + getBalance(receivers.get(0).address).divide(UnitCKB).toString(10)
+        "Before transfer, first receiver2's balance: "
+            + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
-    // fund accounts send capacity to three receiver accounts with 400, 500 and 600 CKB
-    sendCapacityWithMultiPrivateKey(fundSenders, receivers);
+    // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
+    sendCapacityWithMultiPrivateKey(senders1, receivers2);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, receiver's balance: "
-            + getBalance(receivers.get(0).address).divide(UnitCKB).toString(10)
+        "After transfer, receiver2's balance: "
+            + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
   }
 
