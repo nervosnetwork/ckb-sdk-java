@@ -54,6 +54,90 @@ Block block = ckbService.getBlock(blockHash).send().getBlock();
 
 You can see more JSON-RPC requests from [RPC Document](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 
+#### Transfer
+
+`console/TransactionExample.java` provides `sendCapacityWithSinglePrivateKey` method with inputs which belong to single private key 
+and `sendCapacityWithMultiPrivateKey` method with inputs which belong to multi private keys.
+
+You can reference detail example in `console/TransactionExample.java`.
+
+```Java
+  private static final String NODE_URL = "http://localhost:8114";
+  private static final BigInteger UnitCKB = new BigInteger("100000000");
+  private static CKBService ckbService;
+  private static List<Account> Accounts;
+
+  static {
+    HttpService.setDebug(false);
+    ckbService = CKBService.build(new HttpService(NODE_URL));
+    Accounts =
+        Arrays.asList(
+            new Account(
+                "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
+                "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g"),
+            new Account(
+                "a202386cb9e46cecff9bc14b748b714c713075dd964c2507c8a8900540164959",
+                "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek"),
+            new Account(
+                "89b773ec5cf97b8fd2cf280ab1e37cd658dc28d84bac8f8dda4a8646cc08d266",
+                "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4"));
+  }
+
+  public static void main(String[] args) throws Exception {
+    String minerPrivateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
+    List<Receiver> funds =
+        Arrays.asList(
+            new Receiver(Accounts.get(0).address, new BigInteger("800").multiply(UnitCKB)),
+            new Receiver(Accounts.get(1).address, new BigInteger("900").multiply(UnitCKB)),
+            new Receiver(Accounts.get(2).address, new BigInteger("1000").multiply(UnitCKB)));
+
+    System.out.println(
+        "Before transfer, first fund's balance: "
+            + getBalance(Accounts.get(0).address).divide(UnitCKB).toString(10)
+            + " CKB");
+
+    // miner send capacity to three fund accounts with 800, 900 and 1000 CKB
+    sendCapacityWithSinglePrivateKey(minerPrivateKey, funds);
+    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    System.out.println(
+        "After transfer, first fund's balance: "
+            + getBalance(Accounts.get(0).address).divide(UnitCKB).toString(10)
+            + " CKB");
+    List<Sender> fundSenders =
+        Arrays.asList(
+            new Sender(Accounts.get(0).privateKey, new BigInteger("500").multiply(UnitCKB)),
+            new Sender(Accounts.get(1).privateKey, new BigInteger("600").multiply(UnitCKB)),
+            new Sender(Accounts.get(2).privateKey, new BigInteger("700").multiply(UnitCKB)));
+    List<Receiver> receivers =
+        Arrays.asList(
+            new Receiver(
+                "ckt1qyqqtdpzfjwq7e667ktjwnv3hngrqkmwyhhqpa8dav",
+                new BigInteger("400").multiply(UnitCKB)),
+            new Receiver(
+                "ckt1qyq9ngn77wagfurp29738apv738dqgrpqpssfhr0l6",
+                new BigInteger("500").multiply(UnitCKB)),
+            new Receiver(
+                "ckt1qyq2pmuxkr0xwx8kp3ya2juryrygf27dregs44skek",
+                new BigInteger("600").multiply(UnitCKB)));
+
+    System.out.println(
+        "Before transfer, first receiver's balance: "
+            + getBalance(receivers.get(0).address).divide(UnitCKB).toString(10)
+            + " CKB");
+
+    // fund accounts send capacity to three receiver accounts with 4000, 15000 and 2000 CKB
+    sendCapacityWithMultiPrivateKey(fundSenders, receivers);
+    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    System.out.println(
+        "After transfer, receiver's balance: "
+            + getBalance(receivers.get(0).address).divide(UnitCKB).toString(10)
+            + " CKB");
+  }
+
+```
+
 #### Address
 
 You can generate ckb address through this SDK as below:
