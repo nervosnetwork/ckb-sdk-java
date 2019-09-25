@@ -1,6 +1,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.21.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.21.0...v0.21.1) (2019-09-25)
+
+### Feature
+
+* Add blockHash and constructor for CellOutputWithOutPoint([fe3a929](https://github.com/nervosnetwork/ckb-sdk-java/commit/fe3a929f6e0ebb93965098b5b67559226dfc0e86))
+* Support multiply private keys to sign transaction([1ae3cc6](https://github.com/nervosnetwork/ckb-sdk-java/commit/1ae3cc6c9c6187215680128faaa63de8badf4210))
+* Support multiply private keys to sign transaction([4efd32c](https://github.com/nervosnetwork/ckb-sdk-java/commit/4efd32ccd2487fd392087a3814d26e90b557485e))
+* Update readme about capacity transfer([d09587a](https://github.com/nervosnetwork/ckb-sdk-java/commit/d09587a080f62b7e1e1618b779c0aa35818dc341))
+
+
 # [v0.21.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.20.0...v0.21.0) (2019-09-21)
 
 ### Feature
