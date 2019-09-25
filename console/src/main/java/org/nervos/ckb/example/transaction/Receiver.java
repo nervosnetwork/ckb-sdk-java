@@ -1,11 +1,11 @@
-package org.nervos.ckb.transaction;
+package org.nervos.ckb.example.transaction;
 
 import java.math.BigInteger;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Receiver {
-  String address;
-  BigInteger capacity;
+  public String address;
+  public BigInteger capacity;
 
   public Receiver(String address, BigInteger capacity) {
     this.address = address;

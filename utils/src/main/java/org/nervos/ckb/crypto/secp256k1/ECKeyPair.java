@@ -47,6 +47,12 @@ public class ECKeyPair {
     return new ECKeyPair(privateKey, publicKeyFromPrivate(privateKey, compressed));
   }
 
+  public static ECKeyPair createWithPrivateKey(String privateKeyHex, boolean compressed) {
+    return new ECKeyPair(
+        Numeric.toBigInt(privateKeyHex),
+        publicKeyFromPrivate(Numeric.toBigInt(privateKeyHex), compressed));
+  }
+
   public static ECKeyPair createWithPrivateKey(BigInteger privateKey) {
     return new ECKeyPair(privateKey, publicKeyFromPrivate(privateKey));
   }
