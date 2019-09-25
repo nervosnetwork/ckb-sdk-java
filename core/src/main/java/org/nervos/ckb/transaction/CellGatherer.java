@@ -20,7 +20,8 @@ public class CellGatherer {
     this.ckbService = ckbService;
   }
 
-  CollectedCells getCellInputs(String lockHash, BigInteger needCapacities) throws IOException {
+  public CollectedCells getCellInputs(String lockHash, BigInteger needCapacities)
+      throws IOException {
     List<CellInput> cellInputs = new ArrayList<>();
     BigInteger inputsCapacities = BigInteger.ZERO;
     long toBlockNumber = ckbService.getTipBlockNumber().send().getBlockNumber().longValue();

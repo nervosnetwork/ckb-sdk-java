@@ -5,9 +5,10 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.address.AddressUtils;
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
-import org.nervos.ckb.methods.type.Script;
+import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
 import org.nervos.ckb.methods.type.Witness;
 import org.nervos.ckb.methods.type.cell.CellDep;
 import org.nervos.ckb.methods.type.cell.CellInput;
@@ -15,7 +16,6 @@ import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.system.type.SystemScriptCell;
-import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -24,11 +24,13 @@ public class TransactionBuilder {
   private static final BigInteger MIN_CAPACITY = new BigInteger("6000000000");
 
   private SystemScriptCell systemSecpCell;
-  private CKBService ckbService;
+  private List<CellInput> cellInputs = new ArrayList<>();
+  private List<CellOutput> cellOutputs = new ArrayList<>();
+  private List<String> cellOutputsData = new ArrayList<>();
+  private List<Witness> witnesses = new ArrayList<>();
+  private Transaction transaction;
 
   public TransactionBuilder(CKBService ckbService) {
-    this.ckbService = ckbService;
-
     try {
       this.systemSecpCell = Utils.getSystemScriptCell(ckbService);
     } catch (Exception e) {
@@ -36,99 +38,38 @@ public class TransactionBuilder {
     }
   }
 
-  public Transaction generateTx(String privateKey, List<Receiver> receivers) throws IOException {
-    AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
-    String changeAddress =
-        addressUtils.generate(addressUtils.blake160(ECKeyPair.publicKeyFromPrivate(privateKey)));
-    return generateTx(privateKey, receivers, changeAddress);
+  public void addInput(CellInput input) {
+    cellInputs.add(input);
   }
 
-  public Transaction generateTx(String privateKey, List<Receiver> receivers, String changeAddress)
-      throws IOException {
-    BigInteger needCapacities = BigInteger.ZERO;
-    for (Receiver receiver : receivers) {
-      needCapacities = needCapacities.add(receiver.capacity);
-    }
-    Sender sender = new Sender(privateKey, needCapacities);
-    return generateTx(Collections.singletonList(sender), receivers, changeAddress);
+  public void addAllInputs(List<CellInput> inputs) {
+    cellInputs.addAll(inputs);
   }
 
-  public Transaction generateTx(
-      List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
-    BigInteger needCapacities = BigInteger.ZERO;
-    for (Receiver receiver : receivers) {
-      needCapacities = needCapacities.add(receiver.capacity);
+  public void addOutput(CellOutput output) {
+    cellOutputs.add(output);
+  }
+
+  public void addAllOutputs(List<CellOutput> outputs) {
+    cellOutputs.addAll(outputs);
+  }
+
+  public void buildTx() throws IOException {
+    BigInteger needCapacity = BigInteger.ZERO;
+    for (CellOutput output : cellOutputs) {
+      needCapacity = needCapacity.add(Numeric.toBigInt(output.capacity));
     }
-    if (needCapacities.compareTo(MIN_CAPACITY) < 0) {
+    if (needCapacity.compareTo(MIN_CAPACITY) < 0) {
       throw new IOException("Less than min capacity");
     }
-
-    BigInteger sendCapacities = BigInteger.ZERO;
-    for (Sender sender : senders) {
-      sendCapacities = sendCapacities.add(sender.capacity);
+    if (cellInputs.size() == 0) {
+      throw new IOException("Cell inputs could not empty");
     }
-    if (sendCapacities.compareTo(needCapacities) < 0) {
-      throw new IOException("Sender capacity amount less than receiver capacity amount");
-    }
-
-    // gather cell inputs through senders' addresses
-    // and put cellInput and related private key to a list
-    BigInteger collectedCapacity = BigInteger.ZERO;
-    List<Transaction.CellWithPrivateKey> cellWithPrivateKeys = new ArrayList<>();
-    List<CellInput> cellInputs = new ArrayList<>();
-    List<Witness> witnesses = new ArrayList<>();
-    for (Sender sender : senders) {
-      String lockHash =
-          Utils.generateLockScriptWithPrivateKey(sender.privateKey, systemSecpCell.cellHash)
-              .computeHash();
-      CollectedCells collectedCells =
-          new CellGatherer(ckbService).getCellInputs(lockHash, sender.capacity);
-      if (collectedCells.capacity.compareTo(sender.capacity) < 0) {
-        throw new IOException("No enough Capacities with sender private key: " + sender.privateKey);
-      }
-      collectedCapacity = collectedCapacity.add(collectedCells.capacity);
-      collectedCells.privateKey = sender.privateKey;
-      cellInputs.addAll(collectedCells.inputs);
-
-      for (CellInput cellInput : collectedCells.inputs) {
-        cellWithPrivateKeys.add(new Transaction.CellWithPrivateKey(cellInput, sender.privateKey));
-      }
-
-      for (int i = 0; i < collectedCells.inputs.size(); i++) {
-        witnesses.add(new Witness());
-      }
-    }
-
-    // generate cellOutputs with receivers
-    List<CellOutput> cellOutputs = new ArrayList<>();
-    AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
-    for (Receiver receiver : receivers) {
-      String blake160 = addressUtils.getBlake160FromAddress(receiver.address);
-      cellOutputs.add(
-          new CellOutput(
-              receiver.capacity.toString(),
-              new Script(
-                  systemSecpCell.cellHash, Collections.singletonList(blake160), Script.TYPE)));
-    }
-
-    // set change cell output
-    if (collectedCapacity.compareTo(needCapacities) > 0) {
-      String changeAddressBlake160 = addressUtils.getBlake160FromAddress(changeAddress);
-      cellOutputs.add(
-          new CellOutput(
-              collectedCapacity.subtract(needCapacities).toString(),
-              new Script(
-                  systemSecpCell.cellHash,
-                  Collections.singletonList(Numeric.prependHexPrefix(changeAddressBlake160)),
-                  Script.TYPE)));
-    }
-
-    List<String> cellOutputsData = new ArrayList<>();
     for (int i = 0; i < cellOutputs.size(); i++) {
       cellOutputsData.add("0x");
+      witnesses.add(new Witness());
     }
-
-    Transaction transaction =
+    transaction =
         new Transaction(
             "0",
             Collections.singletonList(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP)),
@@ -137,7 +78,58 @@ public class TransactionBuilder {
             cellOutputs,
             cellOutputsData,
             witnesses);
+  }
 
-    return transaction.sign(cellWithPrivateKeys);
+  public void signInput(int index, String privateKey) throws IOException {
+    if (transaction == null) {
+      throw new IOException("Transaction could not null");
+    }
+    if (witnesses.size() < cellInputs.size()) {
+      throw new InvalidNumberOfWitnessesException("Invalid number of witnesses");
+    }
+    Witness witness = witnesses.get(index);
+    String txHash = transaction.computeHash();
+
+    Blake2b blake2b = new Blake2b();
+    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    List<String> oldData = witness.data;
+    for (String datum : witness.data) {
+      blake2b.update(Numeric.hexStringToByteArray(datum));
+    }
+    String message = blake2b.doFinalString();
+
+    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+    String signature =
+        Numeric.toHexString(
+            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+    witness.data = new ArrayList<>();
+    witness.data.add(signature);
+    witness.data.addAll(oldData);
+    witnesses.set(index, witness);
+  }
+
+  public void sign(String privateKey) {
+    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+    for (Witness witness : witnesses) {
+      List<String> oldData = witness.data;
+      Blake2b blake2b = new Blake2b();
+      blake2b.update(Numeric.hexStringToByteArray(transaction.computeHash()));
+      for (String datum : witness.data) {
+        blake2b.update(Numeric.hexStringToByteArray(datum));
+      }
+      String message = blake2b.doFinalString();
+
+      String signature =
+          Numeric.toHexString(
+              Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+      witness.data = new ArrayList<>();
+      witness.data.add(signature);
+      witness.data.addAll(oldData);
+      witnesses.add(witness);
+    }
+  }
+
+  public Transaction getTransaction() {
+    return transaction;
   }
 }

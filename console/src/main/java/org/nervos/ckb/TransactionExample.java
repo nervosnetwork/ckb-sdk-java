@@ -3,15 +3,11 @@ package org.nervos.ckb;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.methods.response.CkbTransactionHash;
-import org.nervos.ckb.methods.type.transaction.Transaction;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
-import org.nervos.ckb.transaction.CellGatherer;
-import org.nervos.ckb.transaction.Receiver;
-import org.nervos.ckb.transaction.Sender;
-import org.nervos.ckb.transaction.TransactionBuilder;
+import org.nervos.ckb.transaction.*;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionExample {
@@ -19,22 +15,31 @@ public class TransactionExample {
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static CKBService ckbService;
-  private static List<Account> Accounts;
+  private static List<KeyPair> KeyPairs;
 
   static {
-    HttpService.setDebug(false);
+    HttpService.setDebug(true);
     ckbService = CKBService.build(new HttpService(NODE_URL));
-    Accounts =
+    KeyPairs =
         Arrays.asList(
-            new Account(
+            new KeyPair(
                 "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
                 "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g"),
-            new Account(
+            new KeyPair(
                 "a202386cb9e46cecff9bc14b748b714c713075dd964c2507c8a8900540164959",
                 "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek"),
-            new Account(
+            new KeyPair(
                 "89b773ec5cf97b8fd2cf280ab1e37cd658dc28d84bac8f8dda4a8646cc08d266",
-                "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4"));
+                "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4"),
+            new KeyPair(
+                "fec27185a66dd21abb97eeaaeb6bf63fb9c5b7c7966550e6798a78fbaf4197f0",
+                "ckt1qyq8n3400g4lw7xs4denyjprpyzaa6z2z5wsl7e2gs"),
+            new KeyPair(
+                "2cee134faa03a158011dff33b7756e89a0c76ba64006640615be7b483b2935b4",
+                "ckt1qyqd4lgpt5auunu6s3wskkwxmdx548wksvcqyq44en"),
+            new KeyPair(
+                "55b55c7bd177ed837dde45bbde12fc79c12fb8695be258064f40e6d5f65db96c",
+                "ckt1qyqrlj6znd3uhvuln5z83epv54xu8pmphzgse5uylq"));
   }
 
   public static void main(String[] args) throws Exception {
@@ -42,40 +47,43 @@ public class TransactionExample {
     String minerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     List<Receiver> receivers1 =
         Arrays.asList(
-            new Receiver(Accounts.get(0).address, new BigInteger("800").multiply(UnitCKB)),
-            new Receiver(Accounts.get(1).address, new BigInteger("900").multiply(UnitCKB)),
-            new Receiver(Accounts.get(2).address, new BigInteger("1000").multiply(UnitCKB)));
+            new Receiver(KeyPairs.get(0).address, new BigInteger("800").multiply(UnitCKB)),
+            new Receiver(KeyPairs.get(1).address, new BigInteger("900").multiply(UnitCKB)),
+            new Receiver(KeyPairs.get(2).address, new BigInteger("1000").multiply(UnitCKB)));
+
+    System.out.println(
+        "Before transfer, miner's balance: "
+            + getBalance(minerAddress).divide(UnitCKB).toString(10)
+            + " CKB");
 
     System.out.println(
         "Before transfer, first receiver1's balance: "
-            + getBalance(Accounts.get(0).address).divide(UnitCKB).toString(10)
+            + getBalance(KeyPairs.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
     // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
-    sendCapacityWithSinglePrivateKey(minerPrivateKey, receivers1, minerAddress);
+    String hash = sendCapacity(minerPrivateKey, receivers1, minerAddress);
+    System.out.println("First transaction hash: " + hash);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
         "After transfer, first receiver1's balance: "
-            + getBalance(Accounts.get(0).address).divide(UnitCKB).toString(10)
+            + getBalance(KeyPairs.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
+
+    // Second transaction
 
     List<Sender> senders1 =
         Arrays.asList(
-            new Sender(Accounts.get(0).privateKey, new BigInteger("500").multiply(UnitCKB)),
-            new Sender(Accounts.get(1).privateKey, new BigInteger("600").multiply(UnitCKB)),
-            new Sender(Accounts.get(2).privateKey, new BigInteger("700").multiply(UnitCKB)));
+            new Sender(KeyPairs.get(0).privateKey, new BigInteger("500").multiply(UnitCKB)),
+            new Sender(KeyPairs.get(1).privateKey, new BigInteger("600").multiply(UnitCKB)),
+            new Sender(KeyPairs.get(2).privateKey, new BigInteger("700").multiply(UnitCKB)));
     List<Receiver> receivers2 =
         Arrays.asList(
-            new Receiver(
-                "ckt1qyqqtdpzfjwq7e667ktjwnv3hngrqkmwyhhqpa8dav",
-                new BigInteger("400").multiply(UnitCKB)),
-            new Receiver(
-                "ckt1qyq9ngn77wagfurp29738apv738dqgrpqpssfhr0l6",
-                new BigInteger("500").multiply(UnitCKB)),
-            new Receiver(
-                "ckt1qyq2pmuxkr0xwx8kp3ya2juryrygf27dregs44skek",
-                new BigInteger("600").multiply(UnitCKB)));
+            new Receiver(KeyPairs.get(3).address, new BigInteger("400").multiply(UnitCKB)),
+            new Receiver(KeyPairs.get(4).address, new BigInteger("500").multiply(UnitCKB)),
+            new Receiver(KeyPairs.get(5).address, new BigInteger("600").multiply(UnitCKB)));
+
     String changeAddress = "ckt1qyqfnym6semhw2vzm33fjvk3ngxuf5433l9qz3af8a";
 
     System.out.println(
@@ -84,7 +92,8 @@ public class TransactionExample {
             + " CKB");
 
     // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
-    sendCapacityWithMultiPrivateKey(senders1, receivers2, changeAddress);
+    String hash2 = sendCapacity(senders1, receivers2, changeAddress);
+    System.out.println("Second transaction hash: " + hash2);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
@@ -98,35 +107,46 @@ public class TransactionExample {
     return cellGatherer.getCapacitiesWithAddress(address);
   }
 
-  private static void sendCapacityWithSinglePrivateKey(
+  private static String sendCapacity(
       String privateKey, List<Receiver> receivers, String changeAddress) throws IOException {
-    TransactionBuilder transactionBuilder = new TransactionBuilder(ckbService);
-    Transaction transaction = transactionBuilder.generateTx(privateKey, receivers, changeAddress);
-    CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
-    if (ckbTransactionHash.error != null) {
-      throw new IOException(ckbTransactionHash.error.message);
+    BigInteger needCapacity = BigInteger.ZERO;
+    for (Receiver receiver : receivers) {
+      needCapacity = needCapacity.add(receiver.capacity);
     }
-    System.out.println(
-        "Single private key transaction hash: " + ckbTransactionHash.getTransactionHash());
+    List<Sender> senders = Collections.singletonList(new Sender(privateKey, needCapacity));
+    return sendCapacity(senders, receivers, changeAddress);
   }
 
-  private static void sendCapacityWithMultiPrivateKey(
+  private static String sendCapacity(
       List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
-    TransactionBuilder transactionBuilder = new TransactionBuilder(ckbService);
-    Transaction transaction = transactionBuilder.generateTx(senders, receivers, changeAddress);
-    CkbTransactionHash ckbTransactionHash = ckbService.sendTransaction(transaction).send();
-    if (ckbTransactionHash.error != null) {
-      throw new IOException(ckbTransactionHash.error.message);
+    TransactionBuilder builder = new TransactionBuilder(ckbService);
+    CollectUtils txUtils = new CollectUtils(ckbService);
+
+    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
+    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+      builder.addAllInputs(cellsWithPrivateKey.inputs);
     }
-    System.out.println(
-        "Multi private key transaction hash: " + ckbTransactionHash.getTransactionHash());
+
+    builder.addAllOutputs(txUtils.generateOutputs(receivers, changeAddress));
+
+    builder.buildTx();
+
+    int index = 0;
+    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+      for (int i = 0; i < cellsWithPrivateKey.inputs.size(); i++) {
+        builder.signInput(index + i, cellsWithPrivateKey.privateKey);
+      }
+      index += cellsWithPrivateKey.inputs.size();
+    }
+
+    return ckbService.sendTransaction(builder.getTransaction()).send().getTransactionHash();
   }
 
-  static class Account {
+  static class KeyPair {
     String privateKey;
     String address;
 
-    Account(String privateKey, String address) {
+    KeyPair(String privateKey, String address) {
       this.privateKey = privateKey;
       this.address = address;
     }

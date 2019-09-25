@@ -17,21 +17,21 @@ public class Utils {
 
   private static final String TESTNET_PREFIX = "ckt";
 
-  static Script generateLockScriptWithPrivateKey(String privateKey, String codeHash) {
+  public static Script generateLockScriptWithPrivateKey(String privateKey, String codeHash) {
     String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey);
     String blake160 =
         Numeric.prependHexPrefix(Numeric.cleanHexPrefix(Hash.blake2b(publicKey)).substring(0, 40));
     return new Script(codeHash, Collections.singletonList(blake160), Script.TYPE);
   }
 
-  static Script generateLockScriptWithAddress(String address, String codeHash) {
+  public static Script generateLockScriptWithAddress(String address, String codeHash) {
     AddressUtils addressUtils =
         new AddressUtils(address.startsWith(TESTNET_PREFIX) ? Network.TESTNET : Network.MAINNET);
     String publicKeyBlake160 = addressUtils.getBlake160FromAddress(address);
     return new Script(codeHash, Collections.singletonList(publicKeyBlake160), Script.TYPE);
   }
 
-  static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
+  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
     return SystemContract.getSystemScriptCell(ckbService);
   }
 }
