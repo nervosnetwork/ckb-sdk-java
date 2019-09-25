@@ -1,4 +1,4 @@
-package org.nervos.ckb.transaction;
+package org.nervos.ckb.example.transaction;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -10,6 +10,9 @@ import org.nervos.ckb.methods.type.Script;
 import org.nervos.ckb.methods.type.cell.CellOutput;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.system.type.SystemScriptCell;
+import org.nervos.ckb.transaction.CellGatherer;
+import org.nervos.ckb.transaction.CollectedCells;
+import org.nervos.ckb.transaction.Utils;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 

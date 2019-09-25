@@ -1,13 +1,18 @@
-package org.nervos.ckb;
+package org.nervos.ckb.example;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.nervos.ckb.example.transaction.CellsWithPrivateKey;
+import org.nervos.ckb.example.transaction.CollectUtils;
+import org.nervos.ckb.example.transaction.Receiver;
+import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.CKBService;
 import org.nervos.ckb.service.HttpService;
-import org.nervos.ckb.transaction.*;
+import org.nervos.ckb.transaction.CellGatherer;
+import org.nervos.ckb.transaction.TransactionBuilder;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionExample {
@@ -124,10 +129,10 @@ public class TransactionExample {
 
     List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
     for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-      builder.addAllInputs(cellsWithPrivateKey.inputs);
+      builder.addInputs(cellsWithPrivateKey.inputs);
     }
 
-    builder.addAllOutputs(txUtils.generateOutputs(receivers, changeAddress));
+    builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress));
 
     builder.buildTx();
 

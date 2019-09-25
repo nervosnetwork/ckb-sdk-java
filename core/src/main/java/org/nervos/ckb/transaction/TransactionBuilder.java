@@ -42,7 +42,7 @@ public class TransactionBuilder {
     cellInputs.add(input);
   }
 
-  public void addAllInputs(List<CellInput> inputs) {
+  public void addInputs(List<CellInput> inputs) {
     cellInputs.addAll(inputs);
   }
 
@@ -50,7 +50,7 @@ public class TransactionBuilder {
     cellOutputs.add(output);
   }
 
-  public void addAllOutputs(List<CellOutput> outputs) {
+  public void addOutputs(List<CellOutput> outputs) {
     cellOutputs.addAll(outputs);
   }
 
