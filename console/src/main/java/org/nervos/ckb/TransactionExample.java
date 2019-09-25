@@ -18,7 +18,7 @@ public class TransactionExample {
   private static List<KeyPair> KeyPairs;
 
   static {
-    HttpService.setDebug(true);
+    HttpService.setDebug(false);
     ckbService = CKBService.build(new HttpService(NODE_URL));
     KeyPairs =
         Arrays.asList(

@@ -87,46 +87,32 @@ public class TransactionBuilder {
     if (witnesses.size() < cellInputs.size()) {
       throw new InvalidNumberOfWitnessesException("Invalid number of witnesses");
     }
-    Witness witness = witnesses.get(index);
-    String txHash = transaction.computeHash();
+    witnesses.set(index, signWitness(witnesses.get(index), privateKey));
+  }
 
-    Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
+  public void sign(String privateKey) {
+    for (Witness witness : witnesses) {
+      witnesses.add(signWitness(witness, privateKey));
+    }
+  }
+
+  private Witness signWitness(Witness witness, String privateKey) {
+    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     List<String> oldData = witness.data;
+    Blake2b blake2b = new Blake2b();
+    blake2b.update(Numeric.hexStringToByteArray(transaction.computeHash()));
     for (String datum : witness.data) {
       blake2b.update(Numeric.hexStringToByteArray(datum));
     }
     String message = blake2b.doFinalString();
 
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     String signature =
         Numeric.toHexString(
             Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
     witness.data = new ArrayList<>();
     witness.data.add(signature);
     witness.data.addAll(oldData);
-    witnesses.set(index, witness);
-  }
-
-  public void sign(String privateKey) {
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    for (Witness witness : witnesses) {
-      List<String> oldData = witness.data;
-      Blake2b blake2b = new Blake2b();
-      blake2b.update(Numeric.hexStringToByteArray(transaction.computeHash()));
-      for (String datum : witness.data) {
-        blake2b.update(Numeric.hexStringToByteArray(datum));
-      }
-      String message = blake2b.doFinalString();
-
-      String signature =
-          Numeric.toHexString(
-              Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
-      witness.data = new ArrayList<>();
-      witness.data.add(signature);
-      witness.data.addAll(oldData);
-      witnesses.add(witness);
-    }
+    return witness;
   }
 
   public Transaction getTransaction() {
