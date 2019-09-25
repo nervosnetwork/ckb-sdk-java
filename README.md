@@ -54,6 +54,40 @@ Block block = ckbService.getBlock(blockHash).send().getBlock();
 
 You can see more JSON-RPC requests from [RPC Document](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 
+#### Transfer
+
+`console/example/TransactionExample.java` provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
+
+You can reference detail example in `console/example/TransactionExample.java`.
+
+```Java
+  CKBService ckbService = CKBService.build(new HttpService("your-ckb-node-url"));
+
+  List<CellInput> inputs = Arrays.asList(
+    input1, // Input from address 'cktxxx', capacity 100 CKB
+    input2, // Input from address 'cktxxx', capacity 200 CKB
+    input3, // Input from address 'cktxxx', capacity 300 CKB
+  );
+  
+  List<CellOutput> outputs = Arrays.asList(
+    output1, // Output to address 'cktxxx', capacity 200
+    output2, // Output to address 'cktxxx', capacity 300
+    output3, // Output to address 'cktxxx' as change, capacity 100
+  );
+  
+  TransactionBuilder builder = new TransactionBuilder(ckbService);
+  
+  builder.addInputs(inputs);
+  
+  builder.addOutputs(outputs);
+  
+  builder.signInput(0, privateKey1);
+  builder.signInput(1, privateKey2);
+  builder.signInput(2, privateKey3);
+  
+  String hash = ckbService.sendTransaction(builder.getTransaction()).send().getTransactionHash();
+```
+
 #### Address
 
 You can generate ckb address through this SDK as below:

@@ -6,10 +6,15 @@ import org.nervos.ckb.methods.type.Script;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class CellOutputWithOutPoint {
+  @JsonProperty("block_hash")
+  public String blockHash;
+
   public String capacity;
 
   public Script lock;
 
   @JsonProperty("out_point")
   public OutPoint outPoint;
+
+  public CellOutputWithOutPoint() {}
 }

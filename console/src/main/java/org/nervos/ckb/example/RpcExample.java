@@ -1,4 +1,4 @@
-package org.nervos.ckb;
+package org.nervos.ckb.example;
 
 import com.google.gson.Gson;
 import java.io.IOException;
