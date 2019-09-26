@@ -1,6 +1,5 @@
 package org.nervos.ckb.type.transaction;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ public class Transaction {
 
   public String version;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   public String hash;
 
   @SerializedName("cell_deps")
