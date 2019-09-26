@@ -9,13 +9,13 @@ import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
-import org.nervos.ckb.methods.type.Witness;
-import org.nervos.ckb.methods.type.cell.CellDep;
-import org.nervos.ckb.methods.type.cell.CellInput;
-import org.nervos.ckb.methods.type.cell.CellOutput;
-import org.nervos.ckb.methods.type.transaction.Transaction;
-import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
+import org.nervos.ckb.type.Witness;
+import org.nervos.ckb.type.cell.CellDep;
+import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -30,9 +30,9 @@ public class TransactionBuilder {
   private List<Witness> witnesses = new ArrayList<>();
   private Transaction transaction;
 
-  public TransactionBuilder(CKBService ckbService) {
+  public TransactionBuilder(Api api) {
     try {
-      this.systemSecpCell = Utils.getSystemScriptCell(ckbService);
+      this.systemSecpCell = Utils.getSystemScriptCell(api);
     } catch (Exception e) {
       e.printStackTrace();
     }

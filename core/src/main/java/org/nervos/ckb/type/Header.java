@@ -1,0 +1,36 @@
+package org.nervos.ckb.type;
+
+import com.google.gson.annotations.SerializedName;
+
+/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+public class Header {
+
+  public String dao;
+  public String difficulty;
+  public String hash;
+  public String nonce;
+  public String number;
+  public String epoch;
+
+  @SerializedName("parent_hash")
+  public String parentHash;
+
+  public String timestamp;
+
+  @SerializedName("transactions_root")
+  public String transactionsRoot;
+
+  @SerializedName("proposals_hash")
+  public String proposalsHash;
+
+  @SerializedName("witnesses_root")
+  public String witnessesRoot;
+
+  @SerializedName("uncles_count")
+  public String unclesCount;
+
+  @SerializedName("uncles_hash")
+  public String unclesHash;
+
+  public String version;
+}

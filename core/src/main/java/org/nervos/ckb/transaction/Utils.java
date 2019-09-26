@@ -5,10 +5,10 @@ import java.util.Collections;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
-import org.nervos.ckb.methods.type.Script;
-import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
+import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
@@ -31,7 +31,7 @@ public class Utils {
     return new Script(codeHash, Collections.singletonList(publicKeyBlake160), Script.TYPE);
   }
 
-  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
-    return SystemContract.getSystemScriptCell(ckbService);
+  public static SystemScriptCell getSystemScriptCell(Api api) throws IOException {
+    return SystemContract.getSystemScriptCell(api);
   }
 }
