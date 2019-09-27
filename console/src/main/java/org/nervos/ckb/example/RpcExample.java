@@ -1,26 +1,23 @@
 package org.nervos.ckb.example;
 
 import com.google.gson.Gson;
-import java.io.IOException;
 import java.math.BigInteger;
-import org.nervos.ckb.methods.type.Block;
-import org.nervos.ckb.methods.type.BlockchainInfo;
-import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.service.HttpService;
+import org.nervos.ckb.service.Api;
+import org.nervos.ckb.type.Block;
+import org.nervos.ckb.type.BlockchainInfo;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class RpcExample {
 
   private static final String NODE_URL = "http://localhost:8114";
 
-  private static CKBService ckbService;
+  private static Api api;
 
   public RpcExample() {
-    HttpService.setDebug(false);
-    ckbService = CKBService.build(new HttpService(NODE_URL));
+    api = new Api(NODE_URL, false);
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     System.out.println("Welcome to use SDK to visit CKB Blockchain");
     RpcExample client = new RpcExample();
     System.out.println(
@@ -32,15 +29,15 @@ public class RpcExample {
             + new Gson().toJson(client.getBlockByNumber(currentBlockNumber.toString())));
   }
 
-  public Block getBlockByNumber(String blockNumber) throws IOException {
-    return ckbService.getBlockByNumber(blockNumber).send().getBlock();
+  public Block getBlockByNumber(String blockNumber) {
+    return api.getBlockByNumber(blockNumber);
   }
 
-  public BigInteger getTipBlockNumber() throws IOException {
-    return ckbService.getTipBlockNumber().send().getBlockNumber();
+  public BigInteger getTipBlockNumber() {
+    return api.getTipBlockNumber();
   }
 
-  public BlockchainInfo getBlockchainInfo() throws IOException {
-    return ckbService.getBlockchainInfo().send().getBlockchainInfo();
+  public BlockchainInfo getBlockchainInfo() {
+    return api.getBlockchainInfo();
   }
 }

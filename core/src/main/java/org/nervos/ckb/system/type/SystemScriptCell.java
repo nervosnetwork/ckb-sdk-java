@@ -1,6 +1,6 @@
 package org.nervos.ckb.system.type;
 
-import org.nervos.ckb.methods.type.OutPoint;
+import org.nervos.ckb.type.OutPoint;
 
 public class SystemScriptCell {
 

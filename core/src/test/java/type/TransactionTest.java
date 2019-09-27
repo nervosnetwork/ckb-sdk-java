@@ -10,15 +10,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
-import org.nervos.ckb.methods.type.OutPoint;
-import org.nervos.ckb.methods.type.Script;
-import org.nervos.ckb.methods.type.Witness;
-import org.nervos.ckb.methods.type.cell.CellDep;
-import org.nervos.ckb.methods.type.cell.CellInput;
-import org.nervos.ckb.methods.type.cell.CellOutput;
-import org.nervos.ckb.methods.type.transaction.Transaction;
-import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.service.HttpService;
+import org.nervos.ckb.service.Api;
+import org.nervos.ckb.type.OutPoint;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.Witness;
+import org.nervos.ckb.type.cell.CellDep;
+import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -214,11 +213,8 @@ class TransactionTest {
   @Disabled
   @Test
   public void serializationTxTest() throws IOException {
-    CKBService ckbService = CKBService.build(new HttpService("http://localhost:8114"));
-    Transaction transaction =
-        ckbService.getBlockByNumber("1").send().getBlock().transactions.get(0);
-    Assertions.assertEquals(
-        ckbService.computeTransactionHash(transaction).send().getTransactionHash(),
-        transaction.computeHash());
+    Api api = new Api("http://localhost:8114");
+    Transaction transaction = api.getBlockByNumber("1").transactions.get(0);
+    Assertions.assertEquals(api.computeTransactionHash(transaction), transaction.computeHash());
   }
 }

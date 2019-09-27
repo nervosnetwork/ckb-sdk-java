@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
-import org.nervos.ckb.methods.type.Script;
-import org.nervos.ckb.methods.type.cell.CellOutput;
-import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.transaction.CellGatherer;
 import org.nervos.ckb.transaction.CollectedCells;
 import org.nervos.ckb.transaction.Utils;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
@@ -20,13 +20,13 @@ import org.nervos.ckb.utils.Numeric;
 public class CollectUtils {
 
   private SystemScriptCell systemSecpCell;
-  private CKBService ckbService;
+  private Api api;
   private BigInteger collectedCapacity = BigInteger.ZERO;
 
-  public CollectUtils(CKBService ckbService) {
-    this.ckbService = ckbService;
+  public CollectUtils(Api api) {
+    this.api = api;
     try {
-      systemSecpCell = Utils.getSystemScriptCell(ckbService);
+      systemSecpCell = Utils.getSystemScriptCell(api);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -39,7 +39,7 @@ public class CollectUtils {
           Utils.generateLockScriptWithPrivateKey(sender.privateKey, systemSecpCell.cellHash)
               .computeHash();
       CollectedCells collectedCells =
-          new CellGatherer(ckbService).getCellInputs(lockHash, sender.capacity);
+          new CellGatherer(api).getCellInputs(lockHash, sender.capacity);
       if (collectedCells.capacity.compareTo(sender.capacity) < 0) {
         throw new IOException("No enough Capacities with sender private key: " + sender.privateKey);
       }

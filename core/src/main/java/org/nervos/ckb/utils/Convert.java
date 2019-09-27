@@ -2,11 +2,11 @@ package org.nervos.ckb.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.nervos.ckb.methods.type.OutPoint;
-import org.nervos.ckb.methods.type.cell.CellDep;
-import org.nervos.ckb.methods.type.cell.CellInput;
-import org.nervos.ckb.methods.type.cell.CellOutput;
-import org.nervos.ckb.methods.type.transaction.Transaction;
+import org.nervos.ckb.type.OutPoint;
+import org.nervos.ckb.type.cell.CellDep;
+import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Convert {
