@@ -13,7 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import org.jetbrains.annotations.NotNull;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class RpcService {
+class RpcService {
 
   private static final MediaType JSON_MEDIA_TYPE = MediaType.get("application/json; charset=utf-8");
   private static AtomicLong nextId = new AtomicLong(0);
@@ -22,7 +22,7 @@ public class RpcService {
   private String url;
   private Gson gson;
 
-  public RpcService(String nodeUrl, boolean isDebug) {
+  RpcService(String nodeUrl, boolean isDebug) {
     url = nodeUrl;
     if (isDebug) {
       client = new OkHttpClient.Builder().addInterceptor(new HttpLoggingInterceptor()).build();

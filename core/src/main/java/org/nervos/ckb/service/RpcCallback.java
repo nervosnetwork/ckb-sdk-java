@@ -1,7 +1,7 @@
 package org.nervos.ckb.service;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public interface RpcCallback<T> {
+interface RpcCallback<T> {
 
   void onFailure(String errorMessage);
 
