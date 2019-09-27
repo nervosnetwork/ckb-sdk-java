@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
@@ -160,7 +159,7 @@ class TransactionTest {
 
     BigInteger privateKey =
         Numeric.toBigInt("0xe79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
-    Assertions.assertThrows(InvalidNumberOfWitnessesException.class, () -> tx.sign(privateKey));
+    Assertions.assertThrows(RuntimeException.class, () -> tx.sign(privateKey));
   }
 
   @Test

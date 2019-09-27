@@ -8,7 +8,6 @@ import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
-import org.nervos.ckb.exceptions.InvalidNumberOfWitnessesException;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.Witness;
@@ -85,7 +84,7 @@ public class TransactionBuilder {
       throw new IOException("Transaction could not null");
     }
     if (witnesses.size() < cellInputs.size()) {
-      throw new InvalidNumberOfWitnessesException("Invalid number of witnesses");
+      throw new IOException("Invalid number of witnesses");
     }
     witnesses.set(index, signWitness(witnesses.get(index), privateKey));
   }
