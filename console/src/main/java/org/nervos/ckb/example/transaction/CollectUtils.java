@@ -3,7 +3,6 @@ package org.nervos.ckb.example.transaction;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.service.Api;
@@ -57,8 +56,7 @@ public class CollectUtils {
       cellOutputs.add(
           new CellOutput(
               receiver.capacity.toString(),
-              new Script(
-                  systemSecpCell.cellHash, Collections.singletonList(blake160), Script.TYPE)));
+              new Script(systemSecpCell.cellHash, blake160, Script.TYPE)));
     }
     BigInteger needCapacity = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
@@ -71,7 +69,7 @@ public class CollectUtils {
               collectedCapacity.subtract(needCapacity).toString(),
               new Script(
                   systemSecpCell.cellHash,
-                  Collections.singletonList(Numeric.prependHexPrefix(changeAddressBlake160)),
+                  Numeric.prependHexPrefix(changeAddressBlake160),
                   Script.TYPE)));
     }
     return cellOutputs;

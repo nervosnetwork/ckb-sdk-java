@@ -25,14 +25,10 @@ public class Serializer {
   }
 
   public static Table serializeScript(Script script) {
-    List<Bytes> argList = new ArrayList<>();
-    for (String arg : script.args) {
-      argList.add(new Bytes(arg));
-    }
     return new Table(
         new Byte32(script.codeHash),
         new Byte1(Script.DATA.equals(script.hashType) ? "00" : "01"),
-        new Dynamic<>(argList));
+        new Bytes(script.args));
   }
 
   public static Struct serializeCellInput(CellInput cellInput) {

@@ -8,7 +8,6 @@ import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
-import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -34,7 +33,7 @@ public class Transaction {
   @SerializedName("outputs_data")
   public List<String> outputsData;
 
-  public List<Witness> witnesses;
+  public List<String> witnesses;
 
   public Transaction() {}
 
@@ -45,7 +44,7 @@ public class Transaction {
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
       List<String> outputsData,
-      List<Witness> witnesses) {
+      List<String> witnesses) {
     this.version = version;
     this.cellDeps = cellDeps;
     this.headerDeps = headerDeps;
@@ -63,7 +62,7 @@ public class Transaction {
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
       List<String> outputsData,
-      List<Witness> witnesses) {
+      List<String> witnesses) {
     this.version = version;
     this.hash = hash;
     this.cellDeps = cellDeps;
@@ -86,23 +85,17 @@ public class Transaction {
     }
     String txHash = computeHash();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    List<Witness> signedWitnesses = new ArrayList<>();
-    for (Witness witness : witnesses) {
-      List<String> oldData = witness.data;
+    List<String> signedWitnesses = new ArrayList<>();
+    for (String witness : witnesses) {
       Blake2b blake2b = new Blake2b();
       blake2b.update(Numeric.hexStringToByteArray(txHash));
-      for (String datum : witness.data) {
-        blake2b.update(Numeric.hexStringToByteArray(datum));
-      }
+      blake2b.update(Numeric.hexStringToByteArray(witness));
       String message = blake2b.doFinalString();
 
       String signature =
           Numeric.toHexString(
               Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
-      witness.data = new ArrayList<>();
-      witness.data.add(signature);
-      witness.data.addAll(oldData);
-      signedWitnesses.add(witness);
+      signedWitnesses.add(signature + Numeric.cleanHexPrefix(witness));
     }
     return new Transaction(
         version, txHash, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitnesses);

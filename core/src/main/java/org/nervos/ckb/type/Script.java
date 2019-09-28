@@ -1,7 +1,6 @@
 package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
-import java.util.List;
 import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Serializer;
@@ -15,20 +14,20 @@ public class Script {
   @SerializedName("code_hash")
   public String codeHash;
 
-  public List<String> args;
+  public String args;
 
   @SerializedName("hash_type")
   public String hashType;
 
   public Script() {}
 
-  public Script(String codeHash, List<String> args) {
+  public Script(String codeHash, String args) {
     this.codeHash = codeHash;
     this.args = args;
     this.hashType = DATA;
   }
 
-  public Script(String codeHash, List<String> args, String hashType) {
+  public Script(String codeHash, String args, String hashType) {
     this.codeHash = codeHash;
     this.args = args;
     this.hashType = hashType;
