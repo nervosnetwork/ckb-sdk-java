@@ -6,11 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class Header {
 
   public String dao;
-  public String difficulty;
   public String hash;
   public String nonce;
   public String number;
   public String epoch;
+
+  @SerializedName("compact_target")
+  public String compactTarget;
 
   @SerializedName("parent_hash")
   public String parentHash;
@@ -22,12 +24,6 @@ public class Header {
 
   @SerializedName("proposals_hash")
   public String proposalsHash;
-
-  @SerializedName("witnesses_root")
-  public String witnessesRoot;
-
-  @SerializedName("uncles_count")
-  public String unclesCount;
 
   @SerializedName("uncles_hash")
   public String unclesHash;
