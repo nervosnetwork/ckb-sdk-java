@@ -25,7 +25,9 @@ class RpcService {
   RpcService(String nodeUrl, boolean isDebug) {
     url = nodeUrl;
     if (isDebug) {
-      client = new OkHttpClient.Builder().addInterceptor(new HttpLoggingInterceptor()).build();
+      HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+      logging.level(HttpLoggingInterceptor.Level.BODY);
+      client = new OkHttpClient.Builder().addInterceptor(logging).build();
     } else {
       client = new OkHttpClient();
     }
