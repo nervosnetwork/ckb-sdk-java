@@ -10,7 +10,9 @@ public class Epoch {
   public String startNumber;
 
   public String length;
-  public String difficulty;
+
+  @SerializedName("compact_target")
+  public String compactTarget;
 
   public Epoch() {}
 }
