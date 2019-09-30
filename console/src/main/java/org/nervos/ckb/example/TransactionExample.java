@@ -10,7 +10,7 @@ import org.nervos.ckb.example.transaction.CollectUtils;
 import org.nervos.ckb.example.transaction.Receiver;
 import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.transaction.CellGatherer;
+import org.nervos.ckb.transaction.CellCollector;
 import org.nervos.ckb.transaction.TransactionBuilder;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -106,8 +106,8 @@ public class TransactionExample {
   }
 
   private static BigInteger getBalance(String address) throws IOException {
-    CellGatherer cellGatherer = new CellGatherer(api);
-    return cellGatherer.getCapacitiesWithAddress(address);
+    CellCollector cellCollector = new CellCollector(api);
+    return cellCollector.getCapacityWithAddress(address);
   }
 
   private static String sendCapacity(

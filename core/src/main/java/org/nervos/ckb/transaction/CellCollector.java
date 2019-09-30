@@ -12,22 +12,21 @@ import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class CellGatherer {
+public class CellCollector {
 
   private Api api;
 
-  public CellGatherer(Api api) {
+  public CellCollector(Api api) {
     this.api = api;
   }
 
-  public CollectedCells getCellInputs(String lockHash, BigInteger needCapacities)
-      throws IOException {
+  public CollectedCells getCellInputs(String lockHash, BigInteger needCapacity) {
     List<CellInput> cellInputs = new ArrayList<>();
-    BigInteger inputsCapacities = BigInteger.ZERO;
+    BigInteger inputsCapacity = BigInteger.ZERO;
     long toBlockNumber = api.getTipBlockNumber().longValue();
     long fromBlockNumber = 1;
 
-    while (fromBlockNumber <= toBlockNumber && inputsCapacities.compareTo(needCapacities) < 0) {
+    while (fromBlockNumber <= toBlockNumber && inputsCapacity.compareTo(needCapacity) < 0) {
       long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
       List<CellOutputWithOutPoint> cellOutputs =
           api.getCellsByLockHash(
@@ -38,26 +37,25 @@ public class CellGatherer {
       if (cellOutputs != null && cellOutputs.size() > 0) {
         for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputs) {
           CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
-          inputsCapacities =
-              inputsCapacities.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
+          inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
           cellInputs.add(cellInput);
-          if (inputsCapacities.compareTo(needCapacities) > 0) {
+          if (inputsCapacity.compareTo(needCapacity) > 0) {
             break;
           }
         }
       }
       fromBlockNumber = currentToBlockNumber + 1;
     }
-    return new CollectedCells(cellInputs, inputsCapacities);
+    return new CollectedCells(cellInputs, inputsCapacity);
   }
 
-  public BigInteger getCapacitiesWithAddress(String address) throws IOException {
+  public BigInteger getCapacityWithAddress(String address) throws IOException {
     SystemScriptCell systemScriptCell = Utils.getSystemScriptCell(api);
     Script lockScript = Utils.generateLockScriptWithAddress(address, systemScriptCell.cellHash);
-    return getCapacitiesWithLockHash(lockScript.computeHash());
+    return getCapacityWithLockHash(lockScript.computeHash());
   }
 
-  public BigInteger getCapacitiesWithLockHash(String lockHash) {
+  public BigInteger getCapacityWithLockHash(String lockHash) {
     BigInteger capacity = BigInteger.ZERO;
     long toBlockNumber = api.getTipBlockNumber().longValue();
     long fromBlockNumber = 1;
