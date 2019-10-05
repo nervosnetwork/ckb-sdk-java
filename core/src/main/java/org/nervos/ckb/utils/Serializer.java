@@ -1,19 +1,19 @@
 package org.nervos.ckb.utils;
 
-import static org.nervos.ckb.methods.type.cell.CellDep.CODE;
+import static org.nervos.ckb.type.cell.CellDep.CODE;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.nervos.ckb.methods.type.OutPoint;
-import org.nervos.ckb.methods.type.Script;
-import org.nervos.ckb.methods.type.cell.CellDep;
-import org.nervos.ckb.methods.type.cell.CellInput;
-import org.nervos.ckb.methods.type.cell.CellOutput;
-import org.nervos.ckb.methods.type.transaction.Transaction;
+import org.nervos.ckb.type.OutPoint;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.cell.CellDep;
+import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.dynamic.Bytes;
 import org.nervos.ckb.type.dynamic.Dynamic;
 import org.nervos.ckb.type.dynamic.Table;
 import org.nervos.ckb.type.fixed.*;
+import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Serializer {
@@ -25,14 +25,10 @@ public class Serializer {
   }
 
   public static Table serializeScript(Script script) {
-    List<Bytes> argList = new ArrayList<>();
-    for (String arg : script.args) {
-      argList.add(new Bytes(arg));
-    }
     return new Table(
         new Byte32(script.codeHash),
         new Byte1(Script.DATA.equals(script.hashType) ? "00" : "01"),
-        new Dynamic<>(argList));
+        new Bytes(script.args));
   }
 
   public static Struct serializeCellInput(CellInput cellInput) {

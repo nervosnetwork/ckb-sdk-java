@@ -9,9 +9,8 @@ import org.nervos.ckb.example.transaction.CellsWithPrivateKey;
 import org.nervos.ckb.example.transaction.CollectUtils;
 import org.nervos.ckb.example.transaction.Receiver;
 import org.nervos.ckb.example.transaction.Sender;
-import org.nervos.ckb.service.CKBService;
-import org.nervos.ckb.service.HttpService;
-import org.nervos.ckb.transaction.CellGatherer;
+import org.nervos.ckb.service.Api;
+import org.nervos.ckb.transaction.CellCollector;
 import org.nervos.ckb.transaction.TransactionBuilder;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -19,12 +18,11 @@ public class TransactionExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
-  private static CKBService ckbService;
+  private static Api api;
   private static List<KeyPair> KeyPairs;
 
   static {
-    HttpService.setDebug(false);
-    ckbService = CKBService.build(new HttpService(NODE_URL));
+    api = new Api(NODE_URL, false);
     KeyPairs =
         Arrays.asList(
             new KeyPair(
@@ -108,8 +106,8 @@ public class TransactionExample {
   }
 
   private static BigInteger getBalance(String address) throws IOException {
-    CellGatherer cellGatherer = new CellGatherer(ckbService);
-    return cellGatherer.getCapacitiesWithAddress(address);
+    CellCollector cellCollector = new CellCollector(api);
+    return cellCollector.getCapacityWithAddress(address);
   }
 
   private static String sendCapacity(
@@ -124,8 +122,8 @@ public class TransactionExample {
 
   private static String sendCapacity(
       List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
-    TransactionBuilder builder = new TransactionBuilder(ckbService);
-    CollectUtils txUtils = new CollectUtils(ckbService);
+    TransactionBuilder builder = new TransactionBuilder(api);
+    CollectUtils txUtils = new CollectUtils(api);
 
     List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
     for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
@@ -144,7 +142,7 @@ public class TransactionExample {
       index += cellsWithPrivateKey.inputs.size();
     }
 
-    return ckbService.sendTransaction(builder.getTransaction()).send().getTransactionHash();
+    return api.sendTransaction(builder.getTransaction());
   }
 
   static class KeyPair {

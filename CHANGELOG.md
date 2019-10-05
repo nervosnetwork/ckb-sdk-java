@@ -1,6 +1,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.22.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.21.1...v0.22.0) (2019-10-05)
+
+### Feature
+
+* Refactor rpc service module([ef7a809](https://github.com/nervosnetwork/ckb-sdk-java/commit/ef7a809b9a87358d8c50ce0e4d971b16606c2fb1))
+* Update script args and witnesses data type([af1f3ae](https://github.com/nervosnetwork/ckb-sdk-java/commit/af1f3aef9a5c98d86994817a8c16c97a29d13a26))
+* Update epoch and header structure([2e8a6af](https://github.com/nervosnetwork/ckb-sdk-java/commit/2e8a6afa7ec64dda531abeef188308a972584a80))
+
+### BREAKING CHANGES
+
+* header and epoch structures are changed.
+* script args and witnesses are changed.
+
 # [v0.21.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.21.0...v0.21.1) (2019-09-25)
 
 ### Feature

@@ -38,17 +38,17 @@ If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can imp
 You can make JSON-RPC request to your CKB node URL with this SDK. Below are some examples:
 
 ```Java
-CkbService ckbService = CKBService.build(new HttpService("your-ckb-node-url"));
+Api api = new Api("your-ckb-node-url");
 
 // using RPC `get_tip_block_number`, it will return the latest block number
-BigInteger blockNumber = ckbService.getTipBlockNumber().send().getBlockNumber();
+BigInteger blockNumber = api.getTipBlockNumber();
 
 // using RPC `get_block_hash` with block number as parameter, it will return block hash
 String blockNumber = "0"
-String blockHash = ckbService.getBlockHash(blockNumber).send().getBlockHash();
+String blockHash = api.getBlockHash(blockNumber);
 
 // using RPC `get_block` with block hash as parameter, it will return block object
-Block block = ckbService.getBlock(blockHash).send().getBlock();
+Block block = api.getBlock(blockHash);
 
 ```
 
@@ -61,7 +61,7 @@ You can see more JSON-RPC requests from [RPC Document](https://github.com/nervos
 You can reference detail example in `console/example/TransactionExample.java`.
 
 ```Java
-  CKBService ckbService = CKBService.build(new HttpService("your-ckb-node-url"));
+  Api api = new Api("your-ckb-node-url");
 
   List<CellInput> inputs = Arrays.asList(
     input1, // Input from address 'cktxxx', capacity 100 CKB
@@ -75,7 +75,7 @@ You can reference detail example in `console/example/TransactionExample.java`.
     output3, // Output to address 'cktxxx' as change, capacity 100
   );
   
-  TransactionBuilder builder = new TransactionBuilder(ckbService);
+  TransactionBuilder builder = new TransactionBuilder(api);
   
   builder.addInputs(inputs);
   
@@ -85,7 +85,7 @@ You can reference detail example in `console/example/TransactionExample.java`.
   builder.signInput(1, privateKey2);
   builder.signInput(2, privateKey3);
   
-  String hash = ckbService.sendTransaction(builder.getTransaction()).send().getTransactionHash();
+  String hash = api.sendTransaction(builder.getTransaction());
 ```
 
 #### Address
@@ -106,7 +106,7 @@ String publicKey =
             true)
         .toString(16);
 
-String address = utils.generate(publicKey);
+String address = utils.generateFromPublicKey(publicKey);
 ```
 
 ### Development

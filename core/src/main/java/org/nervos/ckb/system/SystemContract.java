@@ -1,15 +1,15 @@
 package org.nervos.ckb.system;
 
 import java.io.IOException;
-import org.nervos.ckb.methods.type.Block;
-import org.nervos.ckb.methods.type.OutPoint;
-import org.nervos.ckb.service.CKBService;
+import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
+import org.nervos.ckb.type.Block;
+import org.nervos.ckb.type.OutPoint;
 
 public class SystemContract {
 
-  public static SystemScriptCell getSystemScriptCell(CKBService ckbService) throws IOException {
-    Block block = ckbService.getBlockByNumber("0x0").send().getBlock();
+  public static SystemScriptCell getSystemScriptCell(Api api) throws IOException {
+    Block block = api.getBlockByNumber("0x0");
     if (block == null) {
       throw new IOException("Genesis block not found");
     }
