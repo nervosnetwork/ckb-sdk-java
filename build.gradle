@@ -1,7 +1,7 @@
 buildscript {
 
     ext.bouncycastleVersion = '1.63'
-    ext.rxjavaVersion = '2.2.12'
+    ext.rxjavaVersion = '2.2.13'
     ext.gsonVersion = '2.8.6'
     ext.okhttpVersion = '4.2.2'
     ext.loggingOkhttpVersion = '4.2.2'
