@@ -170,6 +170,13 @@ public class Api {
     return rpcService.post("_compute_script_hash", Collections.singletonList(script), String.class);
   }
 
+  public FeeRate estimateFeeRate(String expectedConfirmBlocks) throws IOException {
+    return rpcService.post(
+        "estimate_fee_rate",
+        Collections.singletonList(Numeric.toHexString(expectedConfirmBlocks)),
+        FeeRate.class);
+  }
+
   /* Indexer RPC */
 
   public LockHashIndexState indexLockHash(String lockHash) throws IOException {
