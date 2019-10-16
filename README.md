@@ -13,7 +13,26 @@ Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
 ### Installation
 
+#### Install from repositories:  
+
+- Maven  
+```
+<dependency>
+  <groupId>org.nervos.ckb</groupId>
+  <artifactId>core</artifactId>
+  <version>{version}</version>
+</dependency>
+```
+
+Gradle
+```
+implementation 'org.nervos.ckb:core:{version}'
+```
+
+#### Install manually
+
 You can generate the jar and import manually.
+
 ```shell
 git clone https://github.com/nervosnetwork/ckb-sdk-java.git
 
