@@ -26,7 +26,7 @@ Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
 Gradle
 ```
-implementation 'com.cryptape.cita:core:{version}'
+implementation 'org.nervos.ckb:core:{version}'
 ```
 
 #### Install manually
