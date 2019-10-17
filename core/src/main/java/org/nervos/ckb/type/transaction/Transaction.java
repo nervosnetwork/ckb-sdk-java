@@ -75,7 +75,7 @@ public class Transaction {
 
   public String computeHash() {
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Encoder.encode(Serializer.serializeTransaction(this)));
+    blake2b.update(Encoder.encode(Serializer.serializeRawTransaction(this)));
     return blake2b.doFinalString();
   }
 
