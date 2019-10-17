@@ -6,11 +6,11 @@ import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Calculator {
-  private static final int EXTRA_SIZE = 4;
+  private static final int SERIALIZED_TX_OFFSET_BYTE_SIZE = 4;
 
-  public static int calculateTransactionSize(Transaction transaction) {
+  public static int calculateSerializedSizeInBlock(Transaction transaction) {
     Table serializedTx = Serializer.serializeTransaction(transaction);
-    return serializedTx.getLength() + EXTRA_SIZE;
+    return serializedTx.getLength() + SERIALIZED_TX_OFFSET_BYTE_SIZE;
   }
 
   private static final BigInteger RADIO = BigInteger.valueOf(1000);
