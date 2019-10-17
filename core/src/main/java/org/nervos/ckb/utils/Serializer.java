@@ -90,7 +90,7 @@ public class Serializer {
     return new Fixed<>(byte32List);
   }
 
-  public static Table serializeTransaction(Transaction transaction) {
+  public static Table serializeRawTransaction(Transaction transaction) {
     Transaction tx = Convert.parseTransaction(transaction);
     UInt32 versionUInt32 = new UInt32(tx.version);
     Fixed<Struct> cellDepFixed = Serializer.serializeCellDeps(tx.cellDeps);
@@ -99,5 +99,11 @@ public class Serializer {
     Dynamic<Table> outputsVec = Serializer.serializeCellOutputs(tx.outputs);
     Dynamic<Bytes> dataVec = Serializer.serializeBytes(tx.outputsData);
     return new Table(versionUInt32, cellDepFixed, headerDepFixed, inputsFixed, outputsVec, dataVec);
+  }
+
+  public static Table serializeTransaction(Transaction transaction) {
+    Table rawTransactionTable = serializeRawTransaction(transaction);
+    Dynamic<Bytes> witnessesVec = Serializer.serializeBytes(transaction.witnesses);
+    return new Table(rawTransactionTable, witnessesVec);
   }
 }
