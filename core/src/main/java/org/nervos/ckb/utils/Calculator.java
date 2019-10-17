@@ -15,9 +15,8 @@ public class Calculator {
 
   private static final BigInteger RADIO = BigInteger.valueOf(1000);
 
-  public static BigInteger calculateMinTransactionFee(
-      BigInteger transactionSize, BigInteger minFeeRate) {
-    BigInteger base = transactionSize.multiply(minFeeRate);
+  public static BigInteger calculateTransactionFee(BigInteger transactionSize, BigInteger feeRate) {
+    BigInteger base = transactionSize.multiply(feeRate);
     BigInteger fee = base.divide(RADIO);
     if (fee.multiply(RADIO).compareTo(base) < 0) {
       return fee.add(BigInteger.ONE);

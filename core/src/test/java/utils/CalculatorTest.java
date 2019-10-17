@@ -70,12 +70,12 @@ public class CalculatorTest {
   }
 
   @Test
-  public void testCalculateMinTransactionFee() {
+  public void testCalculateTransactionFee() {
     Assertions.assertEquals(
-        Calculator.calculateMinTransactionFee(BigInteger.valueOf(1035), BigInteger.valueOf(900)),
+        Calculator.calculateTransactionFee(BigInteger.valueOf(1035), BigInteger.valueOf(900)),
         BigInteger.valueOf(932));
     Assertions.assertEquals(
-        Calculator.calculateMinTransactionFee(BigInteger.valueOf(900), BigInteger.valueOf(900)),
+        Calculator.calculateTransactionFee(BigInteger.valueOf(900), BigInteger.valueOf(900)),
         BigInteger.valueOf(810));
   }
 }
