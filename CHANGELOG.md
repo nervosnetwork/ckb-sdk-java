@@ -3,6 +3,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [v0.23.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.22.0...v0.23.0) (2019-10-19)
 
+### Feature
+
+* Impl transaction size and transaction fee calculating([c7285d3](https://github.com/nervosnetwork/ckb-sdk-java/commit/c7285d33078bcf0cca6666702e841c49b2b4b8ad))
 
 # [v0.22.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.21.1...v0.22.0) (2019-10-05)
 
