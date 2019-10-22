@@ -20,7 +20,7 @@ public class CellCollector {
     this.api = api;
   }
 
-  public CollectedCells getCellInputs(String lockHash, BigInteger needCapacity) {
+  public CollectedCells getCellInputs(String lockHash, BigInteger needCapacity) throws IOException {
     List<CellInput> cellInputs = new ArrayList<>();
     BigInteger inputsCapacity = BigInteger.ZERO;
     long toBlockNumber = api.getTipBlockNumber().longValue();
@@ -55,7 +55,7 @@ public class CellCollector {
     return getCapacityWithLockHash(lockScript.computeHash());
   }
 
-  public BigInteger getCapacityWithLockHash(String lockHash) {
+  public BigInteger getCapacityWithLockHash(String lockHash) throws IOException {
     BigInteger capacity = BigInteger.ZERO;
     long toBlockNumber = api.getTipBlockNumber().longValue();
     long fromBlockNumber = 1;
