@@ -48,7 +48,11 @@ public class CollectUtils {
     return cellsWithPrivateKeys;
   }
 
-  public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
+  public List<CellOutput> generateOutputs(
+      List<Receiver> receivers, String changeAddress, BigInteger fee) throws IOException {
+    if (fee.compareTo(BigInteger.ZERO) < 0) {
+      throw new IOException("Transaction fee should not be smaller than zero");
+    }
     List<CellOutput> cellOutputs = new ArrayList<>();
     AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
     for (Receiver receiver : receivers) {
@@ -62,6 +66,8 @@ public class CollectUtils {
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
+    needCapacity = needCapacity.add(fee);
+
     if (collectedCapacity.compareTo(needCapacity) > 0) {
       String changeAddressBlake160 = addressUtils.getBlake160FromAddress(changeAddress);
       cellOutputs.add(

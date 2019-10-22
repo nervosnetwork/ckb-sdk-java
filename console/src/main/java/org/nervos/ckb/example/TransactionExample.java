@@ -53,6 +53,7 @@ public class TransactionExample {
             new Receiver(KeyPairs.get(0).address, new BigInteger("800").multiply(UnitCKB)),
             new Receiver(KeyPairs.get(1).address, new BigInteger("900").multiply(UnitCKB)),
             new Receiver(KeyPairs.get(2).address, new BigInteger("1000").multiply(UnitCKB)));
+    BigInteger txFee = BigInteger.valueOf(10000);
 
     System.out.println(
         "Before transfer, miner's balance: "
@@ -65,7 +66,7 @@ public class TransactionExample {
             + " CKB");
 
     // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
-    String hash = sendCapacity(minerPrivateKey, receivers1, minerAddress);
+    String hash = sendCapacity(minerPrivateKey, receivers1, minerAddress, txFee);
     System.out.println("First transaction hash: " + hash);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
@@ -95,7 +96,7 @@ public class TransactionExample {
             + " CKB");
 
     // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
-    String hash2 = sendCapacity(senders1, receivers2, changeAddress);
+    String hash2 = sendCapacity(senders1, receivers2, changeAddress, txFee);
     System.out.println("Second transaction hash: " + hash2);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
@@ -111,17 +112,19 @@ public class TransactionExample {
   }
 
   private static String sendCapacity(
-      String privateKey, List<Receiver> receivers, String changeAddress) throws IOException {
+      String privateKey, List<Receiver> receivers, String changeAddress, BigInteger fee)
+      throws IOException {
     BigInteger needCapacity = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
     List<Sender> senders = Collections.singletonList(new Sender(privateKey, needCapacity));
-    return sendCapacity(senders, receivers, changeAddress);
+    return sendCapacity(senders, receivers, changeAddress, fee);
   }
 
   private static String sendCapacity(
-      List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
+      List<Sender> senders, List<Receiver> receivers, String changeAddress, BigInteger fee)
+      throws IOException {
     TransactionBuilder builder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
@@ -130,7 +133,7 @@ public class TransactionExample {
       builder.addInputs(cellsWithPrivateKey.inputs);
     }
 
-    builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress));
+    builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
     builder.buildTx();
 
