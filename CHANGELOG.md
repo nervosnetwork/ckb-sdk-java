@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.23.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.23.0...v0.23.1) (2019-10-22)
+
+### Feature
+
+* Add transaction fee to sendCapacity example([60f2faf](https://github.com/nervosnetwork/ckb-sdk-java/commit/60f2fafedb129d31100c26827379ef4a56dbe9c8))
+* Move exceptions to outside application([52b85e5](https://github.com/nervosnetwork/ckb-sdk-java/commit/52b85e540fdecbf04225a6ba44b89e7d4df59c93))
+* Add maven config to build.gradle([61f08ae](https://github.com/nervosnetwork/ckb-sdk-java/commit/61f08aedffab372b03fd93720f15a6ee9ec54a90))
+
 # [v0.23.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.22.0...v0.23.0) (2019-10-19)
 
 ### Feature

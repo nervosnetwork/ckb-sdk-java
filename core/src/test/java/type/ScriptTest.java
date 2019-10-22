@@ -1,5 +1,6 @@
 package type;
 
+import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import org.nervos.ckb.type.Script;
 public class ScriptTest {
 
   @Test
-  public void testScriptHashWithCodeHash() {
+  public void testScriptHashWithCodeHash() throws IOException {
     Api api = new Api("http://localhost:8114");
     String codeHash =
         Hash.blake2b(

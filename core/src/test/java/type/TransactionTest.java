@@ -1,5 +1,6 @@
 package type;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -200,7 +201,7 @@ class TransactionTest {
 
   @Disabled
   @Test
-  public void serializationTxTest() {
+  public void serializationTxTest() throws IOException {
     Api api = new Api("http://localhost:8114");
     Transaction transaction = api.getBlockByNumber("1").transactions.get(0);
     Assertions.assertEquals(api.computeTransactionHash(transaction), transaction.computeHash());

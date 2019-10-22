@@ -1,5 +1,6 @@
 package service;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
@@ -25,26 +26,26 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetBlockByNumber() {
+  public void testGetBlockByNumber() throws IOException {
     Block block = api.getBlockByNumber("0x1");
     Assertions.assertNotNull(block);
   }
 
   @Test
-  public void testGetBlockHashByNumber() {
+  public void testGetBlockHashByNumber() throws IOException {
     String blockHash = api.getBlockHash("0x1");
     Assertions.assertNotNull(blockHash);
   }
 
   @Test
-  public void testGetCellbaseOutputCapacityDetails() {
+  public void testGetCellbaseOutputCapacityDetails() throws IOException {
     String blockHash = api.getBlockHash("0x1");
     CellbaseOutputCapacity cellbaseOutputCapacity = api.getCellbaseOutputCapacityDetails(blockHash);
     Assertions.assertNotNull(cellbaseOutputCapacity);
   }
 
   @Test
-  public void testBlockAndTransaction() {
+  public void testBlockAndTransaction() throws IOException {
     String blockHash = api.getBlockHash("0x1");
     Block block = api.getBlock(blockHash);
     Assertions.assertNotNull(block);
@@ -52,63 +53,63 @@ public class ApiTest {
   }
 
   @Test
-  public void testTransaction() {
+  public void testTransaction() throws IOException {
     String transactionHash = api.getBlockByNumber("0x1").transactions.get(0).hash;
     Transaction transaction = api.getTransaction(transactionHash).transaction;
     Assertions.assertNotNull(transaction);
   }
 
   @Test
-  public void testGetTipHeader() {
+  public void testGetTipHeader() throws IOException {
     Header header = api.getTipHeader();
     Assertions.assertNotNull(header);
   }
 
   @Test
-  public void testGetTipBlockNumber() {
+  public void testGetTipBlockNumber() throws IOException {
     BigInteger blockNumber = api.getTipBlockNumber();
     Assertions.assertNotNull(blockNumber.toString());
   }
 
   @Test
-  public void testGetCurrentEpoch() {
+  public void testGetCurrentEpoch() throws IOException {
     Epoch epoch = api.getCurrentEpoch();
     Assertions.assertNotNull(epoch);
   }
 
   @Test
-  public void testGetEpochByNumber() {
+  public void testGetEpochByNumber() throws IOException {
     Epoch epoch = api.getEpochByNumber("0");
     Assertions.assertNotNull(epoch);
   }
 
   @Test
-  public void testGetHeader() {
+  public void testGetHeader() throws IOException {
     String blockHash = api.getBlockHash("0x1");
     Header header = api.getHeader(blockHash);
     Assertions.assertNotNull(header);
   }
 
   @Test
-  public void testGetHeaderByNumber() {
+  public void testGetHeaderByNumber() throws IOException {
     Header header = api.getHeaderByNumber("0x1");
     Assertions.assertNotNull(header);
   }
 
   @Test
-  public void localNodeInfo() {
+  public void localNodeInfo() throws IOException {
     NodeInfo nodeInfo = api.localNodeInfo();
     Assertions.assertNotNull(nodeInfo);
   }
 
   @Test
-  public void getPeers() {
+  public void getPeers() throws IOException {
     List<NodeInfo> peers = api.getPeers();
     Assertions.assertNotNull(peers);
   }
 
   @Test
-  public void testSetBan() {
+  public void testSetBan() throws IOException {
     BannedAddress bannedAddress =
         new BannedAddress("192.168.0.2", "insert", "1840546800000", true, "test set_ban rpc");
     String banResult = api.setBan(bannedAddress);
@@ -116,31 +117,31 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetBannedAddress() {
+  public void testGetBannedAddress() throws IOException {
     List<BannedResultAddress> bannedAddresses = api.getBannedAddress();
     Assertions.assertNotNull(bannedAddresses);
   }
 
   @Test
-  public void txPoolInfo() {
+  public void txPoolInfo() throws IOException {
     TxPoolInfo txPoolInfo = api.txPoolInfo();
     Assertions.assertNotNull(txPoolInfo);
   }
 
   @Test
-  public void testGetBlockchainInfo() {
+  public void testGetBlockchainInfo() throws IOException {
     BlockchainInfo blockchainInfo = api.getBlockchainInfo();
     Assertions.assertNotNull(blockchainInfo);
   }
 
   @Test
-  public void testGetPeersState() {
+  public void testGetPeersState() throws IOException {
     List<PeerState> peerStates = api.getPeersState();
     Assertions.assertNotNull(peerStates);
   }
 
   @Test
-  public void testGetCellsByLockHash() {
+  public void testGetCellsByLockHash() throws IOException {
     List<CellOutputWithOutPoint> cellOutputWithOutPoints =
         api.getCellsByLockHash(
             "0xecaeea8c8581d08a3b52980272001dbf203bc6fa2afcabe7cc90cc2afff488ba", "0", "100");
@@ -148,7 +149,7 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetLiveCell() {
+  public void testGetLiveCell() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
             new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
@@ -157,7 +158,7 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetLiveCellWithData() {
+  public void testGetLiveCellWithData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
             new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
@@ -166,7 +167,7 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetLiveCellWithoutData() {
+  public void testGetLiveCellWithoutData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
             new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
@@ -175,7 +176,7 @@ public class ApiTest {
   }
 
   @Test
-  public void testSendTransaction() {
+  public void testSendTransaction() throws IOException {
     String transactionHash =
         api.sendTransaction(
             new Transaction(
@@ -190,7 +191,7 @@ public class ApiTest {
   }
 
   @Test
-  public void testDryRunTransaction() {
+  public void testDryRunTransaction() throws IOException {
     Cycles cycles =
         api.dryRunTransaction(
             new Transaction(
@@ -205,7 +206,7 @@ public class ApiTest {
   }
 
   @Test
-  public void testComputeTransactionHash() {
+  public void testComputeTransactionHash() throws IOException {
     String transactionHash =
         api.computeTransactionHash(
             new Transaction(
@@ -220,14 +221,14 @@ public class ApiTest {
   }
 
   @Test
-  public void testIndexLockHash() {
+  public void testIndexLockHash() throws IOException {
     LockHashIndexState lockHashIndexState =
         api.indexLockHash("0x59d90b1718471f5802de59501604100a5e3b463865cdfe56fa70ed23865ee32e");
     Assertions.assertNotNull(lockHashIndexState);
   }
 
   @Test
-  public void testIndexLockHashWithBlockNumber() {
+  public void testIndexLockHashWithBlockNumber() throws IOException {
     LockHashIndexState lockHashIndexState =
         api.indexLockHash(
             "0x59d90b1718471f5802de59501604100a5e3b463865cdfe56fa70ed23865ee32e", "0");
@@ -235,20 +236,20 @@ public class ApiTest {
   }
 
   @Test
-  public void testDeindexLockHash() {
+  public void testDeindexLockHash() throws IOException {
     List<String> lockHashs =
         api.deindexLockHash("0x59d90b1718471f5802de59501604100a5e3b463865cdfe56fa70ed23865ee32e");
     Assertions.assertNull(lockHashs);
   }
 
   @Test
-  public void testGetLockHashIndexStates() {
+  public void testGetLockHashIndexStates() throws IOException {
     List<LockHashIndexState> lockHashIndexStates = api.getLockHashIndexStates();
     Assertions.assertNotNull(lockHashIndexStates);
   }
 
   @Test
-  public void testGetLiveCellsByLockHash() {
+  public void testGetLiveCellsByLockHash() throws IOException {
     List<LiveCell> liveCells =
         api.getLiveCellsByLockHash(
             "0xecaeea8c8581d08a3b52980272001dbf203bc6fa2afcabe7cc90cc2afff488ba",
@@ -259,7 +260,7 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetTransactionsByLockHash() {
+  public void testGetTransactionsByLockHash() throws IOException {
     List<CellTransaction> cellTransactions =
         api.getTransactionsByLockHash(
             "0xecaeea8c8581d08a3b52980272001dbf203bc6fa2afcabe7cc90cc2afff488ba",

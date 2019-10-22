@@ -34,35 +34,30 @@ class RpcService {
     gson = new Gson();
   }
 
-  <T> T post(@NotNull String method, List params, Type cls) {
+  <T> T post(@NotNull String method, List params, Type cls) throws IOException {
     RequestParams requestParams = new RequestParams(method, params);
     RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
     Request request = new Request.Builder().url(url).post(body).build();
-    try {
-      Response response = client.newCall(request).execute();
-      if (response.isSuccessful()) {
-        String responseBody = response.body().string();
-        RpcResponse rpcResponse =
-            gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
+    Response response = client.newCall(request).execute();
+    if (response.isSuccessful()) {
+      String responseBody = response.body().string();
+      RpcResponse rpcResponse =
+          gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
 
-        if (rpcResponse.error != null) {
-          throw new IOException(
-              "RpcService method " + method + " error " + gson.toJson(rpcResponse.error));
-        }
-
-        JsonElement jsonElement =
-            new JsonParser().parse(responseBody).getAsJsonObject().get("result");
-        if (jsonElement.isJsonObject()) {
-          return gson.fromJson(jsonElement.getAsJsonObject(), cls);
-        }
-        return gson.fromJson(jsonElement, cls);
-      } else {
-        throw new IOException("RpcService method " + method + " error code " + response.code());
+      if (rpcResponse.error != null) {
+        throw new IOException(
+            "RpcService method " + method + " error " + gson.toJson(rpcResponse.error));
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+
+      JsonElement jsonElement =
+          new JsonParser().parse(responseBody).getAsJsonObject().get("result");
+      if (jsonElement.isJsonObject()) {
+        return gson.fromJson(jsonElement.getAsJsonObject(), cls);
+      }
+      return gson.fromJson(jsonElement, cls);
+    } else {
+      throw new IOException("RpcService method " + method + " error code " + response.code());
     }
-    return null;
   }
 
   <T> void postAsync(
