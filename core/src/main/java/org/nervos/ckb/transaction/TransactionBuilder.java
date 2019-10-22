@@ -65,8 +65,11 @@ public class TransactionBuilder {
     }
     for (int i = 0; i < cellOutputs.size(); i++) {
       cellOutputsData.add("0x");
+    }
+    for (int i = 0; i < cellInputs.size(); i++) {
       witnesses.add("0x");
     }
+
     transaction =
         new Transaction(
             "0",

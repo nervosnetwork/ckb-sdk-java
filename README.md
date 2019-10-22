@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/LICENSE)
 [![Build Status](https://travis-ci.com/nervosnetwork/ckb-sdk-java.svg?branch=develop)](https://travis-ci.com/nervosnetwork/ckb-sdk-java)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.nervos.ckb/core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.nervos.ckb/core)
 [![Telegram Group](https://cdn.rawgit.com/Patrolavia/telegram-badge/8fe3382b/chat.svg)](https://t.me/nervos_ckb_dev)
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
