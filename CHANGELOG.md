@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.23.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.23.1...v0.23.2) (2019-10-22)
+
+### Bugfix
+
+* Fix witnesses count error([2163a03](https://github.com/nervosnetwork/ckb-sdk-java/commit/2163a03fad89a9231841e6f862234fc04e5a0853))
+
 # [v0.23.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.23.0...v0.23.1) (2019-10-22)
 
 ### Feature
