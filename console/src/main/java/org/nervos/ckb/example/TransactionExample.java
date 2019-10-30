@@ -67,8 +67,11 @@ public class TransactionExample {
             + getBalance(KeyPairs.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
+    // Transaction fee can be calculated by `estimate_fee_rate` rpc or also set a simple number.
+    // BigInteger txFee = estimateMinTransactionFee(minerPrivateKey, receivers1, minerAddress);
+    BigInteger txFee = BigInteger.valueOf(10000);
+
     // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
-    BigInteger txFee = estimateMinTransactionFee(minerPrivateKey, receivers1, minerAddress);
     String hash = sendCapacity(minerPrivateKey, receivers1, minerAddress, txFee.add(TxFeeConst));
     System.out.println("First transaction hash: " + hash);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
@@ -98,8 +101,11 @@ public class TransactionExample {
             + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
+    // Transaction fee can be calculated by `estimate_fee_rate` rpc or also set a simple number.
+    // txFee = estimateMinTransactionFee(senders1, receivers2, changeAddress);
+    txFee = BigInteger.valueOf(10000);
+
     // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
-    txFee = estimateMinTransactionFee(senders1, receivers2, changeAddress);
     String hash2 = sendCapacity(senders1, receivers2, changeAddress, txFee.add(TxFeeConst));
     System.out.println("Second transaction hash: " + hash2);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
