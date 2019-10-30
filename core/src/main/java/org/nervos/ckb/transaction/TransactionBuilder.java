@@ -10,11 +10,14 @@ import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
+import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.type.dynamic.Table;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionBuilder {
@@ -77,8 +80,7 @@ public class TransactionBuilder {
             Collections.emptyList(),
             cellInputs,
             cellOutputs,
-            cellOutputsData,
-            witnesses);
+            cellOutputsData);
   }
 
   public void signInput(int index, String privateKey) throws IOException {
@@ -92,16 +94,18 @@ public class TransactionBuilder {
   }
 
   public void sign(String privateKey) {
-    for (String witness : witnesses) {
-      witnesses.add(signWitness(witness, privateKey));
+    for (int i = 0; i < witnesses.size(); i++) {
+      witnesses.add(i == 0 ? signWitness(witnesses.get(i), privateKey) : witnesses.get(i));
     }
   }
 
   private String signWitness(String witness, String privateKey) {
+    Table witnessTable = Serializer.serializeWitnessArgs(new WitnessArgs());
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     Blake2b blake2b = new Blake2b();
     blake2b.update(Numeric.hexStringToByteArray(transaction.computeHash()));
-    blake2b.update(Numeric.hexStringToByteArray(witness));
+    blake2b.update(BigInteger.valueOf(witnessTable.getLength()).toByteArray());
+    blake2b.update(witnessTable.toBytes());
     String message = blake2b.doFinalString();
     String signature =
         Numeric.toHexString(

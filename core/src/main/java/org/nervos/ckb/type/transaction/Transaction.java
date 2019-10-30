@@ -43,6 +43,21 @@ public class Transaction {
       List<String> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
+      List<String> outputsData) {
+    this.version = version;
+    this.cellDeps = cellDeps;
+    this.headerDeps = headerDeps;
+    this.inputs = cellInputs;
+    this.outputs = cellOutputs;
+    this.outputsData = outputsData;
+  }
+
+  public Transaction(
+      String version,
+      List<CellDep> cellDeps,
+      List<String> headerDeps,
+      List<CellInput> cellInputs,
+      List<CellOutput> cellOutputs,
       List<String> outputsData,
       List<String> witnesses) {
     this.version = version;
