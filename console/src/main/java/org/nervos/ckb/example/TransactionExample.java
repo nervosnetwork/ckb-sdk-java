@@ -68,7 +68,7 @@ public class TransactionExample {
             + " CKB");
 
     // Transaction fee can be calculated by `estimate_fee_rate` rpc or also set a simple number.
-    // BigInteger txFee = estimateMinTransactionFee(minerPrivateKey, receivers1,
+    // BigInteger txFee = estimateTransactionFee(minerPrivateKey, receivers1,
     // minerAddress).add(TxFeeConst);
     BigInteger txFee = BigInteger.valueOf(10000);
 
@@ -103,7 +103,7 @@ public class TransactionExample {
             + " CKB");
 
     // Transaction fee can be calculated by `estimate_fee_rate` rpc or also set a simple number.
-    // txFee = estimateMinTransactionFee(senders1, receivers2, changeAddress).add(TxFeeConst);
+    // txFee = estimateTransactionFee(senders1, receivers2, changeAddress).add(TxFeeConst);
     txFee = BigInteger.valueOf(10000);
 
     // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
@@ -136,15 +136,15 @@ public class TransactionExample {
     return api.sendTransaction(transaction);
   }
 
-  private static BigInteger estimateMinTransactionFee(
+  private static BigInteger estimateTransactionFee(
       String privateKey, List<Receiver> receivers, String changeAddress) throws IOException {
-    return Calculator.calculateMinTransactionFee(
+    return Calculator.calculateTransactionFee(
         api, generateTx(privateKey, receivers, changeAddress, BigInteger.ZERO), 5);
   }
 
-  private static BigInteger estimateMinTransactionFee(
+  private static BigInteger estimateTransactionFee(
       List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
-    return Calculator.calculateMinTransactionFee(
+    return Calculator.calculateTransactionFee(
         api, generateTx(senders, receivers, changeAddress, BigInteger.ZERO), 5);
   }
 

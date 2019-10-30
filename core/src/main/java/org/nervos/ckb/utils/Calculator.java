@@ -27,7 +27,7 @@ public class Calculator {
     return fee;
   }
 
-  public static BigInteger calculateMinTransactionFee(
+  public static BigInteger calculateTransactionFee(
       Api api, Transaction transaction, long expectedConfirmBlocks) throws IOException {
     if (expectedConfirmBlocks < MIN_CONFIRM_BLOCKS) {
       throw new IOException("Confirm block must not be smaller than " + MIN_CONFIRM_BLOCKS);

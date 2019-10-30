@@ -221,9 +221,8 @@ public class ApiTest {
   }
 
   @Test
-  public void testEstimateFeeRate() throws IOException {
-    FeeRate feeRate = api.estimateFeeRate("0x0a");
-    Assertions.assertNotNull(feeRate.feeRate);
+  public void testEstimateFeeRate() {
+    Assertions.assertThrows(IOException.class, () -> api.estimateFeeRate("0x0a"));
   }
 
   @Test
