@@ -8,6 +8,7 @@ import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.transaction.CellCollector;
+import org.nervos.ckb.transaction.CellsWithLock;
 import org.nervos.ckb.transaction.CollectedCells;
 import org.nervos.ckb.transaction.Utils;
 import org.nervos.ckb.type.Script;
@@ -31,8 +32,8 @@ public class CollectUtils {
     }
   }
 
-  public List<CellsWithPrivateKey> collectInputs(List<Sender> senders) throws IOException {
-    List<CellsWithPrivateKey> cellsWithPrivateKeys = new ArrayList<>();
+  public List<CellsWithLock> collectInputs(List<Sender> senders) throws IOException {
+    List<CellsWithLock> cellsWithLocks = new ArrayList<>();
     for (Sender sender : senders) {
       String lockHash =
           Utils.generateLockScriptWithPrivateKey(sender.privateKey, systemSecpCell.cellHash)
@@ -43,9 +44,9 @@ public class CollectUtils {
         throw new IOException("No enough Capacity with sender private key: " + sender.privateKey);
       }
       collectedCapacity = collectedCapacity.add(collectedCells.capacity);
-      cellsWithPrivateKeys.add(new CellsWithPrivateKey(collectedCells.inputs, sender.privateKey));
+      cellsWithLocks.add(new CellsWithLock(collectedCells.inputs, sender.privateKey));
     }
-    return cellsWithPrivateKeys;
+    return cellsWithLocks;
   }
 
   public List<CellOutput> generateOutputs(

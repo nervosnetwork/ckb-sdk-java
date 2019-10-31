@@ -5,17 +5,16 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.example.transaction.CellsWithPrivateKey;
 import org.nervos.ckb.example.transaction.CollectUtils;
 import org.nervos.ckb.example.transaction.Receiver;
 import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
+import org.nervos.ckb.transaction.CellsWithLock;
 import org.nervos.ckb.transaction.TransactionBuilder;
-import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class SingleSigTxExample {
+public class SingleKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
@@ -23,7 +22,7 @@ public class SingleSigTxExample {
   private static List<KeyPair> KeyPairs;
 
   static {
-    api = new Api(NODE_URL, true);
+    api = new Api(NODE_URL, false);
     KeyPairs =
         Arrays.asList(
             new KeyPair(
@@ -49,17 +48,17 @@ public class SingleSigTxExample {
             + " CKB");
 
     System.out.println(
-        "Before transfer, first receiver1's balance: "
+        "Before transfer, first receiver's balance: "
             + getBalance(KeyPairs.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
-    // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
+    // miner send capacity to three receiver accounts with 800, 900 and 1000 CKB
     String hash = sendCapacity(minerPrivateKey, receivers, minerAddress, txFee);
-    System.out.println("First transaction hash: " + hash);
+    System.out.println("Transaction hash: " + hash);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, first receiver1's balance: "
+        "After transfer, receiver's balance: "
             + getBalance(KeyPairs.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
   }
@@ -81,16 +80,14 @@ public class SingleSigTxExample {
     TransactionBuilder builder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
-    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-      builder.addInputs(cellsWithPrivateKey.inputs);
-    }
+    List<CellsWithLock> cellsWithLocks = txUtils.collectInputs(senders);
+    builder.addInputsWithLocks(cellsWithLocks);
 
     builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
     builder.buildTx();
 
-    return api.sendTransaction(builder.getTransaction().sign(Numeric.toBigInt(privateKey)));
+    return api.sendTransaction(builder.getTransaction());
   }
 
   static class KeyPair {

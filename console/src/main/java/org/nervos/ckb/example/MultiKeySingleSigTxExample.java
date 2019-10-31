@@ -5,18 +5,18 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.example.transaction.CellsWithPrivateKey;
 import org.nervos.ckb.example.transaction.CollectUtils;
 import org.nervos.ckb.example.transaction.Receiver;
 import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
+import org.nervos.ckb.transaction.CellsWithLock;
 import org.nervos.ckb.transaction.TransactionBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class TransactionExample {
+public class MultiKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
@@ -165,22 +165,12 @@ public class TransactionExample {
     TransactionBuilder builder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
-    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-      builder.addInputs(cellsWithPrivateKey.inputs);
-    }
+    List<CellsWithLock> cellsWithLocks = txUtils.collectInputs(senders);
+    builder.addInputsWithLocks(cellsWithLocks);
 
     builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
     builder.buildTx();
-
-    //    int index = 0;
-    //    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-    //      for (int i = 0; i < cellsWithPrivateKey.inputs.size(); i++) {
-    //        builder.signInput(index + i, cellsWithPrivateKey.privateKey);
-    //      }
-    //      index += cellsWithPrivateKey.inputs.size();
-    //    }
 
     return builder.getTransaction();
   }

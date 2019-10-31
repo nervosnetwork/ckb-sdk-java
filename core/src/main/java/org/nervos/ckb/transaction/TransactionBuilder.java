@@ -15,6 +15,7 @@ import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.dynamic.Table;
+import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
@@ -26,9 +27,10 @@ public class TransactionBuilder {
 
   private SystemScriptCell systemSecpCell;
   private List<CellInput> cellInputs = new ArrayList<>();
+  private List<CellsWithLock> cellsWithLocks = new ArrayList<>();
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
-  private List witnesses = new ArrayList<>();
+  private List<String> witnesses = new ArrayList<>();
   private Transaction transaction;
 
   public TransactionBuilder(Api api) {
@@ -39,12 +41,16 @@ public class TransactionBuilder {
     }
   }
 
-  public void addInput(CellInput input) {
-    cellInputs.add(input);
+  public void addInputsWithLock(CellsWithLock cellsWithLock) {
+    cellsWithLocks.add(cellsWithLock);
+    cellInputs.addAll(cellsWithLock.inputs);
   }
 
-  public void addInputs(List<CellInput> inputs) {
-    cellInputs.addAll(inputs);
+  public void addInputsWithLocks(List<CellsWithLock> cellsWithLocks) {
+    this.cellsWithLocks.addAll(cellsWithLocks);
+    for (CellsWithLock cellsWithLock : cellsWithLocks) {
+      cellInputs.addAll(cellsWithLock.inputs);
+    }
   }
 
   public void addOutput(CellOutput output) {
@@ -53,6 +59,49 @@ public class TransactionBuilder {
 
   public void addOutputs(List<CellOutput> outputs) {
     cellOutputs.addAll(outputs);
+  }
+
+  private List<String> signWitness(List witnessesWithLock, String privateKey) {
+    if (witnessesWithLock.size() < 1) {
+      throw new RuntimeException("Need at least one witness!");
+    }
+    if (witnessesWithLock.get(0).getClass() != Witness.class) {
+      throw new RuntimeException("First witness must be of Witness type!");
+    }
+    String txHash = transaction.computeHash();
+    Witness emptiedWitness = (Witness) witnessesWithLock.get(0);
+    emptiedWitness.lock = Witness.EMPTY_LOCK;
+    Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
+    Blake2b blake2b = new Blake2b();
+    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
+    blake2b.update(witnessTable.toBytes());
+    for (int i = 1; i < witnessesWithLock.size(); i++) {
+      byte[] bytes;
+      if (witnessesWithLock.get(i).getClass() == Witness.class) {
+        bytes = Serializer.serializeWitnessArgs((Witness) witnessesWithLock.get(i)).toBytes();
+      } else {
+        bytes = Numeric.hexStringToByteArray((String) witnessesWithLock.get(i));
+      }
+      blake2b.update(new UInt64(bytes.length).toBytes());
+      blake2b.update(bytes);
+    }
+    String message = blake2b.doFinalString();
+    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+    ((Witness) witnessesWithLock.get(0)).lock =
+        Numeric.toHexString(
+            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+
+    List<String> signedWitness = new ArrayList<>();
+    for (Object witness : witnessesWithLock) {
+      if (witness.getClass() == Witness.class) {
+        signedWitness.add(
+            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
+      } else {
+        signedWitness.add((String) witness);
+      }
+    }
+    return signedWitness;
   }
 
   public void buildTx() throws IOException {
@@ -69,9 +118,6 @@ public class TransactionBuilder {
     for (int i = 0; i < cellOutputs.size(); i++) {
       cellOutputsData.add("0x");
     }
-    for (int i = 0; i < cellInputs.size(); i++) {
-      witnesses.add(new Witness());
-    }
 
     transaction =
         new Transaction(
@@ -82,24 +128,16 @@ public class TransactionBuilder {
             cellOutputs,
             cellOutputsData,
             witnesses);
-  }
 
-  public void sign(String privateKey) {
-    transaction.sign(Numeric.toBigInt(privateKey));
-  }
-
-  private String signWitness(String witness, String privateKey) {
-    Table witnessTable = Serializer.serializeWitnessArgs(new Witness());
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(transaction.computeHash()));
-    blake2b.update(BigInteger.valueOf(witnessTable.getLength()).toByteArray());
-    blake2b.update(witnessTable.toBytes());
-    String message = blake2b.doFinalString();
-    String signature =
-        Numeric.toHexString(
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
-    return signature + Numeric.cleanHexPrefix(witness);
+    List<String> signedWitnesses = new ArrayList<>();
+    for (CellsWithLock cellsWithLock : cellsWithLocks) {
+      List<Witness> witnessesWithLock = new ArrayList<>();
+      for (int i = 0; i < cellsWithLock.inputs.size(); i++) {
+        witnessesWithLock.add(new Witness());
+      }
+      signedWitnesses.addAll(signWitness(witnessesWithLock, cellsWithLock.privateKey));
+    }
+    transaction.witnesses = signedWitnesses;
   }
 
   public Transaction getTransaction() {
