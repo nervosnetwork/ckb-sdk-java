@@ -174,13 +174,13 @@ public class TransactionExample {
 
     builder.buildTx();
 
-    int index = 0;
-    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-      for (int i = 0; i < cellsWithPrivateKey.inputs.size(); i++) {
-        builder.signInput(index + i, cellsWithPrivateKey.privateKey);
-      }
-      index += cellsWithPrivateKey.inputs.size();
-    }
+    //    int index = 0;
+    //    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+    //      for (int i = 0; i < cellsWithPrivateKey.inputs.size(); i++) {
+    //        builder.signInput(index + i, cellsWithPrivateKey.privateKey);
+    //      }
+    //      index += cellsWithPrivateKey.inputs.size();
+    //    }
 
     return builder.getTransaction();
   }

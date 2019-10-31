@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.WitnessArgs;
+import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -91,11 +91,12 @@ public class Serializer {
     return new Fixed<>(byte32List);
   }
 
-  public static Table serializeWitnessArgs(WitnessArgs witnessArgs) {
+  public static Table serializeWitnessArgs(Witness witness) {
     return new Table(
-        new Option(new Bytes(witnessArgs.lock)),
-        new Option(new Bytes(witnessArgs.inputType)),
-        new Option(new Bytes(witnessArgs.outputType)));
+        new Option(Strings.isEmpty(witness.lock) ? new Empty() : new Bytes(witness.lock)),
+        new Option(Strings.isEmpty(witness.inputType) ? new Empty() : new Bytes(witness.inputType)),
+        new Option(
+            Strings.isEmpty(witness.outputType) ? new Empty() : new Bytes(witness.outputType)));
   }
 
   public static Table serializeRawTransaction(Transaction transaction) {

@@ -10,7 +10,7 @@ import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
-import org.nervos.ckb.type.WitnessArgs;
+import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -28,7 +28,7 @@ public class TransactionBuilder {
   private List<CellInput> cellInputs = new ArrayList<>();
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
-  private List<String> witnesses = new ArrayList<>();
+  private List witnesses = new ArrayList<>();
   private Transaction transaction;
 
   public TransactionBuilder(Api api) {
@@ -70,7 +70,7 @@ public class TransactionBuilder {
       cellOutputsData.add("0x");
     }
     for (int i = 0; i < cellInputs.size(); i++) {
-      witnesses.add("0x");
+      witnesses.add(new Witness());
     }
 
     transaction =
@@ -80,27 +80,16 @@ public class TransactionBuilder {
             Collections.emptyList(),
             cellInputs,
             cellOutputs,
-            cellOutputsData);
-  }
-
-  public void signInput(int index, String privateKey) throws IOException {
-    if (transaction == null) {
-      throw new IOException("Transaction could not null");
-    }
-    if (witnesses.size() < cellInputs.size()) {
-      throw new IOException("Invalid number of witnesses");
-    }
-    witnesses.set(index, signWitness(witnesses.get(index), privateKey));
+            cellOutputsData,
+            witnesses);
   }
 
   public void sign(String privateKey) {
-    for (int i = 0; i < witnesses.size(); i++) {
-      witnesses.add(i == 0 ? signWitness(witnesses.get(i), privateKey) : witnesses.get(i));
-    }
+    transaction.sign(Numeric.toBigInt(privateKey));
   }
 
   private String signWitness(String witness, String privateKey) {
-    Table witnessTable = Serializer.serializeWitnessArgs(new WitnessArgs());
+    Table witnessTable = Serializer.serializeWitnessArgs(new Witness());
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     Blake2b blake2b = new Blake2b();
     blake2b.update(Numeric.hexStringToByteArray(transaction.computeHash()));
