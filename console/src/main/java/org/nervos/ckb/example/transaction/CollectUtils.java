@@ -8,6 +8,7 @@ import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.transaction.CellCollector;
+import org.nervos.ckb.transaction.CellsWithPrivateKey;
 import org.nervos.ckb.transaction.CollectedCells;
 import org.nervos.ckb.transaction.Utils;
 import org.nervos.ckb.type.Script;
