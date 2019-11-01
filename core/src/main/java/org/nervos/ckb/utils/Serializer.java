@@ -12,6 +12,7 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.dynamic.Bytes;
 import org.nervos.ckb.type.dynamic.Dynamic;
+import org.nervos.ckb.type.dynamic.Option;
 import org.nervos.ckb.type.dynamic.Table;
 import org.nervos.ckb.type.fixed.*;
 import org.nervos.ckb.type.transaction.Transaction;

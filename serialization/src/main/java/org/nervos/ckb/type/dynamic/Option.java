@@ -1,4 +1,4 @@
-package org.nervos.ckb.type.fixed;
+package org.nervos.ckb.type.dynamic;
 
 import org.nervos.ckb.type.base.FixedType;
 import org.nervos.ckb.type.base.Type;
