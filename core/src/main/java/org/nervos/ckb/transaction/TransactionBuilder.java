@@ -27,7 +27,7 @@ public class TransactionBuilder {
 
   private SystemScriptCell systemSecpCell;
   private List<CellInput> cellInputs = new ArrayList<>();
-  private List<CellsWithLock> cellsWithLocks = new ArrayList<>();
+  private List<CellsWithPrivateKey> cellsWithPrivateKeys = new ArrayList<>();
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
   private List<String> witnesses = new ArrayList<>();
@@ -41,15 +41,15 @@ public class TransactionBuilder {
     }
   }
 
-  public void addInputsWithLock(CellsWithLock cellsWithLock) {
-    cellsWithLocks.add(cellsWithLock);
-    cellInputs.addAll(cellsWithLock.inputs);
+  public void addInputsWithPrivateKey(CellsWithPrivateKey cellsWithPrivateKey) {
+    cellsWithPrivateKeys.add(cellsWithPrivateKey);
+    cellInputs.addAll(cellsWithPrivateKey.inputs);
   }
 
-  public void addInputsWithLocks(List<CellsWithLock> cellsWithLocks) {
-    this.cellsWithLocks.addAll(cellsWithLocks);
-    for (CellsWithLock cellsWithLock : cellsWithLocks) {
-      cellInputs.addAll(cellsWithLock.inputs);
+  public void addInputsWithPrivateKeys(List<CellsWithPrivateKey> cellsWithPrivateKeys) {
+    this.cellsWithPrivateKeys.addAll(cellsWithPrivateKeys);
+    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+      cellInputs.addAll(cellsWithPrivateKey.inputs);
     }
   }
 
@@ -61,39 +61,40 @@ public class TransactionBuilder {
     cellOutputs.addAll(outputs);
   }
 
-  private List<String> signWitness(List witnessesWithLock, String privateKey) {
-    if (witnessesWithLock.size() < 1) {
+  private List<String> signWitness(List witnessesWithPrivateKeys, String privateKey) {
+    if (witnessesWithPrivateKeys.size() < 1) {
       throw new RuntimeException("Need at least one witness!");
     }
-    if (witnessesWithLock.get(0).getClass() != Witness.class) {
+    if (witnessesWithPrivateKeys.get(0).getClass() != Witness.class) {
       throw new RuntimeException("First witness must be of Witness type!");
     }
     String txHash = transaction.computeHash();
-    Witness emptiedWitness = (Witness) witnessesWithLock.get(0);
+    Witness emptiedWitness = (Witness) witnessesWithPrivateKeys.get(0);
     emptiedWitness.lock = Witness.EMPTY_LOCK;
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
     blake2b.update(Numeric.hexStringToByteArray(txHash));
     blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
     blake2b.update(witnessTable.toBytes());
-    for (int i = 1; i < witnessesWithLock.size(); i++) {
+    for (int i = 1; i < witnessesWithPrivateKeys.size(); i++) {
       byte[] bytes;
-      if (witnessesWithLock.get(i).getClass() == Witness.class) {
-        bytes = Serializer.serializeWitnessArgs((Witness) witnessesWithLock.get(i)).toBytes();
+      if (witnessesWithPrivateKeys.get(i).getClass() == Witness.class) {
+        bytes =
+            Serializer.serializeWitnessArgs((Witness) witnessesWithPrivateKeys.get(i)).toBytes();
       } else {
-        bytes = Numeric.hexStringToByteArray((String) witnessesWithLock.get(i));
+        bytes = Numeric.hexStringToByteArray((String) witnessesWithPrivateKeys.get(i));
       }
       blake2b.update(new UInt64(bytes.length).toBytes());
       blake2b.update(bytes);
     }
     String message = blake2b.doFinalString();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    ((Witness) witnessesWithLock.get(0)).lock =
+    ((Witness) witnessesWithPrivateKeys.get(0)).lock =
         Numeric.toHexString(
             Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
 
     List<String> signedWitness = new ArrayList<>();
-    for (Object witness : witnessesWithLock) {
+    for (Object witness : witnessesWithPrivateKeys) {
       if (witness.getClass() == Witness.class) {
         signedWitness.add(
             Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
@@ -130,12 +131,12 @@ public class TransactionBuilder {
             witnesses);
 
     List<String> signedWitnesses = new ArrayList<>();
-    for (CellsWithLock cellsWithLock : cellsWithLocks) {
-      List<Witness> witnessesWithLock = new ArrayList<>();
-      for (int i = 0; i < cellsWithLock.inputs.size(); i++) {
-        witnessesWithLock.add(new Witness());
+    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+      List<Witness> witnessesWithPrivateKeys = new ArrayList<>();
+      for (int i = 0; i < cellsWithPrivateKey.inputs.size(); i++) {
+        witnessesWithPrivateKeys.add(new Witness());
       }
-      signedWitnesses.addAll(signWitness(witnessesWithLock, cellsWithLock.privateKey));
+      signedWitnesses.addAll(signWitness(witnessesWithPrivateKeys, cellsWithPrivateKey.privateKey));
     }
     transaction.witnesses = signedWitnesses;
   }

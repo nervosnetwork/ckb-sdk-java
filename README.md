@@ -83,10 +83,10 @@ You can reference detail example in `console/example/TransactionExample.java`.
 ```Java
   Api api = new Api("your-ckb-node-url");
 
-  List<CellsWithLock> inputsWithLocks = Arrays.asList(
-    new CellsWithLock(inputs1, privateKey1), // Input from address 'cktxxx', capacity 100 CKB
-    new CellsWithLock(inputs2, privateKey2), // Input from address 'cktxxx', capacity 200 CKB
-    new CellsWithLock(inputs3, privateKey3), // Input from address 'cktxxx', capacity 300 CKB
+  List<CellsWithPrivateKey> inputsWithPrivateKeys = Arrays.asList(
+    new CellsWithPrivateKey(inputs1, privateKey1), // Input from address 'cktxxx', capacity 100 CKB
+    new CellsWithPrivateKey(inputs2, privateKey2), // Input from address 'cktxxx', capacity 200 CKB
+    new CellsWithPrivateKey(inputs3, privateKey3), // Input from address 'cktxxx', capacity 300 CKB
   );
   
   List<CellOutput> outputs = Arrays.asList(
@@ -97,7 +97,7 @@ You can reference detail example in `console/example/TransactionExample.java`.
   
   TransactionBuilder builder = new TransactionBuilder(api);
   
-  builder.addInputsWithLocks(inputsWithLocks);
+  builder.addInputsWithPrivateKeys(inputsWithPrivateKeys);
   
   builder.addOutputs(outputs);
   

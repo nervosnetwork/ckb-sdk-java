@@ -10,7 +10,7 @@ import org.nervos.ckb.example.transaction.Receiver;
 import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
-import org.nervos.ckb.transaction.CellsWithLock;
+import org.nervos.ckb.transaction.CellsWithPrivateKey;
 import org.nervos.ckb.transaction.TransactionBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
@@ -165,8 +165,8 @@ public class MultiKeySingleSigTxExample {
     TransactionBuilder builder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<CellsWithLock> cellsWithLocks = txUtils.collectInputs(senders);
-    builder.addInputsWithLocks(cellsWithLocks);
+    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
+    builder.addInputsWithPrivateKeys(cellsWithPrivateKeys);
 
     builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
