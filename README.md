@@ -74,11 +74,13 @@ Block block = api.getBlock(blockHash);
 
 You can see more JSON-RPC requests from [RPC Document](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 
-#### Transfer
+#### Single-sig Transfer
 
-`console/example/TransactionExample.java` provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
+[SingleKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/SingleKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to a private key.
 
-You can reference detail example in `console/example/TransactionExample.java`.
+[MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/MultiKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
+
+You can reference detail example in `console/example/MultiKeySingleSigTxExample.java`.
 
 ```Java
   Api api = new Api("your-ckb-node-url");
@@ -106,14 +108,18 @@ You can reference detail example in `console/example/TransactionExample.java`.
   String hash = api.sendTransaction(builder.getTransaction());
 ```
 
+#### Multi-sig Transfer
+
+[SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/SendToMultiSigAddressTxExample.java) provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig address.
+
+[MultiSignTransactionExample.java](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/MultiSignTransactionExample.java) provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig address.
+
 #### Address
 
 You can generate ckb address through this SDK as below:
 
-> There are many address generating methods, and this is just an example.
-
 ```Java
-// Generate ckb testnet address
+// Generate ckb testnet single-sig address
 AddressUtils utils = new AddressUtils(Network.TESTNET);
 
 // Generate public key from private key through SECP256K1
@@ -125,6 +131,13 @@ String publicKey =
         .toString(16);
 
 String address = utils.generateFromPublicKey(publicKey);
+
+
+
+// Generate ckb testnet multi-sig address
+AddressUtils utils = new AddressUtils(Network.TESTNET, CodeHashIdx.MULTISIG);
+
+String address = utils.generateFromPublicKey(multisigScriptHash);
 ```
 
 ### Development
