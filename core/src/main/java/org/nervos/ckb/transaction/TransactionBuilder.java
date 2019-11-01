@@ -9,6 +9,7 @@ import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
@@ -26,16 +27,26 @@ public class TransactionBuilder {
   private static final BigInteger MIN_CAPACITY = new BigInteger("6000000000");
 
   private SystemScriptCell systemSecpCell;
+  private SystemScriptCell systemMultiSigCell;
   private List<CellInput> cellInputs = new ArrayList<>();
   private List<CellsWithPrivateKey> cellsWithPrivateKeys = new ArrayList<>();
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
   private List<String> witnesses = new ArrayList<>();
   private Transaction transaction;
+  private boolean containMultiSig = false;
 
   public TransactionBuilder(Api api) {
+    this(api, false);
+  }
+
+  public TransactionBuilder(Api api, boolean containMultiSig) {
     try {
-      this.systemSecpCell = Utils.getSystemScriptCell(api);
+      this.containMultiSig = containMultiSig;
+      this.systemSecpCell = SystemContract.getSystemSecpCell(api);
+      if (containMultiSig) {
+        this.systemMultiSigCell = SystemContract.getSystemMultiSigCell(api);
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -120,10 +131,16 @@ public class TransactionBuilder {
       cellOutputsData.add("0x");
     }
 
+    List<CellDep> cellDeps = new ArrayList<>();
+    cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));
+    if (containMultiSig) {
+      cellDeps.add(new CellDep(systemMultiSigCell.outPoint, CellDep.DEP_GROUP));
+    }
+
     transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP)),
+            cellDeps,
             Collections.emptyList(),
             cellInputs,
             cellOutputs,

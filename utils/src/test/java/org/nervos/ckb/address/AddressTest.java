@@ -2,10 +2,10 @@ package org.nervos.ckb.address;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
-import org.nervos.ckb.utils.Network;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
@@ -13,9 +13,8 @@ public class AddressTest {
 
   @Test
   public void testPublicKeyHash() {
-    AddressUtils utils = new AddressUtils(Network.TESTNET);
     String hash =
-        utils.blake160("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+        Hash.blake160("0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
     Assertions.assertEquals("36c329ed630d6ce750712a477543672adab57f4c", hash);
   }
 
@@ -75,16 +74,14 @@ public class AddressTest {
   @Test
   public void testBlake160FromAddressTestnet() {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
-    String blake160 =
-        utils.getBlake160FromAddress("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
+    String blake160 = utils.getArgsFromAddress("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
     Assertions.assertEquals(blake160, "0x36c329ed630d6ce750712a477543672adab57f4c");
   }
 
   @Test
   public void testBlake160FromAddressMainnet() {
     AddressUtils utils = new AddressUtils(Network.MAINNET);
-    String blake160 =
-        utils.getBlake160FromAddress("ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd");
+    String blake160 = utils.getArgsFromAddress("ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd");
     Assertions.assertEquals(blake160, "0x36c329ed630d6ce750712a477543672adab57f4c");
   }
 
@@ -94,5 +91,21 @@ public class AddressTest {
     Assertions.assertEquals(
         "ckb1qyqp8eqad7ffy42ezmchkjyz54rhcqf8q9pqrn323p",
         utils.generate("0x13e41d6F9292555916f17B4882a5477C01270142"));
+  }
+
+  @Test
+  public void testGenerateMultiAddress() {
+    AddressUtils utils = new AddressUtils(Network.TESTNET, CodeHashType.MULTISIG);
+    Assertions.assertEquals(
+        "ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq",
+        utils.generate("f04cec84bc37f683613bed2f242c9aa1b678e9fe"));
+  }
+
+  @Test
+  public void testParseMultiAddress() {
+    AddressUtils utils = new AddressUtils(Network.TESTNET, CodeHashType.MULTISIG);
+    Assertions.assertEquals(
+        "0xf04cec84bc37f683613bed2f242c9aa1b678e9fe",
+        utils.getArgsFromAddress("ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq"));
   }
 }

@@ -1,8 +1,10 @@
 package org.nervos.ckb.utils;
 
+import com.google.common.primitives.Bytes;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 import org.nervos.ckb.exceptions.MessageDecodingException;
 import org.nervos.ckb.exceptions.MessageEncodingException;
 
@@ -217,5 +219,9 @@ public final class Numeric {
 
   public static boolean isIntegerValue(BigDecimal value) {
     return value.signum() == 0 || value.scale() <= 0 || value.stripTrailingZeros().scale() <= 0;
+  }
+
+  public static List<Byte> intToBytes(int value) {
+    return Bytes.asList(Numeric.hexStringToByteArray(Integer.toHexString(value)));
   }
 }

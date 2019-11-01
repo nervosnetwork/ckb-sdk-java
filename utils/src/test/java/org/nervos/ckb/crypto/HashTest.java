@@ -18,6 +18,13 @@ public class HashTest {
   }
 
   @Test
+  public void testBlake160() {
+    Assertions.assertEquals(
+        Hash.blake160("24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"),
+        "36c329ed630d6ce750712a477543672adab57f4c");
+  }
+
+  @Test
   public void testByte() {
     Assertions.assertEquals(asByte(0x0, 0x0), (byte) 0x0);
     Assertions.assertEquals(asByte(0x1, 0x0), (byte) 0x10);
