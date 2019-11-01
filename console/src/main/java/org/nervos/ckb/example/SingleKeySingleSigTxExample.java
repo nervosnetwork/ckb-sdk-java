@@ -19,11 +19,11 @@ public class SingleKeySingleSigTxExample {
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
-  private static List<String> Addresses;
+  private static List<String> ReceiveAddresses;
 
   static {
     api = new Api(NODE_URL, false);
-    Addresses =
+    ReceiveAddresses =
         Arrays.asList(
             "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
             "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek");
@@ -34,8 +34,8 @@ public class SingleKeySingleSigTxExample {
     String minerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     List<Receiver> receivers =
         Arrays.asList(
-            new Receiver(Addresses.get(0), new BigInteger("8000").multiply(UnitCKB)),
-            new Receiver(Addresses.get(1), new BigInteger("9000").multiply(UnitCKB)));
+            new Receiver(ReceiveAddresses.get(0), new BigInteger("8000").multiply(UnitCKB)),
+            new Receiver(ReceiveAddresses.get(1), new BigInteger("9000").multiply(UnitCKB)));
     BigInteger txFee = BigInteger.valueOf(10000);
 
     System.out.println(
@@ -45,7 +45,7 @@ public class SingleKeySingleSigTxExample {
 
     System.out.println(
         "Before transfer, first receiver's balance: "
-            + getBalance(Addresses.get(0)).divide(UnitCKB).toString(10)
+            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
     // miner send capacity to three receiver accounts with 800, 900 and 1000 CKB
@@ -55,7 +55,7 @@ public class SingleKeySingleSigTxExample {
 
     System.out.println(
         "After transfer, receiver's balance: "
-            + getBalance(Addresses.get(0)).divide(UnitCKB).toString(10)
+            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
   }
 

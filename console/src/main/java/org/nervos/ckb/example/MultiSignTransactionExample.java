@@ -38,7 +38,7 @@ public class MultiSignTransactionExample {
   private static List<String> privateKeys;
   private static List<String> publicKeys;
   private static Configuration configuration;
-  private static SystemScriptCell multiSigSystemCell;
+  private static SystemScriptCell systemMultiSigCell;
   private static SystemScriptCell systemSecpCell;
 
   static {
@@ -58,7 +58,7 @@ public class MultiSignTransactionExample {
 
   public static void main(String[] args) throws Exception {
     systemSecpCell = SystemContract.getSystemSecpCell(api);
-    multiSigSystemCell = SystemContract.getSystemMultiSigCell(api);
+    systemMultiSigCell = SystemContract.getSystemMultiSigCell(api);
     configuration = new Configuration(0, 2, publicKeys);
 
     String multiSigAddress = configuration.address();
@@ -118,7 +118,7 @@ public class MultiSignTransactionExample {
         new Transaction(
             "0x0",
             Arrays.asList(
-                new CellDep(multiSigSystemCell.outPoint, CellDep.DEP_GROUP),
+                new CellDep(systemMultiSigCell.outPoint, CellDep.DEP_GROUP),
                 new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP)),
             Collections.emptyList(),
             collectedCells.inputs,
@@ -184,7 +184,7 @@ public class MultiSignTransactionExample {
 
   public static Script generateLock() {
     return new Script(
-        multiSigSystemCell.cellHash,
+        systemMultiSigCell.cellHash,
         Numeric.prependHexPrefix(configuration.blake160()),
         Script.TYPE);
   }
