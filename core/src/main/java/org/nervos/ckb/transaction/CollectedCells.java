@@ -8,9 +8,16 @@ import org.nervos.ckb.type.cell.CellInput;
 public class CollectedCells {
   public List<CellInput> inputs;
   public BigInteger capacity;
+  public List witnesses;
 
   CollectedCells(List<CellInput> inputs, BigInteger capacity) {
     this.inputs = inputs;
     this.capacity = capacity;
+  }
+
+  CollectedCells(List<CellInput> inputs, BigInteger capacity, List witnesses) {
+    this.inputs = inputs;
+    this.capacity = capacity;
+    this.witnesses = witnesses;
   }
 }
