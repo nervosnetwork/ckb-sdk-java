@@ -2,6 +2,7 @@ package org.nervos.ckb;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -63,21 +64,33 @@ public class SingleKeySingleSigTxExample {
       String privateKey, List<Receiver> receivers, String changeAddress, BigInteger fee)
       throws IOException {
     BigInteger needCapacity = BigInteger.ZERO;
+    List<WitnessGroup> witnessGroups = new ArrayList<>();
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
 
     List<Sender> senders = Collections.singletonList(new Sender(privateKey, needCapacity));
-    TransactionBuilder builder = new TransactionBuilder(api);
+    TransactionBuilder txBuilder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
-    builder.addInputsWithPrivateKeys(cellsWithPrivateKeys);
+    int startIndex = 0;
+    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+      txBuilder.addInputs(cellsWithPrivateKey.inputs);
+      witnessGroups.add(
+          new WitnessGroup(
+              NumberUtils.regionToList(startIndex, cellsWithPrivateKey.inputs.size()),
+              cellsWithPrivateKey.privateKey));
+    }
 
-    builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
+    txBuilder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
-    builder.buildTx();
+    SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
 
-    return api.sendTransaction(builder.getTransaction());
+    for (WitnessGroup witnessGroup : witnessGroups) {
+      signBuilder.addWitnessGroup(witnessGroup);
+    }
+
+    return api.sendTransaction(signBuilder.buildTx());
   }
 }

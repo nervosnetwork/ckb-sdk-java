@@ -39,7 +39,7 @@ public class CollectUtils {
     }
     for (Sender sender : senders) {
       String lockHash =
-          Utils.generateLockScriptWithPrivateKey(sender.privateKey, systemScriptCell.cellHash)
+          LockUtils.generateLockScriptWithPrivateKey(sender.privateKey, systemScriptCell.cellHash)
               .computeHash();
       CollectedCells collectedCells =
           new CellCollector(api).getCellInputs(lockHash, sender.capacity);

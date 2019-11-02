@@ -2,6 +2,7 @@ package org.nervos.ckb;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -157,17 +158,29 @@ public class MultiKeySingleSigTxExample {
   private static Transaction generateTx(
       List<Sender> senders, List<Receiver> receivers, String changeAddress, BigInteger fee)
       throws IOException {
-    TransactionBuilder builder = new TransactionBuilder(api);
+    List<WitnessGroup> witnessGroups = new ArrayList<>();
+    TransactionBuilder txBuilder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
-    builder.addInputsWithPrivateKeys(cellsWithPrivateKeys);
+    int startIndex = 0;
+    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+      txBuilder.addInputs(cellsWithPrivateKey.inputs);
+      witnessGroups.add(
+          new WitnessGroup(
+              NumberUtils.regionToList(startIndex, cellsWithPrivateKey.inputs.size()),
+              cellsWithPrivateKey.privateKey));
+      startIndex += cellsWithPrivateKey.inputs.size();
+    }
+    txBuilder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
-    builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
+    SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
 
-    builder.buildTx();
+    for (WitnessGroup witnessGroup : witnessGroups) {
+      signBuilder.addWitnessGroup(witnessGroup);
+    }
 
-    return builder.getTransaction();
+    return signBuilder.buildTx();
   }
 
   static class KeyPair {

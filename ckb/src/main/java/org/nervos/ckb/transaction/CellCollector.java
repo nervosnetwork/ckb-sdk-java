@@ -77,7 +77,7 @@ public class CellCollector {
       systemScriptCell = SystemContract.getSystemMultiSigCell(api);
     }
     Script lockScript =
-        Utils.generateLockScriptWithAddress(address, systemScriptCell.cellHash, codeHashType);
+        LockUtils.generateLockScriptWithAddress(address, systemScriptCell.cellHash, codeHashType);
     return getCapacityWithLockHash(lockScript.computeHash());
   }
 

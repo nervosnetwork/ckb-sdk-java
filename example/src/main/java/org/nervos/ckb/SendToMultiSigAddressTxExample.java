@@ -2,6 +2,7 @@ package org.nervos.ckb;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.CodeHashType;
@@ -68,18 +69,29 @@ public class SendToMultiSigAddressTxExample {
     }
 
     List<Sender> senders = Collections.singletonList(new Sender(privateKey, needCapacity));
-    TransactionBuilder builder = new TransactionBuilder(api);
+    TransactionBuilder txBuilder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<CellsWithPrivateKey> cellsWithPrivateKeys =
-        txUtils.collectInputs(senders, CodeHashType.BLAKE160);
-    builder.addInputsWithPrivateKeys(cellsWithPrivateKeys);
+    List<WitnessGroup> witnessGroups = new ArrayList<>();
+    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
+    int startIndex = 0;
+    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
+      txBuilder.addInputs(cellsWithPrivateKey.inputs);
+      witnessGroups.add(
+          new WitnessGroup(
+              NumberUtils.regionToList(startIndex, cellsWithPrivateKey.inputs.size()),
+              cellsWithPrivateKey.privateKey));
+    }
 
-    builder.addOutputs(
+    txBuilder.addOutputs(
         txUtils.generateOutputs(receivers, changeAddress, fee, CodeHashType.MULTISIG));
 
-    builder.buildTx();
+    SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
 
-    return api.sendTransaction(builder.getTransaction());
+    for (WitnessGroup witnessGroup : witnessGroups) {
+      signBuilder.addWitnessGroup(witnessGroup);
+    }
+
+    return api.sendTransaction(signBuilder.buildTx());
   }
 }
