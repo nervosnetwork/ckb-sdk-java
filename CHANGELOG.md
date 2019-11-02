@@ -3,6 +3,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [v0.24.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.23.2...v0.24.0) (2019-11-02)
 
+### Feature
+
+* Add estimate_fee_rate rpc([4e633ec](https://github.com/nervosnetwork/ckb-sdk-java/commit/4e633ec1c716690071a12796b72a1005839cff2b))
+* Update transaction example with estimating tx fee([43fe747](https://github.com/nervosnetwork/ckb-sdk-java/commit/43fe747b58e0afc47a91f09d6aa44df0db5cf979))
+* Update single sig transaction with new witness([48ac5c5](https://github.com/nervosnetwork/ckb-sdk-java/commit/48ac5c5c050ed64d63b85d8494cceb3909272605))
+* Impl multi sig address and transaction([9696651](https://github.com/nervosnetwork/ckb-sdk-java/commit/96966511deeabf6b62a1a9389443b803754158d1))
+
+### Breaking Change
+
+Sending transaction with single sig address will be changed because of new witness data structure and new signature logic.
 
 # [v0.23.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.23.1...v0.23.2) (2019-10-22)
 
