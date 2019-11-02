@@ -1,17 +1,12 @@
-package org.nervos.ckb.example;
+package org.nervos.ckb;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.example.transaction.CollectUtils;
-import org.nervos.ckb.example.transaction.Receiver;
-import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.transaction.CellCollector;
-import org.nervos.ckb.transaction.CellsWithPrivateKey;
-import org.nervos.ckb.transaction.TransactionBuilder;
+import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 

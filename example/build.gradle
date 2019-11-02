@@ -1,0 +1,10 @@
+description 'ckb-sdk-java is a lightweight Java library for integration with nervos CKB.'
+
+dependencies {
+    compile project(":ckb")
+    compile project(":utils")
+    compile "com.google.code.gson:gson:$gsonVersion"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+}
+
+apply from: rootProject.file('gradle/checkstyle.gradle')
