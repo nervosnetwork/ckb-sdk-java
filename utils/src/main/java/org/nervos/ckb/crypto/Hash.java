@@ -57,4 +57,8 @@ public class Hash {
   public static String blake2bString(String utf8String) {
     return Numeric.toHexString(blake2b(utf8String.getBytes(StandardCharsets.UTF_8)));
   }
+
+  public static String blake160(String hexInput) {
+    return Numeric.cleanHexPrefix(Hash.blake2b(hexInput)).substring(0, 40);
+  }
 }

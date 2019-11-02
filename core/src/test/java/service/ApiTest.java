@@ -221,6 +221,11 @@ public class ApiTest {
   }
 
   @Test
+  public void testEstimateFeeRate() {
+    Assertions.assertThrows(IOException.class, () -> api.estimateFeeRate("0x0a"));
+  }
+
+  @Test
   public void testIndexLockHash() throws IOException {
     LockHashIndexState lockHashIndexState =
         api.indexLockHash("0x59d90b1718471f5802de59501604100a5e3b463865cdfe56fa70ed23865ee32e");

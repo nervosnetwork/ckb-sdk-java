@@ -13,7 +13,7 @@ public class SystemContractTest {
   @Test
   public void testGetSystemContract() throws Exception {
     SystemScriptCell systemScriptCell =
-        SystemContract.getSystemScriptCell(new Api("http://localhost:8114"));
+        SystemContract.getSystemSecpCell(new Api("http://localhost:8114"));
     Assertions.assertNotNull(systemScriptCell);
   }
 }

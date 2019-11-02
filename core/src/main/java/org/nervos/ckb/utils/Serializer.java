@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.dynamic.Bytes;
 import org.nervos.ckb.type.dynamic.Dynamic;
+import org.nervos.ckb.type.dynamic.Option;
 import org.nervos.ckb.type.dynamic.Table;
 import org.nervos.ckb.type.fixed.*;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -88,6 +90,14 @@ public class Serializer {
       byte32List.add(new Byte32(data));
     }
     return new Fixed<>(byte32List);
+  }
+
+  public static Table serializeWitnessArgs(Witness witness) {
+    return new Table(
+        new Option(Strings.isEmpty(witness.lock) ? new Empty() : new Bytes(witness.lock)),
+        new Option(Strings.isEmpty(witness.inputType) ? new Empty() : new Bytes(witness.inputType)),
+        new Option(
+            Strings.isEmpty(witness.outputType) ? new Empty() : new Bytes(witness.outputType)));
   }
 
   public static Table serializeRawTransaction(Transaction transaction) {

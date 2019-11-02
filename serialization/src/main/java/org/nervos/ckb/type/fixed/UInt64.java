@@ -17,6 +17,10 @@ public class UInt64 extends FixedType<BigInteger> {
     this.value = BigInteger.valueOf(value);
   }
 
+  public UInt64(int value) {
+    this.value = BigInteger.valueOf(value);
+  }
+
   public UInt64(String value) {
     this.value = Numeric.toBigInt(value);
   }

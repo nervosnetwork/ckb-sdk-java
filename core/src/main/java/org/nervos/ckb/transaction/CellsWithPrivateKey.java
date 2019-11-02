@@ -1,4 +1,4 @@
-package org.nervos.ckb.example.transaction;
+package org.nervos.ckb.transaction;
 
 import java.util.List;
 import org.nervos.ckb.type.cell.CellInput;

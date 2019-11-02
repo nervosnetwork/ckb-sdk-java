@@ -5,19 +5,22 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.example.transaction.CellsWithPrivateKey;
 import org.nervos.ckb.example.transaction.CollectUtils;
 import org.nervos.ckb.example.transaction.Receiver;
 import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
+import org.nervos.ckb.transaction.CellsWithPrivateKey;
 import org.nervos.ckb.transaction.TransactionBuilder;
+import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.Calculator;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class TransactionExample {
+public class MultiKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
+  private static final BigInteger TxFeeConst = new BigInteger("1000");
   private static Api api;
   private static List<KeyPair> KeyPairs;
 
@@ -53,7 +56,6 @@ public class TransactionExample {
             new Receiver(KeyPairs.get(0).address, new BigInteger("800").multiply(UnitCKB)),
             new Receiver(KeyPairs.get(1).address, new BigInteger("900").multiply(UnitCKB)),
             new Receiver(KeyPairs.get(2).address, new BigInteger("1000").multiply(UnitCKB)));
-    BigInteger txFee = BigInteger.valueOf(10000);
 
     System.out.println(
         "Before transfer, miner's balance: "
@@ -64,6 +66,11 @@ public class TransactionExample {
         "Before transfer, first receiver1's balance: "
             + getBalance(KeyPairs.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
+
+    // Transaction fee can be calculated by `estimate_fee_rate` rpc or also set a simple number.
+    // BigInteger txFee = estimateTransactionFee(minerPrivateKey, receivers1,
+    // minerAddress).add(TxFeeConst);
+    BigInteger txFee = BigInteger.valueOf(10000);
 
     // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
     String hash = sendCapacity(minerPrivateKey, receivers1, minerAddress, txFee);
@@ -95,6 +102,10 @@ public class TransactionExample {
             + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
+    // Transaction fee can be calculated by `estimate_fee_rate` rpc or also set a simple number.
+    // txFee = estimateTransactionFee(senders1, receivers2, changeAddress).add(TxFeeConst);
+    txFee = BigInteger.valueOf(10000);
+
     // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
     String hash2 = sendCapacity(senders1, receivers2, changeAddress, txFee);
     System.out.println("Second transaction hash: " + hash2);
@@ -114,38 +125,54 @@ public class TransactionExample {
   private static String sendCapacity(
       String privateKey, List<Receiver> receivers, String changeAddress, BigInteger fee)
       throws IOException {
+    Transaction transaction = generateTx(privateKey, receivers, changeAddress, fee);
+    return api.sendTransaction(transaction);
+  }
+
+  private static String sendCapacity(
+      List<Sender> senders, List<Receiver> receivers, String changeAddress, BigInteger fee)
+      throws IOException {
+    Transaction transaction = generateTx(senders, receivers, changeAddress, fee);
+    return api.sendTransaction(transaction);
+  }
+
+  private static BigInteger estimateTransactionFee(
+      String privateKey, List<Receiver> receivers, String changeAddress) throws IOException {
+    return Calculator.calculateTransactionFee(
+        api, generateTx(privateKey, receivers, changeAddress, BigInteger.ZERO), 5);
+  }
+
+  private static BigInteger estimateTransactionFee(
+      List<Sender> senders, List<Receiver> receivers, String changeAddress) throws IOException {
+    return Calculator.calculateTransactionFee(
+        api, generateTx(senders, receivers, changeAddress, BigInteger.ZERO), 5);
+  }
+
+  private static Transaction generateTx(
+      String privateKey, List<Receiver> receivers, String changeAddress, BigInteger fee)
+      throws IOException {
     BigInteger needCapacity = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
     List<Sender> senders = Collections.singletonList(new Sender(privateKey, needCapacity));
-    return sendCapacity(senders, receivers, changeAddress, fee);
+    return generateTx(senders, receivers, changeAddress, fee);
   }
 
-  private static String sendCapacity(
+  private static Transaction generateTx(
       List<Sender> senders, List<Receiver> receivers, String changeAddress, BigInteger fee)
       throws IOException {
     TransactionBuilder builder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
-    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-      builder.addInputs(cellsWithPrivateKey.inputs);
-    }
+    builder.addInputsWithPrivateKeys(cellsWithPrivateKeys);
 
     builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
     builder.buildTx();
 
-    int index = 0;
-    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-      for (int i = 0; i < cellsWithPrivateKey.inputs.size(); i++) {
-        builder.signInput(index + i, cellsWithPrivateKey.privateKey);
-      }
-      index += cellsWithPrivateKey.inputs.size();
-    }
-
-    return api.sendTransaction(builder.getTransaction());
+    return builder.getTransaction();
   }
 
   static class KeyPair {

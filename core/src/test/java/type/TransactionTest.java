@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -53,7 +54,7 @@ class TransactionTest {
                     "0")),
             cellOutputs,
             Arrays.asList("0x", "0x"),
-            Collections.singletonList("0x"));
+            Collections.singletonList(new Witness()));
 
     BigInteger privateKey =
         Numeric.toBigInt("0xe79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
@@ -61,7 +62,7 @@ class TransactionTest {
     Assertions.assertEquals(signedTx.witnesses.size(), tx.inputs.size());
     Assertions.assertEquals(
         signedTx.witnesses.get(0),
-        "0x74e6007907aaeacf9bf3671a352d0c6cd105f1a2e6b406a33301fb5dfa5246f927538dcd25c2e68e1096b380ef621ff17a5fdcfd4cc5345b7534239c72b177e301");
+        "0x550000001000000055000000550000004100000010f86974898b2f3685facb78741801bf2b932c7c548afe5bbc5d06ee135aeb792d700a02b62c492f1fd6e88afd655ffe305489fe9a76670a8999c641c8e2b16701");
   }
 
   @Test
@@ -84,9 +85,9 @@ class TransactionTest {
                 "0xf1951123466e4479842387a66fabfd6b65fc87fd84ae8e6cd3053edb27fff2fd",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
-    List<String> witnesses = new ArrayList<>();
-    witnesses.add("0x4107bd23eedb9f2a2a749108f6bb9720d745d50f044cc4814bafe189a01fe6fb");
-    witnesses.add("0x");
+    List witnesses = new ArrayList<>();
+    witnesses.add(new Witness());
+    witnesses.add("0x10000000100000001000000010000000");
 
     Transaction tx =
         new Transaction(
@@ -109,9 +110,8 @@ class TransactionTest {
 
     List<String> expectedData = new ArrayList<>();
     expectedData.add(
-        "0x8dbb53f6326240110e67c8f331140a615b37a67de5e6479fbdf4f9fb5789eaf946226a47a9c92c502b5f45b43717611a31f913f49b164846f510c92eeef69c76004107bd23eedb9f2a2a749108f6bb9720d745d50f044cc4814bafe189a01fe6fb");
-    expectedData.add(
-        "0x833210c0282ec82ce1064399547d536acaea28df17b691886c80701cb18230cf1d536aaaab6cc5e3faa5d949383cfd5c082fef37499e3d120d6144a9d5ad84d900");
+        "0x5500000010000000550000005500000041000000b69c542c0ee6c4b6d8350514d876ea7d8ef563e406253e959289457204447d2c4eb4e4a993073f5e76d244d2f93f7c108652e3295a9c8d72c12477e095026b9500");
+    expectedData.add("0x10000000100000001000000010000000");
     Assertions.assertEquals(signedTx.witnesses, expectedData);
   }
 
