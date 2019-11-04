@@ -1,36 +1,36 @@
-package org.nervos.ckb.example;
+package org.nervos.ckb;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.address.CodeHashType;
-import org.nervos.ckb.example.transaction.CollectUtils;
-import org.nervos.ckb.example.transaction.Receiver;
-import org.nervos.ckb.example.transaction.Sender;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.transaction.CellCollector;
-import org.nervos.ckb.transaction.CellsWithPrivateKey;
-import org.nervos.ckb.transaction.TransactionBuilder;
+import org.nervos.ckb.transaction.*;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class SendToMultiSigAddressTxExample {
+public class SingleKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
-  private static String MultiSigAddress = "ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq";
+  private static List<String> ReceiveAddresses;
 
   static {
     api = new Api(NODE_URL, false);
+    ReceiveAddresses =
+        Arrays.asList(
+            "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
+            "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek");
   }
 
   public static void main(String[] args) throws Exception {
     String minerPrivateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
     String minerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     List<Receiver> receivers =
-        Collections.singletonList(
-            new Receiver(MultiSigAddress, new BigInteger("9000").multiply(UnitCKB)));
+        Arrays.asList(
+            new Receiver(ReceiveAddresses.get(0), new BigInteger("8000").multiply(UnitCKB)),
+            new Receiver(ReceiveAddresses.get(1), new BigInteger("9000").multiply(UnitCKB)));
     BigInteger txFee = BigInteger.valueOf(10000);
 
     System.out.println(
@@ -39,8 +39,8 @@ public class SendToMultiSigAddressTxExample {
             + " CKB");
 
     System.out.println(
-        "Before transfer, multi-sig address balance: "
-            + getMultiSigBalance(MultiSigAddress).divide(UnitCKB).toString(10)
+        "Before transfer, first receiver's balance: "
+            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
     // miner send capacity to three receiver accounts with 800, 900 and 1000 CKB
@@ -49,19 +49,14 @@ public class SendToMultiSigAddressTxExample {
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, multi-sig address balance: "
-            + getMultiSigBalance(MultiSigAddress).divide(UnitCKB).toString(10)
+        "After transfer, receiver's balance: "
+            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
   }
 
   private static BigInteger getBalance(String address) throws IOException {
     CellCollector cellCollector = new CellCollector(api);
     return cellCollector.getCapacityWithAddress(address);
-  }
-
-  private static BigInteger getMultiSigBalance(String address) throws IOException {
-    CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(address, CodeHashType.MULTISIG);
   }
 
   private static String sendCapacity(
@@ -76,12 +71,10 @@ public class SendToMultiSigAddressTxExample {
     TransactionBuilder builder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<CellsWithPrivateKey> cellsWithPrivateKeys =
-        txUtils.collectInputs(senders, CodeHashType.BLAKE160);
+    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
     builder.addInputsWithPrivateKeys(cellsWithPrivateKeys);
 
-    builder.addOutputs(
-        txUtils.generateOutputs(receivers, changeAddress, fee, CodeHashType.MULTISIG));
+    builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
     builder.buildTx();
 

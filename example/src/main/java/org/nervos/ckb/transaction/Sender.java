@@ -1,4 +1,4 @@
-package org.nervos.ckb.example.transaction;
+package org.nervos.ckb.transaction;
 
 import java.math.BigInteger;
 

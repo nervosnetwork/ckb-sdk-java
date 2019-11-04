@@ -1,4 +1,4 @@
-package org.nervos.ckb.example;
+package org.nervos.ckb;
 
 import com.google.common.primitives.Bytes;
 import java.io.IOException;
