@@ -44,7 +44,7 @@ public class CollectUtils {
       CollectedCells collectedCells =
           new CellCollector(api).getCellInputs(lockHash, sender.capacity);
       if (collectedCells.capacity.compareTo(sender.capacity) < 0) {
-        throw new IOException("No enough capacity with sender private key: " + sender.privateKey);
+        throw new IOException("No enough capacity with " + senders.indexOf(sender) + "th sender");
       }
       collectedCapacity = collectedCapacity.add(collectedCells.capacity);
       cellsWithPrivateKeys.add(new CellsWithPrivateKey(collectedCells.inputs, sender.privateKey));
