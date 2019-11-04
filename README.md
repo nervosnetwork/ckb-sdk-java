@@ -126,7 +126,7 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
   
   SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
   
-  // WitmessGroup contains witness index array and related private key
+  // WitnessGroup contains witness index array and related private key
   for (WitnessGroup witnessGroup : witnessGroups) {
     signBuilder.addWitnessGroup(witnessGroup);
   }
