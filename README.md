@@ -128,7 +128,7 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
   
   // A script group is defined as scripts that share the same hash.
   for (ScriptGroup scriptGroup : scriptGroups) {
-    signBuilder.addScriptGroup(scriptGroup);
+    signBuilder.sign(scriptGroup);
   }
   
   String hash = api.sendTransaction(signBuilder.buildTx());
