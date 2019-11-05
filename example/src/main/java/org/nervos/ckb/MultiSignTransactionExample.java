@@ -17,6 +17,7 @@ import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
+import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
@@ -116,7 +117,9 @@ public class MultiSignTransactionExample {
     int startIndex = 0;
     for (CellsWithPrivateKeys cellsWithPrivateKeys : cellsWithPrivateKeysList) {
       txBuilder.addInputs(cellsWithPrivateKeys.inputs);
-      txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
+      for (CellInput cellInput : cellsWithPrivateKeys.inputs) {
+        txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
+      }
       scriptGroupWithPrivateKeysList.add(
           new ScriptGroupWithPrivateKeys(
               new ScriptGroup(

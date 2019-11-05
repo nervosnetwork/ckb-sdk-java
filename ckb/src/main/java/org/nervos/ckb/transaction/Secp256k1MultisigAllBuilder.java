@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
@@ -24,15 +25,24 @@ public class Secp256k1MultisigAllBuilder {
     this.multiSigSerialize = multiSigSerialize;
   }
 
-  public void sign(ScriptGroup scriptGroup, List<String> privateKeys) {
+  public void sign(ScriptGroup scriptGroup, List<String> privateKeys) throws IOException {
     List groupWitnesses = new ArrayList();
-    groupWitnesses.addAll(transaction.witnesses);
+    if (transaction.witnesses.size() < transaction.inputs.size()) {
+      throw new IOException("Transaction witnesses count must be bigger than inputs count");
+    }
     if (scriptGroup.inputIndexes.size() < 1) {
       throw new RuntimeException("Need at least one witness!");
+    }
+    for (Integer index : scriptGroup.inputIndexes) {
+      groupWitnesses.add(transaction.witnesses.get(index));
+    }
+    for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
+      groupWitnesses.add(transaction.witnesses.get(i));
     }
     if (groupWitnesses.get(0).getClass() != Witness.class) {
       throw new RuntimeException("First witness must be of Witness type!");
     }
+
     String txHash = transaction.computeHash();
     StringBuilder emptySignature = new StringBuilder();
     for (int i = 0; i < privateKeys.size(); i++) {

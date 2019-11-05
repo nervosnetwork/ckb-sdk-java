@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
@@ -22,13 +23,19 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
     this.transaction = transaction;
   }
 
-  public void sign(ScriptGroup scriptGroup, String privateKey) {
+  public void sign(ScriptGroup scriptGroup, String privateKey) throws IOException {
     List groupWitnesses = new ArrayList();
-    for (Integer i : scriptGroup.inputIndexes) {
-      groupWitnesses.add(transaction.witnesses.get(i));
+    if (transaction.witnesses.size() < transaction.inputs.size()) {
+      throw new IOException("Transaction witnesses count must be bigger than inputs count");
     }
     if (scriptGroup.inputIndexes.size() < 1) {
       throw new RuntimeException("Need at least one witness!");
+    }
+    for (Integer i : scriptGroup.inputIndexes) {
+      groupWitnesses.add(transaction.witnesses.get(i));
+    }
+    for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
+      groupWitnesses.add(transaction.witnesses.get(i));
     }
     if (groupWitnesses.get(0).getClass() != Witness.class) {
       throw new RuntimeException("First witness must be of Witness type!");
