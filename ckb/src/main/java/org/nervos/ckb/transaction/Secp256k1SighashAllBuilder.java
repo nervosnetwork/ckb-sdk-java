@@ -26,7 +26,7 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
   public void sign(ScriptGroup scriptGroup, String privateKey) throws IOException {
     List groupWitnesses = new ArrayList();
     if (transaction.witnesses.size() < transaction.inputs.size()) {
-      throw new IOException("Transaction witnesses count must be bigger than inputs count");
+      throw new IOException("Transaction witnesses count must not be smaller than inputs count");
     }
     if (scriptGroup.inputIndexes.size() < 1) {
       throw new RuntimeException("Need at least one witness!");
