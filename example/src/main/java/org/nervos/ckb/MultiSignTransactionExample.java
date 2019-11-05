@@ -18,6 +18,7 @@ import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
@@ -67,11 +68,7 @@ public class MultiSignTransactionExample {
             + " CKB");
 
     String txHash =
-        sendCapacity(
-            targetAddress,
-            UnitCKB.multiply(BigInteger.valueOf(3000)),
-            privateKeys,
-            BigInteger.valueOf(10000));
+        sendCapacity(targetAddress, UnitCKB.multiply(BigInteger.valueOf(3000)), privateKeys);
     System.out.println("Transaction hash: " + txHash);
     Thread.sleep(30000);
     System.out.println(
@@ -100,8 +97,7 @@ public class MultiSignTransactionExample {
   }
 
   public static Transaction generateTx(
-      String targetAddress, BigInteger capacity, List<String> privateKeys, BigInteger fee)
-      throws IOException {
+      String targetAddress, BigInteger capacity, List<String> privateKeys) throws IOException {
     if (privateKeys.size() != configuration.threshold) {
       throw new IOException("Invalid number of keys");
     }
@@ -109,31 +105,31 @@ public class MultiSignTransactionExample {
     TransactionBuilder txBuilder = new TransactionBuilder(api, true);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<CellsWithPrivateKeys> cellsWithPrivateKeysList =
+    List<CellOutput> cellOutputs =
+        txUtils.generateOutputs(
+            Collections.singletonList(new Receiver(targetAddress, capacity)),
+            configuration.address());
+    txBuilder.addOutputs(cellOutputs);
+
+    // You can get fee rate by rpc or set a simple number
+    // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
+    BigInteger feeRate = BigInteger.valueOf(10000);
+
+    List<CellsWithAddress> cellsWithAddresses =
         txUtils.collectInputs(
-            Collections.singletonList(
-                new Sender(privateKeys, generateLock().computeHash(), capacity)),
-            CodeHashType.MULTISIG);
+            Collections.singletonList(configuration.address()), cellOutputs, feeRate);
     int startIndex = 0;
-    for (CellsWithPrivateKeys cellsWithPrivateKeys : cellsWithPrivateKeysList) {
-      txBuilder.addInputs(cellsWithPrivateKeys.inputs);
-      for (CellInput cellInput : cellsWithPrivateKeys.inputs) {
+    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+      txBuilder.addInputs(cellsWithAddress.inputs);
+      for (CellInput cellInput : cellsWithAddress.inputs) {
         txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
       }
       scriptGroupWithPrivateKeysList.add(
           new ScriptGroupWithPrivateKeys(
-              new ScriptGroup(
-                  NumberUtils.regionToList(startIndex, cellsWithPrivateKeys.inputs.size())),
-              cellsWithPrivateKeys.privateKeys));
-      startIndex += cellsWithPrivateKeys.inputs.size();
+              new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
+              privateKeys));
+      startIndex += cellsWithAddress.inputs.size();
     }
-    txBuilder.addOutputs(
-        txUtils.generateOutputs(
-            Collections.singletonList(new Receiver(targetAddress, capacity)),
-            configuration.address(),
-            fee,
-            CodeHashType.BLAKE160,
-            CodeHashType.MULTISIG));
 
     Secp256k1MultisigAllBuilder signBuilder =
         new Secp256k1MultisigAllBuilder(txBuilder.buildTx(), configuration.serialize());
@@ -147,9 +143,8 @@ public class MultiSignTransactionExample {
   }
 
   public static String sendCapacity(
-      String targetAddress, BigInteger capacity, List<String> privateKeys, BigInteger fee)
-      throws IOException {
-    Transaction tx = generateTx(targetAddress, capacity, privateKeys, fee);
+      String targetAddress, BigInteger capacity, List<String> privateKeys) throws IOException {
+    Transaction tx = generateTx(targetAddress, capacity, privateKeys);
     return api.sendTransaction(tx);
   }
 

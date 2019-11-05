@@ -7,6 +7,7 @@ import java.util.List;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
+import org.nervos.ckb.type.base.Type;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -100,6 +101,18 @@ public class Serializer {
             Strings.isEmpty(witness.outputType) ? new Empty() : new Bytes(witness.outputType)));
   }
 
+  public static Dynamic<Type> serializeWitnesses(List witnesses) {
+    List witnessList = new ArrayList<>();
+    for (Object witness : witnesses) {
+      if (witness.getClass() == Witness.class) {
+        witnessList.add(serializeWitnessArgs((Witness) witness));
+      } else {
+        witnessList.add(new Bytes((String) witness));
+      }
+    }
+    return new Dynamic<Type>(witnessList);
+  }
+
   public static Table serializeRawTransaction(Transaction transaction) {
     Transaction tx = Convert.parseTransaction(transaction);
     UInt32 versionUInt32 = new UInt32(tx.version);
@@ -113,7 +126,7 @@ public class Serializer {
 
   public static Table serializeTransaction(Transaction transaction) {
     Table rawTransactionTable = serializeRawTransaction(transaction);
-    Dynamic<Bytes> witnessesVec = Serializer.serializeBytes(transaction.witnesses);
+    Dynamic<Type> witnessesVec = Serializer.serializeWitnesses(transaction.witnesses);
     return new Table(rawTransactionTable, witnessesVec);
   }
 }
