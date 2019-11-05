@@ -82,9 +82,6 @@ public class TransactionBuilder {
     for (int i = 0; i < cellOutputs.size(); i++) {
       cellOutputsData.add("0x");
     }
-    //    for (int i = 0; i < cellInputs.size(); i++) {
-    //      witnesses.add(new Witness());
-    //    }
 
     List<CellDep> cellDeps = new ArrayList<>();
     cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));
