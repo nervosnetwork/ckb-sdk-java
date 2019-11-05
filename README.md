@@ -126,9 +126,9 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
   
   SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
   
-  // WitnessGroup contains witness index array and related private key
-  for (WitnessGroup scriptGroup : scriptGroups) {
-    signBuilder.addWitnessGroup(scriptGroup);
+  // A script group is defined as scripts that share the same hash.
+  for (ScriptGroup scriptGroup : scriptGroups) {
+    signBuilder.addScriptGroup(scriptGroup);
   }
   
   String hash = api.sendTransaction(signBuilder.buildTx());
