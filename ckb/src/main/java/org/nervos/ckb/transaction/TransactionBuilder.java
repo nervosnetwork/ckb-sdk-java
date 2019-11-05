@@ -26,7 +26,6 @@ public class TransactionBuilder {
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
   private List witnesses = new ArrayList<>();
-  private Transaction transaction;
   private boolean containMultiSig = false;
 
   public TransactionBuilder(Api api) {
@@ -53,6 +52,14 @@ public class TransactionBuilder {
     cellInputs.addAll(inputs);
   }
 
+  public void addWitnesses(List witnesses) {
+    this.witnesses = witnesses;
+  }
+
+  public void addWitness(Witness witness) {
+    this.witnesses.add(witness);
+  }
+
   public void addOutput(CellOutput output) {
     cellOutputs.add(output);
   }
@@ -75,9 +82,9 @@ public class TransactionBuilder {
     for (int i = 0; i < cellOutputs.size(); i++) {
       cellOutputsData.add("0x");
     }
-    for (int i = 0; i < cellInputs.size(); i++) {
-      witnesses.add(new Witness());
-    }
+    //    for (int i = 0; i < cellInputs.size(); i++) {
+    //      witnesses.add(new Witness());
+    //    }
 
     List<CellDep> cellDeps = new ArrayList<>();
     cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));

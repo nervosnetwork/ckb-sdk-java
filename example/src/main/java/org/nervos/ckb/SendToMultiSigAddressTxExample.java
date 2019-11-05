@@ -8,6 +8,8 @@ import java.util.List;
 import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
+import org.nervos.ckb.type.Witness;
+import org.nervos.ckb.type.cell.CellInput;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SendToMultiSigAddressTxExample {
@@ -26,7 +28,7 @@ public class SendToMultiSigAddressTxExample {
     String minerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     List<Receiver> receivers =
         Collections.singletonList(
-            new Receiver(MultiSigAddress, new BigInteger("9000").multiply(UnitCKB)));
+            new Receiver(MultiSigAddress, new BigInteger("20000").multiply(UnitCKB)));
     BigInteger txFee = BigInteger.valueOf(10000);
 
     System.out.println(
@@ -72,24 +74,30 @@ public class SendToMultiSigAddressTxExample {
     TransactionBuilder txBuilder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<WitnessGroup> witnessGroups = new ArrayList<>();
-    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
+    List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
+    List<CellsWithPrivateKeys> cellsWithPrivateKeysList = txUtils.collectInputs(senders);
     int startIndex = 0;
-    for (CellsWithPrivateKey cellsWithPrivateKey : cellsWithPrivateKeys) {
-      txBuilder.addInputs(cellsWithPrivateKey.inputs);
-      witnessGroups.add(
-          new WitnessGroup(
-              NumberUtils.regionToList(startIndex, cellsWithPrivateKey.inputs.size()),
-              cellsWithPrivateKey.privateKey));
+    for (CellsWithPrivateKeys cellsWithPrivateKeys : cellsWithPrivateKeysList) {
+      txBuilder.addInputs(cellsWithPrivateKeys.inputs);
+      for (CellInput cellInput : cellsWithPrivateKeys.inputs) {
+        txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
+      }
+      scriptGroupWithPrivateKeysList.add(
+          new ScriptGroupWithPrivateKeys(
+              new ScriptGroup(
+                  NumberUtils.regionToList(startIndex, cellsWithPrivateKeys.inputs.size())),
+              cellsWithPrivateKeys.privateKeys));
     }
 
     txBuilder.addOutputs(
-        txUtils.generateOutputs(receivers, changeAddress, fee, CodeHashType.MULTISIG));
+        txUtils.generateOutputs(
+            receivers, changeAddress, fee, CodeHashType.MULTISIG, CodeHashType.BLAKE160));
 
-    SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
+    Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
 
-    for (WitnessGroup witnessGroup : witnessGroups) {
-      signBuilder.addWitnessGroup(witnessGroup);
+    for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
+      signBuilder.sign(
+          scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
 
     return api.sendTransaction(signBuilder.buildTx());

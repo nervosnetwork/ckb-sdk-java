@@ -127,8 +127,8 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
   SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
   
   // WitnessGroup contains witness index array and related private key
-  for (WitnessGroup witnessGroup : witnessGroups) {
-    signBuilder.addWitnessGroup(witnessGroup);
+  for (WitnessGroup scriptGroup : scriptGroups) {
+    signBuilder.addWitnessGroup(scriptGroup);
   }
   
   String hash = api.sendTransaction(signBuilder.buildTx());

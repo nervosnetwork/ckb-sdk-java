@@ -13,29 +13,33 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class SignatureBuilder {
+public class Secp256k1MultisigAllBuilder {
 
   private Transaction transaction;
+  private String multiSigSerialize;
   private List<String> signedWitnesses = new ArrayList<>();
 
-  public SignatureBuilder(Transaction transaction) {
+  public Secp256k1MultisigAllBuilder(Transaction transaction, String multiSigSerialize) {
     this.transaction = transaction;
+    this.multiSigSerialize = multiSigSerialize;
   }
 
-  public void addWitnessGroup(WitnessGroup witnessGroup) {
+  public void sign(ScriptGroup scriptGroup, List<String> privateKeys) {
     List groupWitnesses = new ArrayList();
-    for (Integer i : witnessGroup.indexes) {
-      groupWitnesses.add(transaction.witnesses.get(i));
-    }
-    if (witnessGroup.indexes.size() < 1) {
+    groupWitnesses.addAll(transaction.witnesses);
+    if (scriptGroup.inputIndexes.size() < 1) {
       throw new RuntimeException("Need at least one witness!");
     }
     if (groupWitnesses.get(0).getClass() != Witness.class) {
       throw new RuntimeException("First witness must be of Witness type!");
     }
     String txHash = transaction.computeHash();
+    StringBuilder emptySignature = new StringBuilder();
+    for (int i = 0; i < privateKeys.size(); i++) {
+      emptySignature.append(Witness.EMPTY_LOCK);
+    }
     Witness emptiedWitness = (Witness) groupWitnesses.get(0);
-    emptiedWitness.lock = Witness.EMPTY_LOCK;
+    emptiedWitness.lock = multiSigSerialize.concat(emptySignature.toString());
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
     blake2b.update(Numeric.hexStringToByteArray(txHash));
@@ -52,10 +56,16 @@ public class SignatureBuilder {
       blake2b.update(bytes);
     }
     String message = blake2b.doFinalString();
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(witnessGroup.privateKey, false);
+
+    StringBuilder concatenatedSignatures = new StringBuilder();
+    for (String privateKey : privateKeys) {
+      ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+      concatenatedSignatures.append(
+          Numeric.toHexStringNoPrefix(
+              Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature()));
+    }
     ((Witness) groupWitnesses.get(0)).lock =
-        Numeric.toHexString(
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+        multiSigSerialize.concat(concatenatedSignatures.toString());
 
     List<String> signedGroupWitness = new ArrayList<>();
     for (Object witness : groupWitnesses) {
