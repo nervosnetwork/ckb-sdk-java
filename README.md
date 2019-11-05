@@ -110,10 +110,10 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
 ```Java
   Api api = new Api("your-ckb-node-url");
 
-  List<CellsWithPrivateKey> inputsWithPrivateKeys = Arrays.asList(
-    new CellsWithPrivateKey(inputs1, privateKey1), // Input from address 'cktxxx', capacity 100 CKB
-    new CellsWithPrivateKey(inputs2, privateKey2), // Input from address 'cktxxx', capacity 200 CKB
-    new CellsWithPrivateKey(inputs3, privateKey3), // Input from address 'cktxxx', capacity 300 CKB
+  List<CellInput> inputs = Arrays.asList(
+    new CellInput(inputs1), // Input from address 'cktxxx', capacity 100 CKB
+    new CellInput(inputs2), // Input from address 'cktxxx', capacity 200 CKB
+    new CellInput(inputs3), // Input from address 'cktxxx', capacity 300 CKB
   );
   
   List<CellOutput> outputs = Arrays.asList(
@@ -122,15 +122,16 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
     output3, // Output to address 'cktxxx' as change, capacity 100
   );
   
-  TransactionBuilder builder = new TransactionBuilder(api);
+  TransactionBuilder txBuilder = new TransactionBuilder(api);
   
-  builder.addInputsWithPrivateKeys(inputsWithPrivateKeys);
+  SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
   
-  builder.addOutputs(outputs);
+  // A script group is defined as scripts that share the same hash.
+  for (ScriptGroup scriptGroup : scriptGroups) {
+    signBuilder.sign(scriptGroup);
+  }
   
-  builder.buildTx();
-  
-  String hash = api.sendTransaction(builder.getTransaction());
+  String hash = api.sendTransaction(signBuilder.buildTx());
 ```
 
 #### Multi-sig Transfer
@@ -156,7 +157,6 @@ String publicKey =
         .toString(16);
 
 String address = utils.generateFromPublicKey(publicKey);
-
 
 
 // Generate ckb testnet multi-sig address

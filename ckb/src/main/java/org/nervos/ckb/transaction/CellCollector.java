@@ -9,7 +9,6 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.utils.Numeric;
@@ -52,12 +51,11 @@ public class CellCollector {
       }
       fromBlockNumber = currentToBlockNumber + 1;
     }
-    witnesses.add(new Witness(Witness.EMPTY_LOCK));
     if (inputsCapacity.compareTo(sumNeedCapacity) < 0) {
       throw new IOException("Capacity not enough!");
     }
 
-    return new CollectedCells(cellInputs, inputsCapacity, witnesses);
+    return new CollectedCells(cellInputs, inputsCapacity);
   }
 
   public CollectedCells getCellInputs(String lockHash, BigInteger needCapacity) throws IOException {
@@ -77,7 +75,7 @@ public class CellCollector {
       systemScriptCell = SystemContract.getSystemMultiSigCell(api);
     }
     Script lockScript =
-        Utils.generateLockScriptWithAddress(address, systemScriptCell.cellHash, codeHashType);
+        LockUtils.generateLockScriptWithAddress(address, systemScriptCell.cellHash, codeHashType);
     return getCapacityWithLockHash(lockScript.computeHash());
   }
 

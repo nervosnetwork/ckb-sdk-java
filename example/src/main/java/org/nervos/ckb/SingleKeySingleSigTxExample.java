@@ -2,11 +2,14 @@ package org.nervos.ckb;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
+import org.nervos.ckb.type.Witness;
+import org.nervos.ckb.type.cell.CellInput;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SingleKeySingleSigTxExample {
@@ -63,21 +66,38 @@ public class SingleKeySingleSigTxExample {
       String privateKey, List<Receiver> receivers, String changeAddress, BigInteger fee)
       throws IOException {
     BigInteger needCapacity = BigInteger.ZERO;
+    List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
 
     List<Sender> senders = Collections.singletonList(new Sender(privateKey, needCapacity));
-    TransactionBuilder builder = new TransactionBuilder(api);
+    TransactionBuilder txBuilder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
-    List<CellsWithPrivateKey> cellsWithPrivateKeys = txUtils.collectInputs(senders);
-    builder.addInputsWithPrivateKeys(cellsWithPrivateKeys);
+    List<CellsWithPrivateKeys> cellsWithPrivateKeysList = txUtils.collectInputs(senders);
+    int startIndex = 0;
+    for (CellsWithPrivateKeys cellsWithPrivateKeys : cellsWithPrivateKeysList) {
+      txBuilder.addInputs(cellsWithPrivateKeys.inputs);
+      for (CellInput cellInput : cellsWithPrivateKeys.inputs) {
+        txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
+      }
+      scriptGroupWithPrivateKeysList.add(
+          new ScriptGroupWithPrivateKeys(
+              new ScriptGroup(
+                  NumberUtils.regionToList(startIndex, cellsWithPrivateKeys.inputs.size())),
+              cellsWithPrivateKeys.privateKeys));
+    }
 
-    builder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
+    txBuilder.addOutputs(txUtils.generateOutputs(receivers, changeAddress, fee));
 
-    builder.buildTx();
+    Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
 
-    return api.sendTransaction(builder.getTransaction());
+    for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
+      signBuilder.sign(
+          scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
+    }
+
+    return api.sendTransaction(signBuilder.buildTx());
   }
 }

@@ -10,24 +10,16 @@ import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.address.Network;
-import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.Hash;
-import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
-import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
-import org.nervos.ckb.transaction.CellCollector;
-import org.nervos.ckb.transaction.CollectedCells;
+import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.dynamic.Table;
-import org.nervos.ckb.type.fixed.UInt64;
+import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class MultiSignTransactionExample {
@@ -39,7 +31,6 @@ public class MultiSignTransactionExample {
   private static List<String> publicKeys;
   private static Configuration configuration;
   private static SystemScriptCell systemMultiSigCell;
-  private static SystemScriptCell systemSecpCell;
 
   static {
     api = new Api(NODE_URL, false);
@@ -57,7 +48,6 @@ public class MultiSignTransactionExample {
   }
 
   public static void main(String[] args) throws Exception {
-    systemSecpCell = SystemContract.getSystemSecpCell(api);
     systemMultiSigCell = SystemContract.getSystemMultiSigCell(api);
     configuration = new Configuration(0, 2, publicKeys);
 
@@ -69,15 +59,27 @@ public class MultiSignTransactionExample {
             + " balance is "
             + getMultiSigBalance().divide(UnitCKB).toString()
             + " CKB");
+    System.out.println(
+        "Before transferring, target address "
+            + targetAddress
+            + " balance is "
+            + getBalance(targetAddress).divide(UnitCKB).toString()
+            + " CKB");
 
     String txHash =
         sendCapacity(
             targetAddress,
-            UnitCKB.multiply(BigInteger.valueOf(6000)),
+            UnitCKB.multiply(BigInteger.valueOf(3000)),
             privateKeys,
             BigInteger.valueOf(10000));
     System.out.println("Transaction hash: " + txHash);
     Thread.sleep(30000);
+    System.out.println(
+        "After transferring, target address "
+            + targetAddress
+            + " balance is "
+            + getBalance(targetAddress).divide(UnitCKB).toString()
+            + " CKB");
     System.out.println(
         "After transferring, multi-sig address "
             + multiSigAddress
@@ -92,87 +94,56 @@ public class MultiSignTransactionExample {
     return cellCollector.getCapacityWithLockHash(lock.computeHash());
   }
 
+  public static BigInteger getBalance(String address) throws IOException {
+    CellCollector cellCollector = new CellCollector(api);
+    return cellCollector.getCapacityWithAddress(address);
+  }
+
   public static Transaction generateTx(
       String targetAddress, BigInteger capacity, List<String> privateKeys, BigInteger fee)
       throws IOException {
     if (privateKeys.size() != configuration.threshold) {
       throw new IOException("Invalid number of keys");
     }
-    AddressUtils addressUtils = new AddressUtils(Network.TESTNET);
-    CellOutput cellOutput =
-        new CellOutput(
-            Numeric.toHexString(capacity.toString()),
-            new Script(
-                systemSecpCell.cellHash,
-                addressUtils.getArgsFromAddress(targetAddress),
-                Script.TYPE));
-    String outputData = "0x";
-    CellOutput changeOutput = new CellOutput("0x0", generateLock());
-    CellCollector cellCollector = new CellCollector(api);
-    CollectedCells collectedCells =
-        cellCollector.getCellInputs(generateLock().computeHash(), capacity);
-    BigInteger inputCapacity = collectedCells.capacity;
-    changeOutput.capacity =
-        Numeric.toHexString(inputCapacity.subtract(capacity).subtract(fee).toString());
-    Transaction transaction =
-        new Transaction(
-            "0x0",
-            Arrays.asList(
-                new CellDep(systemMultiSigCell.outPoint, CellDep.DEP_GROUP),
-                new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP)),
-            Collections.emptyList(),
-            collectedCells.inputs,
-            Arrays.asList(cellOutput, changeOutput),
-            Arrays.asList(outputData, outputData),
-            collectedCells.witnesses);
+    List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
+    TransactionBuilder txBuilder = new TransactionBuilder(api, true);
+    CollectUtils txUtils = new CollectUtils(api);
 
-    String txHash = transaction.computeHash();
-    Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
-    StringBuilder emptySignature = new StringBuilder();
-    for (int i = 0; i < privateKeys.size(); i++) {
-      emptySignature.append(Witness.EMPTY_LOCK);
-    }
-    Witness emptiedWitness = (Witness) transaction.witnesses.get(0);
-    emptiedWitness.lock = configuration.serialize().concat(emptySignature.toString());
-    Table table = Serializer.serializeWitnessArgs(emptiedWitness);
-    blake2b.update(new UInt64(table.getLength()).toBytes());
-    blake2b.update(table.toBytes());
-
-    for (int i = 1; i < transaction.witnesses.size(); i++) {
-      byte[] bytes;
-      if (transaction.witnesses.get(i).getClass() == Witness.class) {
-        bytes = Serializer.serializeWitnessArgs((Witness) transaction.witnesses.get(i)).toBytes();
-      } else {
-        bytes = Numeric.hexStringToByteArray((String) transaction.witnesses.get(i));
+    List<CellsWithPrivateKeys> cellsWithPrivateKeysList =
+        txUtils.collectInputs(
+            Collections.singletonList(
+                new Sender(privateKeys, generateLock().computeHash(), capacity)),
+            CodeHashType.MULTISIG);
+    int startIndex = 0;
+    for (CellsWithPrivateKeys cellsWithPrivateKeys : cellsWithPrivateKeysList) {
+      txBuilder.addInputs(cellsWithPrivateKeys.inputs);
+      for (CellInput cellInput : cellsWithPrivateKeys.inputs) {
+        txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
       }
-      blake2b.update(new UInt64(bytes.length).toBytes());
-      blake2b.update(bytes);
+      scriptGroupWithPrivateKeysList.add(
+          new ScriptGroupWithPrivateKeys(
+              new ScriptGroup(
+                  NumberUtils.regionToList(startIndex, cellsWithPrivateKeys.inputs.size())),
+              cellsWithPrivateKeys.privateKeys));
+      startIndex += cellsWithPrivateKeys.inputs.size();
+    }
+    txBuilder.addOutputs(
+        txUtils.generateOutputs(
+            Collections.singletonList(new Receiver(targetAddress, capacity)),
+            configuration.address(),
+            fee,
+            CodeHashType.BLAKE160,
+            CodeHashType.MULTISIG));
+
+    Secp256k1MultisigAllBuilder signBuilder =
+        new Secp256k1MultisigAllBuilder(txBuilder.buildTx(), configuration.serialize());
+
+    for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
+      signBuilder.sign(
+          scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys);
     }
 
-    String message = blake2b.doFinalString();
-    StringBuilder concatenatedSignatures = new StringBuilder();
-    for (String privateKey : privateKeys) {
-      ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-      concatenatedSignatures.append(
-          Numeric.toHexStringNoPrefix(
-              Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature()));
-    }
-    ((Witness) transaction.witnesses.get(0)).lock =
-        configuration.serialize().concat(concatenatedSignatures.toString());
-
-    List<String> signedWitness = new ArrayList<>();
-    for (Object witness : transaction.witnesses) {
-      if (witness.getClass() == Witness.class) {
-        signedWitness.add(
-            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
-      } else {
-        signedWitness.add((String) witness);
-      }
-    }
-    transaction.witnesses = signedWitness;
-
-    return transaction;
+    return signBuilder.buildTx();
   }
 
   public static String sendCapacity(
