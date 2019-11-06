@@ -31,7 +31,8 @@ public class MultiKeySingleSigTxExample {
             "89b773ec5cf97b8fd2cf280ab1e37cd658dc28d84bac8f8dda4a8646cc08d266",
             "fec27185a66dd21abb97eeaaeb6bf63fb9c5b7c7966550e6798a78fbaf4197f0",
             "2cee134faa03a158011dff33b7756e89a0c76ba64006640615be7b483b2935b4",
-            "55b55c7bd177ed837dde45bbde12fc79c12fb8695be258064f40e6d5f65db96c");
+            "55b55c7bd177ed837dde45bbde12fc79c12fb8695be258064f40e6d5f65db96c",
+            "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
     Addresses =
         Arrays.asList(
             "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
@@ -39,7 +40,8 @@ public class MultiKeySingleSigTxExample {
             "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
             "ckt1qyq8n3400g4lw7xs4denyjprpyzaa6z2z5wsl7e2gs",
             "ckt1qyqd4lgpt5auunu6s3wskkwxmdx548wksvcqyq44en",
-            "ckt1qyqrlj6znd3uhvuln5z83epv54xu8pmphzgse5uylq");
+            "ckt1qyqrlj6znd3uhvuln5z83epv54xu8pmphzgse5uylq",
+            "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
   }
 
   public static void main(String[] args) throws Exception {
@@ -86,7 +88,7 @@ public class MultiKeySingleSigTxExample {
             + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
-    // sender1 accounts send capacity to three receiver2 accounts with 400, 500 and 600 CKB
+    // send capacity to three receiver2 accounts with 400, 500 and 600 CKB
     String hash2 = sendCapacity(Addresses.subList(0, 3), receivers2, changeAddress);
     System.out.println("Second transaction hash: " + hash2);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
@@ -146,14 +148,16 @@ public class MultiKeySingleSigTxExample {
       for (CellInput cellInput : cellsWithAddress.inputs) {
         txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
       }
-      scriptGroupWithPrivateKeysList.add(
-          new ScriptGroupWithPrivateKeys(
-              new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
-              Collections.singletonList(
-                  PrivateKeys.get(Addresses.indexOf(cellsWithAddress.address)))));
-      startIndex += cellsWithAddress.inputs.size();
+      if (cellsWithAddress.inputs.size() > 0) {
+        scriptGroupWithPrivateKeysList.add(
+            new ScriptGroupWithPrivateKeys(
+                new ScriptGroup(
+                    NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
+                Collections.singletonList(
+                    PrivateKeys.get(Addresses.indexOf(cellsWithAddress.address)))));
+        startIndex += cellsWithAddress.inputs.size();
+      }
     }
-    txBuilder.addOutputs(txUtils.generateOutputs(receivers, changeAddress));
 
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
 

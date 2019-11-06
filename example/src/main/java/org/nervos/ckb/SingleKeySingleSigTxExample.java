@@ -36,7 +36,6 @@ public class SingleKeySingleSigTxExample {
         Arrays.asList(
             new Receiver(ReceiveAddresses.get(0), new BigInteger("8000").multiply(UnitCKB)),
             new Receiver(ReceiveAddresses.get(1), new BigInteger("9000").multiply(UnitCKB)));
-    BigInteger txFee = BigInteger.valueOf(10000);
 
     System.out.println(
         "Before transfer, miner's balance: "
