@@ -49,21 +49,32 @@ public class AddressUtils {
     return Bech32.encode(prefix(), convertBits(Bytes.asList(data), 8, 5, true));
   }
 
-  public Bech32.Bech32Data parse(String address) throws AddressFormatException {
+  private static String parsePrefix(String address) {
     Bech32.Bech32Data parsed = Bech32.decode(address);
     byte[] data = convertBits(Bytes.asList(parsed.data), 5, 8, false);
     if (data.length == 0) {
       return null;
     }
-    return new Bech32.Bech32Data(parsed.hrp, data);
+    Bech32.Bech32Data bech32Data = new Bech32.Bech32Data(parsed.hrp, data);
+    return Numeric.toHexStringNoPrefix(bech32Data.data);
   }
 
-  public String getArgsFromAddress(String address) throws AddressFormatException {
-    Bech32.Bech32Data bech32Data = parse(address);
-    String payload = Numeric.toHexString(bech32Data.data);
-    String prefix = TYPE + getCodeHashIdx();
-    String args = payload.replace(prefix, "");
-    return args;
+  public static CodeHashType parseAddressType(String address) throws AddressFormatException {
+    String payload = parsePrefix(address);
+    String prefixCodeHash = payload.substring(TYPE.length());
+    if (prefixCodeHash.startsWith(CODE_HASH_IDX_BLAKE160)) {
+      return CodeHashType.BLAKE160;
+    }
+    return CodeHashType.MULTISIG;
+  }
+
+  public static String parse(String address) throws AddressFormatException {
+    String payload = parsePrefix(address);
+    String prefixCodeHash = payload.substring(TYPE.length());
+    if (prefixCodeHash.startsWith(CODE_HASH_IDX_BLAKE160)) {
+      return payload.replace(TYPE + CODE_HASH_IDX_BLAKE160, "");
+    }
+    return payload.replace(TYPE + CODE_HASH_IDX_MULTISIG, "");
   }
 
   private String prefix() {
@@ -79,7 +90,7 @@ public class AddressUtils {
     return sb.toString();
   }
 
-  public byte[] convertBits(List<Byte> data, int fromBits, int toBits, boolean pad)
+  public static byte[] convertBits(List<Byte> data, int fromBits, int toBits, boolean pad)
       throws AddressFormatException {
     int acc = 0;
     int bits = 0;

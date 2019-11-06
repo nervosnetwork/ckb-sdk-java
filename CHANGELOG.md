@@ -1,6 +1,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.24.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.0...v0.24.1) (2019-11-06)
+
+### Feature
+
+* Refactor module names(rename core to ckb and add example module)([02ba44a](https://github.com/nervosnetwork/ckb-sdk-java/commit/02ba44aa7acf6f2eb77ed20ee933642c24f3c02d))
+* Split transaction building and signature([cc4fc63](https://github.com/nervosnetwork/ckb-sdk-java/commit/cc4fc63ad25134bdff6d876f15486d04bdc3518c))
+* Refactor multisig example to split transaction building and signature([48ac5c5](https://github.com/nervosnetwork/ckb-sdk-java/commit/c86f9ebd18dc240bbfd189fc5d540d50e1f90080))
+* Update cell collector for transaction fee calculating([b4c720b](https://github.com/nervosnetwork/ckb-sdk-java/commit/b4c720b3923dca609a7d94aad8e18b7f224e849f))
+
+### Breaking Change
+
+* Rename core module to ckb
+* Rename console module to ckb-sdk
+* Create new example module
+* Refactor examples for splitting transaction building and signature 
+* Reactor cell collector for transaction fee calculating
+
 # [v0.24.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.23.2...v0.24.0) (2019-11-02)
 
 ### Feature

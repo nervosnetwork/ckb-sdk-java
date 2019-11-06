@@ -16,6 +16,8 @@ Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
 #### Install from repositories:  
 
+##### version <= 0.24.0
+
 - Maven  
 ```
 <dependency>
@@ -30,6 +32,22 @@ Gradle
 implementation 'org.nervos.ckb:core:{version}'
 ```
 
+##### version >= 0.24.1
+
+- Maven  
+```
+<dependency>
+  <groupId>org.nervos.ckb</groupId>
+  <artifactId>ckb</artifactId>
+  <version>{version}</version>
+</dependency>
+```
+
+Gradle
+```
+implementation 'org.nervos.ckb:ckb:{version}'
+```
+
 #### Install manually
 
 You can generate the jar and import manually.
@@ -41,13 +59,20 @@ cd ckb-sdk-java
 
 gradle shadowJar  // ./gradlew shadowJar 
 ```
+
+##### version <= 0.24.0
+
 A `console-{version}-all.jar` package will be generated in `console/build/libs`, which you can put into your project to develop with it.
+
+##### version >= 0.24.1
+
+A `ckb-sdk-{version}-all.jar` package will be generated in `ckb-sdk/build/libs`, which you can put into your project to develop with it.
 
 If you don't want to generate the jar by yourself, you can download a build from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
 
 #### Import Jar to Project
 
-When you need to import `ckb-java-sdk` dependency to your project, you can add the `console-{version}-all.jar` to your project `libs` package. 
+When you need to import `ckb-java-sdk` dependency to your project, you can add the `console-{version}-all.jar` or `ckb-sdk-{version}-all.jar` to your project `libs` package. 
 
 If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can import jar according to IDE option help documents.
 
@@ -76,19 +101,19 @@ You can see more JSON-RPC requests from [RPC Document](https://github.com/nervos
 
 #### Single-sig Transfer
 
-[SingleKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/SingleKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to a private key.
+[SingleKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SingleKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to a private key.
 
-[MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/MultiKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
+[MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
 
-You can reference detail example in `console/example/MultiKeySingleSigTxExample.java`.
+You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
 
 ```Java
   Api api = new Api("your-ckb-node-url");
 
-  List<CellsWithPrivateKey> inputsWithPrivateKeys = Arrays.asList(
-    new CellsWithPrivateKey(inputs1, privateKey1), // Input from address 'cktxxx', capacity 100 CKB
-    new CellsWithPrivateKey(inputs2, privateKey2), // Input from address 'cktxxx', capacity 200 CKB
-    new CellsWithPrivateKey(inputs3, privateKey3), // Input from address 'cktxxx', capacity 300 CKB
+  List<CellInput> inputs = Arrays.asList(
+    new CellInput(inputs1), // Input from address 'cktxxx', capacity 100 CKB
+    new CellInput(inputs2), // Input from address 'cktxxx', capacity 200 CKB
+    new CellInput(inputs3), // Input from address 'cktxxx', capacity 300 CKB
   );
   
   List<CellOutput> outputs = Arrays.asList(
@@ -97,22 +122,23 @@ You can reference detail example in `console/example/MultiKeySingleSigTxExample.
     output3, // Output to address 'cktxxx' as change, capacity 100
   );
   
-  TransactionBuilder builder = new TransactionBuilder(api);
+  TransactionBuilder txBuilder = new TransactionBuilder(api);
   
-  builder.addInputsWithPrivateKeys(inputsWithPrivateKeys);
+  SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
   
-  builder.addOutputs(outputs);
+  // A script group is defined as scripts that share the same hash.
+  for (ScriptGroup scriptGroup : scriptGroups) {
+    signBuilder.sign(scriptGroup);
+  }
   
-  builder.buildTx();
-  
-  String hash = api.sendTransaction(builder.getTransaction());
+  String hash = api.sendTransaction(signBuilder.buildTx());
 ```
 
 #### Multi-sig Transfer
 
-[SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/SendToMultiSigAddressTxExample.java) provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig address.
+[SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SendToMultiSigAddressTxExample.java) provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig address.
 
-[MultiSignTransactionExample.java](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/console/src/main/java/org/nervos/ckb/example/MultiSignTransactionExample.java) provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig address.
+[MultiSignTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiSignTransactionExample.java) provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig address.
 
 #### Address
 
@@ -131,7 +157,6 @@ String publicKey =
         .toString(16);
 
 String address = utils.generateFromPublicKey(publicKey);
-
 
 
 // Generate ckb testnet multi-sig address

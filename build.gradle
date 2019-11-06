@@ -1,11 +1,11 @@
 buildscript {
 
     ext.bouncycastleVersion = '1.64'
-    ext.rxjavaVersion = '2.2.13'
+    ext.rxjavaVersion = '2.2.14'
     ext.gsonVersion = '2.8.6'
     ext.okhttpVersion = '4.2.2'
     ext.loggingOkhttpVersion = '4.2.2'
-    ext.slf4jVersion = '1.7.28'
+    ext.slf4jVersion = '1.7.29'
     ext.guavaVersion = '28.1-jre'
 
     ext.junitVersion = '5.5.2'
@@ -43,7 +43,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.24.0'
+    version '0.24.1'
 
     apply plugin: 'java'
 
@@ -113,7 +113,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '0.24.0'
+                version '0.24.1'
                 from components.java
             }
         }

@@ -1,0 +1,4 @@
+description 'ckb-sdk-java is a lightweight Java library for integration with nervos CKB.'
+
+apply from: rootProject.file('gradle/checkstyle.gradle')
+apply plugin: 'com.github.johnrengelman.shadow'
