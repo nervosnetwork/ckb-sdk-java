@@ -62,6 +62,10 @@ public class CellCollector {
     }
     List witnesses = new ArrayList<>();
 
+    CellOutput changeOutput = cellOutputs.get(cellOutputs.size() - 1);
+    BigInteger changeOutputSize =
+        BigInteger.valueOf(Serializer.serializeCellOutput(changeOutput).getLength());
+
     BigInteger needCapacity = BigInteger.ZERO;
     for (CellOutput cellOutput : cellOutputs) {
       needCapacity = needCapacity.add(Numeric.toBigInt(cellOutput.capacity));
@@ -74,11 +78,11 @@ public class CellCollector {
       while (fromBlockNumber <= toBlockNumber
           && inputsCapacity.compareTo(needCapacity.add(transactionFee)) < 0) {
         long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-        cellOutputList.addAll(
+        cellOutputList =
             api.getCellsByLockHash(
                 lockHashes.get(index),
                 BigInteger.valueOf(fromBlockNumber).toString(),
-                BigInteger.valueOf(currentToBlockNumber).toString()));
+                BigInteger.valueOf(currentToBlockNumber).toString());
         if (cellOutputList.size() > 0) {
           for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputList) {
             CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
@@ -90,7 +94,8 @@ public class CellCollector {
             transaction.inputs = cellInputs;
             transaction.witnesses = witnesses;
             transactionFee = calculateTxFee(transaction, feeRate);
-            if (inputsCapacity.compareTo(needCapacity.add(transactionFee)) > 0) {
+            BigInteger sumNeedCapacity = needCapacity.add(transactionFee).add(changeOutputSize);
+            if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
               cellOutputs.get(cellOutputs.size() - 1).capacity =
                   Numeric.prependHexPrefix(
                       inputsCapacity.subtract(needCapacity).subtract(transactionFee).toString(16));

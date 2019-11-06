@@ -72,7 +72,7 @@ public class SendToMultiSigAddressTxExample {
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
 
-    txBuilder.addOutputs(txUtils.generateOutputs(receivers, changeAddress));
+    txBuilder.addOutputs(cellOutputs);
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
