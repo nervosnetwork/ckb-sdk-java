@@ -28,7 +28,7 @@ public class AddressParser extends AddressBaseOperator {
     if (TYPE_SHORT.equals(type)) {
       String codeHashIndex = payload.substring(2, 4);
       String args = Numeric.prependHexPrefix(payload.substring(4));
-      if (Numeric.cleanHexPrefix(args).length() != 40) {
+      if (Numeric.cleanHexPrefix(args).length() / 2 != 20) {
         throw new AddressFormatException("Short address args byte length must be equal to 20");
       }
       if (CODE_HASH_IDX_BLAKE160.equals(codeHashIndex)) {
