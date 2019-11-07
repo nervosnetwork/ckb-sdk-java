@@ -10,17 +10,23 @@ public class AddressGenerator extends AddressBaseOperator {
 
   public static String generate(Network network, Script script) {
     if (Script.TYPE.equals(script.hashType) && script.args.length() == 40) {
-      String codeHashIndex =
-          MULTISIG_CODE_HASH.equals(Numeric.cleanHexPrefix(script.codeHash))
-              ? CODE_HASH_IDX_MULTISIG
-              : CODE_HASH_IDX_BLAKE160;
-
-      // Payload: type(01) | code hash index(00, P2PH / 01, multi-sig) | args
-      String payload = TYPE_SHORT + codeHashIndex + Numeric.cleanHexPrefix(script.args);
-      byte[] data = Numeric.hexStringToByteArray(payload);
-      return Bech32.encode(
-          prefix(network),
-          convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));
+      if (SECP_BLAKE160_CODE_HASH.equals(Numeric.cleanHexPrefix(script.codeHash))) {
+        // Payload: type(01) | code hash index(00, P2PH) | args
+        String payload = TYPE_SHORT + CODE_HASH_IDX_BLAKE160 + Numeric.cleanHexPrefix(script.args);
+        byte[] data = Numeric.hexStringToByteArray(payload);
+        return Bech32.encode(
+            prefix(network),
+            convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));
+      } else if (MULTISIG_CODE_HASH.equals(Numeric.cleanHexPrefix(script.codeHash))) {
+        // Payload: type(01) | code hash index(01, multi-sig) | args
+        String payload = TYPE_SHORT + CODE_HASH_IDX_MULTISIG + Numeric.cleanHexPrefix(script.args);
+        byte[] data = Numeric.hexStringToByteArray(payload);
+        return Bech32.encode(
+            prefix(network),
+            convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));
+      } else {
+        return generateFullAddress(network, script);
+      }
     }
     return generateFullAddress(network, script);
   }

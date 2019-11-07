@@ -30,18 +30,28 @@ public class AddressParser extends AddressBaseOperator {
       String args = payload.substring(4);
       if (CODE_HASH_IDX_BLAKE160.equals(codeHashIndex)) {
         return new AddressParseResult(
-            parseNetwork(address), new Script(SECP_BLAKE160_CODE_HASH, args, Script.TYPE));
+            parseNetwork(address),
+            new Script(SECP_BLAKE160_CODE_HASH, args, Script.TYPE),
+            AddressParseResult.Type.SHORT);
       }
       return new AddressParseResult(
-          parseNetwork(address), new Script(MULTISIG_CODE_HASH, args, Script.TYPE));
+          parseNetwork(address),
+          new Script(MULTISIG_CODE_HASH, args, Script.TYPE),
+          AddressParseResult.Type.SHORT);
     }
 
     String codeHash = payload.substring(2, 66);
     String args = payload.substring(66);
     if (TYPE_FULL_DATA.equals(type)) {
-      return new AddressParseResult(parseNetwork(address), new Script(codeHash, args, Script.DATA));
+      return new AddressParseResult(
+          parseNetwork(address),
+          new Script(codeHash, args, Script.DATA),
+          AddressParseResult.Type.FULL);
     }
-    return new AddressParseResult(parseNetwork(address), new Script(codeHash, args, Script.TYPE));
+    return new AddressParseResult(
+        parseNetwork(address),
+        new Script(codeHash, args, Script.TYPE),
+        AddressParseResult.Type.FULL);
   }
 
   private static Network parseNetwork(String address) {
