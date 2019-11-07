@@ -9,7 +9,7 @@ import org.nervos.ckb.utils.Numeric;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressParser extends AddressBaseOperator {
 
-  private static String parsePrefix(String address) {
+  private static String parsePayload(String address) {
     Bech32.Bech32Data parsed = Bech32.decode(address);
     byte[] data = convertBits(com.google.common.primitives.Bytes.asList(parsed.data), 5, 8, false);
     if (data.length == 0) {
@@ -20,7 +20,7 @@ public class AddressParser extends AddressBaseOperator {
   }
 
   public static AddressParseResult parse(String address) throws AddressFormatException {
-    String payload = parsePrefix(address);
+    String payload = parsePayload(address);
     if (payload == null) {
       throw new AddressFormatException("Address bech32 decode fail");
     }
