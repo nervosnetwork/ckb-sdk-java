@@ -13,8 +13,8 @@ public class AddressGeneratorTest {
   void testSingleSigShortTestnetAddressGenerate() {
     Script singleSigShortScript =
         new Script(
-            "9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            "36c329ed630d6ce750712a477543672adab57f4c",
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.TESTNET, singleSigShortScript);
     Assertions.assertEquals("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83", address);
@@ -24,8 +24,8 @@ public class AddressGeneratorTest {
   void testSingleSigShortMainnetAddressGenerate() {
     Script singleSigShortScript =
         new Script(
-            "9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            "36c329ed630d6ce750712a477543672adab57f4c",
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.MAINNET, singleSigShortScript);
     Assertions.assertEquals("ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd", address);
@@ -35,8 +35,8 @@ public class AddressGeneratorTest {
   void testMultiSigShortTestnetAddressGenerate() {
     Script multiSigShortScript =
         new Script(
-            "5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8",
-            "f04cec84bc37f683613bed2f242c9aa1b678e9fe",
+            "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8",
+            "0xf04cec84bc37f683613bed2f242c9aa1b678e9fe",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.TESTNET, multiSigShortScript);
     Assertions.assertEquals("ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq", address);
@@ -46,8 +46,8 @@ public class AddressGeneratorTest {
   void testMultiSigShortMainnetAddressGenerate() {
     Script multiSigShortScript =
         new Script(
-            "5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8",
-            "f04cec84bc37f683613bed2f242c9aa1b678e9fe",
+            "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8",
+            "0xf04cec84bc37f683613bed2f242c9aa1b678e9fe",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.MAINNET, multiSigShortScript);
     Assertions.assertEquals("ckb1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lq2sg8su", address);
@@ -57,8 +57,8 @@ public class AddressGeneratorTest {
   void testTypeFullTestnetAddressGenerate() {
     Script typeFullScript =
         new Script(
-            "1892ea40d82b53c678ff88312450bbb17e164d7a3e0a90941aa58839f56f8df2",
-            "36c329ed630d6ce750712a477543672adab57f4c",
+            "0x1892ea40d82b53c678ff88312450bbb17e164d7a3e0a90941aa58839f56f8df2",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.TYPE);
     String address = AddressGenerator.generateFullAddress(Network.TESTNET, typeFullScript);
     Assertions.assertEquals(
@@ -70,8 +70,8 @@ public class AddressGeneratorTest {
   void testTypeFullMainnetAddressGenerate() {
     Script typeFullScript =
         new Script(
-            "1892ea40d82b53c678ff88312450bbb17e164d7a3e0a90941aa58839f56f8df2",
-            "36c329ed630d6ce750712a477543672adab57f4c",
+            "0x1892ea40d82b53c678ff88312450bbb17e164d7a3e0a90941aa58839f56f8df2",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.TYPE);
     String address = AddressGenerator.generateFullAddress(Network.MAINNET, typeFullScript);
     Assertions.assertEquals(
@@ -83,8 +83,8 @@ public class AddressGeneratorTest {
   void testDataFullTestnetAddressGenerate() {
     Script dataFullScript =
         new Script(
-            "a656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
-            "36c329ed630d6ce750712a477543672adab57f4c",
+            "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.DATA);
     String address = AddressGenerator.generateFullAddress(Network.TESTNET, dataFullScript);
     Assertions.assertEquals(
@@ -96,8 +96,8 @@ public class AddressGeneratorTest {
   void testDataFullMainnetAddressGenerate() {
     Script dataFullScript =
         new Script(
-            "a656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
-            "36c329ed630d6ce750712a477543672adab57f4c",
+            "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.DATA);
     String address = AddressGenerator.generateFullAddress(Network.MAINNET, dataFullScript);
     Assertions.assertEquals(

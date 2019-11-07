@@ -27,21 +27,21 @@ public class AddressParser extends AddressBaseOperator {
     String type = payload.substring(0, 2);
     if (TYPE_SHORT.equals(type)) {
       String codeHashIndex = payload.substring(2, 4);
-      String args = payload.substring(4);
+      String args = Numeric.prependHexPrefix(payload.substring(4));
       if (CODE_HASH_IDX_BLAKE160.equals(codeHashIndex)) {
         return new AddressParseResult(
             parseNetwork(address),
-            new Script(SECP_BLAKE160_CODE_HASH, args, Script.TYPE),
+            new Script(Numeric.prependHexPrefix(SECP_BLAKE160_CODE_HASH), args, Script.TYPE),
             AddressParseResult.Type.SHORT);
       }
       return new AddressParseResult(
           parseNetwork(address),
-          new Script(MULTISIG_CODE_HASH, args, Script.TYPE),
+          new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
           AddressParseResult.Type.SHORT);
     }
 
-    String codeHash = payload.substring(2, 66);
-    String args = payload.substring(66);
+    String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
+    String args = Numeric.prependHexPrefix(payload.substring(66));
     if (TYPE_FULL_DATA.equals(type)) {
       return new AddressParseResult(
           parseNetwork(address),
