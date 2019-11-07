@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.nervos.ckb.address.AddressUtils;
-import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.service.Api;
@@ -21,6 +19,7 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.address.AddressGenerator;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class MultiSignTransactionExample {
@@ -193,9 +192,10 @@ public class MultiSignTransactionExample {
       return Hash.blake160(serialize());
     }
 
-    public String address() {
-      AddressUtils addressUtils = new AddressUtils(Network.TESTNET, CodeHashType.MULTISIG);
-      return addressUtils.generate(blake160());
+    public String address() throws IOException {
+      Script script =
+          new Script(SystemContract.getSystemMultiSigCell(api).cellHash, blake160(), Script.TYPE);
+      return AddressGenerator.generate(Network.TESTNET, script);
     }
   }
 }

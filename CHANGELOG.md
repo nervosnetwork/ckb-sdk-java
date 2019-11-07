@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.24.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.1...v0.24.2) (2019-11-07)
+
+### Feature
+
+* Add AddressGenerator and AddressParser([dbf4fe5](https://github.com/nervosnetwork/ckb-sdk-java/commit/dbf4fe57cde7965387e1fa2116b9d9a1eae9a30c))
+* Update address generator and parser for example([7cdf948](https://github.com/nervosnetwork/ckb-sdk-java/commit/7cdf9488c7b3618f89c6c03492d96949fce85e8e))
+
 # [v0.24.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.0...v0.24.1) (2019-11-06)
 
 ### Feature
