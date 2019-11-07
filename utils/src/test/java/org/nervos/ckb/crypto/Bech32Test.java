@@ -70,7 +70,7 @@ public class Bech32Test {
         new String[] {
           " 1nwldj5",
           "\0x7F1axkwrx",
-          "an84characterslonghumanreadablepartthatcontainsthenumber1andtheexcludedcharactersbio1569pvx",
+          "an84characterslonghumanreadablepartthatcontainsthenumber1andtheexcludedcharactersbio1569pvxharactersbio1569pvx",
           "pzry9x0s0muk",
           "1pzry9x0s0muk",
           "x1b4n0q5v",
