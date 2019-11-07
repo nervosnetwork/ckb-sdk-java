@@ -33,11 +33,14 @@ public class AddressParser extends AddressBaseOperator {
             parseNetwork(address),
             new Script(Numeric.prependHexPrefix(SECP_BLAKE160_CODE_HASH), args, Script.TYPE),
             AddressParseResult.Type.SHORT);
+      } else if (CODE_HASH_IDX_MULTISIG.equals(codeHashIndex)) {
+        return new AddressParseResult(
+            parseNetwork(address),
+            new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
+            AddressParseResult.Type.SHORT);
+      } else {
+        throw new AddressFormatException("Address parse fail");
       }
-      return new AddressParseResult(
-          parseNetwork(address),
-          new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
-          AddressParseResult.Type.SHORT);
     }
 
     String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
