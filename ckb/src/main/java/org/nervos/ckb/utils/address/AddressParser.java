@@ -22,12 +22,15 @@ public class AddressParser extends AddressBaseOperator {
   public static AddressParseResult parse(String address) throws AddressFormatException {
     String payload = parsePrefix(address);
     if (payload == null) {
-      throw new AddressFormatException("Address parse fail");
+      throw new AddressFormatException("Address bech32 decode fail");
     }
     String type = payload.substring(0, 2);
     if (TYPE_SHORT.equals(type)) {
       String codeHashIndex = payload.substring(2, 4);
       String args = Numeric.prependHexPrefix(payload.substring(4));
+      if (Numeric.cleanHexPrefix(args).length() != 40) {
+        throw new AddressFormatException("Short address args byte length must be equal to 20");
+      }
       if (CODE_HASH_IDX_BLAKE160.equals(codeHashIndex)) {
         return new AddressParseResult(
             parseNetwork(address),
@@ -39,7 +42,7 @@ public class AddressParser extends AddressBaseOperator {
             new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
             AddressParseResult.Type.SHORT);
       } else {
-        throw new AddressFormatException("Address parse fail");
+        throw new AddressFormatException("Short address code hash index must be 00 or 01");
       }
     }
 
@@ -50,14 +53,21 @@ public class AddressParser extends AddressBaseOperator {
           parseNetwork(address),
           new Script(codeHash, args, Script.DATA),
           AddressParseResult.Type.FULL);
+    } else if (TYPE_FULL_TYPE.equals(type)) {
+      return new AddressParseResult(
+          parseNetwork(address),
+          new Script(codeHash, args, Script.TYPE),
+          AddressParseResult.Type.FULL);
     }
-    return new AddressParseResult(
-        parseNetwork(address),
-        new Script(codeHash, args, Script.TYPE),
-        AddressParseResult.Type.FULL);
+    throw new AddressFormatException("Full address type must be 02 or 04");
   }
 
-  private static Network parseNetwork(String address) {
-    return address.startsWith("ckb") ? Network.MAINNET : Network.TESTNET;
+  public static Network parseNetwork(String address) {
+    if (address.startsWith("ckb")) {
+      return Network.MAINNET;
+    } else if (address.startsWith("ckt")) {
+      return Network.TESTNET;
+    }
+    throw new AddressFormatException("Address prefix should be ckb or ckt");
   }
 }

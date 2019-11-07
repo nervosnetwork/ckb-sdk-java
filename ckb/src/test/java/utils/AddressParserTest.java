@@ -2,7 +2,9 @@ package utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.address.Network;
+import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
@@ -132,5 +134,68 @@ public class AddressParserTest {
     Assertions.assertEquals(dataFullScript.args, addressParseResult.script.args);
     Assertions.assertEquals(dataFullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(dataFullScript.hashType, addressParseResult.script.hashType);
+  }
+
+  @Test
+  void testParseAddressNetworkException() {
+    String address = "ckn1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+    AddressFormatException exception =
+        Assertions.assertThrows(
+            AddressFormatException.class,
+            new Executable() {
+              @Override
+              public void execute() throws Throwable {
+                AddressParser.parseNetwork(address);
+              }
+            });
+    Assertions.assertTrue(exception.getMessage().contains("Address prefix should be ckb or ckt"));
+  }
+
+  @Test
+  void testFullAddressTypeException() {
+    String address =
+        "ckt1qwn9dutjk669cfznq7httfar0gtk7qp0du3wjfvzck9l0w3k9eqhvdkr98kkxrtvuag8z2j8w4pkw2k6k4l5ctv25r2";
+    AddressFormatException exception =
+        Assertions.assertThrows(
+            AddressFormatException.class,
+            new Executable() {
+              @Override
+              public void execute() throws Throwable {
+                AddressParser.parse(address);
+              }
+            });
+    Assertions.assertTrue(exception.getMessage().contains("Full address type must be 02 or 04"));
+  }
+
+  @Test
+  void testShortAddressTypeException() {
+    String address = "ckt1qyzndsefa43s6m882pcj53m4gdnj4k440axqcth0hp";
+    AddressFormatException exception =
+        Assertions.assertThrows(
+            AddressFormatException.class,
+            new Executable() {
+              @Override
+              public void execute() throws Throwable {
+                AddressParser.parse(address);
+              }
+            });
+    Assertions.assertTrue(
+        exception.getMessage().contains("Short address code hash index must be 00 or 01"));
+  }
+
+  @Test
+  void testShortAddressArgsLengthException() {
+    String address = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqqm65l9j";
+    AddressFormatException exception =
+        Assertions.assertThrows(
+            AddressFormatException.class,
+            new Executable() {
+              @Override
+              public void execute() throws Throwable {
+                AddressParser.parse(address);
+              }
+            });
+    Assertions.assertTrue(
+        exception.getMessage().contains("Short address args byte length must be equal to 20"));
   }
 }
