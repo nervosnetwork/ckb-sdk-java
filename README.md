@@ -145,24 +145,20 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
 You can generate ckb address through this SDK as below:
 
 ```Java
-// Generate ckb testnet single-sig address
-AddressUtils utils = new AddressUtils(Network.TESTNET);
-
-// Generate public key from private key through SECP256K1
+// Generate mainnet address with SECP256K1 and public blake160 hash
 String publicKey =
     Sign.publicKeyFromPrivate(
             Numeric.toBigInt(
                 "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3"),
             true)
         .toString(16);
+Script script =
+        new Script(
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+            Hash.blake160(publicKey),
+            Script.TYPE);
+String address = AddressGenerator.generate(Network.MAINNET, script);
 
-String address = utils.generateFromPublicKey(publicKey);
-
-
-// Generate ckb testnet multi-sig address
-AddressUtils utils = new AddressUtils(Network.TESTNET, CodeHashIdx.MULTISIG);
-
-String address = utils.generateFromPublicKey(multisigScriptHash);
 ```
 
 ### Development

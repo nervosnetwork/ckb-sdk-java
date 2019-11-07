@@ -3,12 +3,9 @@ package org.nervos.ckb.transaction;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
-import org.nervos.ckb.address.AddressUtils;
-import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
@@ -18,6 +15,8 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
+import org.nervos.ckb.utils.address.AddressParseResult;
+import org.nervos.ckb.utils.address.AddressParser;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellCollector {
@@ -118,15 +117,8 @@ public class CellCollector {
   }
 
   public BigInteger getCapacityWithAddress(String address) throws IOException {
-    CodeHashType codeHashType = AddressUtils.parseAddressType(address);
-    SystemScriptCell systemScriptCell;
-    if (codeHashType == CodeHashType.BLAKE160) {
-      systemScriptCell = SystemContract.getSystemSecpCell(api);
-    } else {
-      systemScriptCell = SystemContract.getSystemMultiSigCell(api);
-    }
-    Script lockScript = LockUtils.generateLockScriptWithAddress(address, systemScriptCell.cellHash);
-    return getCapacityWithLockHash(lockScript.computeHash());
+    AddressParseResult addressParseResult = AddressParser.parse(address);
+    return getCapacityWithLockHash(addressParseResult.script.computeHash());
   }
 
   public BigInteger getCapacityWithLockHash(String lockHash) throws IOException {

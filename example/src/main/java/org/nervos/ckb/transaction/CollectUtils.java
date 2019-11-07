@@ -5,15 +5,15 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.address.AddressParseResult;
+import org.nervos.ckb.utils.address.AddressParser;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CollectUtils {
@@ -30,11 +30,8 @@ public class CollectUtils {
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
     List<String> lockHashes = new ArrayList<>();
     for (String address : sendAddresses) {
-      CodeHashType codeHashType = AddressUtils.parseAddressType(address);
-      SystemScriptCell systemScriptCell = getSystemScriptCell(codeHashType);
-      lockHashes.add(
-          LockUtils.generateLockScriptWithAddress(address, systemScriptCell.cellHash)
-              .computeHash());
+      AddressParseResult addressParseResult = AddressParser.parse(address);
+      lockHashes.add(addressParseResult.script.computeHash());
     }
     Map<String, List<CellInput>> lockInputMap =
         new CellCollector(api).collectInputs(lockHashes, cellOutputs, feeRate);
@@ -51,30 +48,18 @@ public class CollectUtils {
       throws IOException {
     List<CellOutput> cellOutputs = new ArrayList<>();
     for (Receiver receiver : receivers) {
-      String blake160 = AddressUtils.parse(receiver.address);
-      CodeHashType codeHashType = AddressUtils.parseAddressType(receiver.address);
+      AddressParseResult addressParseResult = AddressParser.parse(receiver.address);
       cellOutputs.add(
           new CellOutput(
-              Numeric.prependHexPrefix(receiver.capacity.toString(16)),
-              new Script(
-                  getSystemScriptCell(codeHashType).cellHash,
-                  Numeric.prependHexPrefix(blake160),
-                  Script.TYPE)));
+              Numeric.prependHexPrefix(receiver.capacity.toString(16)), addressParseResult.script));
     }
     BigInteger needCapacity = BigInteger.ZERO;
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
 
-    String blake160 = AddressUtils.parse(changeAddress);
-    CodeHashType codeHashType = AddressUtils.parseAddressType(changeAddress);
-    cellOutputs.add(
-        new CellOutput(
-            "0x0",
-            new Script(
-                getSystemScriptCell(codeHashType).cellHash,
-                Numeric.prependHexPrefix(blake160),
-                Script.TYPE)));
+    AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
+    cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
 
     return cellOutputs;
   }
