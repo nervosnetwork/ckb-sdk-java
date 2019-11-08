@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
@@ -79,8 +80,10 @@ public class SendToMultiSigAddressTxExample {
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(10000);
 
+    // // initial_length = 2 * secp256k1_signature_byte.length
     List<CellsWithAddress> cellsWithAddresses =
-        txUtils.collectInputs(Collections.singletonList(MinerAddress), cellOutputs, feeRate, 130);
+        txUtils.collectInputs(
+            Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {

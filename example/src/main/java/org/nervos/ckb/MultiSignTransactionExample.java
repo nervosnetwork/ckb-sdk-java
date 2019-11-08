@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
@@ -113,12 +114,13 @@ public class MultiSignTransactionExample {
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1700);
 
+    // initial_length = multi_sig_hash.length + 2 * secp256k1_signature_byte.length
     List<CellsWithAddress> cellsWithAddresses =
         txUtils.collectInputs(
             Collections.singletonList(configuration.address()),
             cellOutputs,
             feeRate,
-            configuration.serialize().length());
+            configuration.serialize().length() + configuration.requireN * Sign.SIGN_LENGTH * 2);
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
