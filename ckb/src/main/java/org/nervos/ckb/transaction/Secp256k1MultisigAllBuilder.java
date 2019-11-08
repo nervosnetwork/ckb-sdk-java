@@ -81,18 +81,6 @@ public class Secp256k1MultisigAllBuilder {
     transaction.witnesses.set(
         scriptGroup.inputIndexes.get(0),
         Numeric.toHexString(Serializer.serializeWitnessArgs(signedWitness).toBytes()));
-
-    for (int i = 1; i < groupWitnesses.size(); i++) {
-      if (groupWitnesses.get(i).getClass() == Witness.class) {
-        transaction.witnesses.set(
-            scriptGroup.inputIndexes.get(i),
-            Numeric.toHexString(
-                Serializer.serializeWitnessArgs((Witness) groupWitnesses.get(i)).toBytes()));
-      } else {
-        transaction.witnesses.set(
-            scriptGroup.inputIndexes.get(i), Numeric.toHexString((String) groupWitnesses.get(i)));
-      }
-    }
   }
 
   public Transaction buildTx() {

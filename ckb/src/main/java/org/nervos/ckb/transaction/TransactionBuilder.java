@@ -8,7 +8,6 @@ import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
-import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -56,7 +55,7 @@ public class TransactionBuilder {
     this.witnesses = witnesses;
   }
 
-  public void addWitness(Witness witness) {
+  public void addWitness(Object witness) {
     this.witnesses.add(witness);
   }
 
