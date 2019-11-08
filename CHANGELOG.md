@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.24.5](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.2...v0.24.5) (2019-11-08)
+
+### BugFix
+
+* Update address parse args length exception([dbf4fe5](https://github.com/nervosnetwork/ckb-sdk-java/commit/f21e62f69a92c9059ec990743cd5fcf509f4cf5b))
+
 # [v0.24.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.1...v0.24.2) (2019-11-07)
 
 ### Feature
@@ -318,5 +324,4 @@ Sending transaction with single sig address will be changed because of new witne
 ### Features
 
 * add script model and calculate type hash ([c3ddb81](https://github.com/nervosnetwork/ckb-sdk-java/commit/c3ddb81))
-
 
