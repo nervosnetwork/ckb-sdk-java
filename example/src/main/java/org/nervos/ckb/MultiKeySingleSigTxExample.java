@@ -140,7 +140,7 @@ public class MultiKeySingleSigTxExample {
     BigInteger feeRate = BigInteger.valueOf(10000);
 
     List<CellsWithAddress> cellsWithAddresses =
-        txUtils.collectInputs(sendAddresses, cellOutputs, feeRate);
+        txUtils.collectInputs(sendAddresses, cellOutputs, feeRate, 130);
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);

@@ -25,7 +25,10 @@ public class CollectUtils {
   }
 
   public List<CellsWithAddress> collectInputs(
-      List<String> sendAddresses, List<CellOutput> cellOutputs, BigInteger feeRate)
+      List<String> sendAddresses,
+      List<CellOutput> cellOutputs,
+      BigInteger feeRate,
+      int initialLength)
       throws IOException {
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
     List<String> lockHashes = new ArrayList<>();
@@ -34,7 +37,7 @@ public class CollectUtils {
       lockHashes.add(addressParseResult.script.computeHash());
     }
     Map<String, List<CellInput>> lockInputMap =
-        new CellCollector(api).collectInputs(lockHashes, cellOutputs, feeRate);
+        new CellCollector(api).collectInputs(lockHashes, cellOutputs, feeRate, initialLength);
 
     for (Map.Entry<String, List<CellInput>> entry : lockInputMap.entrySet()) {
       cellsWithAddresses.add(

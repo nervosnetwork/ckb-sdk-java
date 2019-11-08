@@ -81,7 +81,7 @@ public class SingleKeySingleSigTxExample {
     BigInteger feeRate = BigInteger.valueOf(10000);
 
     List<CellsWithAddress> cellsWithAddresses =
-        txUtils.collectInputs(Collections.singletonList(MinerAddress), cellOutputs, feeRate);
+        txUtils.collectInputs(Collections.singletonList(MinerAddress), cellOutputs, feeRate, 130);
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);

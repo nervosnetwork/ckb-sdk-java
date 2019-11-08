@@ -28,7 +28,7 @@ public class CellCollector {
   }
 
   public Map<String, List<CellInput>> collectInputs(
-      List<String> lockHashes, List<CellOutput> cellOutputs, BigInteger feeRate)
+      List<String> lockHashes, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
     List<String> cellOutputsData = new ArrayList<>();
     for (int i = 0; i < cellOutputs.size() - 1; i++) {
@@ -89,12 +89,18 @@ public class CellCollector {
             List<CellInput> cellInputList = lockInputsMap.get(lockHashes.get(index));
             cellInputList.add(cellInput);
             cellInputs.add(cellInput);
-            witnesses.add(new Witness(Witness.EMPTY_LOCK));
+            witnesses.add("0x");
             transaction.inputs = cellInputs;
             transaction.witnesses = witnesses;
             transactionFee = calculateTxFee(transaction, feeRate);
             BigInteger sumNeedCapacity = needCapacity.add(transactionFee).add(changeOutputSize);
             if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+              int witnessIndex = 0;
+              for (String lockHash : lockHashes) {
+                if (lockInputsMap.get(lockHash).size() == 0) break;
+                witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
+                witnessIndex += lockInputsMap.get(lockHash).size();
+              }
               cellOutputs.get(cellOutputs.size() - 1).capacity =
                   Numeric.prependHexPrefix(
                       inputsCapacity.subtract(needCapacity).subtract(transactionFee).toString(16));
@@ -142,5 +148,13 @@ public class CellCollector {
       fromBlockNumber = currentToBlockNumber + 1;
     }
     return capacity;
+  }
+
+  private String getZeros(int length) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < length; i++) {
+      sb.append("0");
+    }
+    return sb.toString();
   }
 }

@@ -111,11 +111,14 @@ public class MultiSignTransactionExample {
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
-    BigInteger feeRate = BigInteger.valueOf(10000);
+    BigInteger feeRate = BigInteger.valueOf(1700);
 
     List<CellsWithAddress> cellsWithAddresses =
         txUtils.collectInputs(
-            Collections.singletonList(configuration.address()), cellOutputs, feeRate);
+            Collections.singletonList(configuration.address()),
+            cellOutputs,
+            feeRate,
+            configuration.serialize().length());
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
