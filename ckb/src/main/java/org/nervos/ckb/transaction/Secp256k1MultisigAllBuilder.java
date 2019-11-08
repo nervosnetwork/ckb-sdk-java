@@ -18,7 +18,6 @@ public class Secp256k1MultisigAllBuilder {
 
   private Transaction transaction;
   private String multiSigSerialize;
-  private List<String> signedWitnesses = new ArrayList<>();
 
   public Secp256k1MultisigAllBuilder(Transaction transaction, String multiSigSerialize) {
     this.transaction = transaction;
@@ -46,7 +45,7 @@ public class Secp256k1MultisigAllBuilder {
     String txHash = transaction.computeHash();
     StringBuilder emptySignature = new StringBuilder();
     for (int i = 0; i < privateKeys.size(); i++) {
-      emptySignature.append(Witness.EMPTY_LOCK);
+      emptySignature.append(Witness.SIGNATURE_PLACEHOLDER);
     }
     Witness emptiedWitness = (Witness) groupWitnesses.get(0);
     emptiedWitness.lock = multiSigSerialize.concat(emptySignature.toString());
@@ -74,23 +73,16 @@ public class Secp256k1MultisigAllBuilder {
           Numeric.toHexStringNoPrefix(
               Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature()));
     }
-    ((Witness) groupWitnesses.get(0)).lock =
-        multiSigSerialize.concat(concatenatedSignatures.toString());
 
-    List<String> signedGroupWitness = new ArrayList<>();
-    for (Object witness : groupWitnesses) {
-      if (witness.getClass() == Witness.class) {
-        signedGroupWitness.add(
-            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
-      } else {
-        signedGroupWitness.add((String) witness);
-      }
-    }
-    signedWitnesses.addAll(signedGroupWitness);
+    Witness signedWitness = (Witness) groupWitnesses.get(0);
+    signedWitness.lock = multiSigSerialize.concat(concatenatedSignatures.toString());
+
+    transaction.witnesses.set(
+        scriptGroup.inputIndexes.get(0),
+        Numeric.toHexString(Serializer.serializeWitnessArgs(signedWitness).toBytes()));
   }
 
   public Transaction buildTx() {
-    transaction.witnesses = signedWitnesses;
     return transaction;
   }
 }

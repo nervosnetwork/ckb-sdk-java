@@ -22,6 +22,8 @@ import org.nervos.ckb.utils.Numeric;
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Sign {
 
+  public static final int SIGN_LENGTH = 65;
+
   private static final X9ECParameters CURVE_PARAMS = CustomNamedCurves.getByName("secp256k1");
   static final ECDomainParameters CURVE =
       new ECDomainParameters(
@@ -255,7 +257,7 @@ public class Sign {
     }
 
     public byte[] getSignature() {
-      byte[] sig = new byte[65];
+      byte[] sig = new byte[SIGN_LENGTH];
       System.arraycopy(r, 0, sig, 0, 32);
       System.arraycopy(s, 0, sig, 32, 32);
       sig[64] = v;

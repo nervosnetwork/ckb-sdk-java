@@ -17,7 +17,6 @@ import org.nervos.ckb.utils.Serializer;
 public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
 
   private Transaction transaction;
-  private List<String> signedWitnesses = new ArrayList<>();
 
   public Secp256k1SighashAllBuilder(Transaction transaction) {
     this.transaction = transaction;
@@ -42,7 +41,7 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
     }
     String txHash = transaction.computeHash();
     Witness emptiedWitness = (Witness) groupWitnesses.get(0);
-    emptiedWitness.lock = Witness.EMPTY_LOCK;
+    emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
     blake2b.update(Numeric.hexStringToByteArray(txHash));
@@ -64,20 +63,17 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
         Numeric.toHexString(
             Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
 
-    List<String> signedGroupWitness = new ArrayList<>();
-    for (Object witness : groupWitnesses) {
-      if (witness.getClass() == Witness.class) {
-        signedGroupWitness.add(
-            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
-      } else {
-        signedGroupWitness.add((String) witness);
-      }
-    }
-    signedWitnesses.addAll(signedGroupWitness);
+    Witness signedWitness = (Witness) groupWitnesses.get(0);
+    signedWitness.lock =
+        Numeric.toHexString(
+            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+
+    transaction.witnesses.set(
+        scriptGroup.inputIndexes.get(0),
+        Numeric.toHexString(Serializer.serializeWitnessArgs(signedWitness).toBytes()));
   }
 
   public Transaction buildTx() {
-    transaction.witnesses = signedWitnesses;
     return transaction;
   }
 }
