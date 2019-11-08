@@ -78,46 +78,44 @@ public class CellCollector {
                 lockHashes.get(index),
                 BigInteger.valueOf(fromBlockNumber).toString(),
                 BigInteger.valueOf(currentToBlockNumber).toString());
-        if (cellOutputList.size() > 0) {
-          for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputList) {
-            CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
-            inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
-            List<CellInput> cellInputList = lockInputsMap.get(lockHashes.get(index));
-            cellInputList.add(cellInput);
-            cellInputs.add(cellInput);
-            witnesses.add("0x");
-            transaction.inputs = cellInputs;
+        for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputList) {
+          CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
+          inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
+          List<CellInput> cellInputList = lockInputsMap.get(lockHashes.get(index));
+          cellInputList.add(cellInput);
+          cellInputs.add(cellInput);
+          witnesses.add("0x");
+          transaction.inputs = cellInputs;
+          transaction.witnesses = witnesses;
+          BigInteger sumNeedCapacity =
+              needCapacity
+                  .add(calculateTxFee(transaction, feeRate))
+                  .add(calculateOutputSize(changeOutput));
+          if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+            // update witness of group first element
+            int witnessIndex = 0;
+            for (String lockHash : lockHashes) {
+              if (lockInputsMap.get(lockHash).size() == 0) break;
+              witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
+              witnessIndex += lockInputsMap.get(lockHash).size();
+            }
             transaction.witnesses = witnesses;
-            BigInteger sumNeedCapacity =
+            // calculate sum need capacity again
+            sumNeedCapacity =
                 needCapacity
                     .add(calculateTxFee(transaction, feeRate))
                     .add(calculateOutputSize(changeOutput));
             if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
-              // update witness of group first element
-              int witnessIndex = 0;
-              for (String lockHash : lockHashes) {
-                if (lockInputsMap.get(lockHash).size() == 0) break;
-                witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
-                witnessIndex += lockInputsMap.get(lockHash).size();
-              }
-              transaction.witnesses = witnesses;
-              // calculate sum need capacity again
-              sumNeedCapacity =
-                  needCapacity
-                      .add(calculateTxFee(transaction, feeRate))
-                      .add(calculateOutputSize(changeOutput));
-              if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
-                // calculate change capacity again
-                changeOutput.capacity =
-                    Numeric.prependHexPrefix(
-                        inputsCapacity
-                            .subtract(needCapacity)
-                            .subtract(calculateTxFee(transaction, feeRate))
-                            .toString(16));
-                cellOutputs.set(cellOutputs.size() - 1, changeOutput);
-                transaction.outputs = cellOutputs;
-                break;
-              }
+              // calculate change capacity again
+              changeOutput.capacity =
+                  Numeric.prependHexPrefix(
+                      inputsCapacity
+                          .subtract(needCapacity)
+                          .subtract(calculateTxFee(transaction, feeRate))
+                          .toString(16));
+              cellOutputs.set(cellOutputs.size() - 1, changeOutput);
+              transaction.outputs = cellOutputs;
+              break;
             }
           }
         }
