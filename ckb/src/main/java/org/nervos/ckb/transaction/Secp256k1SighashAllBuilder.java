@@ -64,20 +64,29 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
         Numeric.toHexString(
             Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
 
-    List<String> signedGroupWitness = new ArrayList<>();
-    for (Object witness : groupWitnesses) {
-      if (witness.getClass() == Witness.class) {
-        signedGroupWitness.add(
-            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
+    Witness signedWitness = (Witness) groupWitnesses.get(0);
+    signedWitness.lock =
+        Numeric.toHexString(
+            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+
+    transaction.witnesses.set(
+        scriptGroup.inputIndexes.get(0),
+        Numeric.toHexString(Serializer.serializeWitnessArgs(signedWitness).toBytes()));
+
+    for (int i = 1; i < groupWitnesses.size(); i++) {
+      if (groupWitnesses.get(i).getClass() == Witness.class) {
+        transaction.witnesses.set(
+            scriptGroup.inputIndexes.get(i),
+            Numeric.toHexString(
+                Serializer.serializeWitnessArgs((Witness) groupWitnesses.get(i)).toBytes()));
       } else {
-        signedGroupWitness.add((String) witness);
+        transaction.witnesses.set(
+            scriptGroup.inputIndexes.get(i), Numeric.toHexString((String) groupWitnesses.get(i)));
       }
     }
-    signedWitnesses.addAll(signedGroupWitness);
   }
 
   public Transaction buildTx() {
-    transaction.witnesses = signedWitnesses;
     return transaction;
   }
 }

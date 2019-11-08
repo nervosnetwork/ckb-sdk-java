@@ -9,7 +9,6 @@ import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 
@@ -145,8 +144,8 @@ public class MultiKeySingleSigTxExample {
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
-      for (CellInput cellInput : cellsWithAddress.inputs) {
-        txBuilder.addWitness(new Witness(Witness.EMPTY_LOCK));
+      for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
+        txBuilder.addWitness(i == 0 ? new Witness(Witness.EMPTY_LOCK) : new Witness());
       }
       if (cellsWithAddress.inputs.size() > 0) {
         scriptGroupWithPrivateKeysList.add(
