@@ -17,7 +17,6 @@ import org.nervos.ckb.utils.Serializer;
 public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
 
   private Transaction transaction;
-  private List<String> signedWitnesses = new ArrayList<>();
 
   public Secp256k1SighashAllBuilder(Transaction transaction) {
     this.transaction = transaction;
@@ -42,7 +41,7 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
     }
     String txHash = transaction.computeHash();
     Witness emptiedWitness = (Witness) groupWitnesses.get(0);
-    emptiedWitness.lock = Witness.EMPTY_LOCK;
+    emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
     blake2b.update(Numeric.hexStringToByteArray(txHash));

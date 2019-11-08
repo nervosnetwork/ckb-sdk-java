@@ -18,7 +18,6 @@ public class Secp256k1MultisigAllBuilder {
 
   private Transaction transaction;
   private String multiSigSerialize;
-  private List<String> signedWitnesses = new ArrayList<>();
 
   public Secp256k1MultisigAllBuilder(Transaction transaction, String multiSigSerialize) {
     this.transaction = transaction;
@@ -46,7 +45,7 @@ public class Secp256k1MultisigAllBuilder {
     String txHash = transaction.computeHash();
     StringBuilder emptySignature = new StringBuilder();
     for (int i = 0; i < privateKeys.size(); i++) {
-      emptySignature.append(Witness.EMPTY_LOCK);
+      emptySignature.append(Witness.SIGNATURE_PLACEHOLDER);
     }
     Witness emptiedWitness = (Witness) groupWitnesses.get(0);
     emptiedWitness.lock = multiSigSerialize.concat(emptySignature.toString());

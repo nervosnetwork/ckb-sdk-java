@@ -147,7 +147,7 @@ public class MultiKeySingleSigTxExample {
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
-        txBuilder.addWitness(i == 0 ? new Witness(Witness.EMPTY_LOCK) : "0x");
+        txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
       }
       if (cellsWithAddress.inputs.size() > 0) {
         scriptGroupWithPrivateKeysList.add(

@@ -3,7 +3,7 @@ package org.nervos.ckb.type;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Witness {
 
-  public static final String EMPTY_LOCK =
+  public static final String SIGNATURE_PLACEHOLDER =
       "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 
   public String lock;

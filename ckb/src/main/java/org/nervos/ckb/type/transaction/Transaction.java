@@ -106,7 +106,7 @@ public class Transaction {
     }
     String txHash = computeHash();
     Witness emptiedWitness = (Witness) witnesses.get(0);
-    emptiedWitness.lock = Witness.EMPTY_LOCK;
+    emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
     blake2b.update(Numeric.hexStringToByteArray(txHash));
