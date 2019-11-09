@@ -41,7 +41,7 @@ public class Script {
     return blake2b.doFinalString();
   }
 
-  public int calculateByteSize() {
+  public int occupiedCapacity() {
     int byteSize = 1;
     if (!Strings.isEmpty(codeHash)) {
       byteSize += Numeric.hexStringToByteArray(codeHash).length / 2;

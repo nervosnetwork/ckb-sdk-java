@@ -23,16 +23,16 @@ public class CellOutput {
     this.type = type;
   }
 
-  public int calculateByteSize(String data) {
+  public int occupiedCapacity(String data) {
     int byteSize = 8;
     if (!Strings.isEmpty(data)) {
       byteSize += Numeric.hexStringToByteArray(data).length / 2;
     }
     if (lock != null) {
-      byteSize += lock.calculateByteSize();
+      byteSize += lock.occupiedCapacity();
     }
     if (type != null) {
-      byteSize += type.calculateByteSize();
+      byteSize += type.occupiedCapacity();
     }
     return byteSize;
   }
