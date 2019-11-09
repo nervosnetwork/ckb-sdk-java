@@ -1,6 +1,8 @@
 package org.nervos.ckb.type.cell;
 
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Strings;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class CellOutput {
@@ -19,5 +21,19 @@ public class CellOutput {
     this.capacity = capacity;
     this.lock = lock;
     this.type = type;
+  }
+
+  public int occupiedCapacity(String data) {
+    int byteSize = 8;
+    if (!Strings.isEmpty(data)) {
+      byteSize += Numeric.hexStringToByteArray(data).length / 2;
+    }
+    if (lock != null) {
+      byteSize += lock.occupiedCapacity();
+    }
+    if (type != null) {
+      byteSize += type.occupiedCapacity();
+    }
+    return byteSize;
   }
 }

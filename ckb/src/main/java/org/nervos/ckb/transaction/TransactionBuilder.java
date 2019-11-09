@@ -25,18 +25,19 @@ public class TransactionBuilder {
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
   private List witnesses = new ArrayList<>();
-  private boolean containMultiSig = false;
+  private boolean isMultiSig = false;
 
   public TransactionBuilder(Api api) {
     this(api, false);
   }
 
-  public TransactionBuilder(Api api, boolean containMultiSig) {
+  public TransactionBuilder(Api api, boolean isMultiSig) {
     try {
-      this.containMultiSig = containMultiSig;
-      this.systemSecpCell = SystemContract.getSystemSecpCell(api);
-      if (containMultiSig) {
+      this.isMultiSig = isMultiSig;
+      if (isMultiSig) {
         this.systemMultiSigCell = SystemContract.getSystemMultiSigCell(api);
+      } else {
+        this.systemSecpCell = SystemContract.getSystemSecpCell(api);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -83,9 +84,10 @@ public class TransactionBuilder {
     }
 
     List<CellDep> cellDeps = new ArrayList<>();
-    cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));
-    if (containMultiSig) {
+    if (isMultiSig) {
       cellDeps.add(new CellDep(systemMultiSigCell.outPoint, CellDep.DEP_GROUP));
+    } else {
+      cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));
     }
     return new Transaction(
         "0",
