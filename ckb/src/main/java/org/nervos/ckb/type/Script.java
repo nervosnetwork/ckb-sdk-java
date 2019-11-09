@@ -3,7 +3,9 @@ package org.nervos.ckb.type;
 import com.google.gson.annotations.SerializedName;
 import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
+import org.nervos.ckb.utils.Strings;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
@@ -37,5 +39,16 @@ public class Script {
     Blake2b blake2b = new Blake2b();
     blake2b.update(Encoder.encode(Serializer.serializeScript(this)));
     return blake2b.doFinalString();
+  }
+
+  public int calculateByteSize() {
+    int byteSize = 1;
+    if (!Strings.isEmpty(codeHash)) {
+      byteSize += Numeric.hexStringToByteArray(codeHash).length / 2;
+    }
+    if (!Strings.isEmpty(args)) {
+      byteSize += Numeric.hexStringToByteArray(args).length / 2;
+    }
+    return byteSize;
   }
 }
