@@ -32,9 +32,9 @@ public class CellCollector {
       throws IOException {
     List<String> cellOutputsData = new ArrayList<>();
     for (int i = 0; i < cellOutputs.size() - 1; i++) {
-      int size = Serializer.serializeCellOutput(cellOutputs.get(i)).getLength();
+      int size = cellOutputs.get(i).calculateByteSize("0x");
       if (BigInteger.valueOf(size).compareTo(Numeric.toBigInt(cellOutputs.get(i).capacity)) > 0) {
-        throw new IOException("Cell output serialize size must not be bigger than capacity");
+        throw new IOException("Cell output byte size must not be bigger than capacity");
       }
       cellOutputsData.add("0x");
     }
