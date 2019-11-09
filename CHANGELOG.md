@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.24.6](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.5...v0.24.6) (2019-11-09)
+
+### BugFix
+
+* Update witnesses signature and update witness initial value([78b2600](https://github.com/nervosnetwork/ckb-sdk-java/commit/78b260038322b50dc48280619bb498696d20ec9d))
+* Update transaction fee calculating([400a763](https://github.com/nervosnetwork/ckb-sdk-java/commit/400a763dbbde8dcb49ea4751f4a834c5bb757c6e))
+
 # [v0.24.5](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.2...v0.24.5) (2019-11-08)
 
 ### BugFix
