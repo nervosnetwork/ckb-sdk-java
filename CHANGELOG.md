@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.24.7](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.6...v0.24.7) (2019-11-12)
+
+### Feature
+
+* Update cell output and script size calculating([b19d201](https://github.com/nervosnetwork/ckb-sdk-java/commit/b19d20145aeeb34ae940ac7cc919e56b6778ea21))
+* Update multisig transaction estimating fee([4a084fa](https://github.com/nervosnetwork/ckb-sdk-java/commit/4a084fac174c834a18a9abf84d6bbdcb02b68685))
+
+### BugFix
+
+* Remove useless min capacity([2709d57](https://github.com/nervosnetwork/ckb-sdk-java/commit/2709d570c61db110b37103cca00b60b84caaaf10))
+
 # [v0.24.6](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.5...v0.24.6) (2019-11-09)
 
 ### BugFix

@@ -17,26 +17,25 @@ import org.nervos.ckb.utils.Numeric;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionBuilder {
 
-  private static final BigInteger MIN_CAPACITY = new BigInteger("6000000000");
-
   private SystemScriptCell systemSecpCell;
   private SystemScriptCell systemMultiSigCell;
   private List<CellInput> cellInputs = new ArrayList<>();
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
   private List witnesses = new ArrayList<>();
-  private boolean containMultiSig = false;
+  private boolean isMultiSig = false;
 
   public TransactionBuilder(Api api) {
     this(api, false);
   }
 
-  public TransactionBuilder(Api api, boolean containMultiSig) {
+  public TransactionBuilder(Api api, boolean isMultiSig) {
     try {
-      this.containMultiSig = containMultiSig;
-      this.systemSecpCell = SystemContract.getSystemSecpCell(api);
-      if (containMultiSig) {
+      this.isMultiSig = isMultiSig;
+      if (isMultiSig) {
         this.systemMultiSigCell = SystemContract.getSystemMultiSigCell(api);
+      } else {
+        this.systemSecpCell = SystemContract.getSystemSecpCell(api);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -72,9 +71,6 @@ public class TransactionBuilder {
     for (CellOutput output : cellOutputs) {
       needCapacity = needCapacity.add(Numeric.toBigInt(output.capacity));
     }
-    if (needCapacity.compareTo(MIN_CAPACITY) < 0) {
-      throw new IOException("Less than min capacity");
-    }
     if (cellInputs.size() == 0) {
       throw new IOException("Cell inputs could not empty");
     }
@@ -83,9 +79,10 @@ public class TransactionBuilder {
     }
 
     List<CellDep> cellDeps = new ArrayList<>();
-    cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));
-    if (containMultiSig) {
+    if (isMultiSig) {
       cellDeps.add(new CellDep(systemMultiSigCell.outPoint, CellDep.DEP_GROUP));
+    } else {
+      cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));
     }
     return new Transaction(
         "0",

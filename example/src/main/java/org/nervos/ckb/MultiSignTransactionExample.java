@@ -120,7 +120,7 @@ public class MultiSignTransactionExample {
             Collections.singletonList(configuration.address()),
             cellOutputs,
             feeRate,
-            configuration.serialize().length() + configuration.requireN * Sign.SIGN_LENGTH * 2);
+            configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
