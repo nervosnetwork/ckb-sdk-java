@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Strings;
+import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class CellOutput {
@@ -25,12 +26,9 @@ public class CellOutput {
   }
 
   public BigInteger occupiedCapacity(String data) {
-    BigInteger UNIT = BigInteger.TEN.pow(8);
-    BigInteger byteSize = BigInteger.valueOf(8).multiply(UNIT);
+    BigInteger byteSize = Utils.ckbToShannon(8);
     if (!Strings.isEmpty(data)) {
-      byteSize =
-          byteSize.add(
-              BigInteger.valueOf(Numeric.hexStringToByteArray(data).length).multiply(UNIT));
+      byteSize = byteSize.add(Utils.ckbToShannon(Numeric.hexStringToByteArray(data).length));
     }
     if (lock != null) {
       byteSize = byteSize.add(lock.occupiedCapacity());

@@ -7,6 +7,7 @@ import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
 import org.nervos.ckb.utils.Strings;
+import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
@@ -50,6 +51,6 @@ public class Script {
     if (!Strings.isEmpty(args)) {
       byteSize += Numeric.hexStringToByteArray(args).length;
     }
-    return BigInteger.valueOf(byteSize).multiply(BigInteger.TEN.pow(8));
+    return Utils.ckbToShannon(byteSize);
   }
 }
