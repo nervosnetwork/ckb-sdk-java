@@ -17,8 +17,6 @@ import org.nervos.ckb.utils.Numeric;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionBuilder {
 
-  private static final BigInteger MIN_CAPACITY = new BigInteger("6000000000");
-
   private SystemScriptCell systemSecpCell;
   private SystemScriptCell systemMultiSigCell;
   private List<CellInput> cellInputs = new ArrayList<>();
@@ -72,9 +70,6 @@ public class TransactionBuilder {
     BigInteger needCapacity = BigInteger.ZERO;
     for (CellOutput output : cellOutputs) {
       needCapacity = needCapacity.add(Numeric.toBigInt(output.capacity));
-    }
-    if (needCapacity.compareTo(MIN_CAPACITY) < 0) {
-      throw new IOException("Less than min capacity");
     }
     if (cellInputs.size() == 0) {
       throw new IOException("Cell inputs could not empty");
