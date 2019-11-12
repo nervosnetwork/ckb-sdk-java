@@ -1,6 +1,7 @@
 package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
 import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Numeric;
@@ -41,14 +42,14 @@ public class Script {
     return blake2b.doFinalString();
   }
 
-  public int occupiedCapacity() {
+  public BigInteger occupiedCapacity() {
     int byteSize = 1;
     if (!Strings.isEmpty(codeHash)) {
-      byteSize += Numeric.hexStringToByteArray(codeHash).length / 2;
+      byteSize += Numeric.hexStringToByteArray(codeHash).length;
     }
     if (!Strings.isEmpty(args)) {
-      byteSize += Numeric.hexStringToByteArray(args).length / 2;
+      byteSize += Numeric.hexStringToByteArray(args).length;
     }
-    return byteSize;
+    return BigInteger.valueOf(byteSize).multiply(BigInteger.TEN.pow(8));
   }
 }

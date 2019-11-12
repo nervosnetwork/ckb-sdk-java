@@ -1,5 +1,6 @@
 package org.nervos.ckb.type.cell;
 
+import java.math.BigInteger;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Strings;
@@ -23,16 +24,19 @@ public class CellOutput {
     this.type = type;
   }
 
-  public int occupiedCapacity(String data) {
-    int byteSize = 8;
+  public BigInteger occupiedCapacity(String data) {
+    BigInteger UNIT = BigInteger.TEN.pow(8);
+    BigInteger byteSize = BigInteger.valueOf(8).multiply(UNIT);
     if (!Strings.isEmpty(data)) {
-      byteSize += Numeric.hexStringToByteArray(data).length / 2;
+      byteSize =
+          byteSize.add(
+              BigInteger.valueOf(Numeric.hexStringToByteArray(data).length).multiply(UNIT));
     }
     if (lock != null) {
-      byteSize += lock.occupiedCapacity();
+      byteSize = byteSize.add(lock.occupiedCapacity());
     }
     if (type != null) {
-      byteSize += type.occupiedCapacity();
+      byteSize = byteSize.add(type.occupiedCapacity());
     }
     return byteSize;
   }
