@@ -9,5 +9,6 @@ public class LiveCell {
   @SerializedName("created_by")
   public TransactionPoint createdBy;
 
+  @SerializedName("cell_output")
   public CellOutput cellOutput;
 }

@@ -17,8 +17,12 @@ public class LockUtils {
     return new Script(codeHash, blake160, Script.TYPE);
   }
 
-  public static Script generateLockScriptWithAddress(String address, String codeHash) {
+  public static Script generateLockScriptWithAddress(String address) {
     AddressParseResult addressParseResult = AddressParser.parse(address);
     return addressParseResult.script;
+  }
+
+  public static String generateLockHashWithAddress(String address) {
+    return generateLockScriptWithAddress(address).computeHash();
   }
 }
