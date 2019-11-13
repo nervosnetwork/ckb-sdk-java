@@ -56,24 +56,19 @@ public class SingleSigWithIndexerTxExample {
             + getBalance(MinerAddress).divide(UnitCKB).toString(10)
             + " CKB");
 
-    System.out.println(
-        "Before transfer, first receiver's balance: "
-            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
-            + " CKB");
-
     // miner send capacity to three receiver accounts with 800, 900 and 1000 CKB
     String hash = sendCapacity(receivers, MinerAddress);
     System.out.println("Transaction hash: " + hash);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, receiver's balance: "
-            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
+        "After transfer, miner's balance: "
+            + getBalance(MinerAddress).divide(UnitCKB).toString(10)
             + " CKB");
   }
 
-  private static BigInteger getBalance(String address) throws IOException {
-    CellCollector cellCollector = new CellCollector(api);
+  private static BigInteger getBalance(String address) throws Exception {
+    CellCollectorWithIndexer cellCollector = new CellCollectorWithIndexer(api);
     return cellCollector.getCapacityWithAddress(address);
   }
 

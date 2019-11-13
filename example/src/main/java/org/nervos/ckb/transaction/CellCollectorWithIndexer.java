@@ -145,9 +145,9 @@ public class CellCollectorWithIndexer {
   public BigInteger getCapacityWithLockHash(String lockHash) throws IOException {
     BigInteger capacity = BigInteger.ZERO;
     long pageNumber = 1;
-
+    List<LiveCell> liveCells;
     while (true) {
-      List<LiveCell> liveCells =
+      liveCells =
           api.getLiveCellsByLockHash(
               lockHash, String.valueOf(pageNumber), String.valueOf(PAGE_SIZE), false);
       if (liveCells == null || liveCells.size() == 0) break;
