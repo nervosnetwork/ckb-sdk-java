@@ -7,6 +7,8 @@
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
+The ckb-sdk-java is still under development and **NOT** production ready. You should get familiar with CKB transaction structure and RPC before using it.
+
 ### Prerequisites
 
 * Java 8
