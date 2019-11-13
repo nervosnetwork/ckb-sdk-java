@@ -5,7 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Feature
 
-* Impl indexer to collect cells and send transaction [cdbe0a0](https://github.com/nervosnetwork/ckb-sdk-java/commit/cdbe0a0a793033b34ddfcffaa267250ff864636d))
+* Impl indexer to collect cells and send transaction ([cdbe0a0](https://github.com/nervosnetwork/ckb-sdk-java/commit/cdbe0a0a793033b34ddfcffaa267250ff864636d))
 
 
 # [v0.24.8](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.7...v0.24.8) (2019-11-13)
