@@ -70,7 +70,7 @@ public class CellCollectorWithIndexer {
     }
     List<LiveCell> liveCells;
     for (int index = 0; index < lockHashes.size(); index++) {
-      long pageNumber = 1;
+      long pageNumber = 0;
 
       while (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
         liveCells =
@@ -123,7 +123,7 @@ public class CellCollectorWithIndexer {
             }
           }
         }
-        pageNumber += PAGE_SIZE;
+        pageNumber += 1;
       }
     }
     if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
@@ -144,7 +144,7 @@ public class CellCollectorWithIndexer {
 
   public BigInteger getCapacityWithLockHash(String lockHash) throws IOException {
     BigInteger capacity = BigInteger.ZERO;
-    long pageNumber = 1;
+    long pageNumber = 0;
     List<LiveCell> liveCells;
     while (true) {
       liveCells =
@@ -154,7 +154,7 @@ public class CellCollectorWithIndexer {
       for (LiveCell liveCell : liveCells) {
         capacity = capacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
       }
-      pageNumber += PAGE_SIZE;
+      pageNumber += 1;
     }
     return capacity;
   }
