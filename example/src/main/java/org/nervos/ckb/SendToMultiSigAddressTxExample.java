@@ -10,6 +10,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SendToMultiSigAddressTxExample {
@@ -28,8 +29,7 @@ public class SendToMultiSigAddressTxExample {
 
   public static void main(String[] args) throws Exception {
     List<Receiver> receivers =
-        Collections.singletonList(
-            new Receiver(MultiSigAddress, new BigInteger("20000").multiply(UnitCKB)));
+        Collections.singletonList(new Receiver(MultiSigAddress, Utils.ckbToShannon(20000)));
 
     System.out.println(
         "Before transfer, miner's balance: " + getBalance().divide(UnitCKB).toString(10) + " CKB");
@@ -80,7 +80,7 @@ public class SendToMultiSigAddressTxExample {
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
 
-    // // initial_length = 2 * secp256k1_signature_byte.length
+    // initial_length = 2 * secp256k1_signature_byte.length
     List<CellsWithAddress> cellsWithAddresses =
         txUtils.collectInputs(
             Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
