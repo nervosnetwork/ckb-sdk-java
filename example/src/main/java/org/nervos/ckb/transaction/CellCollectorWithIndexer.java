@@ -70,17 +70,16 @@ public class CellCollectorWithIndexer {
     }
     List<LiveCell> liveCells;
     for (int index = 0; index < lockHashes.size(); index++) {
-      long tipBlockNumber = api.getTipBlockNumber().longValue();
       long pageNumber = 1;
 
-      while (pageNumber <= tipBlockNumber
-          && inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
+      while (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
         liveCells =
             api.getLiveCellsByLockHash(
                 lockHashes.get(index),
                 String.valueOf(pageNumber),
                 String.valueOf(PAGE_SIZE),
                 false);
+        if (liveCells == null || liveCells.size() == 0) break;
         for (LiveCell liveCell : liveCells) {
           CellInput cellInput =
               new CellInput(
@@ -145,18 +144,15 @@ public class CellCollectorWithIndexer {
 
   public BigInteger getCapacityWithLockHash(String lockHash) throws IOException {
     BigInteger capacity = BigInteger.ZERO;
-    long tipBlockNumber = api.getTipBlockNumber().longValue();
     long pageNumber = 1;
 
-    while (pageNumber <= tipBlockNumber) {
+    while (true) {
       List<LiveCell> liveCells =
           api.getLiveCellsByLockHash(
               lockHash, String.valueOf(pageNumber), String.valueOf(PAGE_SIZE), false);
-
-      if (liveCells != null && liveCells.size() > 0) {
-        for (LiveCell liveCell : liveCells) {
-          capacity = capacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
-        }
+      if (liveCells == null || liveCells.size() == 0) break;
+      for (LiveCell liveCell : liveCells) {
+        capacity = capacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
       }
       pageNumber += PAGE_SIZE;
     }
