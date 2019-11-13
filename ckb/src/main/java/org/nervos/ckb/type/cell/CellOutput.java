@@ -1,8 +1,10 @@
 package org.nervos.ckb.type.cell;
 
+import java.math.BigInteger;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Strings;
+import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class CellOutput {
@@ -23,16 +25,16 @@ public class CellOutput {
     this.type = type;
   }
 
-  public int occupiedCapacity(String data) {
-    int byteSize = 8;
+  public BigInteger occupiedCapacity(String data) {
+    BigInteger byteSize = Utils.ckbToShannon(8);
     if (!Strings.isEmpty(data)) {
-      byteSize += Numeric.hexStringToByteArray(data).length / 2;
+      byteSize = byteSize.add(Utils.ckbToShannon(Numeric.hexStringToByteArray(data).length));
     }
     if (lock != null) {
-      byteSize += lock.occupiedCapacity();
+      byteSize = byteSize.add(lock.occupiedCapacity());
     }
     if (type != null) {
-      byteSize += type.occupiedCapacity();
+      byteSize = byteSize.add(type.occupiedCapacity());
     }
     return byteSize;
   }
