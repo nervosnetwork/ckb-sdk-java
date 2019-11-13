@@ -12,6 +12,7 @@ import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class MultiKeySingleSigTxExample {
@@ -49,9 +50,9 @@ public class MultiKeySingleSigTxExample {
     String minerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     List<Receiver> receivers1 =
         Arrays.asList(
-            new Receiver(Addresses.get(0), new BigInteger("800").multiply(UnitCKB)),
-            new Receiver(Addresses.get(1), new BigInteger("900").multiply(UnitCKB)),
-            new Receiver(Addresses.get(2), new BigInteger("1000").multiply(UnitCKB)));
+            new Receiver(Addresses.get(0), Utils.ckbToShannon(800)),
+            new Receiver(Addresses.get(1), Utils.ckbToShannon(900)),
+            new Receiver(Addresses.get(2), Utils.ckbToShannon(1000)));
 
     System.out.println(
         "Before transfer, miner's balance: "
@@ -77,9 +78,9 @@ public class MultiKeySingleSigTxExample {
 
     List<Receiver> receivers2 =
         Arrays.asList(
-            new Receiver(Addresses.get(3), new BigInteger("400").multiply(UnitCKB)),
-            new Receiver(Addresses.get(4), new BigInteger("500").multiply(UnitCKB)),
-            new Receiver(Addresses.get(5), new BigInteger("600").multiply(UnitCKB)));
+            new Receiver(Addresses.get(3), Utils.ckbToShannon(400)),
+            new Receiver(Addresses.get(4), Utils.ckbToShannon(500)),
+            new Receiver(Addresses.get(5), Utils.ckbToShannon(600)));
 
     String changeAddress = "ckt1qyqfnym6semhw2vzm33fjvk3ngxuf5433l9qz3af8a";
 

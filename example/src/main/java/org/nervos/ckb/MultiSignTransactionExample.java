@@ -19,6 +19,7 @@ import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressGenerator;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -66,8 +67,7 @@ public class MultiSignTransactionExample {
             + getBalance(targetAddress).divide(UnitCKB).toString()
             + " CKB");
 
-    String txHash =
-        sendCapacity(targetAddress, UnitCKB.multiply(BigInteger.valueOf(3000)), privateKeys);
+    String txHash = sendCapacity(targetAddress, Utils.ckbToShannon(3000), privateKeys);
     System.out.println("Transaction hash: " + txHash);
     Thread.sleep(30000);
     System.out.println(
