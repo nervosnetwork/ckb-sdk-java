@@ -11,6 +11,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SingleKeySingleSigTxExample {
@@ -34,8 +35,8 @@ public class SingleKeySingleSigTxExample {
   public static void main(String[] args) throws Exception {
     List<Receiver> receivers =
         Arrays.asList(
-            new Receiver(ReceiveAddresses.get(0), new BigInteger("8000").multiply(UnitCKB)),
-            new Receiver(ReceiveAddresses.get(1), new BigInteger("9000").multiply(UnitCKB)));
+            new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(8000)),
+            new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(9000)));
 
     System.out.println(
         "Before transfer, miner's balance: "
@@ -81,7 +82,7 @@ public class SingleKeySingleSigTxExample {
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
 
-    // // initial_length = 2 * secp256k1_signature_byte.length
+    // initial_length = 2 * secp256k1_signature_byte.length
     List<CellsWithAddress> cellsWithAddresses =
         txUtils.collectInputs(
             Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);

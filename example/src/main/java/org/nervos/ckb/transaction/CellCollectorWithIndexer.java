@@ -6,11 +6,12 @@ import java.util.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
+import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
+import org.nervos.ckb.type.cell.LiveCell;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
@@ -19,11 +20,13 @@ import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-public class CellCollector {
+public class CellCollectorWithIndexer {
+
+  private static final int PAGE_SIZE = 50;
 
   private Api api;
 
-  public CellCollector(Api api) {
+  public CellCollectorWithIndexer(Api api) {
     this.api = api;
   }
 
@@ -65,22 +68,23 @@ public class CellCollector {
     for (CellOutput cellOutput : cellOutputs) {
       needCapacity = needCapacity.add(Numeric.toBigInt(cellOutput.capacity));
     }
-    List<CellOutputWithOutPoint> cellOutputList;
+    List<LiveCell> liveCells;
     for (int index = 0; index < lockHashes.size(); index++) {
-      long toBlockNumber = api.getTipBlockNumber().longValue();
-      long fromBlockNumber = 1;
+      long pageNumber = 0;
 
-      while (fromBlockNumber <= toBlockNumber
-          && inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
-        long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-        cellOutputList =
-            api.getCellsByLockHash(
+      while (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
+        liveCells =
+            api.getLiveCellsByLockHash(
                 lockHashes.get(index),
-                BigInteger.valueOf(fromBlockNumber).toString(),
-                BigInteger.valueOf(currentToBlockNumber).toString());
-        for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputList) {
-          CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
-          inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
+                String.valueOf(pageNumber),
+                String.valueOf(PAGE_SIZE),
+                false);
+        if (liveCells == null || liveCells.size() == 0) break;
+        for (LiveCell liveCell : liveCells) {
+          CellInput cellInput =
+              new CellInput(
+                  new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), "0x0");
+          inputsCapacity = inputsCapacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
           List<CellInput> cellInputList = lockInputsMap.get(lockHashes.get(index));
           cellInputList.add(cellInput);
           cellInputs.add(cellInput);
@@ -119,7 +123,7 @@ public class CellCollector {
             }
           }
         }
-        fromBlockNumber = currentToBlockNumber + 1;
+        pageNumber += 1;
       }
     }
     if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
@@ -140,23 +144,17 @@ public class CellCollector {
 
   public BigInteger getCapacityWithLockHash(String lockHash) throws IOException {
     BigInteger capacity = BigInteger.ZERO;
-    long toBlockNumber = api.getTipBlockNumber().longValue();
-    long fromBlockNumber = 1;
-
-    while (fromBlockNumber <= toBlockNumber) {
-      long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
-      List<CellOutputWithOutPoint> cellOutputs =
-          api.getCellsByLockHash(
-              lockHash,
-              BigInteger.valueOf(fromBlockNumber).toString(),
-              BigInteger.valueOf(currentToBlockNumber).toString());
-
-      if (cellOutputs != null && cellOutputs.size() > 0) {
-        for (CellOutputWithOutPoint output : cellOutputs) {
-          capacity = capacity.add(Numeric.toBigInt(output.capacity));
-        }
+    long pageNumber = 0;
+    List<LiveCell> liveCells;
+    while (true) {
+      liveCells =
+          api.getLiveCellsByLockHash(
+              lockHash, String.valueOf(pageNumber), String.valueOf(PAGE_SIZE), false);
+      if (liveCells == null || liveCells.size() == 0) break;
+      for (LiveCell liveCell : liveCells) {
+        capacity = capacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
       }
-      fromBlockNumber = currentToBlockNumber + 1;
+      pageNumber += 1;
     }
     return capacity;
   }
