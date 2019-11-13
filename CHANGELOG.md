@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.24.9](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.8...v0.24.9) (2019-11-13)
+
+### Feature
+
+* Impl indexer to collect cells and send transaction [cdbe0a0](https://github.com/nervosnetwork/ckb-sdk-java/commit/cdbe0a0a793033b34ddfcffaa267250ff864636d))
+
+
 # [v0.24.8](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.7...v0.24.8) (2019-11-13)
 
 ### BugFix
