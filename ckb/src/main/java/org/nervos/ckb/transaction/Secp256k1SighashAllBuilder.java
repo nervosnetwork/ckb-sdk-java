@@ -59,9 +59,6 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
     }
     String message = blake2b.doFinalString();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    ((Witness) groupWitnesses.get(0)).lock =
-        Numeric.toHexString(
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
 
     Witness signedWitness = (Witness) groupWitnesses.get(0);
     signedWitness.lock =
