@@ -96,7 +96,7 @@ public class CellCollector {
             int witnessIndex = 0;
             for (String lockHash : lockHashes) {
               if (lockInputsMap.get(lockHash).size() == 0) break;
-              witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
+              witnesses.set(witnessIndex, new Witness(NumberUtils.getZeros(initialLength)));
               witnessIndex += lockInputsMap.get(lockHash).size();
             }
             transaction.witnesses = witnesses;
@@ -163,13 +163,5 @@ public class CellCollector {
 
   private BigInteger calculateOutputSize(CellOutput cellOutput) {
     return BigInteger.valueOf(Serializer.serializeCellOutput(cellOutput).getLength());
-  }
-
-  private String getZeros(int length) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < length; i++) {
-      sb.append("0");
-    }
-    return sb.toString();
   }
 }
