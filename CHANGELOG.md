@@ -3,6 +3,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [v0.25.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.9...v0.25.0) (2019-11-16)
 
+### BugFix
+
+* Update ckb-sdk build.gradle for packing ([d0824ee](https://github.com/nervosnetwork/ckb-sdk-java/commit/d0824ee7d68fa76eb0db35172e9d052d9d205662))
+
 # [v0.24.9](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.8...v0.24.9) (2019-11-13)
 
 ### Feature
