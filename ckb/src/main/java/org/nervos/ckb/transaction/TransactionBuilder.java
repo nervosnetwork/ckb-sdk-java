@@ -1,5 +1,10 @@
 package org.nervos.ckb.transaction;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.type.cell.CellDep;
@@ -7,12 +12,6 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionBuilder {
