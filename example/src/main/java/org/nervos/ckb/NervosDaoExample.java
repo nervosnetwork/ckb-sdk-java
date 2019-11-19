@@ -33,9 +33,7 @@ public class NervosDaoExample {
   }
 
   private static OutPoint depositToDao(BigInteger capacity) throws IOException {
-    Script lock =
-        LockUtils.generateLockScriptWithAddress(
-            MinerAddress, SystemContract.getSystemSecpCell(api).cellHash);
+    Script lock = LockUtils.generateLockScriptWithAddress(MinerAddress);
     Script type =
         new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, "0x", Script.TYPE);
     CellOutput cellOutput = new CellOutput(capacity.toString(16), lock, type);
