@@ -15,6 +15,8 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NervosDaoExample {
@@ -22,7 +24,6 @@ public class NervosDaoExample {
   private static final int DAO_MATURITY_BLOCKS = 5;
 
   private static final String NODE_URL = "http://localhost:8114";
-  private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
   private static String MinerPrivateKey =
       "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
@@ -32,11 +33,16 @@ public class NervosDaoExample {
     api = new Api(NODE_URL, false);
   }
 
+  public static void main(String[] args) throws Exception {
+    OutPoint outPoint = depositToDao(Utils.ckbToShannon(300));
+    System.out.println(outPoint.txHash);
+  }
+
   private static OutPoint depositToDao(BigInteger capacity) throws IOException {
     Script lock = LockUtils.generateLockScriptWithAddress(MinerAddress);
     Script type =
         new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, "0x", Script.TYPE);
-    CellOutput cellOutput = new CellOutput(capacity.toString(16), lock, type);
+    CellOutput cellOutput = new CellOutput(Numeric.toHexStringWithPrefix(capacity), lock, type);
     CellOutput changeOutput = new CellOutput("0x0", lock);
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
 
@@ -44,7 +50,10 @@ public class NervosDaoExample {
     TransactionBuilder txBuilder = new TransactionBuilder(api);
     txBuilder.addOutputs(cellOutputs);
     txBuilder.addCellDep(
+        new CellDep(SystemContract.getSystemSecpCell(api).outPoint, CellDep.DEP_GROUP));
+    txBuilder.addCellDep(
         new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.DEP_GROUP));
+    System.out.println(SystemContract.getSystemNervosDaoCell(api).outPoint.txHash);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
