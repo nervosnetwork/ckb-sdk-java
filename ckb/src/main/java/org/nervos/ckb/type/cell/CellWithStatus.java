@@ -9,9 +9,9 @@ public class CellWithStatus {
     public CellData data;
     public CellOutput output;
 
-    static class CellData {
-      String content;
-      String hash;
+    public static class CellData {
+      public String content;
+      public String hash;
     }
   }
 }

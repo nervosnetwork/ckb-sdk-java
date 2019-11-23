@@ -68,6 +68,14 @@ public class TransactionBuilder {
     cellDeps.add(cellDep);
   }
 
+  public List<CellDep> getCellDeps() {
+    return cellDeps;
+  }
+
+  public void setOutputsData(List<String> outputsData) {
+    cellOutputsData = outputsData;
+  }
+
   public Transaction buildTx() throws IOException {
     BigInteger needCapacity = BigInteger.ZERO;
     for (CellOutput output : cellOutputs) {
@@ -76,8 +84,10 @@ public class TransactionBuilder {
     if (cellInputs.size() == 0) {
       throw new IOException("Cell inputs could not empty");
     }
-    for (int i = 0; i < cellOutputs.size(); i++) {
-      cellOutputsData.add("0x");
+    if (cellOutputsData.size() == 0) {
+      for (int i = 0; i < cellOutputs.size(); i++) {
+        cellOutputsData.add("0x");
+      }
     }
 
     return new Transaction(

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
@@ -14,22 +15,54 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CollectUtils {
 
   private Api api;
+  private boolean skipDataAndType;
+
+  public CollectUtils(Api api, boolean skipDataAndType) {
+    this.api = api;
+    this.skipDataAndType = skipDataAndType;
+  }
 
   public CollectUtils(Api api) {
     this.api = api;
+    this.skipDataAndType = true;
   }
 
   public CollectResult collectInputs(
       List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
-    return new CellCollector(api).collectInputs(addresses, cellOutputs, feeRate, initialLength);
+    return new CellCollector(api)
+        .collectInputs(addresses, cellOutputs, feeRate, initialLength, null, null);
+  }
+
+  public CollectResult collectInputs(
+      List<String> sendAddresses,
+      List<CellOutput> cellOutputs,
+      BigInteger feeRate,
+      int initialLength,
+      List<CellDep> cellDeps,
+      List<String> cellOutputsData)
+      throws IOException {
+    return new CellCollector(api, skipDataAndType)
+        .collectInputs(
+            sendAddresses, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData);
   }
 
   public CollectResult collectInputsWithIndexer(
       List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
+    return collectInputsWithIndexer(addresses, cellOutputs, feeRate, initialLength, null, null);
+  }
+
+  public CollectResult collectInputsWithIndexer(
+      List<String> addresses,
+      List<CellOutput> cellOutputs,
+      BigInteger feeRate,
+      int initialLength,
+      List<CellDep> cellDeps,
+      List<String> cellOutputsData)
+      throws IOException {
     return new CellCollectorWithIndexer(api)
-        .collectInputs(addresses, cellOutputs, feeRate, initialLength);
+        .collectInputs(addresses, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData);
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
