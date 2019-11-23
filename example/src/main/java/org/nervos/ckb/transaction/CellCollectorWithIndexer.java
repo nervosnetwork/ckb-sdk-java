@@ -8,14 +8,12 @@ import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.cell.LiveCell;
+import org.nervos.ckb.type.cell.*;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
+import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -25,13 +23,24 @@ public class CellCollectorWithIndexer {
   private static final int PAGE_SIZE = 50;
 
   private Api api;
+  private boolean skipDataAndType = true;
 
   public CellCollectorWithIndexer(Api api) {
     this.api = api;
   }
 
+  public CellCollectorWithIndexer(Api api, boolean skipDataAndType) {
+    this.api = api;
+    this.skipDataAndType = skipDataAndType;
+  }
+
   public Map<String, List<CellInput>> collectInputs(
-      List<String> lockHashes, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
+      List<String> lockHashes,
+      List<CellOutput> cellOutputs,
+      BigInteger feeRate,
+      int initialLength,
+      List<CellDep> cellDeps,
+      List<String> outputsData)
       throws IOException {
     List<String> cellOutputsData = new ArrayList<>();
     for (int i = 0; i < cellOutputs.size() - 1; i++) {
@@ -81,6 +90,17 @@ public class CellCollectorWithIndexer {
                 false);
         if (liveCells == null || liveCells.size() == 0) break;
         for (LiveCell liveCell : liveCells) {
+          if (skipDataAndType) {
+            CellWithStatus cellWithStatus =
+                api.getLiveCell(
+                    new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), true);
+            String outputsDataContent = cellWithStatus.cell.data.content;
+            CellOutput cellOutput = cellWithStatus.cell.output;
+            if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+                || cellOutput.type != null) {
+              continue;
+            }
+          }
           CellInput cellInput =
               new CellInput(
                   new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), "0x0");

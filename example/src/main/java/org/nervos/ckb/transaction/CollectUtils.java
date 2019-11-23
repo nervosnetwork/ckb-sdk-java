@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
@@ -16,9 +17,15 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CollectUtils {
 
   private Api api;
+  private boolean skipDataAndType = true;
 
   public CollectUtils(Api api) {
     this.api = api;
+  }
+
+  public CollectUtils(Api api, boolean skipDataAndType) {
+    this.api = api;
+    this.skipDataAndType = skipDataAndType;
   }
 
   public List<CellsWithAddress> collectInputs(
@@ -27,6 +34,17 @@ public class CollectUtils {
       BigInteger feeRate,
       int initialLength)
       throws IOException {
+    return collectInputs(sendAddresses, cellOutputs, feeRate, initialLength, null, null);
+  }
+
+  public List<CellsWithAddress> collectInputs(
+      List<String> sendAddresses,
+      List<CellOutput> cellOutputs,
+      BigInteger feeRate,
+      int initialLength,
+      List<CellDep> cellDeps,
+      List<String> cellOutputsData)
+      throws IOException {
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
     List<String> lockHashes = new ArrayList<>();
     for (String address : sendAddresses) {
@@ -34,7 +52,9 @@ public class CollectUtils {
       lockHashes.add(addressParseResult.script.computeHash());
     }
     Map<String, List<CellInput>> lockInputMap =
-        new CellCollector(api).collectInputs(lockHashes, cellOutputs, feeRate, initialLength);
+        new CellCollector(api, skipDataAndType)
+            .collectInputs(
+                lockHashes, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData);
 
     for (Map.Entry<String, List<CellInput>> entry : lockInputMap.entrySet()) {
       cellsWithAddresses.add(
@@ -50,6 +70,17 @@ public class CollectUtils {
       BigInteger feeRate,
       int initialLength)
       throws IOException {
+    return collectInputsWithIndexer(sendAddresses, cellOutputs, feeRate, initialLength, null, null);
+  }
+
+  public List<CellsWithAddress> collectInputsWithIndexer(
+      List<String> sendAddresses,
+      List<CellOutput> cellOutputs,
+      BigInteger feeRate,
+      int initialLength,
+      List<CellDep> cellDeps,
+      List<String> cellOutputsData)
+      throws IOException {
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
     List<String> lockHashes = new ArrayList<>();
     for (String address : sendAddresses) {
@@ -58,7 +89,8 @@ public class CollectUtils {
     }
     Map<String, List<CellInput>> lockInputMap =
         new CellCollectorWithIndexer(api)
-            .collectInputs(lockHashes, cellOutputs, feeRate, initialLength);
+            .collectInputs(
+                lockHashes, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData);
 
     for (Map.Entry<String, List<CellInput>> entry : lockInputMap.entrySet()) {
       cellsWithAddresses.add(

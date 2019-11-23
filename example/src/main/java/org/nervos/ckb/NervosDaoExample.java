@@ -20,8 +20,7 @@ import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NervosDaoExample {
-  private static final int DAO_LOCK_PERIOD_EPOCHS = 180;
-  private static final int DAO_MATURITY_BLOCKS = 5;
+  private static final String NERVOS_DAO_DATA = "0x0000000000000000";
 
   private static final String NODE_URL = "http://localhost:8114";
   private static Api api;
@@ -45,23 +44,27 @@ public class NervosDaoExample {
     CellOutput cellOutput = new CellOutput(Numeric.toHexStringWithPrefix(capacity), lock, type);
     CellOutput changeOutput = new CellOutput("0x0", lock);
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
+    List<String> cellOutputsData = Arrays.asList(NERVOS_DAO_DATA, "0x");
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
     txBuilder.addOutputs(cellOutputs);
+    txBuilder.setOutputsData(cellOutputsData);
     txBuilder.addCellDep(
-        new CellDep(SystemContract.getSystemSecpCell(api).outPoint, CellDep.DEP_GROUP));
-    txBuilder.addCellDep(
-        new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.DEP_GROUP));
-    System.out.println(SystemContract.getSystemNervosDaoCell(api).outPoint.txHash);
+        new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.CODE));
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
-    CollectUtils collectUtils = new CollectUtils(api);
+    CollectUtils collectUtils = new CollectUtils(api, true);
     List<CellsWithAddress> cellsWithAddresses =
         collectUtils.collectInputs(
-            Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+            Collections.singletonList(MinerAddress),
+            cellOutputs,
+            feeRate,
+            Sign.SIGN_LENGTH * 2,
+            txBuilder.getCellDeps(),
+            cellOutputsData);
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {

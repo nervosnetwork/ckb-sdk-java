@@ -35,16 +35,16 @@ public class SingleSigWithIndexerTxExample {
   /**
    * Note: If you want to use indexer to collect cell quickly, you should call index_lock_hash rpc
    * firstly. CKB needs time to execute tagging to live cells, so we suggest that if you want to
-   * collect live cells, you should await some time after call index_lock_hash rpc.
+   * collect live cells, you should await some time after calling index_lock_hash rpc.
    */
   public static void main(String[] args) throws Exception {
 
     System.out.println("Call index_lock_hash rpc firstly");
 
     // Call index_lock_hash rpc firstly before collecting live cells
-    // api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
+    api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
     // Wait some time for ckb to execute tagging to live cells
-    // Thread.sleep(20000);
+    Thread.sleep(20000);
 
     List<Receiver> receivers =
         Arrays.asList(
