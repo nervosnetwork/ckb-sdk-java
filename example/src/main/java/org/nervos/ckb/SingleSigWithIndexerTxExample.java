@@ -42,9 +42,9 @@ public class SingleSigWithIndexerTxExample {
     System.out.println("Call index_lock_hash rpc firstly");
 
     // Call index_lock_hash rpc firstly before collecting live cells
-    api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
+    // api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
     // Wait some time for ckb to execute tagging to live cells
-    Thread.sleep(20000);
+    // Thread.sleep(20000);
 
     List<Receiver> receivers =
         Arrays.asList(
