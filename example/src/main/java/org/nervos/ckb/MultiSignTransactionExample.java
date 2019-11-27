@@ -70,17 +70,19 @@ public class MultiSignTransactionExample {
     String txHash = sendCapacity(targetAddress, Utils.ckbToShannon(3000), privateKeys);
     System.out.println("Transaction hash: " + txHash);
     Thread.sleep(30000);
-    System.out.println(
-        "After transferring, target address "
-            + targetAddress
-            + " balance is "
-            + getBalance(targetAddress).divide(UnitCKB).toString()
-            + " CKB");
+
     System.out.println(
         "After transferring, multi-sig address "
             + multiSigAddress
             + " balance is "
             + getMultiSigBalance().divide(UnitCKB).toString()
+            + " CKB");
+
+    System.out.println(
+        "After transferring, target address "
+            + targetAddress
+            + " balance is "
+            + getBalance(targetAddress).divide(UnitCKB).toString()
             + " CKB");
   }
 
@@ -108,21 +110,23 @@ public class MultiSignTransactionExample {
         txUtils.generateOutputs(
             Collections.singletonList(new Receiver(targetAddress, capacity)),
             configuration.address());
-    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
 
     // initial_length = multi_sig_hash.length + 2 * secp256k1_signature_byte.length
-    List<CellsWithAddress> cellsWithAddresses =
+    CollectResult collectResult =
         txUtils.collectInputs(
             Collections.singletonList(configuration.address()),
             cellOutputs,
             feeRate,
             configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    txBuilder.addOutputs(cellOutputs);
+
     int startIndex = 0;
-    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+    for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");

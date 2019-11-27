@@ -55,12 +55,12 @@ public class MultiKeySingleSigTxExample {
             new Receiver(Addresses.get(2), Utils.ckbToShannon(1000)));
 
     System.out.println(
-        "Before transfer, miner's balance: "
+        "Before transferring, miner's balance: "
             + getBalance(minerAddress).divide(UnitCKB).toString(10)
             + " CKB");
 
     System.out.println(
-        "Before transfer, first receiver1's balance: "
+        "Before transferring, first receiver1's balance: "
             + getBalance(Addresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
@@ -70,7 +70,12 @@ public class MultiKeySingleSigTxExample {
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, first receiver1's balance: "
+        "After transferring, miner's balance: "
+            + getBalance(minerAddress).divide(UnitCKB).toString(10)
+            + " CKB");
+
+    System.out.println(
+        "After transferring, first receiver1's balance: "
             + getBalance(Addresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
@@ -78,24 +83,50 @@ public class MultiKeySingleSigTxExample {
 
     List<Receiver> receivers2 =
         Arrays.asList(
-            new Receiver(Addresses.get(3), Utils.ckbToShannon(400)),
-            new Receiver(Addresses.get(4), Utils.ckbToShannon(500)),
-            new Receiver(Addresses.get(5), Utils.ckbToShannon(600)));
+            new Receiver(Addresses.get(3), Utils.ckbToShannon(600)),
+            new Receiver(Addresses.get(4), Utils.ckbToShannon(700)),
+            new Receiver(Addresses.get(5), Utils.ckbToShannon(800)));
 
-    String changeAddress = "ckt1qyqfnym6semhw2vzm33fjvk3ngxuf5433l9qz3af8a";
+    String changeAddress = receivers1.get(0).address;
 
     System.out.println(
-        "Before transfer, first receiver2's balance: "
+        "Before transferring, receiver1-1's balance: "
+            + getBalance(receivers1.get(0).address).divide(UnitCKB).toString(10)
+            + " CKB");
+    System.out.println(
+        "Before transferring, receiver1-2's balance: "
+            + getBalance(receivers1.get(1).address).divide(UnitCKB).toString(10)
+            + " CKB");
+    System.out.println(
+        "Before transferring, receiver1-3's balance: "
+            + getBalance(receivers1.get(2).address).divide(UnitCKB).toString(10)
+            + " CKB");
+
+    System.out.println(
+        "Before transferring, receiver2-1's balance: "
             + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
 
-    // send capacity to three receiver2 accounts with 400, 500 and 600 CKB
+    // send capacity to three receiver2 accounts with 600, 700 and 800 CKB
     String hash2 = sendCapacity(Addresses.subList(0, 3), receivers2, changeAddress);
     System.out.println("Second transaction hash: " + hash2);
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, receiver2's balance: "
+        "After transferring, receiver1-1's balance: "
+            + getBalance(receivers1.get(0).address).divide(UnitCKB).toString(10)
+            + " CKB");
+    System.out.println(
+        "After transferring, receiver1-2's balance: "
+            + getBalance(receivers1.get(1).address).divide(UnitCKB).toString(10)
+            + " CKB");
+    System.out.println(
+        "After transferring, receiver1-3's balance: "
+            + getBalance(receivers1.get(2).address).divide(UnitCKB).toString(10)
+            + " CKB");
+
+    System.out.println(
+        "After transferring, receiver2-1's balance: "
             + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
             + " CKB");
   }
@@ -135,17 +166,19 @@ public class MultiKeySingleSigTxExample {
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
-    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
 
     // initial_length = 2 * secp256k1_signature_byte.length
-    List<CellsWithAddress> cellsWithAddresses =
+    CollectResult collectResult =
         txUtils.collectInputs(sendAddresses, cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+
+    txBuilder.addOutputs(cellOutputs);
     int startIndex = 0;
-    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+    for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
