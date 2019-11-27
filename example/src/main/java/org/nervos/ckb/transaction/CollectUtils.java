@@ -21,7 +21,7 @@ public class CollectUtils {
     this.api = api;
   }
 
-  public List<CellsWithAddress> collectInputs(
+  public CollectResult collectInputs(
       List<String> sendAddresses,
       List<CellOutput> cellOutputs,
       BigInteger feeRate,
@@ -33,18 +33,19 @@ public class CollectUtils {
       AddressParseResult addressParseResult = AddressParser.parse(address);
       lockHashes.add(addressParseResult.script.computeHash());
     }
-    Map<String, List<CellInput>> lockInputMap =
+    CollectCellsWithChange collectCellsWithChange =
         new CellCollector(api).collectInputs(lockHashes, cellOutputs, feeRate, initialLength);
 
-    for (Map.Entry<String, List<CellInput>> entry : lockInputMap.entrySet()) {
+    for (Map.Entry<String, List<CellInput>> entry :
+        collectCellsWithChange.lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(
               entry.getValue(), sendAddresses.get(lockHashes.indexOf(entry.getKey()))));
     }
-    return cellsWithAddresses;
+    return new CollectResult(cellsWithAddresses, collectCellsWithChange.changeCapacity);
   }
 
-  public List<CellsWithAddress> collectInputsWithIndexer(
+  public CollectResult collectInputsWithIndexer(
       List<String> sendAddresses,
       List<CellOutput> cellOutputs,
       BigInteger feeRate,
@@ -56,16 +57,17 @@ public class CollectUtils {
       AddressParseResult addressParseResult = AddressParser.parse(address);
       lockHashes.add(addressParseResult.script.computeHash());
     }
-    Map<String, List<CellInput>> lockInputMap =
+    CollectCellsWithChange collectCellsWithChange =
         new CellCollectorWithIndexer(api)
             .collectInputs(lockHashes, cellOutputs, feeRate, initialLength);
 
-    for (Map.Entry<String, List<CellInput>> entry : lockInputMap.entrySet()) {
+    for (Map.Entry<String, List<CellInput>> entry :
+        collectCellsWithChange.lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(
               entry.getValue(), sendAddresses.get(lockHashes.indexOf(entry.getKey()))));
     }
-    return cellsWithAddresses;
+    return new CollectResult(cellsWithAddresses, collectCellsWithChange.changeCapacity);
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {

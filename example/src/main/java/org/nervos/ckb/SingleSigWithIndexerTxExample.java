@@ -42,9 +42,9 @@ public class SingleSigWithIndexerTxExample {
     System.out.println("Call index_lock_hash rpc firstly");
 
     // Call index_lock_hash rpc firstly before collecting live cells
-    // api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
+    api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
     // Wait some time for ckb to execute tagging to live cells
-    // Thread.sleep(20000);
+    Thread.sleep(20000);
 
     List<Receiver> receivers =
         Arrays.asList(
@@ -52,7 +52,7 @@ public class SingleSigWithIndexerTxExample {
             new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(9000)));
 
     System.out.println(
-        "Before transfer, miner's balance: "
+        "Before transferring, miner's balance: "
             + getBalance(MinerAddress).divide(UnitCKB).toString(10)
             + " CKB");
 
@@ -62,7 +62,7 @@ public class SingleSigWithIndexerTxExample {
     Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
 
     System.out.println(
-        "After transfer, miner's balance: "
+        "After transferring, miner's balance: "
             + getBalance(MinerAddress).divide(UnitCKB).toString(10)
             + " CKB");
   }
@@ -84,7 +84,6 @@ public class SingleSigWithIndexerTxExample {
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
-    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
@@ -92,11 +91,14 @@ public class SingleSigWithIndexerTxExample {
 
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
-    List<CellsWithAddress> cellsWithAddresses =
+    CollectResult collectResult =
         txUtils.collectInputsWithIndexer(
             Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    txBuilder.addOutputs(cellOutputs);
+
     int startIndex = 0;
-    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+    for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");

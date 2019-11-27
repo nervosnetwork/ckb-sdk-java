@@ -27,7 +27,7 @@ public class CellCollector {
     this.api = api;
   }
 
-  public Map<String, List<CellInput>> collectInputs(
+  public CollectCellsWithChange collectInputs(
       List<String> lockHashes, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
     List<String> cellOutputsData = new ArrayList<>();
@@ -125,7 +125,9 @@ public class CellCollector {
     if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
       throw new IOException("Capacity not enough!");
     }
-    return lockInputsMap;
+    BigInteger changeCapacity =
+        inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
+    return new CollectCellsWithChange(lockInputsMap, Numeric.toHexStringWithPrefix(changeCapacity));
   }
 
   private BigInteger calculateTxFee(Transaction transaction, BigInteger feeRate) {
