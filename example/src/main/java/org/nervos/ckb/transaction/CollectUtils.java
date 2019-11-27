@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
@@ -21,51 +19,17 @@ public class CollectUtils {
     this.api = api;
   }
 
-  public List<CellsWithAddress> collectInputs(
-      List<String> sendAddresses,
-      List<CellOutput> cellOutputs,
-      BigInteger feeRate,
-      int initialLength)
+  public CollectResult collectInputs(
+      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
-    List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    List<String> lockHashes = new ArrayList<>();
-    for (String address : sendAddresses) {
-      AddressParseResult addressParseResult = AddressParser.parse(address);
-      lockHashes.add(addressParseResult.script.computeHash());
-    }
-    Map<String, List<CellInput>> lockInputMap =
-        new CellCollector(api).collectInputs(lockHashes, cellOutputs, feeRate, initialLength);
-
-    for (Map.Entry<String, List<CellInput>> entry : lockInputMap.entrySet()) {
-      cellsWithAddresses.add(
-          new CellsWithAddress(
-              entry.getValue(), sendAddresses.get(lockHashes.indexOf(entry.getKey()))));
-    }
-    return cellsWithAddresses;
+    return new CellCollector(api).collectInputs(addresses, cellOutputs, feeRate, initialLength);
   }
 
-  public List<CellsWithAddress> collectInputsWithIndexer(
-      List<String> sendAddresses,
-      List<CellOutput> cellOutputs,
-      BigInteger feeRate,
-      int initialLength)
+  public CollectResult collectInputsWithIndexer(
+      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
-    List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    List<String> lockHashes = new ArrayList<>();
-    for (String address : sendAddresses) {
-      AddressParseResult addressParseResult = AddressParser.parse(address);
-      lockHashes.add(addressParseResult.script.computeHash());
-    }
-    Map<String, List<CellInput>> lockInputMap =
-        new CellCollectorWithIndexer(api)
-            .collectInputs(lockHashes, cellOutputs, feeRate, initialLength);
-
-    for (Map.Entry<String, List<CellInput>> entry : lockInputMap.entrySet()) {
-      cellsWithAddresses.add(
-          new CellsWithAddress(
-              entry.getValue(), sendAddresses.get(lockHashes.indexOf(entry.getKey()))));
-    }
-    return cellsWithAddresses;
+    return new CellCollectorWithIndexer(api)
+        .collectInputs(addresses, cellOutputs, feeRate, initialLength);
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
@@ -74,7 +38,7 @@ public class CollectUtils {
       AddressParseResult addressParseResult = AddressParser.parse(receiver.address);
       cellOutputs.add(
           new CellOutput(
-              Numeric.prependHexPrefix(receiver.capacity.toString(16)), addressParseResult.script));
+              Numeric.toHexStringWithPrefix(receiver.capacity), addressParseResult.script));
     }
     BigInteger needCapacity = BigInteger.ZERO;
     for (Receiver receiver : receivers) {

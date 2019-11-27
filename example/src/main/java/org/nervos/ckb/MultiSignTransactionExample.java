@@ -55,44 +55,46 @@ public class MultiSignTransactionExample {
     String multiSigAddress = configuration.address();
     String targetAddress = "ckt1qyqrlj6znd3uhvuln5z83epv54xu8pmphzgse5uylq";
     System.out.println(
-        "Before transferring, multi-sig address "
+        "Before transferring, multi-sig "
             + multiSigAddress
-            + " balance is "
-            + getMultiSigBalance().divide(UnitCKB).toString()
+            + " balance: "
+            + getMultiSigBalance()
             + " CKB");
     System.out.println(
-        "Before transferring, target address "
+        "Before transferring, target "
             + targetAddress
-            + " balance is "
-            + getBalance(targetAddress).divide(UnitCKB).toString()
+            + " balance: "
+            + getBalance(targetAddress)
             + " CKB");
 
     String txHash = sendCapacity(targetAddress, Utils.ckbToShannon(3000), privateKeys);
     System.out.println("Transaction hash: " + txHash);
     Thread.sleep(30000);
+
     System.out.println(
-        "After transferring, target address "
-            + targetAddress
-            + " balance is "
-            + getBalance(targetAddress).divide(UnitCKB).toString()
-            + " CKB");
-    System.out.println(
-        "After transferring, multi-sig address "
+        "After transferring, multi-sig "
             + multiSigAddress
-            + " balance is "
-            + getMultiSigBalance().divide(UnitCKB).toString()
+            + " balance: "
+            + getMultiSigBalance()
+            + " CKB");
+
+    System.out.println(
+        "After transferring, target "
+            + targetAddress
+            + " balance: "
+            + getBalance(targetAddress)
             + " CKB");
   }
 
-  public static BigInteger getMultiSigBalance() throws IOException {
+  public static String getMultiSigBalance() throws IOException {
     Script lock = generateLock();
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithLockHash(lock.computeHash());
+    return cellCollector.getCapacityWithLockHash(lock.computeHash()).divide(UnitCKB).toString();
   }
 
-  public static BigInteger getBalance(String address) throws IOException {
+  public static String getBalance(String address) throws IOException {
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(address);
+    return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString();
   }
 
   public static Transaction generateTx(
@@ -108,21 +110,25 @@ public class MultiSignTransactionExample {
         txUtils.generateOutputs(
             Collections.singletonList(new Receiver(targetAddress, capacity)),
             configuration.address());
-    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
 
     // initial_length = multi_sig_hash.length + 2 * secp256k1_signature_byte.length
-    List<CellsWithAddress> cellsWithAddresses =
+    CollectResult collectResult =
         txUtils.collectInputs(
             Collections.singletonList(configuration.address()),
             cellOutputs,
             feeRate,
             configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
+
+    // update change cell output capacity after collecting cells
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    txBuilder.addOutputs(cellOutputs);
+
     int startIndex = 0;
-    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+    for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
