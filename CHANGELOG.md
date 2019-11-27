@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.25.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.25.0...v0.25.1) (2019-11-27)
+
+### BugFix
+
+* Update change capacity after collecting cells ([a8bb43c](https://github.com/nervosnetwork/ckb-sdk-java/commit/a8bb43ced488b1bfdd8474ce4bea1abb473713cc))
+
 # [v0.25.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.9...v0.25.0) (2019-11-16)
 
 ### BugFix
