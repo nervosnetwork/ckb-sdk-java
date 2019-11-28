@@ -17,34 +17,34 @@ public class CollectUtils {
   private Api api;
   private boolean skipDataAndType;
 
-  public CollectUtils(Api api, boolean skipDataAndType) {
-    this.api = api;
-    this.skipDataAndType = skipDataAndType;
-  }
-
   public CollectUtils(Api api) {
     this.api = api;
     this.skipDataAndType = true;
   }
 
-  public CollectResult collectInputs(
-      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
-      throws IOException {
-    return new CellCollector(api)
-        .collectInputs(addresses, cellOutputs, feeRate, initialLength, null, null);
+  public CollectUtils(Api api, boolean skipDataAndType) {
+    this.api = api;
+    this.skipDataAndType = skipDataAndType;
   }
 
   public CollectResult collectInputs(
-      List<String> sendAddresses,
+      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
+      throws IOException {
+    return collectInputs(addresses, cellOutputs, feeRate, initialLength, null, null, null);
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses,
       List<CellOutput> cellOutputs,
       BigInteger feeRate,
       int initialLength,
       List<CellDep> cellDeps,
-      List<String> cellOutputsData)
+      List<String> cellOutputsData,
+      List<String> headerDeps)
       throws IOException {
     return new CellCollector(api, skipDataAndType)
         .collectInputs(
-            sendAddresses, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData);
+            addresses, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData, headerDeps);
   }
 
   public CollectResult collectInputsWithIndexer(
@@ -61,7 +61,7 @@ public class CollectUtils {
       List<CellDep> cellDeps,
       List<String> cellOutputsData)
       throws IOException {
-    return new CellCollectorWithIndexer(api)
+    return new CellCollectorWithIndexer(api, skipDataAndType)
         .collectInputs(addresses, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData);
   }
 

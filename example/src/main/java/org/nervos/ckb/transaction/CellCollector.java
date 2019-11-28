@@ -20,15 +20,16 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CellCollector {
 
   private Api api;
-  private boolean skipDataAndType = true;
-
-  public CellCollector(Api api) {
-    this.api = api;
-  }
+  private boolean skipDataAndType;
 
   public CellCollector(Api api, boolean skipDataAndType) {
     this.api = api;
     this.skipDataAndType = skipDataAndType;
+  }
+
+  public CellCollector(Api api) {
+    this.api = api;
+    this.skipDataAndType = true;
   }
 
   public CollectResult collectInputs(
@@ -37,7 +38,8 @@ public class CellCollector {
       BigInteger feeRate,
       int initialLength,
       List<CellDep> cellDeps,
-      List<String> outputsData)
+      List<String> outputsData,
+      List<String> headerDeps)
       throws IOException {
 
     List<String> lockHashes = new ArrayList<>();
@@ -66,11 +68,16 @@ public class CellCollector {
       cellDepList = cellDeps;
     }
 
+    List<String> headerDepList = Collections.emptyList();
+    if (headerDeps != null && headerDeps.size() > 0) {
+      headerDepList = headerDeps;
+    }
+
     Transaction transaction =
         new Transaction(
             "0",
             cellDepList,
-            Collections.emptyList(),
+            headerDepList,
             Collections.emptyList(),
             cellOutputs,
             cellOutputsData,

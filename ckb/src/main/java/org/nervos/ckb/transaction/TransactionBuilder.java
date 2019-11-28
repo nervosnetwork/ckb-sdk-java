@@ -20,6 +20,7 @@ public class TransactionBuilder {
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
   private List<CellDep> cellDeps = new ArrayList<>();
+  private List<String> headerDeps = Collections.emptyList();
   private List witnesses = new ArrayList<>();
 
   public TransactionBuilder(Api api) {
@@ -68,12 +69,20 @@ public class TransactionBuilder {
     cellDeps.add(cellDep);
   }
 
+  public void addCellDeps(List<CellDep> cellDeps) {
+    cellDeps.addAll(cellDeps);
+  }
+
   public List<CellDep> getCellDeps() {
     return cellDeps;
   }
 
   public void setOutputsData(List<String> outputsData) {
     cellOutputsData = outputsData;
+  }
+
+  public void setHeaderDeps(List<String> headerDeps) {
+    this.headerDeps = headerDeps;
   }
 
   public Transaction buildTx() throws IOException {
@@ -91,12 +100,6 @@ public class TransactionBuilder {
     }
 
     return new Transaction(
-        "0",
-        cellDeps,
-        Collections.emptyList(),
-        cellInputs,
-        cellOutputs,
-        cellOutputsData,
-        witnesses);
+        "0", cellDeps, headerDeps, cellInputs, cellOutputs, cellOutputsData, witnesses);
   }
 }

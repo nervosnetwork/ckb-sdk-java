@@ -21,4 +21,10 @@ public class Witness {
     this.inputType = "";
     this.outputType = "";
   }
+
+  public Witness(String lock, String inputType, String outputType) {
+    this.lock = lock;
+    this.inputType = inputType;
+    this.outputType = outputType;
+  }
 }

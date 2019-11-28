@@ -23,10 +23,11 @@ public class CellCollectorWithIndexer {
   private static final int PAGE_SIZE = 50;
 
   private Api api;
-  private boolean skipDataAndType = true;
+  private boolean skipDataAndType;
 
   public CellCollectorWithIndexer(Api api) {
     this.api = api;
+    this.skipDataAndType = true;
   }
 
   public CellCollectorWithIndexer(Api api, boolean skipDataAndType) {

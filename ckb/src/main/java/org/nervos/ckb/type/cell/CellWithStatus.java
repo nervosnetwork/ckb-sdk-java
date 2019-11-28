@@ -2,6 +2,8 @@ package org.nervos.ckb.type.cell;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellWithStatus {
+  public static final String LIVE = "live";
+
   public CellInfo cell;
   public String status;
 

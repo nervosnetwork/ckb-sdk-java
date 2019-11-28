@@ -27,10 +27,10 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
     if (transaction.witnesses.size() < transaction.inputs.size()) {
       throw new IOException("Transaction witnesses count must not be smaller than inputs count");
     }
-    if (scriptGroup.inputIndexes.size() < 1) {
+    if (scriptGroup.inputIndices.size() < 1) {
       throw new RuntimeException("Need at least one witness!");
     }
-    for (Integer i : scriptGroup.inputIndexes) {
+    for (Integer i : scriptGroup.inputIndices) {
       groupWitnesses.add(transaction.witnesses.get(i));
     }
     for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
@@ -66,7 +66,7 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
             Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
 
     transaction.witnesses.set(
-        scriptGroup.inputIndexes.get(0),
+        scriptGroup.inputIndices.get(0),
         Numeric.toHexString(Serializer.serializeWitnessArgs(signedWitness).toBytes()));
   }
 
