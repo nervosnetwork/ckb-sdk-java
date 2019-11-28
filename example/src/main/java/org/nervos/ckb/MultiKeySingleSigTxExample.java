@@ -68,7 +68,7 @@ public class MultiKeySingleSigTxExample {
     System.out.println("First transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
-    Thread.sleep(30000);
+    Thread.sleep(3000);
 
     System.out.println("After transferring, miner's balance: " + getBalance(MinerAddress) + " CKB");
 
