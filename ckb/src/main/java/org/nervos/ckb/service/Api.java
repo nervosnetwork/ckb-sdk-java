@@ -119,7 +119,15 @@ public class Api {
   }
 
   public String setBan(BannedAddress bannedAddress) throws IOException {
-    return rpcService.post("set_ban", Collections.singletonList(bannedAddress), String.class);
+    return rpcService.post(
+        "set_ban",
+        Arrays.asList(
+            bannedAddress.address,
+            bannedAddress.command,
+            Numeric.toHexStringWithPrefix(new BigInteger(bannedAddress.banTime)),
+            bannedAddress.absolute,
+            bannedAddress.reason),
+        String.class);
   }
 
   public List<BannedResultAddress> getBannedAddress() throws IOException {
