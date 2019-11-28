@@ -19,6 +19,7 @@ public class MultiKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
+  private static final String MinerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
   private static Api api;
   private static List<String> PrivateKeys;
   private static List<String> Addresses;
@@ -46,63 +47,80 @@ public class MultiKeySingleSigTxExample {
   }
 
   public static void main(String[] args) throws Exception {
-    String minerPrivateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-    String minerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     List<Receiver> receivers1 =
         Arrays.asList(
             new Receiver(Addresses.get(0), Utils.ckbToShannon(800)),
             new Receiver(Addresses.get(1), Utils.ckbToShannon(900)),
             new Receiver(Addresses.get(2), Utils.ckbToShannon(1000)));
 
-    System.out.println(
-        "Before transfer, miner's balance: "
-            + getBalance(minerAddress).divide(UnitCKB).toString(10)
-            + " CKB");
+    String changeAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440a9qpq2m6m";
 
     System.out.println(
-        "Before transfer, first receiver1's balance: "
-            + getBalance(Addresses.get(0)).divide(UnitCKB).toString(10)
-            + " CKB");
+        "Before transferring, miner's balance: " + getBalance(MinerAddress) + " CKB");
 
-    // miner send capacity to three receiver1 accounts with 800, 900 and 1000 CKB
-    String hash = sendCapacity(minerAddress, receivers1, minerAddress);
+    System.out.println(
+        "Before transferring, first receiver1's balance: " + getBalance(Addresses.get(0)) + " CKB");
+
+    System.out.println(
+        "Before transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
+
+    String hash = sendCapacity(MinerAddress, receivers1, changeAddress);
     System.out.println("First transaction hash: " + hash);
-    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    // waiting transaction into block, sometimes you should wait more seconds
+    Thread.sleep(30000);
+
+    System.out.println("After transferring, miner's balance: " + getBalance(MinerAddress) + " CKB");
 
     System.out.println(
-        "After transfer, first receiver1's balance: "
-            + getBalance(Addresses.get(0)).divide(UnitCKB).toString(10)
-            + " CKB");
+        "After transferring, first receiver1's balance: " + getBalance(Addresses.get(0)) + " CKB");
+
+    System.out.println(
+        "After transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
 
     // Second transaction
-
     List<Receiver> receivers2 =
         Arrays.asList(
-            new Receiver(Addresses.get(3), Utils.ckbToShannon(400)),
-            new Receiver(Addresses.get(4), Utils.ckbToShannon(500)),
-            new Receiver(Addresses.get(5), Utils.ckbToShannon(600)));
-
-    String changeAddress = "ckt1qyqfnym6semhw2vzm33fjvk3ngxuf5433l9qz3af8a";
+            new Receiver(Addresses.get(3), Utils.ckbToShannon(600)),
+            new Receiver(Addresses.get(4), Utils.ckbToShannon(700)),
+            new Receiver(Addresses.get(5), Utils.ckbToShannon(800)));
 
     System.out.println(
-        "Before transfer, first receiver2's balance: "
-            + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
+        "Before transferring, first receiver1's balance: "
+            + getBalance(receivers1.get(0).address)
             + " CKB");
 
-    // send capacity to three receiver2 accounts with 400, 500 and 600 CKB
+    System.out.println(
+        "Before transferring, first receiver2's balance: "
+            + getBalance(receivers2.get(0).address)
+            + " CKB");
+
+    System.out.println(
+        "Before transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
+
     String hash2 = sendCapacity(Addresses.subList(0, 3), receivers2, changeAddress);
     System.out.println("Second transaction hash: " + hash2);
-    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    // waiting transaction into block, sometimes you should wait more seconds
+    Thread.sleep(30000);
 
     System.out.println(
-        "After transfer, receiver2's balance: "
-            + getBalance(receivers2.get(0).address).divide(UnitCKB).toString(10)
+        "After transferring, first receiver1's balance: "
+            + getBalance(receivers1.get(0).address)
             + " CKB");
+
+    System.out.println(
+        "After transferring, first receiver2's balance: "
+            + getBalance(receivers2.get(0).address)
+            + " CKB");
+
+    System.out.println(
+        "After transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
   }
 
-  private static BigInteger getBalance(String address) throws IOException {
+  private static String getBalance(String address) throws IOException {
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(address);
+    return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static String sendCapacity(
@@ -135,17 +153,21 @@ public class MultiKeySingleSigTxExample {
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
-    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
 
     // initial_length = 2 * secp256k1_signature_byte.length
-    List<CellsWithAddress> cellsWithAddresses =
+    CollectResult collectResult =
         txUtils.collectInputs(sendAddresses, cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+
+    // update change output capacity after collecting cells
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    txBuilder.addOutputs(cellOutputs);
+
     int startIndex = 0;
-    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+    for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");

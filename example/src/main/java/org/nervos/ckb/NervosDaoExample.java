@@ -21,20 +21,30 @@ import org.nervos.ckb.utils.Utils;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NervosDaoExample {
   private static final String NERVOS_DAO_DATA = "0x0000000000000000";
+  private static final BigInteger UnitCKB = new BigInteger("100000000");
 
   private static final String NODE_URL = "http://localhost:8114";
   private static Api api;
   private static String MinerPrivateKey =
-      "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-  private static String MinerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+      "a202386cb9e46cecff9bc14b748b714c713075dd964c2507c8a8900540164959";
+  private static String MinerAddress = "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek";
 
   static {
     api = new Api(NODE_URL, false);
   }
 
   public static void main(String[] args) throws Exception {
-    OutPoint outPoint = depositToDao(Utils.ckbToShannon(300));
+    System.out.println("Before transferring, balance: " + getBalance(MinerAddress));
+    OutPoint outPoint = depositToDao(Utils.ckbToShannon(1000));
     System.out.println(outPoint.txHash);
+
+    Thread.sleep(20000);
+    System.out.println("After transferring, balance: " + getBalance(MinerAddress));
+  }
+
+  private static String getBalance(String address) throws IOException {
+    CellCollector cellCollector = new CellCollector(api, true);
+    return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static OutPoint depositToDao(BigInteger capacity) throws IOException {
@@ -48,7 +58,7 @@ public class NervosDaoExample {
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
-    txBuilder.addOutputs(cellOutputs);
+
     txBuilder.setOutputsData(cellOutputsData);
     txBuilder.addCellDep(
         new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.CODE));
@@ -57,7 +67,7 @@ public class NervosDaoExample {
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
     CollectUtils collectUtils = new CollectUtils(api, true);
-    List<CellsWithAddress> cellsWithAddresses =
+    CollectResult collectResult =
         collectUtils.collectInputs(
             Collections.singletonList(MinerAddress),
             cellOutputs,
@@ -66,8 +76,11 @@ public class NervosDaoExample {
             txBuilder.getCellDeps(),
             cellOutputsData);
 
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    txBuilder.addOutputs(cellOutputs);
+
     int startIndex = 0;
-    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+    for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
