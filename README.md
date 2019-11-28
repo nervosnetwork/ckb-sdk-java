@@ -29,7 +29,7 @@ The ckb-sdk-java is still under development and **NOT** production ready. You sh
 </dependency>
 ```
 
-Gradle
+- Gradle
 ```
 implementation 'org.nervos.ckb:core:{version}'
 ```
@@ -45,7 +45,7 @@ implementation 'org.nervos.ckb:core:{version}'
 </dependency>
 ```
 
-Gradle
+- Gradle
 ```
 implementation 'org.nervos.ckb:ckb:{version}'
 ```
