@@ -37,36 +37,37 @@ public class SingleKeySingleSigTxExample {
         Arrays.asList(
             new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(8000)),
             new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(9000)));
+    String changeAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
 
     System.out.println(
-        "Before transferring, miner's balance: "
-            + getBalance(MinerAddress).divide(UnitCKB).toString(10)
-            + " CKB");
+        "Before transferring, miner's balance: " + getBalance(MinerAddress) + " CKB");
 
     System.out.println(
         "Before transferring, first receiver's balance: "
-            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
+            + getBalance(ReceiveAddresses.get(0))
             + " CKB");
 
-    // miner send capacity to two receiver accounts with 8000, 9000 CKB
-    String hash = sendCapacity(receivers, MinerAddress);
+    System.out.println(
+        "Before transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
+
+    String hash = sendCapacity(receivers, changeAddress);
     System.out.println("Transaction hash: " + hash);
-    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    // waiting transaction into block, sometimes you should wait more seconds
+    Thread.sleep(30000);
+
+    System.out.println("After transferring, miner's balance: " + getBalance(MinerAddress) + " CKB");
 
     System.out.println(
-        "After transferring, miner's balance: "
-            + getBalance(MinerAddress).divide(UnitCKB).toString(10)
-            + " CKB");
+        "After transferring, receiver's balance: " + getBalance(ReceiveAddresses.get(0)) + " CKB");
 
     System.out.println(
-        "After transferring, receiver's balance: "
-            + getBalance(ReceiveAddresses.get(0)).divide(UnitCKB).toString(10)
-            + " CKB");
+        "After transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
   }
 
-  private static BigInteger getBalance(String address) throws IOException {
+  private static String getBalance(String address) throws IOException {
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(address);
+    return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
@@ -90,6 +91,8 @@ public class SingleKeySingleSigTxExample {
     CollectResult collectResult =
         txUtils.collectInputs(
             Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+
+    // update change output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.addOutputs(cellOutputs);
 

@@ -30,41 +30,37 @@ public class SendToMultiSigAddressTxExample {
   public static void main(String[] args) throws Exception {
     List<Receiver> receivers =
         Collections.singletonList(new Receiver(MultiSigAddress, Utils.ckbToShannon(20000)));
+    String changeAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440a9qpq2m6m";
+
+    System.out.println("Before transferring, miner's balance: " + getBalance() + " CKB");
 
     System.out.println(
-        "Before transferring, miner's balance: "
-            + getBalance().divide(UnitCKB).toString(10)
-            + " CKB");
+        "Before transferring, multi-sig address balance: " + getMultiSigBalance() + " CKB");
 
-    System.out.println(
-        "Before transferring, multi-sig address balance: "
-            + getMultiSigBalance().divide(UnitCKB).toString(10)
-            + " CKB");
+    System.out.println("Before transferring, change address balance: " + getBalance() + " CKB");
 
-    // miner send capacity to multi-sig address with 2000 CKB
-    String hash = sendCapacity(receivers, MinerAddress);
+    String hash = sendCapacity(receivers, changeAddress);
     System.out.println("Transaction hash: " + hash);
-    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    // waiting transaction into block, sometimes you should wait more seconds
+    Thread.sleep(30000);
+
+    System.out.println("After transferring, miner's address balance: " + getBalance() + " CKB");
 
     System.out.println(
-        "After transferring, miner's address balance: "
-            + getBalance().divide(UnitCKB).toString(10)
-            + " CKB");
+        "After transferring, multi-sig address balance: " + getMultiSigBalance() + " CKB");
 
-    System.out.println(
-        "After transferring, multi-sig address balance: "
-            + getMultiSigBalance().divide(UnitCKB).toString(10)
-            + " CKB");
+    System.out.println("After transferring, change address balance: " + getBalance() + " CKB");
   }
 
-  private static BigInteger getBalance() throws IOException {
+  private static String getBalance() throws IOException {
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(MinerAddress);
+    return cellCollector.getCapacityWithAddress(MinerAddress).divide(UnitCKB).toString(10);
   }
 
-  private static BigInteger getMultiSigBalance() throws IOException {
+  private static String getMultiSigBalance() throws IOException {
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(MultiSigAddress);
+    return cellCollector.getCapacityWithAddress(MultiSigAddress).divide(UnitCKB).toString(10);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
@@ -90,6 +86,7 @@ public class SendToMultiSigAddressTxExample {
         txUtils.collectInputs(
             Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
 
+    // update change cell output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.addOutputs(cellOutputs);
 

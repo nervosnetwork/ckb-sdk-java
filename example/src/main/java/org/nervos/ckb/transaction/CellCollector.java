@@ -27,9 +27,18 @@ public class CellCollector {
     this.api = api;
   }
 
-  public CollectCellsWithChange collectInputs(
-      List<String> lockHashes, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
+  public CollectResult collectInputs(
+      List<String> addresses,
+      final List<CellOutput> cellOutputs,
+      BigInteger feeRate,
+      int initialLength)
       throws IOException {
+
+    List<String> lockHashes = new ArrayList<>();
+    for (String address : addresses) {
+      AddressParseResult addressParseResult = AddressParser.parse(address);
+      lockHashes.add(addressParseResult.script.computeHash());
+    }
     List<String> cellOutputsData = new ArrayList<>();
     for (int i = 0; i < cellOutputs.size() - 1; i++) {
       BigInteger size = cellOutputs.get(i).occupiedCapacity("0x");
@@ -106,15 +115,6 @@ public class CellCollector {
                     .add(calculateTxFee(transaction, feeRate))
                     .add(calculateOutputSize(changeOutput));
             if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
-              // calculate change capacity again
-              changeOutput.capacity =
-                  Numeric.prependHexPrefix(
-                      inputsCapacity
-                          .subtract(needCapacity)
-                          .subtract(calculateTxFee(transaction, feeRate))
-                          .toString(16));
-              cellOutputs.set(cellOutputs.size() - 1, changeOutput);
-              transaction.outputs = cellOutputs;
               break;
             }
           }
@@ -127,7 +127,13 @@ public class CellCollector {
     }
     BigInteger changeCapacity =
         inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
-    return new CollectCellsWithChange(lockInputsMap, Numeric.toHexStringWithPrefix(changeCapacity));
+    List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
+    for (Map.Entry<String, List<CellInput>> entry : lockInputsMap.entrySet()) {
+      cellsWithAddresses.add(
+          new CellsWithAddress(
+              entry.getValue(), addresses.get(lockHashes.indexOf(entry.getKey()))));
+    }
+    return new CollectResult(cellsWithAddresses, Numeric.toHexStringWithPrefix(changeCapacity));
   }
 
   private BigInteger calculateTxFee(Transaction transaction, BigInteger feeRate) {

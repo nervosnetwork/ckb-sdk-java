@@ -42,9 +42,9 @@ public class SingleSigWithIndexerTxExample {
     System.out.println("Call index_lock_hash rpc firstly");
 
     // Call index_lock_hash rpc firstly before collecting live cells
-    api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
+    // api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
     // Wait some time for ckb to execute tagging to live cells
-    Thread.sleep(20000);
+    // Thread.sleep(20000);
 
     List<Receiver> receivers =
         Arrays.asList(
@@ -56,10 +56,11 @@ public class SingleSigWithIndexerTxExample {
             + getBalance(MinerAddress).divide(UnitCKB).toString(10)
             + " CKB");
 
-    // miner send capacity to three receiver accounts with 800, 900 and 1000 CKB
     String hash = sendCapacity(receivers, MinerAddress);
     System.out.println("Transaction hash: " + hash);
-    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    // waiting transaction into block, sometimes you should wait more seconds
+    Thread.sleep(30000);
 
     System.out.println(
         "After transferring, miner's balance: "
@@ -94,6 +95,8 @@ public class SingleSigWithIndexerTxExample {
     CollectResult collectResult =
         txUtils.collectInputsWithIndexer(
             Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+
+    // update change cell output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.addOutputs(cellOutputs);
 
