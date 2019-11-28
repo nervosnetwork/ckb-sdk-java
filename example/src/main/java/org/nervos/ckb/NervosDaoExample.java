@@ -21,24 +21,34 @@ import org.nervos.ckb.utils.Utils;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NervosDaoExample {
   private static final String NERVOS_DAO_DATA = "0x0000000000000000";
+  private static final BigInteger UnitCKB = new BigInteger("100000000");
 
   private static final String NODE_URL = "http://localhost:8114";
   private static Api api;
-  private static String MinerPrivateKey =
-      "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-  private static String MinerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+  private static String DaoPrivateKey =
+      "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2";
+  private static String DaoAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
 
   static {
     api = new Api(NODE_URL, false);
   }
 
   public static void main(String[] args) throws Exception {
-    OutPoint outPoint = depositToDao(Utils.ckbToShannon(300));
+    System.out.println("Before depositing, balance: " + getBalance(DaoAddress) + "CKB");
+    OutPoint outPoint = depositToDao(Utils.ckbToShannon(1000));
     System.out.println(outPoint.txHash);
+
+    Thread.sleep(10000);
+    System.out.println("After depositing, balance: " + getBalance(DaoAddress) + "CKB");
+  }
+
+  private static String getBalance(String address) throws IOException {
+    CellCollector cellCollector = new CellCollector(api, true);
+    return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static OutPoint depositToDao(BigInteger capacity) throws IOException {
-    Script lock = LockUtils.generateLockScriptWithAddress(MinerAddress);
+    Script lock = LockUtils.generateLockScriptWithAddress(DaoAddress);
     Script type =
         new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, "0x", Script.TYPE);
     CellOutput cellOutput = new CellOutput(Numeric.toHexStringWithPrefix(capacity), lock, type);
@@ -58,7 +68,7 @@ public class NervosDaoExample {
     CollectUtils collectUtils = new CollectUtils(api, true);
     CollectResult collectResult =
         collectUtils.collectInputs(
-            Collections.singletonList(MinerAddress),
+            Collections.singletonList(DaoAddress),
             cellOutputs,
             feeRate,
             Sign.SIGN_LENGTH * 2,
@@ -77,7 +87,7 @@ public class NervosDaoExample {
       scriptGroupWithPrivateKeysList.add(
           new ScriptGroupWithPrivateKeys(
               new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
-              Collections.singletonList(MinerPrivateKey)));
+              Collections.singletonList(DaoPrivateKey)));
       startIndex += cellsWithAddress.inputs.size();
     }
 

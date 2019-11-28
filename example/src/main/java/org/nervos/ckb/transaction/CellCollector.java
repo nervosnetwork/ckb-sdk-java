@@ -186,6 +186,15 @@ public class CellCollector {
 
       if (cellOutputs != null && cellOutputs.size() > 0) {
         for (CellOutputWithOutPoint output : cellOutputs) {
+          if (skipDataAndType) {
+            CellWithStatus cellWithStatus = api.getLiveCell(output.outPoint, true);
+            String outputsDataContent = cellWithStatus.cell.data.content;
+            CellOutput cellOutput = cellWithStatus.cell.output;
+            if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+                || cellOutput.type != null) {
+              continue;
+            }
+          }
           capacity = capacity.add(Numeric.toBigInt(output.capacity));
         }
       }

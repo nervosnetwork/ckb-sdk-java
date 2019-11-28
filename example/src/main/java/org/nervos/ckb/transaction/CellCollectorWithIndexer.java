@@ -186,6 +186,17 @@ public class CellCollectorWithIndexer {
               lockHash, String.valueOf(pageNumber), String.valueOf(PAGE_SIZE), false);
       if (liveCells == null || liveCells.size() == 0) break;
       for (LiveCell liveCell : liveCells) {
+        if (skipDataAndType) {
+          CellWithStatus cellWithStatus =
+              api.getLiveCell(
+                  new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), true);
+          String outputsDataContent = cellWithStatus.cell.data.content;
+          CellOutput cellOutput = cellWithStatus.cell.output;
+          if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+              || cellOutput.type != null) {
+            continue;
+          }
+        }
         capacity = capacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
       }
       pageNumber += 1;
