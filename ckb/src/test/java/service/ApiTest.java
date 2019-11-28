@@ -222,7 +222,7 @@ public class ApiTest {
 
   @Test
   public void testEstimateFeeRate() {
-    Assertions.assertThrows(IOException.class, () -> api.estimateFeeRate("0x0a"));
+    Assertions.assertThrows(IOException.class, () -> api.estimateFeeRate("0xa"));
   }
 
   @Test
