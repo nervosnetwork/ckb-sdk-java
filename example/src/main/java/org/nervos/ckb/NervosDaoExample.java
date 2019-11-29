@@ -58,7 +58,7 @@ public class NervosDaoExample {
     System.out.println("Nervos DAO withdraw phase1 tx hash: " + withdrawOutPoint.txHash);
 
     // Nervos DAO withdraw phase2 must be after 180 epoch of depositing transaction
-    Thread.sleep(24000);
+    Thread.sleep(28000);
     Transaction tx =
         generateWithdrawFromDaoTransaction(
             depositOutPoint, withdrawOutPoint, Utils.ckbToShannon(0.01));
@@ -133,13 +133,12 @@ public class NervosDaoExample {
       signBuilder.sign(
           scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
-    System.out.println(new Gson().toJson(signBuilder.buildTx()));
     String txHash = api.sendTransaction(signBuilder.buildTx());
     return new OutPoint(txHash, "0x0");
   }
 
   private static OutPoint startWithdrawingFromDao(OutPoint depositOutPoint) throws IOException {
-    CellWithStatus cellWithStatus = api.getLiveCell(depositOutPoint, false);
+    CellWithStatus cellWithStatus = api.getLiveCell(depositOutPoint, true);
     if (!CellWithStatus.LIVE.equals(cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
@@ -150,6 +149,7 @@ public class NervosDaoExample {
     Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
     BigInteger depositBlockNumber = Numeric.toBigInt(depositBlock.header.number);
     CellOutput cellOutput = cellWithStatus.cell.output;
+
     String outputData = Numeric.toHexString(new UInt64(depositBlockNumber).toBytes());
 
     Script lock = LockUtils.generateLockScriptWithAddress(DaoAddress);
@@ -165,42 +165,34 @@ public class NervosDaoExample {
         new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.CODE));
     txBuilder.setOutputsData(cellOutputsData);
     txBuilder.setHeaderDeps(headerDeps);
+    txBuilder.addOutputs(cellOutputs);
+    txBuilder.addInput(new CellInput(depositOutPoint, "0x0"));
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
     CollectUtils collectUtils = new CollectUtils(api, true);
     CollectResult collectResult =
-        collectUtils.collectInputs(
-            Collections.singletonList(DaoAddress),
-            cellOutputs,
-            feeRate,
-            Sign.SIGN_LENGTH * 2,
-            txBuilder.getCellDeps(),
-            cellOutputsData,
-            headerDeps);
+        collectUtils.collectInputs(DaoAddress, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
-    txBuilder.addOutputs(cellOutputs);
-
-    txBuilder.addInput(new CellInput(depositOutPoint, "0x0"));
-    txBuilder.addWitness(new Witness());
+    txBuilder.setOutputs(cellOutputs);
 
     CellsWithAddress cellsWithAddress = collectResult.cellsWithAddresses.get(0);
-    txBuilder.addInputs(cellsWithAddress.inputs);
+    txBuilder.setInputs(cellsWithAddress.inputs);
     for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
       if (i == 0) {
-        byte[] bytes =
-            Serializer.serializeWitnessArgs(new Witness(Witness.SIGNATURE_PLACEHOLDER)).toBytes();
-        txBuilder.addWitness(Numeric.toHexString(bytes));
+        txBuilder.addWitness(new Witness(Witness.SIGNATURE_PLACEHOLDER));
+      } else if (i == 1) {
+        txBuilder.addWitness(
+            Numeric.toHexString(Serializer.serializeWitnessArgs(new Witness()).toBytes()));
       } else {
         txBuilder.addWitness("0x");
       }
     }
     ScriptGroup scriptGroup = new ScriptGroup();
-    scriptGroup.addIndex(0);
-    scriptGroup.addIndices(NumberUtils.regionToList(1, cellsWithAddress.inputs.size()));
+    scriptGroup.addIndices(NumberUtils.regionToList(0, cellsWithAddress.inputs.size()));
     scriptGroupWithPrivateKeysList.add(
         new ScriptGroupWithPrivateKeys(scriptGroup, Collections.singletonList(DaoPrivateKey)));
 

@@ -168,6 +168,99 @@ public class CellCollector {
     return new CollectResult(cellsWithAddresses, Numeric.toHexStringWithPrefix(changeCapacity));
   }
 
+  public CollectResult collectInputs(
+      String address, Transaction tx, BigInteger feeRate, int initialLength) throws IOException {
+
+    AddressParseResult addressParseResult = AddressParser.parse(address);
+    String lockHash = addressParseResult.script.computeHash();
+
+    for (int i = 0; i < tx.outputs.size() - 1; i++) {
+      BigInteger size = tx.outputs.get(i).occupiedCapacity("0x");
+      if (size.compareTo(Numeric.toBigInt(tx.outputs.get(i).capacity)) > 0) {
+        throw new IOException("Cell output byte size must not be bigger than capacity");
+      }
+    }
+
+    Transaction transaction =
+        new Transaction(
+            "0",
+            tx.cellDeps,
+            tx.headerDeps,
+            tx.inputs,
+            tx.outputs,
+            tx.outputsData,
+            Collections.emptyList());
+
+    BigInteger inputsCapacity = BigInteger.ZERO;
+    for (CellInput cellInput : tx.inputs) {
+      CellWithStatus cellWithStatus = api.getLiveCell(cellInput.previousOutput, false);
+      inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellWithStatus.cell.output.capacity));
+    }
+    List witnesses = new ArrayList<>();
+    witnesses.add(new Witness(NumberUtils.getZeros(initialLength)));
+
+    CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
+
+    BigInteger needCapacity = BigInteger.ZERO;
+    for (CellOutput cellOutput : tx.outputs) {
+      needCapacity = needCapacity.add(Numeric.toBigInt(cellOutput.capacity));
+    }
+    List<CellOutputWithOutPoint> cellOutputList;
+    long toBlockNumber = api.getTipBlockNumber().longValue();
+    long fromBlockNumber = 1;
+
+    while (fromBlockNumber <= toBlockNumber
+        && inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
+      long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
+      cellOutputList =
+          api.getCellsByLockHash(
+              lockHash,
+              BigInteger.valueOf(fromBlockNumber).toString(),
+              BigInteger.valueOf(currentToBlockNumber).toString());
+      for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputList) {
+        if (skipDataAndType) {
+          CellWithStatus cellWithStatus = api.getLiveCell(cellOutputWithOutPoint.outPoint, true);
+          String outputsDataContent = cellWithStatus.cell.data.content;
+          CellOutput cellOutput = cellWithStatus.cell.output;
+          if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+              || cellOutput.type != null) {
+            continue;
+          }
+        }
+        CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
+        inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
+        witnesses.add("0x");
+        transaction.inputs.add(cellInput);
+        transaction.witnesses = witnesses;
+        BigInteger sumNeedCapacity =
+            needCapacity
+                .add(calculateTxFee(transaction, feeRate))
+                .add(calculateOutputSize(changeOutput));
+        if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+          witnesses.set(1, new Witness());
+          transaction.witnesses = witnesses;
+          // calculate sum need capacity again
+          sumNeedCapacity =
+              needCapacity
+                  .add(calculateTxFee(transaction, feeRate))
+                  .add(calculateOutputSize(changeOutput));
+          if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+            break;
+          }
+        }
+      }
+      fromBlockNumber = currentToBlockNumber + 1;
+    }
+    if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
+      throw new IOException("Capacity not enough!");
+    }
+    BigInteger changeCapacity =
+        inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
+    List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
+    cellsWithAddresses.add(new CellsWithAddress(transaction.inputs, address));
+    return new CollectResult(cellsWithAddresses, Numeric.toHexStringWithPrefix(changeCapacity));
+  }
+
   private BigInteger calculateTxFee(Transaction transaction, BigInteger feeRate) {
     int txSize = Serializer.serializeTransaction(transaction).toBytes().length;
     return Calculator.calculateTransactionFee(BigInteger.valueOf(txSize), feeRate);

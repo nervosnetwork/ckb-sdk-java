@@ -7,6 +7,7 @@ import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
@@ -45,6 +46,13 @@ public class CollectUtils {
     return new CellCollector(api, skipDataAndType)
         .collectInputs(
             addresses, cellOutputs, feeRate, initialLength, cellDeps, cellOutputsData, headerDeps);
+  }
+
+  public CollectResult collectInputs(
+      String address, Transaction transaction, BigInteger feeRate, int initialLength)
+      throws IOException {
+    return new CellCollector(api, skipDataAndType)
+        .collectInputs(address, transaction, feeRate, initialLength);
   }
 
   public CollectResult collectInputsWithIndexer(
