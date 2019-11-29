@@ -34,7 +34,10 @@ import org.nervos.ckb.exceptions.AddressFormatException;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * https://github.com/bitcoinj/bitcoinj/blob/master/core/src/main/java/org/bitcoinj/core/Bech32.java
  */
+
 public class Bech32 {
   /** The Bech32 character set for encoding. */
   private static final String CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
