@@ -29,10 +29,10 @@ public class Secp256k1MultisigAllBuilder {
     if (transaction.witnesses.size() < transaction.inputs.size()) {
       throw new IOException("Transaction witnesses count must not be smaller than inputs count");
     }
-    if (scriptGroup.inputIndices.size() < 1) {
+    if (scriptGroup.inputIndexes.size() < 1) {
       throw new RuntimeException("Need at least one witness!");
     }
-    for (Integer index : scriptGroup.inputIndices) {
+    for (Integer index : scriptGroup.inputIndexes) {
       groupWitnesses.add(transaction.witnesses.get(index));
     }
     for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
@@ -78,7 +78,7 @@ public class Secp256k1MultisigAllBuilder {
     signedWitness.lock = multiSigSerialize.concat(concatenatedSignatures.toString());
 
     transaction.witnesses.set(
-        scriptGroup.inputIndices.get(0),
+        scriptGroup.inputIndexes.get(0),
         Numeric.toHexString(Serializer.serializeWitnessArgs(signedWitness).toBytes()));
   }
 

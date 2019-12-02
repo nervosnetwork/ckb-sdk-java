@@ -1,6 +1,5 @@
 package org.nervos.ckb;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -62,12 +61,10 @@ public class NervosDaoExample {
     Transaction tx =
         generateWithdrawFromDaoTransaction(
             depositOutPoint, withdrawOutPoint, Utils.ckbToShannon(0.01));
-    System.out.println(new Gson().toJson(tx));
     String txHash = api.sendTransaction(tx);
-    System.out.println("Nervos DAO phase2 tx hash: " + txHash);
+    System.out.println("Nervos DAO withdraw phase2 tx hash: " + txHash);
 
     Thread.sleep(2000);
-
     System.out.println("After withdrawing balance: " + getBalance(DaoAddress) + "CKB");
   }
 
@@ -191,8 +188,8 @@ public class NervosDaoExample {
         txBuilder.addWitness("0x");
       }
     }
-    ScriptGroup scriptGroup = new ScriptGroup();
-    scriptGroup.addIndices(NumberUtils.regionToList(0, cellsWithAddress.inputs.size()));
+    ScriptGroup scriptGroup =
+        new ScriptGroup(NumberUtils.regionToList(0, cellsWithAddress.inputs.size()));
     scriptGroupWithPrivateKeysList.add(
         new ScriptGroupWithPrivateKeys(scriptGroup, Collections.singletonList(DaoPrivateKey)));
 
@@ -202,7 +199,6 @@ public class NervosDaoExample {
       signBuilder.sign(
           scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
-    System.out.println(new Gson().toJson(signBuilder.buildTx()));
     String txHash = api.sendTransaction(signBuilder.buildTx());
     return new OutPoint(txHash, "0x0");
   }

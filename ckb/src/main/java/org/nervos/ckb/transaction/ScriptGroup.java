@@ -1,6 +1,5 @@
 package org.nervos.ckb.transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -9,21 +8,9 @@ import java.util.List;
 // A script group will only be executed once per transaction
 public class ScriptGroup {
 
-  public List<Integer> inputIndices;
-
-  public ScriptGroup() {
-    inputIndices = new ArrayList<>();
-  }
+  public List<Integer> inputIndexes;
 
   public ScriptGroup(List<Integer> inputIndexes) {
-    this.inputIndices = inputIndexes;
-  }
-
-  public void addIndex(int index) {
-    this.inputIndices.add(index);
-  }
-
-  public void addIndices(List<Integer> inputIndices) {
-    this.inputIndices.addAll(inputIndices);
+    this.inputIndexes = inputIndexes;
   }
 }
