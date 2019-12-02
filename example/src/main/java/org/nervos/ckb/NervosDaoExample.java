@@ -40,32 +40,44 @@ public class NervosDaoExample {
       "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2";
   private static String DaoAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
 
+  private static final String DEPOSIT = "deposit";
+  private static final String WITHDRAW_PHASE1 = "withdraw";
+  private static final String WITHDRAW_PHASE2 = "claim";
+
   static {
     api = new Api(NODE_URL, false);
   }
 
   public static void main(String[] args) throws Exception {
-    System.out.println("Before depositing, balance: " + getBalance(DaoAddress) + " CKB");
-    OutPoint depositOutPoint = depositToDao(Utils.ckbToShannon(1000));
-    System.out.println(depositOutPoint.txHash);
-
-    Thread.sleep(5000);
-    System.out.println("After depositing, balance: " + getBalance(DaoAddress) + " CKB");
-
-    // Nervos DAO withdraw phase1 must be after 4 epoch of depositing transaction
-    OutPoint withdrawOutPoint = startWithdrawingFromDao(depositOutPoint);
-    System.out.println("Nervos DAO withdraw phase1 tx hash: " + withdrawOutPoint.txHash);
-
-    // Nervos DAO withdraw phase2 must be after 180 epoch of depositing transaction
-    Thread.sleep(28000);
-    Transaction tx =
-        generateWithdrawFromDaoTransaction(
-            depositOutPoint, withdrawOutPoint, Utils.ckbToShannon(0.01));
-    String txHash = api.sendTransaction(tx);
-    System.out.println("Nervos DAO withdraw phase2 tx hash: " + txHash);
-
-    Thread.sleep(2000);
-    System.out.println("After withdrawing balance: " + getBalance(DaoAddress) + "CKB");
+    if (args.length > 0) {
+      if (DEPOSIT.equals(args[0])) {
+        System.out.println("Before depositing, balance: " + getBalance(DaoAddress) + " CKB");
+        Transaction transaction = generateDepositingToDaoTx(Utils.ckbToShannon(1000));
+        String txHash = api.sendTransaction(transaction);
+        System.out.println("Nervos DAO deposit tx hash" + txHash);
+        // Waiting some time to make tx into blockchain
+        System.out.println("After depositing, balance: " + getBalance(DaoAddress) + " CKB");
+      } else if (WITHDRAW_PHASE1.equals(args[0])) {
+        // Nervos DAO withdraw phase1 must be after 4 epoch of depositing transaction
+        String depositTxHash = args[1];
+        OutPoint depositOutPoint = new OutPoint(depositTxHash, "0x0");
+        Transaction transaction = generateWithdrawingFromDaoTx(depositOutPoint);
+        String txHash = api.sendTransaction(transaction);
+        System.out.println("Nervos DAO withdraw phase1 tx hash: " + txHash);
+      } else if (WITHDRAW_PHASE2.equals(args[0])) {
+        // Nervos DAO withdraw phase2 must be after 180 epoch of depositing transaction
+        String withdrawTxHash = args[1];
+        TransactionWithStatus withdrawTx = api.getTransaction(withdrawTxHash);
+        OutPoint depositOutPoint = withdrawTx.transaction.inputs.get(0).previousOutput;
+        OutPoint withdrawOutPoint = new OutPoint(withdrawTxHash, "0x0");
+        Transaction transaction =
+            generateClaimingFromDaoTx(depositOutPoint, withdrawOutPoint, Utils.ckbToShannon(0.01));
+        String txHash = api.sendTransaction(transaction);
+        System.out.println("Nervos DAO withdraw phase2 tx hash: " + txHash);
+        // Waiting some time to make tx into blockchain
+        System.out.println("After depositing, balance: " + getBalance(DaoAddress) + " CKB");
+      }
+    }
   }
 
   private static String getBalance(String address) throws IOException {
@@ -73,7 +85,7 @@ public class NervosDaoExample {
     return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
-  private static OutPoint depositToDao(BigInteger capacity) throws IOException {
+  private static Transaction generateDepositingToDaoTx(BigInteger capacity) throws IOException {
     Script type =
         new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, "0x", Script.TYPE);
 
@@ -130,11 +142,11 @@ public class NervosDaoExample {
       signBuilder.sign(
           scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
-    String txHash = api.sendTransaction(signBuilder.buildTx());
-    return new OutPoint(txHash, "0x0");
+    return signBuilder.buildTx();
   }
 
-  private static OutPoint startWithdrawingFromDao(OutPoint depositOutPoint) throws IOException {
+  private static Transaction generateWithdrawingFromDaoTx(OutPoint depositOutPoint)
+      throws IOException {
     CellWithStatus cellWithStatus = api.getLiveCell(depositOutPoint, true);
     if (!CellWithStatus.LIVE.equals(cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
@@ -199,11 +211,10 @@ public class NervosDaoExample {
       signBuilder.sign(
           scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
-    String txHash = api.sendTransaction(signBuilder.buildTx());
-    return new OutPoint(txHash, "0x0");
+    return signBuilder.buildTx();
   }
 
-  private static Transaction generateWithdrawFromDaoTransaction(
+  private static Transaction generateClaimingFromDaoTx(
       OutPoint depositOutPoint, OutPoint withdrawingOutPoint, BigInteger fee) throws IOException {
     Script lock = LockUtils.generateLockScriptWithAddress(DaoAddress);
     CellWithStatus cellWithStatus = api.getLiveCell(withdrawingOutPoint, true);
