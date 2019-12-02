@@ -75,7 +75,7 @@ public class NervosDaoExample {
         String txHash = api.sendTransaction(transaction);
         System.out.println("Nervos DAO withdraw phase2 tx hash: " + txHash);
         // Waiting some time to make tx into blockchain
-        System.out.println("After depositing, balance: " + getBalance(DaoAddress) + " CKB");
+        System.out.println("After withdrawing, balance: " + getBalance(DaoAddress) + " CKB");
       }
     }
   }
@@ -148,11 +148,13 @@ public class NervosDaoExample {
   private static Transaction generateWithdrawingFromDaoTx(OutPoint depositOutPoint)
       throws IOException {
     CellWithStatus cellWithStatus = api.getLiveCell(depositOutPoint, true);
-    if (!CellWithStatus.LIVE.equals(cellWithStatus.status)) {
+    if (!CellWithStatus.Status.LIVE.getValue().equals(cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
     TransactionWithStatus transactionWithStatus = api.getTransaction(depositOutPoint.txHash);
-    if (!TransactionWithStatus.COMMITTED.equals(transactionWithStatus.txStatus.status)) {
+    if (!TransactionWithStatus.Status.COMMITTED
+        .getValue()
+        .equals(transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
     Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
@@ -218,11 +220,13 @@ public class NervosDaoExample {
       OutPoint depositOutPoint, OutPoint withdrawingOutPoint, BigInteger fee) throws IOException {
     Script lock = LockUtils.generateLockScriptWithAddress(DaoAddress);
     CellWithStatus cellWithStatus = api.getLiveCell(withdrawingOutPoint, true);
-    if (!CellWithStatus.LIVE.equals(cellWithStatus.status)) {
+    if (!CellWithStatus.Status.LIVE.getValue().equals(cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
     TransactionWithStatus transactionWithStatus = api.getTransaction(withdrawingOutPoint.txHash);
-    if (!TransactionWithStatus.COMMITTED.equals(transactionWithStatus.txStatus.status)) {
+    if (!TransactionWithStatus.Status.COMMITTED
+        .getValue()
+        .equals(transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
 
