@@ -7,14 +7,12 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
+import org.nervos.ckb.type.cell.*;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
+import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -22,16 +20,24 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CellCollector {
 
   private Api api;
+  private boolean skipDataAndType = true;
 
   public CellCollector(Api api) {
     this.api = api;
   }
 
+  public CellCollector(Api api, boolean skipDataAndType) {
+    this.api = api;
+    this.skipDataAndType = skipDataAndType;
+  }
+
   public CollectResult collectInputs(
       List<String> addresses,
-      final List<CellOutput> cellOutputs,
+      List<CellOutput> cellOutputs,
       BigInteger feeRate,
-      int initialLength)
+      int initialLength,
+      List<CellDep> cellDeps,
+      List<String> outputsData)
       throws IOException {
 
     List<String> lockHashes = new ArrayList<>();
@@ -50,10 +56,20 @@ public class CellCollector {
     SystemScriptCell systemScriptCell = SystemContract.getSystemSecpCell(api);
     cellOutputsData.add("0x");
 
+    if (outputsData != null && outputsData.size() > 0) {
+      cellOutputsData = outputsData;
+    }
+
+    List<CellDep> cellDepList =
+        Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP));
+    if (cellDeps != null && cellDeps.size() > 0) {
+      cellDepList = cellDeps;
+    }
+
     Transaction transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP)),
+            cellDepList,
             Collections.emptyList(),
             Collections.emptyList(),
             cellOutputs,
@@ -88,6 +104,15 @@ public class CellCollector {
                 BigInteger.valueOf(fromBlockNumber).toString(),
                 BigInteger.valueOf(currentToBlockNumber).toString());
         for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputList) {
+          if (skipDataAndType) {
+            CellWithStatus cellWithStatus = api.getLiveCell(cellOutputWithOutPoint.outPoint, true);
+            String outputsDataContent = cellWithStatus.cell.data.content;
+            CellOutput cellOutput = cellWithStatus.cell.output;
+            if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+                || cellOutput.type != null) {
+              continue;
+            }
+          }
           CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
           inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
           List<CellInput> cellInputList = lockInputsMap.get(lockHashes.get(index));
@@ -161,6 +186,15 @@ public class CellCollector {
 
       if (cellOutputs != null && cellOutputs.size() > 0) {
         for (CellOutputWithOutPoint output : cellOutputs) {
+          if (skipDataAndType) {
+            CellWithStatus cellWithStatus = api.getLiveCell(output.outPoint, true);
+            String outputsDataContent = cellWithStatus.cell.data.content;
+            CellOutput cellOutput = cellWithStatus.cell.output;
+            if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+                || cellOutput.type != null) {
+              continue;
+            }
+          }
           capacity = capacity.add(Numeric.toBigInt(output.capacity));
         }
       }

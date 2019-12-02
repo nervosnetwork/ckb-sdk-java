@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
-import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -17,13 +16,11 @@ import org.nervos.ckb.utils.Numeric;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionBuilder {
 
-  private SystemScriptCell systemSecpCell;
-  private SystemScriptCell systemMultiSigCell;
   private List<CellInput> cellInputs = new ArrayList<>();
   private List<CellOutput> cellOutputs = new ArrayList<>();
   private List<String> cellOutputsData = new ArrayList<>();
+  private List<CellDep> cellDeps = new ArrayList<>();
   private List witnesses = new ArrayList<>();
-  private boolean isMultiSig = false;
 
   public TransactionBuilder(Api api) {
     this(api, false);
@@ -31,11 +28,12 @@ public class TransactionBuilder {
 
   public TransactionBuilder(Api api, boolean isMultiSig) {
     try {
-      this.isMultiSig = isMultiSig;
       if (isMultiSig) {
-        this.systemMultiSigCell = SystemContract.getSystemMultiSigCell(api);
+        this.cellDeps.add(
+            new CellDep(SystemContract.getSystemMultiSigCell(api).outPoint, CellDep.DEP_GROUP));
       } else {
-        this.systemSecpCell = SystemContract.getSystemSecpCell(api);
+        this.cellDeps.add(
+            new CellDep(SystemContract.getSystemSecpCell(api).outPoint, CellDep.DEP_GROUP));
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -66,6 +64,18 @@ public class TransactionBuilder {
     cellOutputs.addAll(outputs);
   }
 
+  public void addCellDep(CellDep cellDep) {
+    cellDeps.add(cellDep);
+  }
+
+  public List<CellDep> getCellDeps() {
+    return cellDeps;
+  }
+
+  public void setOutputsData(List<String> outputsData) {
+    cellOutputsData = outputsData;
+  }
+
   public Transaction buildTx() throws IOException {
     BigInteger needCapacity = BigInteger.ZERO;
     for (CellOutput output : cellOutputs) {
@@ -74,16 +84,12 @@ public class TransactionBuilder {
     if (cellInputs.size() == 0) {
       throw new IOException("Cell inputs could not empty");
     }
-    for (int i = 0; i < cellOutputs.size(); i++) {
-      cellOutputsData.add("0x");
+    if (cellOutputsData.size() == 0) {
+      for (int i = 0; i < cellOutputs.size(); i++) {
+        cellOutputsData.add("0x");
+      }
     }
 
-    List<CellDep> cellDeps = new ArrayList<>();
-    if (isMultiSig) {
-      cellDeps.add(new CellDep(systemMultiSigCell.outPoint, CellDep.DEP_GROUP));
-    } else {
-      cellDeps.add(new CellDep(systemSecpCell.outPoint, CellDep.DEP_GROUP));
-    }
     return new Transaction(
         "0",
         cellDeps,

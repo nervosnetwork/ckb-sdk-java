@@ -35,7 +35,7 @@ public class SingleSigWithIndexerTxExample {
   /**
    * Note: If you want to use indexer to collect cell quickly, you should call index_lock_hash rpc
    * firstly. CKB needs time to execute tagging to live cells, so we suggest that if you want to
-   * collect live cells, you should await some time after call index_lock_hash rpc.
+   * collect live cells, you should await some time after calling index_lock_hash rpc.
    */
   public static void main(String[] args) throws Exception {
 
