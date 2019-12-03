@@ -36,12 +36,7 @@ public class CellCollectorWithIndexer {
   }
 
   public CollectResult collectInputs(
-      List<String> addresses,
-      List<CellOutput> cellOutputs,
-      BigInteger feeRate,
-      int initialLength,
-      List<CellDep> cellDeps,
-      List<String> outputsData)
+      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
     List<String> lockHashes = new ArrayList<>();
     for (String address : addresses) {
@@ -59,20 +54,13 @@ public class CellCollectorWithIndexer {
     SystemScriptCell systemScriptCell = SystemContract.getSystemSecpCell(api);
     cellOutputsData.add("0x");
 
-    if (outputsData != null && outputsData.size() > 0) {
-      cellOutputsData = outputsData;
-    }
-
-    List<CellDep> cellDepList =
+    List<CellDep> cellDeps =
         Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP));
-    if (cellDeps != null && cellDeps.size() > 0) {
-      cellDepList = cellDeps;
-    }
 
     Transaction transaction =
         new Transaction(
             "0",
-            cellDepList,
+            cellDeps,
             Collections.emptyList(),
             Collections.emptyList(),
             cellOutputs,

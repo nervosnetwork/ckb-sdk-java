@@ -19,9 +19,7 @@ public class MultiKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
-  private static final String MinerPrivateKey =
-      "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-  private static final String MinerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+  private static final String TestAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
   private static Api api;
   private static List<String> PrivateKeys;
   private static List<String> Addresses;
@@ -58,7 +56,7 @@ public class MultiKeySingleSigTxExample {
     String changeAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440a9qpq2m6m";
 
     System.out.println(
-        "Before transferring, miner's balance: " + getBalance(MinerAddress) + " CKB");
+        "Before transferring, sender's balance: " + getBalance(TestAddress) + " CKB");
 
     System.out.println(
         "Before transferring, first receiver1's balance: " + getBalance(Addresses.get(0)) + " CKB");
@@ -66,13 +64,13 @@ public class MultiKeySingleSigTxExample {
     System.out.println(
         "Before transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
 
-    String hash = sendCapacity(MinerAddress, receivers1, changeAddress);
+    String hash = sendCapacity(TestAddress, receivers1, changeAddress);
     System.out.println("First transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
     Thread.sleep(30000);
 
-    System.out.println("After transferring, miner's balance: " + getBalance(MinerAddress) + " CKB");
+    System.out.println("After transferring, sender's balance: " + getBalance(TestAddress) + " CKB");
 
     System.out.println(
         "After transferring, first receiver1's balance: " + getBalance(Addresses.get(0)) + " CKB");
@@ -155,6 +153,7 @@ public class MultiKeySingleSigTxExample {
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
+    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
@@ -162,11 +161,11 @@ public class MultiKeySingleSigTxExample {
 
     // initial_length = 2 * secp256k1_signature_byte.length
     CollectResult collectResult =
-        txUtils.collectInputs(sendAddresses, cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+        txUtils.collectInputs(sendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
-    txBuilder.addOutputs(cellOutputs);
+    txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {

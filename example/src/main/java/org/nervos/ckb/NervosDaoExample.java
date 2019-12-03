@@ -24,7 +24,6 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.ckb.utils.EpochParser;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer;
 import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -36,9 +35,9 @@ public class NervosDaoExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static Api api;
-  private static String DaoPrivateKey =
+  private static String DaoTestPrivateKey =
       "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2";
-  private static String DaoAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
+  private static String DaoTestAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
 
   private static final String DEPOSIT = "deposit";
   private static final String WITHDRAW_PHASE1 = "withdraw";
@@ -51,12 +50,12 @@ public class NervosDaoExample {
   public static void main(String[] args) throws Exception {
     if (args.length > 0) {
       if (DEPOSIT.equals(args[0])) {
-        System.out.println("Before depositing, balance: " + getBalance(DaoAddress) + " CKB");
+        System.out.println("Before depositing, balance: " + getBalance(DaoTestAddress) + " CKB");
         Transaction transaction = generateDepositingToDaoTx(Utils.ckbToShannon(1000));
         String txHash = api.sendTransaction(transaction);
-        System.out.println("Nervos DAO deposit tx hash" + txHash);
+        System.out.println("Nervos DAO deposit tx hash: " + txHash);
         // Waiting some time to make tx into blockchain
-        System.out.println("After depositing, balance: " + getBalance(DaoAddress) + " CKB");
+        System.out.println("After depositing, balance: " + getBalance(DaoTestAddress) + " CKB");
       } else if (WITHDRAW_PHASE1.equals(args[0])) {
         // Nervos DAO withdraw phase1 must be after 4 epoch of depositing transaction
         String depositTxHash = args[1];
@@ -75,7 +74,7 @@ public class NervosDaoExample {
         String txHash = api.sendTransaction(transaction);
         System.out.println("Nervos DAO withdraw phase2 tx hash: " + txHash);
         // Waiting some time to make tx into blockchain
-        System.out.println("After withdrawing, balance: " + getBalance(DaoAddress) + " CKB");
+        System.out.println("After withdrawing, balance: " + getBalance(DaoTestAddress) + " CKB");
       }
     }
   }
@@ -93,14 +92,14 @@ public class NervosDaoExample {
 
     List<CellOutput> cellOutputs =
         txUtils.generateOutputs(
-            Collections.singletonList(new Receiver(DaoAddress, capacity)), DaoAddress);
+            Collections.singletonList(new Receiver(DaoTestAddress, capacity)), DaoTestAddress);
     cellOutputs.get(0).type = type;
 
     List<String> cellOutputsData = Arrays.asList(NERVOS_DAO_DATA, "0x");
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
-
+    txBuilder.addOutputs(cellOutputs);
     txBuilder.setOutputsData(cellOutputsData);
     txBuilder.addCellDep(
         new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.CODE));
@@ -111,17 +110,14 @@ public class NervosDaoExample {
     CollectUtils collectUtils = new CollectUtils(api, true);
     CollectResult collectResult =
         collectUtils.collectInputs(
-            Collections.singletonList(DaoAddress),
-            cellOutputs,
+            Collections.singletonList(DaoTestAddress),
+            txBuilder.buildTx(),
             feeRate,
-            Sign.SIGN_LENGTH * 2,
-            txBuilder.getCellDeps(),
-            cellOutputsData,
-            null);
+            Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
-    txBuilder.addOutputs(cellOutputs);
+    txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
@@ -132,7 +128,7 @@ public class NervosDaoExample {
       scriptGroupWithPrivateKeysList.add(
           new ScriptGroupWithPrivateKeys(
               new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
-              Collections.singletonList(DaoPrivateKey)));
+              Collections.singletonList(DaoTestPrivateKey)));
       startIndex += cellsWithAddress.inputs.size();
     }
 
@@ -163,7 +159,7 @@ public class NervosDaoExample {
 
     String outputData = Numeric.toHexString(new UInt64(depositBlockNumber).toBytes());
 
-    Script lock = LockUtils.generateLockScriptWithAddress(DaoAddress);
+    Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
     CellOutput changeOutput = new CellOutput("0x0", lock);
 
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
@@ -184,7 +180,11 @@ public class NervosDaoExample {
     BigInteger feeRate = BigInteger.valueOf(1024);
     CollectUtils collectUtils = new CollectUtils(api, true);
     CollectResult collectResult =
-        collectUtils.collectInputs(DaoAddress, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
+        collectUtils.collectInputs(
+            Collections.singletonList(DaoTestAddress),
+            txBuilder.buildTx(),
+            feeRate,
+            Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
@@ -195,9 +195,6 @@ public class NervosDaoExample {
     for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
       if (i == 0) {
         txBuilder.addWitness(new Witness(Witness.SIGNATURE_PLACEHOLDER));
-      } else if (i == 1) {
-        txBuilder.addWitness(
-            Numeric.toHexString(Serializer.serializeWitnessArgs(new Witness()).toBytes()));
       } else {
         txBuilder.addWitness("0x");
       }
@@ -205,7 +202,7 @@ public class NervosDaoExample {
     ScriptGroup scriptGroup =
         new ScriptGroup(NumberUtils.regionToList(0, cellsWithAddress.inputs.size()));
     scriptGroupWithPrivateKeysList.add(
-        new ScriptGroupWithPrivateKeys(scriptGroup, Collections.singletonList(DaoPrivateKey)));
+        new ScriptGroupWithPrivateKeys(scriptGroup, Collections.singletonList(DaoTestPrivateKey)));
 
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
 
@@ -218,7 +215,7 @@ public class NervosDaoExample {
 
   private static Transaction generateClaimingFromDaoTx(
       OutPoint depositOutPoint, OutPoint withdrawingOutPoint, BigInteger fee) throws IOException {
-    Script lock = LockUtils.generateLockScriptWithAddress(DaoAddress);
+    Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
     CellWithStatus cellWithStatus = api.getLiveCell(withdrawingOutPoint, true);
     if (!CellWithStatus.Status.LIVE.getValue().equals(cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
@@ -276,6 +273,6 @@ public class NervosDaoExample {
             Collections.singletonList("0x"),
             Collections.singletonList(new Witness("", NERVOS_DAO_DATA, "")));
 
-    return tx.sign(Numeric.toBigInt(DaoPrivateKey));
+    return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));
   }
 }

@@ -110,6 +110,7 @@ public class MultiSignTransactionExample {
         txUtils.generateOutputs(
             Collections.singletonList(new Receiver(targetAddress, capacity)),
             configuration.address());
+    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
@@ -119,13 +120,13 @@ public class MultiSignTransactionExample {
     CollectResult collectResult =
         txUtils.collectInputs(
             Collections.singletonList(configuration.address()),
-            cellOutputs,
+            txBuilder.buildTx(),
             feeRate,
             configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
-    txBuilder.addOutputs(cellOutputs);
+    txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {

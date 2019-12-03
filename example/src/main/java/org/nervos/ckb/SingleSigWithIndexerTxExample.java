@@ -20,7 +20,7 @@ public class SingleSigWithIndexerTxExample {
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
   private static List<String> ReceiveAddresses;
-  private static String MinerPrivateKey =
+  private static String TestPrivateKey =
       "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
   private static String MinerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
 
@@ -52,7 +52,7 @@ public class SingleSigWithIndexerTxExample {
             new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(9000)));
 
     System.out.println(
-        "Before transferring, miner's balance: "
+        "Before transferring, sender's balance: "
             + getBalance(MinerAddress).divide(UnitCKB).toString(10)
             + " CKB");
 
@@ -63,7 +63,7 @@ public class SingleSigWithIndexerTxExample {
     Thread.sleep(30000);
 
     System.out.println(
-        "After transferring, miner's balance: "
+        "After transferring, sender's balance: "
             + getBalance(MinerAddress).divide(UnitCKB).toString(10)
             + " CKB");
   }
@@ -109,7 +109,7 @@ public class SingleSigWithIndexerTxExample {
       scriptGroupWithPrivateKeysList.add(
           new ScriptGroupWithPrivateKeys(
               new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
-              Collections.singletonList(MinerPrivateKey)));
+              Collections.singletonList(TestPrivateKey)));
     }
 
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
