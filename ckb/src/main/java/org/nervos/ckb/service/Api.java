@@ -185,6 +185,12 @@ public class Api {
         FeeRate.class);
   }
 
+  public String calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+      throws IOException {
+    return rpcService.post(
+        "calculate_dao_maximum_withdraw", Arrays.asList(outPoint, withdrawBlockHash), String.class);
+  }
+
   /* Indexer RPC */
 
   public LockHashIndexState indexLockHash(String lockHash) throws IOException {

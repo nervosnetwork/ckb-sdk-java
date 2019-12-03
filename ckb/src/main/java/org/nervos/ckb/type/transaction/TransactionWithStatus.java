@@ -18,4 +18,20 @@ public class TransactionWithStatus {
     @SerializedName("block_hash")
     public String blockHash;
   }
+
+  public enum Status {
+    PENDING("pending"),
+    PROPOSED("proposed"),
+    COMMITTED("committed");
+
+    private final String value;
+
+    Status(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+  }
 }

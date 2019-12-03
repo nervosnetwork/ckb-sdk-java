@@ -21,4 +21,9 @@ public class CellDep {
     this.outPoint = outPoint;
     this.depType = depType;
   }
+
+  public CellDep(OutPoint outPoint) {
+    this.outPoint = outPoint;
+    this.depType = CODE;
+  }
 }
