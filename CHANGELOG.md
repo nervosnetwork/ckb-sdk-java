@@ -1,6 +1,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.26.0-rc2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.25.0...v0.26.0-rc2) (2019-12-8)
+
+### Feature
+
+* Implement Nervos DAO deposit ([8cedeca](https://github.com/nervosnetwork/ckb-sdk-java/commit/8cedeca5ead7bd297e111cff2c962abc58cadffe))
+* Implement Nervos DAO withdraw ([8f330ff](https://github.com/nervosnetwork/ckb-sdk-java/commit/8f330ffe97a127723ec8afaba5d9dc58fe15a63b))
+* Refactor collectInputs of CellCollector ([1c74a03](https://github.com/nervosnetwork/ckb-sdk-java/commit/1c74a03c9a6565418b7468af8404afe862760653))
+* Add fields of get_cells_by_lock_hash ([b44c40a](https://github.com/nervosnetwork/ckb-sdk-java/commit/b44c40a2a9c0c742b91a7b311ffb050e9edc77f8))
+* Add fields of get_live_cells_by_lock_hash ([2229dbe](https://github.com/nervosnetwork/ckb-sdk-java/commit/2229dbe45b751d6fbe6ea3815adcfe2034fdccab))
+
+### BugFix
+
+* Update set_ban params and estimate fee test case ([b776c59](https://github.com/nervosnetwork/ckb-sdk-java/commit/b776c59908efe54b630d6e907d75585e8a095fc6))
+
+
 # [v0.25.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.24.9...v0.25.0) (2019-11-16)
 
 ### BugFix
