@@ -1,6 +1,5 @@
 package org.nervos.ckb.transaction;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -91,10 +90,7 @@ public class TransactionBuilder {
     this.headerDeps = headerDeps;
   }
 
-  public Transaction buildTx() throws IOException {
-    if (cellInputs.size() == 0) {
-      throw new IOException("Cell inputs could not empty");
-    }
+  public Transaction buildTx() {
     if (cellOutputsData.size() == 0) {
       for (int i = 0; i < cellOutputs.size(); i++) {
         cellOutputsData.add("0x");
