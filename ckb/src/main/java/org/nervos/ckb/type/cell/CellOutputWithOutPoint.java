@@ -13,6 +13,13 @@ public class CellOutputWithOutPoint {
 
   public Script lock;
 
+  public Script type;
+
+  public boolean cellbase;
+
+  @SerializedName("output_data_len")
+  public String outputDataLen;
+
   @SerializedName("out_point")
   public OutPoint outPoint;
 
