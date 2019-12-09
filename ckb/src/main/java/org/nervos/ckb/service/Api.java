@@ -119,7 +119,15 @@ public class Api {
   }
 
   public String setBan(BannedAddress bannedAddress) throws IOException {
-    return rpcService.post("set_ban", Collections.singletonList(bannedAddress), String.class);
+    return rpcService.post(
+        "set_ban",
+        Arrays.asList(
+            bannedAddress.address,
+            bannedAddress.command,
+            Numeric.toHexStringWithPrefix(new BigInteger(bannedAddress.banTime)),
+            bannedAddress.absolute,
+            bannedAddress.reason),
+        String.class);
   }
 
   public List<BannedResultAddress> getBannedAddress() throws IOException {
@@ -175,6 +183,12 @@ public class Api {
         "estimate_fee_rate",
         Collections.singletonList(Numeric.toHexString(expectedConfirmBlocks)),
         FeeRate.class);
+  }
+
+  public String calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+      throws IOException {
+    return rpcService.post(
+        "calculate_dao_maximum_withdraw", Arrays.asList(outPoint, withdrawBlockHash), String.class);
   }
 
   /* Indexer RPC */

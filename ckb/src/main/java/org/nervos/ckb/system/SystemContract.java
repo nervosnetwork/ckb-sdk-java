@@ -34,4 +34,11 @@ public class SystemContract {
         transactions.get(0).outputs.get(4).type.computeHash(),
         new OutPoint(transactions.get(1).hash, "0x1"));
   }
+
+  public static SystemScriptCell getSystemNervosDaoCell(Api api) throws IOException {
+    List<Transaction> transactions = getSystemCellTransactions(api);
+    return new SystemScriptCell(
+        transactions.get(0).outputs.get(2).type.computeHash(),
+        new OutPoint(transactions.get(0).hash, "0x2"));
+  }
 }

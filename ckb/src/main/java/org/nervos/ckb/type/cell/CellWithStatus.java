@@ -2,6 +2,7 @@ package org.nervos.ckb.type.cell;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellWithStatus {
+
   public CellInfo cell;
   public String status;
 
@@ -9,9 +10,25 @@ public class CellWithStatus {
     public CellData data;
     public CellOutput output;
 
-    static class CellData {
-      String content;
-      String hash;
+    public static class CellData {
+      public String content;
+      public String hash;
+    }
+  }
+
+  public enum Status {
+    LIVE("live"),
+    DEAD("dead"),
+    UNKNOWN("unknown");
+
+    private final String value;
+
+    Status(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
     }
   }
 }

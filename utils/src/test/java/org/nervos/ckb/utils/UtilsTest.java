@@ -18,4 +18,9 @@ public class UtilsTest {
         new BigInteger("26589358000000000000"),
         Utils.ckbToShannon(BigInteger.valueOf(265893580000L)));
   }
+
+  @Test
+  public void testCkbToShannonWithDouble() {
+    Assertions.assertEquals(new BigInteger("2560000"), Utils.ckbToShannon(0.0256));
+  }
 }

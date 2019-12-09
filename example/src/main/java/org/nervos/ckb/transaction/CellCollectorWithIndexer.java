@@ -8,14 +8,12 @@ import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.cell.LiveCell;
+import org.nervos.ckb.type.cell.*;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
+import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -25,14 +23,26 @@ public class CellCollectorWithIndexer {
   private static final int PAGE_SIZE = 50;
 
   private Api api;
+  private boolean skipDataAndType;
 
   public CellCollectorWithIndexer(Api api) {
     this.api = api;
+    this.skipDataAndType = true;
   }
 
-  public Map<String, List<CellInput>> collectInputs(
-      List<String> lockHashes, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
+  public CellCollectorWithIndexer(Api api, boolean skipDataAndType) {
+    this.api = api;
+    this.skipDataAndType = skipDataAndType;
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
       throws IOException {
+    List<String> lockHashes = new ArrayList<>();
+    for (String address : addresses) {
+      AddressParseResult addressParseResult = AddressParser.parse(address);
+      lockHashes.add(addressParseResult.script.computeHash());
+    }
     List<String> cellOutputsData = new ArrayList<>();
     for (int i = 0; i < cellOutputs.size() - 1; i++) {
       BigInteger size = cellOutputs.get(i).occupiedCapacity("0x");
@@ -44,10 +54,13 @@ public class CellCollectorWithIndexer {
     SystemScriptCell systemScriptCell = SystemContract.getSystemSecpCell(api);
     cellOutputsData.add("0x");
 
+    List<CellDep> cellDeps =
+        Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP));
+
     Transaction transaction =
         new Transaction(
             "0",
-            Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP)),
+            cellDeps,
             Collections.emptyList(),
             Collections.emptyList(),
             cellOutputs,
@@ -81,6 +94,17 @@ public class CellCollectorWithIndexer {
                 false);
         if (liveCells == null || liveCells.size() == 0) break;
         for (LiveCell liveCell : liveCells) {
+          if (skipDataAndType) {
+            CellWithStatus cellWithStatus =
+                api.getLiveCell(
+                    new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), true);
+            String outputsDataContent = cellWithStatus.cell.data.content;
+            CellOutput cellOutput = cellWithStatus.cell.output;
+            if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+                || cellOutput.type != null) {
+              continue;
+            }
+          }
           CellInput cellInput =
               new CellInput(
                   new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), "0x0");
@@ -110,15 +134,6 @@ public class CellCollectorWithIndexer {
                     .add(calculateTxFee(transaction, feeRate))
                     .add(calculateOutputSize(changeOutput));
             if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
-              // calculate change capacity again
-              changeOutput.capacity =
-                  Numeric.prependHexPrefix(
-                      inputsCapacity
-                          .subtract(needCapacity)
-                          .subtract(calculateTxFee(transaction, feeRate))
-                          .toString(16));
-              cellOutputs.set(cellOutputs.size() - 1, changeOutput);
-              transaction.outputs = cellOutputs;
               break;
             }
           }
@@ -129,7 +144,15 @@ public class CellCollectorWithIndexer {
     if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
       throw new IOException("Capacity not enough!");
     }
-    return lockInputsMap;
+    BigInteger changeCapacity =
+        inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
+    List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
+    for (Map.Entry<String, List<CellInput>> entry : lockInputsMap.entrySet()) {
+      cellsWithAddresses.add(
+          new CellsWithAddress(
+              entry.getValue(), addresses.get(lockHashes.indexOf(entry.getKey()))));
+    }
+    return new CollectResult(cellsWithAddresses, Numeric.toHexStringWithPrefix(changeCapacity));
   }
 
   private BigInteger calculateTxFee(Transaction transaction, BigInteger feeRate) {
@@ -152,6 +175,17 @@ public class CellCollectorWithIndexer {
               lockHash, String.valueOf(pageNumber), String.valueOf(PAGE_SIZE), false);
       if (liveCells == null || liveCells.size() == 0) break;
       for (LiveCell liveCell : liveCells) {
+        if (skipDataAndType) {
+          CellWithStatus cellWithStatus =
+              api.getLiveCell(
+                  new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), true);
+          String outputsDataContent = cellWithStatus.cell.data.content;
+          CellOutput cellOutput = cellWithStatus.cell.output;
+          if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
+              || cellOutput.type != null) {
+            continue;
+          }
+        }
         capacity = capacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
       }
       pageNumber += 1;

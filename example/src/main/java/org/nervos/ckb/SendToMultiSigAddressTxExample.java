@@ -19,9 +19,9 @@ public class SendToMultiSigAddressTxExample {
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
   private static String MultiSigAddress = "ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq";
-  private static String MinerPrivateKey =
+  private static String TestPrivateKey =
       "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-  private static String MinerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+  private static String TestAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
 
   static {
     api = new Api(NODE_URL, false);
@@ -30,34 +30,37 @@ public class SendToMultiSigAddressTxExample {
   public static void main(String[] args) throws Exception {
     List<Receiver> receivers =
         Collections.singletonList(new Receiver(MultiSigAddress, Utils.ckbToShannon(20000)));
+    String changeAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440a9qpq2m6m";
+
+    System.out.println("Before transferring, sender's balance: " + getBalance() + " CKB");
 
     System.out.println(
-        "Before transfer, miner's balance: " + getBalance().divide(UnitCKB).toString(10) + " CKB");
+        "Before transferring, multi-sig address balance: " + getMultiSigBalance() + " CKB");
 
-    System.out.println(
-        "Before transfer, multi-sig address balance: "
-            + getMultiSigBalance().divide(UnitCKB).toString(10)
-            + " CKB");
+    System.out.println("Before transferring, change address balance: " + getBalance() + " CKB");
 
-    // miner send capacity to three receiver accounts with 800, 900 and 1000 CKB
-    String hash = sendCapacity(receivers, MinerAddress);
+    String hash = sendCapacity(receivers, changeAddress);
     System.out.println("Transaction hash: " + hash);
-    Thread.sleep(30000); // waiting transaction into block, sometimes you should wait more seconds
+
+    // waiting transaction into block, sometimes you should wait more seconds
+    Thread.sleep(30000);
+
+    System.out.println("After transferring, sender's address balance: " + getBalance() + " CKB");
 
     System.out.println(
-        "After transfer, multi-sig address balance: "
-            + getMultiSigBalance().divide(UnitCKB).toString(10)
-            + " CKB");
+        "After transferring, multi-sig address balance: " + getMultiSigBalance() + " CKB");
+
+    System.out.println("After transferring, change address balance: " + getBalance() + " CKB");
   }
 
-  private static BigInteger getBalance() throws IOException {
+  private static String getBalance() throws IOException {
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(MinerAddress);
+    return cellCollector.getCapacityWithAddress(TestAddress).divide(UnitCKB).toString(10);
   }
 
-  private static BigInteger getMultiSigBalance() throws IOException {
+  private static String getMultiSigBalance() throws IOException {
     CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(MultiSigAddress);
+    return cellCollector.getCapacityWithAddress(MultiSigAddress).divide(UnitCKB).toString(10);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
@@ -71,7 +74,6 @@ public class SendToMultiSigAddressTxExample {
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
-
     txBuilder.addOutputs(cellOutputs);
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
@@ -81,12 +83,19 @@ public class SendToMultiSigAddressTxExample {
     BigInteger feeRate = BigInteger.valueOf(1024);
 
     // initial_length = 2 * secp256k1_signature_byte.length
-    List<CellsWithAddress> cellsWithAddresses =
+    CollectResult collectResult =
         txUtils.collectInputs(
-            Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+            Collections.singletonList(TestAddress),
+            txBuilder.buildTx(),
+            feeRate,
+            Sign.SIGN_LENGTH * 2);
+
+    // update change cell output capacity after collecting cells
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
-    for (CellsWithAddress cellsWithAddress : cellsWithAddresses) {
+    for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
@@ -94,7 +103,7 @@ public class SendToMultiSigAddressTxExample {
       scriptGroupWithPrivateKeysList.add(
           new ScriptGroupWithPrivateKeys(
               new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
-              Collections.singletonList(MinerPrivateKey)));
+              Collections.singletonList(TestPrivateKey)));
     }
 
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
