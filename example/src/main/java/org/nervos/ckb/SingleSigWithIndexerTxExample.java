@@ -22,7 +22,7 @@ public class SingleSigWithIndexerTxExample {
   private static List<String> ReceiveAddresses;
   private static String TestPrivateKey =
       "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-  private static String MinerAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+  private static String TestAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
 
   static {
     api = new Api(NODE_URL, false);
@@ -42,7 +42,7 @@ public class SingleSigWithIndexerTxExample {
     System.out.println("Call index_lock_hash rpc firstly");
 
     // Call index_lock_hash rpc firstly before collecting live cells
-    // api.indexLockHash(LockUtils.generateLockHashWithAddress(MinerAddress), "0x0");
+    // api.indexLockHash(LockUtils.generateLockHashWithAddress(TestAddress), "0x0");
     // Wait some time for ckb to execute tagging to live cells
     // Thread.sleep(20000);
 
@@ -53,10 +53,10 @@ public class SingleSigWithIndexerTxExample {
 
     System.out.println(
         "Before transferring, sender's balance: "
-            + getBalance(MinerAddress).divide(UnitCKB).toString(10)
+            + getBalance(TestAddress).divide(UnitCKB).toString(10)
             + " CKB");
 
-    String hash = sendCapacity(receivers, MinerAddress);
+    String hash = sendCapacity(receivers, TestAddress);
     System.out.println("Transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
@@ -64,7 +64,7 @@ public class SingleSigWithIndexerTxExample {
 
     System.out.println(
         "After transferring, sender's balance: "
-            + getBalance(MinerAddress).divide(UnitCKB).toString(10)
+            + getBalance(TestAddress).divide(UnitCKB).toString(10)
             + " CKB");
   }
 
@@ -85,6 +85,7 @@ public class SingleSigWithIndexerTxExample {
     CollectUtils txUtils = new CollectUtils(api);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
+    txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
@@ -94,11 +95,14 @@ public class SingleSigWithIndexerTxExample {
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
     CollectResult collectResult =
         txUtils.collectInputsWithIndexer(
-            Collections.singletonList(MinerAddress), cellOutputs, feeRate, Sign.SIGN_LENGTH * 2);
+            Collections.singletonList(TestAddress),
+            txBuilder.buildTx(),
+            feeRate,
+            Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
-    txBuilder.addOutputs(cellOutputs);
+    txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {

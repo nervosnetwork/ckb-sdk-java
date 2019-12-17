@@ -35,10 +35,10 @@ public class CollectUtils {
   }
 
   public CollectResult collectInputsWithIndexer(
-      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
+      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
     return new CellCollectorWithIndexer(api, skipDataAndType)
-        .collectInputs(addresses, cellOutputs, feeRate, initialLength);
+        .collectInputs(addresses, transaction, feeRate, initialLength);
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {

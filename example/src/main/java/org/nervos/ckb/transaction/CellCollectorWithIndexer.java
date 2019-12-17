@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.system.SystemContract;
-import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.*;
+import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.type.cell.CellWithStatus;
+import org.nervos.ckb.type.cell.LiveCell;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
@@ -36,62 +37,58 @@ public class CellCollectorWithIndexer {
   }
 
   public CollectResult collectInputs(
-      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
+      List<String> addresses, Transaction tx, BigInteger feeRate, int initialLength)
       throws IOException {
     List<String> lockHashes = new ArrayList<>();
     for (String address : addresses) {
       AddressParseResult addressParseResult = AddressParser.parse(address);
       lockHashes.add(addressParseResult.script.computeHash());
     }
-    List<String> cellOutputsData = new ArrayList<>();
-    for (int i = 0; i < cellOutputs.size() - 1; i++) {
-      BigInteger size = cellOutputs.get(i).occupiedCapacity("0x");
-      if (size.compareTo(Numeric.toBigInt(cellOutputs.get(i).capacity)) > 0) {
-        throw new IOException("Cell output byte size must not be bigger than capacity");
-      }
-      cellOutputsData.add("0x");
-    }
-    SystemScriptCell systemScriptCell = SystemContract.getSystemSecpCell(api);
-    cellOutputsData.add("0x");
-
-    List<CellDep> cellDeps =
-        Collections.singletonList(new CellDep(systemScriptCell.outPoint, CellDep.DEP_GROUP));
-
-    Transaction transaction =
-        new Transaction(
-            "0",
-            cellDeps,
-            Collections.emptyList(),
-            Collections.emptyList(),
-            cellOutputs,
-            cellOutputsData,
-            Collections.emptyList());
-
-    BigInteger inputsCapacity = BigInteger.ZERO;
-    List<CellInput> cellInputs = new ArrayList<>();
     Map<String, List<CellInput>> lockInputsMap = new HashMap<>();
     for (String lockHash : lockHashes) {
       lockInputsMap.put(lockHash, new ArrayList<>());
     }
+    List<CellInput> cellInputs = new ArrayList<>();
+
+    for (int i = 0; i < tx.outputs.size() - 1; i++) {
+      BigInteger size = tx.outputs.get(i).occupiedCapacity("0x");
+      if (size.compareTo(Numeric.toBigInt(tx.outputs.get(i).capacity)) > 0) {
+        throw new IOException("Cell output byte size must not be bigger than capacity");
+      }
+    }
+
+    Transaction transaction =
+        new Transaction(
+            "0",
+            tx.cellDeps,
+            tx.headerDeps,
+            tx.inputs,
+            tx.outputs,
+            tx.outputsData,
+            Collections.emptyList());
+
+    BigInteger inputsCapacity = BigInteger.ZERO;
+    for (CellInput cellInput : tx.inputs) {
+      cellInputs.add(cellInput);
+
+      CellWithStatus cellWithStatus = api.getLiveCell(cellInput.previousOutput, false);
+      inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellWithStatus.cell.output.capacity));
+    }
     List witnesses = new ArrayList<>();
 
-    CellOutput changeOutput = cellOutputs.get(cellOutputs.size() - 1);
+    CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
 
     BigInteger needCapacity = BigInteger.ZERO;
-    for (CellOutput cellOutput : cellOutputs) {
+    for (CellOutput cellOutput : tx.outputs) {
       needCapacity = needCapacity.add(Numeric.toBigInt(cellOutput.capacity));
     }
     List<LiveCell> liveCells;
-    for (int index = 0; index < lockHashes.size(); index++) {
+    for (String lockHash : lockHashes) {
       long pageNumber = 0;
-
       while (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
         liveCells =
             api.getLiveCellsByLockHash(
-                lockHashes.get(index),
-                String.valueOf(pageNumber),
-                String.valueOf(PAGE_SIZE),
-                false);
+                lockHash, String.valueOf(pageNumber), String.valueOf(PAGE_SIZE), false);
         if (liveCells == null || liveCells.size() == 0) break;
         for (LiveCell liveCell : liveCells) {
           if (skipDataAndType) {
@@ -109,7 +106,7 @@ public class CellCollectorWithIndexer {
               new CellInput(
                   new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), "0x0");
           inputsCapacity = inputsCapacity.add(Numeric.toBigInt(liveCell.cellOutput.capacity));
-          List<CellInput> cellInputList = lockInputsMap.get(lockHashes.get(index));
+          List<CellInput> cellInputList = lockInputsMap.get(lockHash);
           cellInputList.add(cellInput);
           cellInputs.add(cellInput);
           witnesses.add("0x");
@@ -122,10 +119,10 @@ public class CellCollectorWithIndexer {
           if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
             // update witness of group first element
             int witnessIndex = 0;
-            for (String lockHash : lockHashes) {
-              if (lockInputsMap.get(lockHash).size() == 0) break;
+            for (String hash : lockHashes) {
+              if (lockInputsMap.get(hash).size() == 0) break;
               witnesses.set(witnessIndex, new Witness(NumberUtils.getZeros(initialLength)));
-              witnessIndex += lockInputsMap.get(lockHash).size();
+              witnessIndex += lockInputsMap.get(hash).size();
             }
             transaction.witnesses = witnesses;
             // calculate sum need capacity again
