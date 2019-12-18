@@ -66,8 +66,8 @@ public class SingleKeySingleSigTxExample {
   }
 
   private static String getBalance(String address) throws IOException {
-    CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
+    CellFetcher cellFetcher = new CellFetcher(api);
+    return cellFetcher.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)

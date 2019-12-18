@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
@@ -30,15 +31,43 @@ public class CollectUtils {
   public CollectResult collectInputs(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return new CellCollector(api, skipDataAndType)
-        .collectInputs(addresses, transaction, feeRate, initialLength);
+    return new CellCollector(api)
+        .collectInputs(
+            addresses,
+            transaction,
+            feeRate,
+            initialLength,
+            new CellCollector.CollectCallback() {
+              @Override
+              public void fetchInputs(
+                  Api api,
+                  List<String> lockHashes,
+                  CollectIterator<CellInput, BigInteger, String> iterator)
+                  throws IOException {
+                new CellFetcher(api, skipDataAndType).fetchInputs(lockHashes, iterator);
+              }
+            });
   }
 
   public CollectResult collectInputsWithIndexer(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return new CellCollectorWithIndexer(api, skipDataAndType)
-        .collectInputs(addresses, transaction, feeRate, initialLength);
+    return new CellCollector(api)
+        .collectInputs(
+            addresses,
+            transaction,
+            feeRate,
+            initialLength,
+            new CellCollector.CollectCallback() {
+              @Override
+              public void fetchInputs(
+                  Api api,
+                  List<String> lockHashes,
+                  CollectIterator<CellInput, BigInteger, String> iterator)
+                  throws IOException {
+                new CellFetcher(api, skipDataAndType).fetchInputsWithIndexer(lockHashes, iterator);
+              }
+            });
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
@@ -53,10 +82,8 @@ public class CollectUtils {
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
-
     AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
     cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
-
     return cellOutputs;
   }
 }

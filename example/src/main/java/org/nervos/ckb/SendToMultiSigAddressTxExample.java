@@ -54,13 +54,13 @@ public class SendToMultiSigAddressTxExample {
   }
 
   private static String getBalance() throws IOException {
-    CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(TestAddress).divide(UnitCKB).toString(10);
+    CellFetcher cellFetcher = new CellFetcher(api);
+    return cellFetcher.getCapacityWithAddress(TestAddress).divide(UnitCKB).toString(10);
   }
 
   private static String getMultiSigBalance() throws IOException {
-    CellCollector cellCollector = new CellCollector(api);
-    return cellCollector.getCapacityWithAddress(MultiSigAddress).divide(UnitCKB).toString(10);
+    CellFetcher cellFetcher = new CellFetcher(api);
+    return cellFetcher.getCapacityWithAddress(MultiSigAddress).divide(UnitCKB).toString(10);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)

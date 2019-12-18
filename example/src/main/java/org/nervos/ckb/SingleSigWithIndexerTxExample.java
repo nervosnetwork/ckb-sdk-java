@@ -21,14 +21,14 @@ public class SingleSigWithIndexerTxExample {
   private static Api api;
   private static List<String> ReceiveAddresses;
   private static String TestPrivateKey =
-      "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-  private static String TestAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+      "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2";
+  private static String TestAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
 
   static {
     api = new Api(NODE_URL, false);
     ReceiveAddresses =
         Arrays.asList(
-            "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
+            "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
             "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek");
   }
 
@@ -48,8 +48,8 @@ public class SingleSigWithIndexerTxExample {
 
     List<Receiver> receivers =
         Arrays.asList(
-            new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(8000)),
-            new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(9000)));
+            new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(800)),
+            new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(900)));
 
     System.out.println(
         "Before transferring, sender's balance: "
@@ -68,9 +68,9 @@ public class SingleSigWithIndexerTxExample {
             + " CKB");
   }
 
-  private static BigInteger getBalance(String address) throws Exception {
-    CellCollectorWithIndexer cellCollector = new CellCollectorWithIndexer(api);
-    return cellCollector.getCapacityWithAddress(address);
+  private static BigInteger getBalance(String address) throws IOException {
+    CellFetcher cellFetcher = new CellFetcher(api);
+    return cellFetcher.getCapacityWithAddress(address);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)

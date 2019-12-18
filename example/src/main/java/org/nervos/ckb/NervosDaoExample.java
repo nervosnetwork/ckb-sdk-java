@@ -80,8 +80,8 @@ public class NervosDaoExample {
   }
 
   private static String getBalance(String address) throws IOException {
-    CellCollector cellCollector = new CellCollector(api, true);
-    return cellCollector.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
+    CellFetcher cellFetcher = new CellFetcher(api, true);
+    return cellFetcher.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static Transaction generateDepositingToDaoTx(BigInteger capacity) throws IOException {
