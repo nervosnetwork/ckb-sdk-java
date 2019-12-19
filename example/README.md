@@ -12,7 +12,7 @@ Example module provides some examples which are related to RPC, transaction and 
 and provides some rpc requests usages. If you want to see more rpc requests, you can reference [CKB RPC Document](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 
 Now we just only support synchronous http request which can be found in [Api](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/ckb/src/main/java/org/nervos/ckb/service/Api.java).
-If you want to call asynchronous http request, you can use `RpcService.postAsync` to package rpc api whose name may be called `ApiAsync`.
+If you want to call asynchronous http request, you can use `RpcService.postAsync` by yourself to package rpc api whose name may be called `ApiAsync`.
 
 #### Transaction Examples
 
@@ -53,8 +53,8 @@ and use Secp256K1 signature builder([Secp256k1SighashAllBuilder](https://github.
     
  If you want to know more information about Nervos DAO, please reference [Nervos DAO RFC](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0023-dao-deposit-withdraw/0023-dao-deposit-withdraw.md)
     
- Withdraw phase1 transaction must be waiting 4 epoch(header_deps cell has 4 epoch mature period) after deposit transaction and withdraw phase2 transaction must be waiting 180 epoch.
- [NervosDaoExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/NervosDaoExample.java) provides three examples which include deposit and withdraw phase1 / phase2 transaction.
+ Withdraw phase1 transaction must wait 4 epoch(header_deps cell has 4 epoch mature period) after deposit transaction and withdraw phase2 transaction must wait 180 epoch after deposit transaction.
+ [NervosDaoExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/NervosDaoExample.java) provides three methods which include deposit and withdraw phase1 / phase2 transaction.
  
  - When you execute deposit transaction, you need give a string parameter `deposit` to main method.
  - When you execute withdraw phase1 transaction, you need give two string parameters `withdraw` and `${deposit_transction_hash}` to main method.
