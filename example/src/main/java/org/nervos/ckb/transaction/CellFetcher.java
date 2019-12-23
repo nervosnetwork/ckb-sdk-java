@@ -58,7 +58,7 @@ public class CellFetcher {
           CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
           BigInteger capacity = Numeric.toBigInt(cellOutputWithOutPoint.capacity);
           if (iterator != null && !iterator.hasNext(cellInput, capacity, lockHash)) {
-            break;
+            return;
           }
         }
         fromBlockNumber = currentToBlockNumber + 1;
@@ -95,7 +95,7 @@ public class CellFetcher {
                   new OutPoint(liveCell.createdBy.txHash, liveCell.createdBy.index), "0x0");
           BigInteger capacity = Numeric.toBigInt(liveCell.cellOutput.capacity);
           if (iterator != null && !iterator.hasNext(cellInput, capacity, lockHash)) {
-            break;
+            return;
           }
         }
         pageNumber += 1;
