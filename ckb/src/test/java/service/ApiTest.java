@@ -274,4 +274,16 @@ public class ApiTest {
             false);
     Assertions.assertNotNull(cellTransactions);
   }
+
+  @Test
+  public void testGetCapacityByLockHash() throws Exception {
+    // Call index_lock_hash rpc before calling get_capacity_by_lock_hash and wait some time
+    // api.indexLockHash("0x1f2615a8dde4e28ca736ff763c2078aff990043f4cbf09eb4b3a58a140a0862d");
+    LockHashCapacity lockHashCapacity =
+        api.getCapacityByLockHash(
+            "0x1f2615a8dde4e28ca736ff763c2078aff990043f4cbf09eb4b3a58a140a0862d");
+    Assertions.assertNotNull(lockHashCapacity);
+    Assertions.assertNotNull(lockHashCapacity.capacity);
+    Assertions.assertNotNull(lockHashCapacity.cellsCount);
+  }
 }

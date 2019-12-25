@@ -236,4 +236,9 @@ public class Api {
             lockHash, Numeric.toHexString(page), Numeric.toHexString(pageSize), reverseOrder),
         new TypeToken<List<CellTransaction>>() {}.getType());
   }
+
+  public LockHashCapacity getCapacityByLockHash(String lockHash) throws IOException {
+    return rpcService.post(
+        "get_capacity_by_lock_hash", Collections.singletonList(lockHash), LockHashCapacity.class);
+  }
 }
