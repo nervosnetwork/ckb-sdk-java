@@ -39,15 +39,15 @@ public class TransactionBuilder {
   }
 
   public void addInput(CellInput input) {
-    cellInputs.add(input);
+    this.cellInputs.add(input);
   }
 
   public void addInputs(List<CellInput> inputs) {
-    cellInputs.addAll(inputs);
+    this.cellInputs.addAll(inputs);
   }
 
   public void setInputs(List<CellInput> inputs) {
-    cellInputs = inputs;
+    this.cellInputs = inputs;
   }
 
   public void addWitnesses(List witnesses) {
@@ -59,31 +59,31 @@ public class TransactionBuilder {
   }
 
   public void addOutput(CellOutput output) {
-    cellOutputs.add(output);
+    this.cellOutputs.add(output);
   }
 
   public void addOutputs(List<CellOutput> outputs) {
-    cellOutputs.addAll(outputs);
+    this.cellOutputs.addAll(outputs);
   }
 
   public void setOutputs(List<CellOutput> outputs) {
-    cellOutputs = outputs;
+    this.cellOutputs = outputs;
   }
 
   public void addCellDep(CellDep cellDep) {
-    cellDeps.add(cellDep);
+    this.cellDeps.add(cellDep);
   }
 
   public void addCellDeps(List<CellDep> cellDeps) {
-    cellDeps.addAll(cellDeps);
+    this.cellDeps.addAll(cellDeps);
   }
 
   public List<CellDep> getCellDeps() {
-    return cellDeps;
+    return this.cellDeps;
   }
 
   public void setOutputsData(List<String> outputsData) {
-    cellOutputsData = outputsData;
+    this.cellOutputsData = outputsData;
   }
 
   public void setHeaderDeps(List<String> headerDeps) {
