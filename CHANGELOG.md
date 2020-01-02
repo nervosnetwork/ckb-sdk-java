@@ -1,6 +1,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.26.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.26.0...v0.26.1) (2020-1-2)
+
+### Features
+
+* Add get_capacity_by_lock_hash rpc ([69aea7b](https://github.com/nervosnetwork/ckb-sdk-java/commit/69aea7b5477182faa1e269d383a0be6413f552f4))
+
+### Docs
+
+* Add example readme document ([2a5bfd3](https://github.com/nervosnetwork/ckb-sdk-java/commit/2a5bfd37fb484881b61c6cef65380b435d56ea0b))
+
+### BugFix
+
+* Update transaction builder ([20eac75](https://github.com/nervosnetwork/ckb-sdk-java/commit/20eac75e7be63fe83842bdb0d56c155ff55223e3))
+
+
 # [v0.26.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.26.0-rc2...v0.26.0) (2019-12-14)
 
 ### Refactor
