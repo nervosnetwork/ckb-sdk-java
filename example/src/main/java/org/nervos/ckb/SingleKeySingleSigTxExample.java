@@ -65,9 +65,8 @@ public class SingleKeySingleSigTxExample {
         "After transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
   }
 
-  private static String getBalance(String address) throws IOException {
-    CellFetcher cellFetcher = new CellFetcher(api);
-    return cellFetcher.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
+  private static String getBalance(String address) {
+    return new CollectUtils(api).getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)

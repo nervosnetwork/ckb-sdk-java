@@ -53,14 +53,15 @@ public class SendToMultiSigAddressTxExample {
     System.out.println("After transferring, change address balance: " + getBalance() + " CKB");
   }
 
-  private static String getBalance() throws IOException {
-    CellFetcher cellFetcher = new CellFetcher(api);
-    return cellFetcher.getCapacityWithAddress(TestAddress).divide(UnitCKB).toString(10);
+  private static String getBalance() {
+    return new CollectUtils(api).getCapacityWithAddress(TestAddress).divide(UnitCKB).toString(10);
   }
 
-  private static String getMultiSigBalance() throws IOException {
-    CellFetcher cellFetcher = new CellFetcher(api);
-    return cellFetcher.getCapacityWithAddress(MultiSigAddress).divide(UnitCKB).toString(10);
+  private static String getMultiSigBalance() {
+    return new CollectUtils(api)
+        .getCapacityWithAddress(MultiSigAddress)
+        .divide(UnitCKB)
+        .toString(10);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)

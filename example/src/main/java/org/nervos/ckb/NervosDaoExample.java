@@ -79,9 +79,8 @@ public class NervosDaoExample {
     }
   }
 
-  private static String getBalance(String address) throws IOException {
-    CellFetcher cellFetcher = new CellFetcher(api, true);
-    return cellFetcher.getCapacityWithAddress(address).divide(UnitCKB).toString(10);
+  private static String getBalance(String address) {
+    return new CollectUtils(api).getCapacityWithAddress(address).divide(UnitCKB).toString(10);
   }
 
   private static Transaction generateDepositingToDaoTx(BigInteger capacity) throws IOException {

@@ -87,14 +87,14 @@ public class MultiSignTransactionExample {
   }
 
   public static String getMultiSigBalance() throws IOException {
-    Script lock = generateLock();
-    CellFetcher cellFetcher = new CellFetcher(api);
-    return cellFetcher.getCapacityWithLockHash(lock.computeHash()).divide(UnitCKB).toString();
+    return new CollectUtils(api)
+        .getCapacityWithAddress(configuration.address())
+        .divide(UnitCKB)
+        .toString();
   }
 
-  public static String getBalance(String address) throws IOException {
-    CellFetcher cellFetcher = new CellFetcher(api);
-    return cellFetcher.getCapacityWithAddress(address).divide(UnitCKB).toString();
+  public static String getBalance(String address) {
+    return new CollectUtils(api).getCapacityWithAddress(address).divide(UnitCKB).toString();
   }
 
   public static Transaction generateTx(

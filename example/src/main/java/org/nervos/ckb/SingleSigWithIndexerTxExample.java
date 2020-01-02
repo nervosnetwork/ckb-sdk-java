@@ -68,9 +68,8 @@ public class SingleSigWithIndexerTxExample {
             + " CKB");
   }
 
-  private static BigInteger getBalance(String address) throws IOException {
-    CellFetcher cellFetcher = new CellFetcher(api);
-    return cellFetcher.getCapacityWithAddress(address);
+  private static BigInteger getBalance(String address) {
+    return new CollectUtils(api).getCapacityWithAddress(address);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)

@@ -18,9 +18,6 @@ import org.nervos.ckb.utils.address.AddressParser;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellCollector {
 
-  private static final String INPUTS_CAPACITY = "inputsCapacity";
-  private static final String NEED_CAPACITY = "needCapacity";
-
   private Api api;
 
   public CellCollector(Api api) {
@@ -32,7 +29,7 @@ public class CellCollector {
       Transaction tx,
       BigInteger feeRate,
       int initialLength,
-      CollectCallback callback)
+      Iterator<TransactionInput> iterator)
       throws IOException {
 
     List<String> lockHashes = new ArrayList<>();
@@ -79,52 +76,40 @@ public class CellCollector {
       needCapacity = needCapacity.add(Numeric.toBigInt(cellOutput.capacity));
     }
 
-    Map<String, BigInteger> capacityMap = new HashMap<>();
-    capacityMap.put(INPUTS_CAPACITY, inputsCapacity);
-    capacityMap.put(NEED_CAPACITY, needCapacity);
+    while (iterator.hasNext()) {
+      TransactionInput transactionInput = iterator.next();
+      CellInput cellInput = transactionInput.input;
+      inputsCapacity = inputsCapacity.add(transactionInput.capacity);
+      List<CellInput> cellInputList = lockInputsMap.get(transactionInput.lockHash);
+      cellInputList.add(cellInput);
+      cellInputs.add(cellInput);
+      witnesses.add("0x");
+      transaction.inputs = cellInputs;
+      transaction.witnesses = witnesses;
+      BigInteger sumNeedCapacity =
+          needCapacity
+              .add(calculateTxFee(transaction, feeRate))
+              .add(calculateOutputSize(changeOutput));
+      if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+        // update witness of group first element
+        int witnessIndex = 0;
+        for (String hash : lockHashes) {
+          if (lockInputsMap.get(hash).size() == 0) break;
+          witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
+          witnessIndex += lockInputsMap.get(hash).size();
+        }
 
-    callback.fetchInputs(
-        api,
-        lockHashes,
-        new CollectIterator<CellInput, BigInteger, String>() {
-          @Override
-          public boolean hasNext(CellInput cellInput, BigInteger capacity, String lockHash) {
-            capacityMap.put(INPUTS_CAPACITY, capacityMap.get(INPUTS_CAPACITY).add(capacity));
-            List<CellInput> cellInputList = lockInputsMap.get(lockHash);
-            cellInputList.add(cellInput);
-            cellInputs.add(cellInput);
-            witnesses.add("0x");
-            transaction.inputs = cellInputs;
-            transaction.witnesses = witnesses;
-            BigInteger sumNeedCapacity =
-                capacityMap
-                    .get(NEED_CAPACITY)
-                    .add(calculateTxFee(transaction, feeRate))
-                    .add(calculateOutputSize(changeOutput));
-            if (capacityMap.get(INPUTS_CAPACITY).compareTo(sumNeedCapacity) > 0) {
-              // update witness of group first element
-              int witnessIndex = 0;
-              for (String hash : lockHashes) {
-                if (lockInputsMap.get(hash).size() == 0) break;
-                witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
-                witnessIndex += lockInputsMap.get(hash).size();
-              }
-
-              transaction.witnesses = witnesses;
-              // calculate sum need capacity again
-              sumNeedCapacity =
-                  capacityMap
-                      .get(NEED_CAPACITY)
-                      .add(calculateTxFee(transaction, feeRate))
-                      .add(calculateOutputSize(changeOutput));
-              return capacityMap.get(INPUTS_CAPACITY).compareTo(sumNeedCapacity) < 0;
-            }
-            return true;
-          }
-        });
-
-    inputsCapacity = capacityMap.get(INPUTS_CAPACITY);
-    needCapacity = capacityMap.get(NEED_CAPACITY);
+        transaction.witnesses = witnesses;
+        // calculate sum need capacity again
+        sumNeedCapacity =
+            needCapacity
+                .add(calculateTxFee(transaction, feeRate))
+                .add(calculateOutputSize(changeOutput));
+        if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+          break;
+        }
+      }
+    }
 
     if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
       throw new IOException("Capacity not enough!");
@@ -158,11 +143,5 @@ public class CellCollector {
       sb.append("0");
     }
     return sb.toString();
-  }
-
-  public interface CollectCallback {
-    void fetchInputs(
-        Api api, List<String> lockHashes, CollectIterator<CellInput, BigInteger, String> iterator)
-        throws IOException;
   }
 }
