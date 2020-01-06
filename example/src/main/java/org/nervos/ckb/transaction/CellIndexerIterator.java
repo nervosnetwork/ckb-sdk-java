@@ -21,10 +21,9 @@ public class CellIndexerIterator implements Iterator<TransactionInput> {
   private static final int PAGE_SIZE = 50;
 
   private List<TransactionInput> transactionInputs = new ArrayList<>();
-  private int addressIndex = 0;
-  private int inputIndex = 0;
-  private int pageNumber = 0;
-  private List<LiveCell> liveCells = new ArrayList<>();
+  private int addressIndex;
+  private int inputIndex;
+  private int pageNumber;
 
   private List<String> addresses;
   private Api api;
@@ -34,12 +33,14 @@ public class CellIndexerIterator implements Iterator<TransactionInput> {
     this.api = api;
     this.addresses = addresses;
     this.skipDataAndType = skipDataAndType;
+
+    addressIndex = 0;
+    inputIndex = 0;
+    pageNumber = 0;
   }
 
   CellIndexerIterator(Api api, List<String> addresses) {
-    this.api = api;
-    this.addresses = addresses;
-    this.skipDataAndType = true;
+    this(api, addresses, true);
   }
 
   @Override
@@ -55,8 +56,11 @@ public class CellIndexerIterator implements Iterator<TransactionInput> {
       transactionInputs.clear();
       inputIndex = 0;
       do {
-        String lockHash = AddressParser.parse(addresses.get(addressIndex++)).script.computeHash();
+        String lockHash = AddressParser.parse(addresses.get(addressIndex)).script.computeHash();
         transactionInputs = fetchTransactionInputsByLockHash(lockHash);
+        if (transactionInputs == null || transactionInputs.size() == 0) {
+          addressIndex++;
+        }
         if (addressIndex >= addresses.size()) {
           return null;
         }

@@ -59,8 +59,10 @@ public class CollectUtils {
         withIndexer
             ? new CellIndexerIterator(api, Collections.singletonList(address))
             : new CellBlockIterator(api, Collections.singletonList(address));
-    if (cellIterator.hasNext()) {
-      capacity = capacity.add(cellIterator.next().capacity);
+    while (cellIterator.hasNext()) {
+      TransactionInput transactionInput = cellIterator.next();
+      if (transactionInput == null) break;
+      capacity = capacity.add(transactionInput.capacity);
     }
     return capacity;
   }

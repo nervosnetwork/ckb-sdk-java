@@ -78,6 +78,7 @@ public class CellCollector {
 
     while (iterator.hasNext()) {
       TransactionInput transactionInput = iterator.next();
+      if (transactionInput == null) break;
       CellInput cellInput = transactionInput.input;
       inputsCapacity = inputsCapacity.add(transactionInput.capacity);
       List<CellInput> cellInputList = lockInputsMap.get(transactionInput.lockHash);

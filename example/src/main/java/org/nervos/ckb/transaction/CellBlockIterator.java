@@ -18,10 +18,10 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CellBlockIterator implements Iterator<TransactionInput> {
 
   private List<TransactionInput> transactionInputs = new ArrayList<>();
-  private long toBlockNumber = 0;
-  private long fromBlockNumber = 1;
-  private int addressIndex = 0;
-  private int inputIndex = 0;
+  private long toBlockNumber;
+  private long fromBlockNumber;
+  private int addressIndex;
+  private int inputIndex;
 
   private List<String> addresses;
   private Api api;
@@ -31,12 +31,21 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     this.api = api;
     this.addresses = addresses;
     this.skipDataAndType = skipDataAndType;
+
+    toBlockNumber = 0;
+    fromBlockNumber = 1;
+    addressIndex = 0;
+    inputIndex = 0;
+
+    try {
+      toBlockNumber = api.getTipBlockNumber().longValue();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   CellBlockIterator(Api api, List<String> addresses) {
-    this.api = api;
-    this.addresses = addresses;
-    this.skipDataAndType = true;
+    this(api, addresses, true);
   }
 
   @Override
@@ -53,9 +62,6 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     } else {
       transactionInputs.clear();
       inputIndex = 0;
-      if (fromBlockNumber > toBlockNumber) {
-        fromBlockNumber = 0;
-      }
       transactionInputs = fetchTransactionInputsForAddresses();
       if (transactionInputs == null || transactionInputs.size() == 0) {
         return null;
@@ -69,13 +75,14 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     do {
       String lockHash = AddressParser.parse(addresses.get(addressIndex)).script.computeHash();
       transactionInputs = fetchTransactionInputsByLockHash(lockHash);
-      if (transactionInputs.size() == 0) {
+      if (transactionInputs == null || transactionInputs.size() == 0) {
+        fromBlockNumber = 1;
         addressIndex++;
       }
       if (addressIndex >= addresses.size()) {
         return null;
       }
-    } while (transactionInputs.size() == 0);
+    } while (transactionInputs == null || transactionInputs.size() == 0);
     return transactionInputs;
   }
 
@@ -84,6 +91,10 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     List<CellOutputWithOutPoint> cellOutputList = new ArrayList<>();
     do {
       long currentToBlockNumber = Math.min(fromBlockNumber + 100, toBlockNumber);
+      if (fromBlockNumber > currentToBlockNumber) {
+        transactionInputs.clear();
+        break;
+      }
       try {
         cellOutputList =
             api.getCellsByLockHash(
@@ -113,7 +124,8 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
       }
       fromBlockNumber = currentToBlockNumber + 1;
       if (fromBlockNumber > toBlockNumber) {
-        return null;
+        transactionInputs.clear();
+        break;
       }
     } while (cellOutputList.size() == 0);
     return transactionInputs;
