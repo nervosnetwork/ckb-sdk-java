@@ -59,6 +59,7 @@ public class CellIndexerIterator implements Iterator<TransactionInput> {
         String lockHash = AddressParser.parse(addresses.get(addressIndex)).script.computeHash();
         transactionInputs = fetchTransactionInputsByLockHash(lockHash);
         if (transactionInputs == null || transactionInputs.size() == 0) {
+          pageNumber = 0;
           addressIndex++;
         }
         if (addressIndex >= addresses.size()) {
@@ -100,7 +101,7 @@ public class CellIndexerIterator implements Iterator<TransactionInput> {
       transactionInputs.add(new TransactionInput(cellInput, capacity, lockHash));
     }
     if (liveCells.size() == 0) {
-      return null;
+      transactionInputs.clear();
     }
     return transactionInputs;
   }

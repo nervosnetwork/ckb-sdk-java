@@ -19,13 +19,20 @@ public class SingleSigWithIndexerTxExample {
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
+  private static List<String> SendPrivteKeys;
+  private static List<String> SendAddresses;
   private static List<String> ReceiveAddresses;
-  private static String TestPrivateKey =
-      "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2";
-  private static String TestAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
 
   static {
     api = new Api(NODE_URL, false);
+    SendPrivteKeys =
+        Arrays.asList(
+            "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
+            "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
+    SendAddresses =
+        Arrays.asList(
+            "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
+            "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
     ReceiveAddresses =
         Arrays.asList(
             "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
@@ -42,7 +49,9 @@ public class SingleSigWithIndexerTxExample {
     System.out.println("Call index_lock_hash rpc firstly");
 
     // Call index_lock_hash rpc firstly before collecting live cells
-    // api.indexLockHash(LockUtils.generateLockHashWithAddress(TestAddress), "0x0");
+    // for (String address : SendAddresses) {
+    //   api.indexLockHash(LockUtils.generateLockHashWithAddress(address), "0x0");
+    // }
     // Wait some time for ckb to execute tagging to live cells
     // Thread.sleep(20000);
 
@@ -52,19 +61,19 @@ public class SingleSigWithIndexerTxExample {
             new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(900)));
 
     System.out.println(
-        "Before transferring, sender's balance: "
-            + getBalance(TestAddress).divide(UnitCKB).toString(10)
+        "Before transferring, first sender's balance: "
+            + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
-    String hash = sendCapacity(receivers, TestAddress);
+    String hash = sendCapacity(receivers, SendAddresses.get(0));
     System.out.println("Transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
     Thread.sleep(30000);
 
     System.out.println(
-        "After transferring, sender's balance: "
-            + getBalance(TestAddress).divide(UnitCKB).toString(10)
+        "After transferring, first sender's balance: "
+            + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
   }
 
@@ -94,10 +103,7 @@ public class SingleSigWithIndexerTxExample {
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
     CollectResult collectResult =
         txUtils.collectInputsWithIndexer(
-            Collections.singletonList(TestAddress),
-            txBuilder.buildTx(),
-            feeRate,
-            Sign.SIGN_LENGTH * 2);
+            SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
@@ -109,10 +115,15 @@ public class SingleSigWithIndexerTxExample {
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
       }
-      scriptGroupWithPrivateKeysList.add(
-          new ScriptGroupWithPrivateKeys(
-              new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
-              Collections.singletonList(TestPrivateKey)));
+      if (cellsWithAddress.inputs.size() > 0) {
+        scriptGroupWithPrivateKeysList.add(
+            new ScriptGroupWithPrivateKeys(
+                new ScriptGroup(
+                    NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
+                Collections.singletonList(
+                    SendPrivteKeys.get(SendAddresses.indexOf(cellsWithAddress.address)))));
+        startIndex += cellsWithAddress.inputs.size();
+      }
     }
 
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
