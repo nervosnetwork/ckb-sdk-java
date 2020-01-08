@@ -78,7 +78,7 @@ public class SingleSigWithIndexerTxExample {
   }
 
   private static BigInteger getBalance(String address) {
-    return new CollectUtils(api).getCapacityWithAddress(address);
+    return new CollectUtils(api).getCapacityWithAddress(address, true);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
