@@ -19,13 +19,13 @@ public class SingleSigWithIndexerTxExample {
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
-  private static List<String> SendPrivteKeys;
+  private static List<String> SendPrivateKeys;
   private static List<String> SendAddresses;
   private static List<String> ReceiveAddresses;
 
   static {
     api = new Api(NODE_URL, false);
-    SendPrivteKeys =
+    SendPrivateKeys =
         Arrays.asList(
             "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
             "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
@@ -121,7 +121,7 @@ public class SingleSigWithIndexerTxExample {
                 new ScriptGroup(
                     NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
                 Collections.singletonList(
-                    SendPrivteKeys.get(SendAddresses.indexOf(cellsWithAddress.address)))));
+                    SendPrivateKeys.get(SendAddresses.indexOf(cellsWithAddress.address)))));
         startIndex += cellsWithAddress.inputs.size();
       }
     }
