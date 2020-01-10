@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.27.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.26.1...v0.27.0) (2020-1-10)
+
+### Refactor
+
+* Reactor cell collector with iterator ([a677b92](https://github.com/nervosnetwork/ckb-sdk-java/commit/a677b92e3fe3f08bc0f126e09c98df38a2903567))
+* Adapt examples for new cell collector with iterator ([41cc1a8](https://github.com/nervosnetwork/ckb-sdk-java/commit/41cc1a8afac0cd3b9d2e4cda46b17179b3b2aea8))
+
 # [v0.26.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.26.0...v0.26.1) (2020-1-2)
 
 ### Features

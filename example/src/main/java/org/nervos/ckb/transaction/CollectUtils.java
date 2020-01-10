@@ -3,6 +3,8 @@ package org.nervos.ckb.transaction;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -30,15 +32,43 @@ public class CollectUtils {
   public CollectResult collectInputs(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return new CellCollector(api, skipDataAndType)
-        .collectInputs(addresses, transaction, feeRate, initialLength);
+    return new CellCollector(api)
+        .collectInputs(
+            addresses,
+            transaction,
+            feeRate,
+            initialLength,
+            new CellBlockIterator(api, addresses, skipDataAndType));
   }
 
   public CollectResult collectInputsWithIndexer(
-      List<String> addresses, List<CellOutput> cellOutputs, BigInteger feeRate, int initialLength)
+      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return new CellCollectorWithIndexer(api, skipDataAndType)
-        .collectInputs(addresses, cellOutputs, feeRate, initialLength);
+    return new CellCollector(api)
+        .collectInputs(
+            addresses,
+            transaction,
+            feeRate,
+            initialLength,
+            new CellIndexerIterator(api, addresses, skipDataAndType));
+  }
+
+  public BigInteger getCapacityWithAddress(String address, boolean withIndexer) {
+    BigInteger capacity = BigInteger.ZERO;
+    Iterator<TransactionInput> cellIterator =
+        withIndexer
+            ? new CellIndexerIterator(api, Collections.singletonList(address))
+            : new CellBlockIterator(api, Collections.singletonList(address));
+    while (cellIterator.hasNext()) {
+      TransactionInput transactionInput = cellIterator.next();
+      if (transactionInput == null) break;
+      capacity = capacity.add(transactionInput.capacity);
+    }
+    return capacity;
+  }
+
+  public BigInteger getCapacityWithAddress(String address) {
+    return getCapacityWithAddress(address, false);
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
@@ -53,10 +83,8 @@ public class CollectUtils {
     for (Receiver receiver : receivers) {
       needCapacity = needCapacity.add(receiver.capacity);
     }
-
     AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
     cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
-
     return cellOutputs;
   }
 }
