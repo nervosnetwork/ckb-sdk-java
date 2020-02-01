@@ -5,12 +5,14 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.type.cell.CellTransaction;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.cell.LiveCell;
+import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -176,18 +178,87 @@ public class ApiTest {
   }
 
   @Test
-  public void testSendTransaction() throws IOException {
-    String transactionHash =
-        api.sendTransaction(
-            new Transaction(
-                "0",
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList()));
-    Assertions.assertNotNull(transactionHash);
+  public void testSendTransaction() {
+    Assertions.assertThrows(
+        IOException.class,
+        new Executable() {
+          @Override
+          public void execute() throws Throwable {
+            api.sendTransaction(
+                new Transaction(
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()));
+          }
+        },
+        "Transaction Empty");
+  }
+
+  @Test
+  public void testSendTransactionOutputsValidator() {
+    Assertions.assertThrows(
+        IOException.class,
+        new Executable() {
+          @Override
+          public void execute() throws Throwable {
+            api.sendTransaction(
+                new Transaction(
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()),
+                OutputsValidator.DEFAULT.getValue());
+          }
+        },
+        "Transaction Empty");
+
+    Assertions.assertThrows(
+        IOException.class,
+        new Executable() {
+          @Override
+          public void execute() throws Throwable {
+            api.sendTransaction(
+                new Transaction(
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()),
+                OutputsValidator.PASSTHROUGH.getValue());
+          }
+        },
+        "Transaction Empty");
+  }
+
+  @Test
+  public void testSendTransactionOutputsValidatorThrow() {
+    Assertions.assertThrows(
+        IOException.class,
+        new Executable() {
+          @Override
+          public void execute() throws Throwable {
+            api.sendTransaction(
+                new Transaction(
+                    "0",
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()),
+                "error outputs validator");
+          }
+        },
+        "Invalid params: unknown variant `other`, expected `default` or `passthrough`.");
   }
 
   @Test
