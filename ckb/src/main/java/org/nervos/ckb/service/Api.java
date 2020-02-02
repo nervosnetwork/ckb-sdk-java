@@ -149,6 +149,14 @@ public class Api {
         String.class);
   }
 
+  public String sendTransaction(Transaction transaction, String outputsValidator)
+      throws IOException {
+    return rpcService.post(
+        "send_transaction",
+        Arrays.asList(Convert.parseTransaction(transaction), outputsValidator),
+        String.class);
+  }
+
   /** Net RPC */
   public NodeInfo localNodeInfo() throws IOException {
     return rpcService.post("local_node_info", Collections.emptyList(), NodeInfo.class);
