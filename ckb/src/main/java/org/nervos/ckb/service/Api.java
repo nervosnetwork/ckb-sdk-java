@@ -11,6 +11,7 @@ import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.type.cell.CellTransaction;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.cell.LiveCell;
+import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.ckb.utils.Convert;
@@ -146,6 +147,14 @@ public class Api {
     return rpcService.post(
         "send_transaction",
         Collections.singletonList(Convert.parseTransaction(transaction)),
+        String.class);
+  }
+
+  public String sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
+      throws IOException {
+    return rpcService.post(
+        "send_transaction",
+        Arrays.asList(Convert.parseTransaction(transaction), outputsValidator.getValue()),
         String.class);
   }
 

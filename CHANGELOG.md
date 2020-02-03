@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.27.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.27.0...v0.27.1) (2020-2-3)
+
+### Feature
+
+* Add outputsValidator as parameter to sendTransaction rpc ([d6d715e](https://github.com/nervosnetwork/ckb-sdk-java/commit/d6d715e05d0877697f4f78f4f148b74df8d26487))
+
+### BreakingChanges
+
+Add outputsValidator as parameter to sendTransaction rpc which is used to validate the transaction outputs before entering the tx-pool, an optional string parameter (enum: default | passthrough ), null means using default validator, passthrough means skipping outputs validation 
+
+
 # [v0.27.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.26.1...v0.27.0) (2020-1-10)
 
 ### Refactor
