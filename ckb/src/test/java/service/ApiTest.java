@@ -214,7 +214,7 @@ public class ApiTest {
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList()),
-                OutputsValidator.DEFAULT.getValue());
+                OutputsValidator.DEFAULT);
           }
         },
         "Transaction Empty");
@@ -233,32 +233,10 @@ public class ApiTest {
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList()),
-                OutputsValidator.PASSTHROUGH.getValue());
+                OutputsValidator.PASSTHROUGH);
           }
         },
         "Transaction Empty");
-  }
-
-  @Test
-  public void testSendTransactionOutputsValidatorThrow() {
-    Assertions.assertThrows(
-        IOException.class,
-        new Executable() {
-          @Override
-          public void execute() throws Throwable {
-            api.sendTransaction(
-                new Transaction(
-                    "0",
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList(),
-                    Collections.emptyList()),
-                "error outputs validator");
-          }
-        },
-        "Invalid params: unknown variant `other`, expected `default` or `passthrough`.");
   }
 
   @Test
