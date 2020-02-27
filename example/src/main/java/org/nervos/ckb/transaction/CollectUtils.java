@@ -79,10 +79,6 @@ public class CollectUtils {
           new CellOutput(
               Numeric.toHexStringWithPrefix(receiver.capacity), addressParseResult.script));
     }
-    BigInteger needCapacity = BigInteger.ZERO;
-    for (Receiver receiver : receivers) {
-      needCapacity = needCapacity.add(receiver.capacity);
-    }
     AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
     cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
     return cellOutputs;
