@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellDep;
@@ -16,10 +18,12 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CalculatorTest {
+  private Transaction tx;
 
-  @Test
-  void testCalculateTransactionSize() {
+  @BeforeAll
+  void init() {
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
@@ -40,7 +44,7 @@ public class CalculatorTest {
                 "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                 Script.TYPE)));
 
-    Transaction tx =
+    tx =
         new Transaction(
             "0x0",
             Arrays.asList(
@@ -65,17 +69,16 @@ public class CalculatorTest {
             Arrays.asList("0x1234", "0x"),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
+  }
 
-    Assertions.assertEquals(Calculator.calculateSerializedSizeInBlock(tx), 536);
+  @Test
+  void testCalculateTransactionSize() {
+    Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 536);
   }
 
   @Test
   public void testCalculateTransactionFee() {
     Assertions.assertEquals(
-        Calculator.calculateTransactionFee(BigInteger.valueOf(1035), BigInteger.valueOf(900)),
-        BigInteger.valueOf(932));
-    Assertions.assertEquals(
-        Calculator.calculateTransactionFee(BigInteger.valueOf(900), BigInteger.valueOf(900)),
-        BigInteger.valueOf(810));
+        Calculator.calculateTransactionFee(tx, BigInteger.valueOf(900)), BigInteger.valueOf(483));
   }
 }
