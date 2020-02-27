@@ -137,10 +137,6 @@ public class MultiKeySingleSigTxExample {
 
   private static Transaction generateTx(
       String address, List<Receiver> receivers, String changeAddress) throws IOException {
-    BigInteger needCapacity = BigInteger.ZERO;
-    for (Receiver receiver : receivers) {
-      needCapacity = needCapacity.add(receiver.capacity);
-    }
     return generateTx(Collections.singletonList(address), receivers, changeAddress);
   }
 

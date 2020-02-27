@@ -66,11 +66,6 @@ public class SendToMultiSigAddressTxExample {
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
       throws IOException {
-    BigInteger needCapacity = BigInteger.ZERO;
-    for (Receiver receiver : receivers) {
-      needCapacity = needCapacity.add(receiver.capacity);
-    }
-
     TransactionBuilder txBuilder = new TransactionBuilder(api);
     CollectUtils txUtils = new CollectUtils(api);
 
