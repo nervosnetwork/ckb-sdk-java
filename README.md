@@ -103,6 +103,9 @@ You can see more JSON-RPC requests from [RPC Document](https://github.com/nervos
 
 #### Single-sig Transfer
 
+> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
+> And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
+
 [SingleKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SingleKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to a private key.
 
 [MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
@@ -137,6 +140,9 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
 ```
 
 #### Multi-sig Transfer
+
+> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
+> And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 
 [SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SendToMultiSigAddressTxExample.java) provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig address.
 
