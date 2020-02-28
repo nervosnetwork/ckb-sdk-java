@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.29.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.28.0...v0.29.0) (2020-2-29)
+# [v0.29.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.28.0...v0.29.0) (2020-2-28)
 
 ### Refactor
 
