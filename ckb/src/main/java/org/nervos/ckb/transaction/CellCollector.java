@@ -130,8 +130,7 @@ public class CellCollector {
   }
 
   private BigInteger calculateTxFee(Transaction transaction, BigInteger feeRate) {
-    int txSize = Serializer.serializeTransaction(transaction).toBytes().length;
-    return Calculator.calculateTransactionFee(BigInteger.valueOf(txSize), feeRate);
+    return Calculator.calculateTransactionFee(transaction, feeRate);
   }
 
   private BigInteger calculateOutputSize(CellOutput cellOutput) {
