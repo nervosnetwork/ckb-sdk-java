@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.29.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.28.0...v0.29.0) (2020-2-29)
+
+### Refactor
+
+* Remove useless code ([a858559](https://github.com/nervosnetwork/ckb-sdk-java/commit/a858559abd8dee81d0969334b5d6487533545ca6))
+* Update transaction fee calculating ([004c6e3](https://github.com/nervosnetwork/ckb-sdk-java/commit/004c6e30b571b805ec2905df0c909a1287c6917d))
+
 # [v0.28.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.27.1...v0.28.0) (2020-2-7)
 
 Bump version to v0.28.0
