@@ -14,6 +14,11 @@ public class EpochParser {
   }
 
   public static String parse(long length, long index, long number) {
+    BigInteger epoch = BigInteger.valueOf((length << 40) + (index << 24) + number);
+    return Numeric.toHexStringWithPrefix(epoch);
+  }
+
+  public static String parseSince(long length, long index, long number) {
     BigInteger bigInteger = Numeric.toBigInt("0x20").shiftLeft(56);
     BigInteger epoch = BigInteger.valueOf((length << 40) + (index << 24) + number);
     return Numeric.toHexStringWithPrefix(bigInteger.add(epoch));

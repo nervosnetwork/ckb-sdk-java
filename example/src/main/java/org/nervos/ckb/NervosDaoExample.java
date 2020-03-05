@@ -249,7 +249,8 @@ public class NervosDaoExample {
     long minimalSinceEpochLength = depositEpoch.length;
 
     String minimalSince =
-        EpochParser.parse(minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber);
+        EpochParser.parseSince(
+            minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber);
     String outputCapacity =
         api.calculateDaoMaximumWithdraw(depositOutPoint, withdrawBlock.header.hash);
 
