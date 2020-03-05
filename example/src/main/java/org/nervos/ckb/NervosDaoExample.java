@@ -22,7 +22,7 @@ import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
-import org.nervos.ckb.utils.EpochParser;
+import org.nervos.ckb.utils.EpochUtils;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 
@@ -229,10 +229,10 @@ public class NervosDaoExample {
     BigInteger depositBlockNumber =
         new UInt64(Numeric.hexStringToByteArray(cellWithStatus.cell.data.content)).getValue();
     Block depositBlock = api.getBlockByNumber(Numeric.toHexStringWithPrefix(depositBlockNumber));
-    EpochParser.EpochParams depositEpoch = EpochParser.parse(depositBlock.header.epoch);
+    EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
 
     Block withdrawBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
-    EpochParser.EpochParams withdrawEpoch = EpochParser.parse(withdrawBlock.header.epoch);
+    EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlock.header.epoch);
 
     long withdrawFraction = withdrawEpoch.index * depositEpoch.length;
     long depositFraction = depositEpoch.index * withdrawEpoch.length;
@@ -249,7 +249,7 @@ public class NervosDaoExample {
     long minimalSinceEpochLength = depositEpoch.length;
 
     String minimalSince =
-        EpochParser.parseSince(
+        EpochUtils.generateSince(
             minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber);
     String outputCapacity =
         api.calculateDaoMaximumWithdraw(depositOutPoint, withdrawBlock.header.hash);
