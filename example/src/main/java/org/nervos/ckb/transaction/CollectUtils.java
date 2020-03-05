@@ -19,18 +19,21 @@ public class CollectUtils {
   private Api api;
   private boolean skipDataAndType;
 
-  public CollectUtils(Api api) {
-    this.api = api;
-    this.skipDataAndType = true;
-  }
-
   public CollectUtils(Api api, boolean skipDataAndType) {
     this.api = api;
     this.skipDataAndType = skipDataAndType;
   }
 
+  public CollectUtils(Api api) {
+    this(api, true);
+  }
+
   public CollectResult collectInputs(
-      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
+      List<String> addresses,
+      Transaction transaction,
+      BigInteger feeRate,
+      int initialLength,
+      long fromBlockNumber)
       throws IOException {
     return new CellCollector(api)
         .collectInputs(
@@ -38,7 +41,13 @@ public class CollectUtils {
             transaction,
             feeRate,
             initialLength,
-            new CellBlockIterator(api, addresses, skipDataAndType));
+            new CellBlockIterator(api, addresses, skipDataAndType, fromBlockNumber));
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
+      throws IOException {
+    return collectInputs(addresses, transaction, feeRate, initialLength, 0);
   }
 
   public CollectResult collectInputsWithIndexer(
