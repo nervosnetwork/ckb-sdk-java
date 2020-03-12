@@ -19,7 +19,7 @@ public class MultiKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
-  private static final String TestAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+  private static final String TestAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
   private static Api api;
   private static List<String> PrivateKeys;
   private static List<String> Addresses;
@@ -34,7 +34,7 @@ public class MultiKeySingleSigTxExample {
             "fec27185a66dd21abb97eeaaeb6bf63fb9c5b7c7966550e6798a78fbaf4197f0",
             "2cee134faa03a158011dff33b7756e89a0c76ba64006640615be7b483b2935b4",
             "55b55c7bd177ed837dde45bbde12fc79c12fb8695be258064f40e6d5f65db96c",
-            "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
+            "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
     Addresses =
         Arrays.asList(
             "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
@@ -43,7 +43,7 @@ public class MultiKeySingleSigTxExample {
             "ckt1qyq8n3400g4lw7xs4denyjprpyzaa6z2z5wsl7e2gs",
             "ckt1qyqd4lgpt5auunu6s3wskkwxmdx548wksvcqyq44en",
             "ckt1qyqrlj6znd3uhvuln5z83epv54xu8pmphzgse5uylq",
-            "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
+            "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
   }
 
   public static void main(String[] args) throws Exception {
@@ -53,7 +53,7 @@ public class MultiKeySingleSigTxExample {
             new Receiver(Addresses.get(1), Utils.ckbToShannon(900)),
             new Receiver(Addresses.get(2), Utils.ckbToShannon(1000)));
 
-    String changeAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440a9qpq2m6m";
+    String changeAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
 
     System.out.println(
         "Before transferring, sender's balance: " + getBalance(TestAddress) + " CKB");

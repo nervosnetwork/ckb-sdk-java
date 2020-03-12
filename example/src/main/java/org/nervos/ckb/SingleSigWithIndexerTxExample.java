@@ -28,11 +28,11 @@ public class SingleSigWithIndexerTxExample {
     SendPrivateKeys =
         Arrays.asList(
             "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
-            "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
+            "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
     SendAddresses =
         Arrays.asList(
             "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
-            "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
+            "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
     ReceiveAddresses =
         Arrays.asList(
             "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
