@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction;
 
+import io.reactivex.annotations.NonNull;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -8,8 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.type.cell.CellWithStatus;
+import org.nervos.ckb.type.fixed.UInt128;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -17,15 +21,9 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CollectUtils {
 
   private Api api;
-  private boolean skipDataAndType;
-
-  public CollectUtils(Api api, boolean skipDataAndType) {
-    this.api = api;
-    this.skipDataAndType = skipDataAndType;
-  }
 
   public CollectUtils(Api api) {
-    this(api, true);
+    this.api = api;
   }
 
   public CollectResult collectInputs(
@@ -33,7 +31,9 @@ public class CollectUtils {
       Transaction transaction,
       BigInteger feeRate,
       int initialLength,
-      long fromBlockNumber)
+      boolean skipDataAndType,
+      long fromBlockNumber,
+      String typeHash)
       throws IOException {
     return new CellCollector(api)
         .collectInputs(
@@ -41,17 +41,21 @@ public class CollectUtils {
             transaction,
             feeRate,
             initialLength,
-            new CellBlockIterator(api, addresses, skipDataAndType, fromBlockNumber));
+            new CellBlockIterator(api, addresses, skipDataAndType, fromBlockNumber, typeHash));
   }
 
   public CollectResult collectInputs(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return collectInputs(addresses, transaction, feeRate, initialLength, 0);
+    return collectInputs(addresses, transaction, feeRate, initialLength, true, 0, null);
   }
 
   public CollectResult collectInputsWithIndexer(
-      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
+      List<String> addresses,
+      Transaction transaction,
+      BigInteger feeRate,
+      int initialLength,
+      boolean skipDataAndType)
       throws IOException {
     return new CellCollector(api)
         .collectInputs(
@@ -62,12 +66,18 @@ public class CollectUtils {
             new CellIndexerIterator(api, addresses, skipDataAndType));
   }
 
+  public CollectResult collectInputsWithIndexer(
+      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
+      throws IOException {
+    return collectInputsWithIndexer(addresses, transaction, feeRate, initialLength, true);
+  }
+
   public BigInteger getCapacityWithAddress(String address, boolean withIndexer) {
     BigInteger capacity = BigInteger.ZERO;
     Iterator<TransactionInput> cellIterator =
         withIndexer
             ? new CellIndexerIterator(api, Collections.singletonList(address))
-            : new CellBlockIterator(api, Collections.singletonList(address));
+            : new CellBlockIterator(api, Collections.singletonList(address), true, 0, null);
     while (cellIterator.hasNext()) {
       TransactionInput transactionInput = cellIterator.next();
       if (transactionInput == null) break;
@@ -78,6 +88,22 @@ public class CollectUtils {
 
   public BigInteger getCapacityWithAddress(String address) {
     return getCapacityWithAddress(address, false);
+  }
+
+  public BigInteger getUdtBalanceWithAddress(String address, @NonNull String typeHash)
+      throws IOException {
+    BigInteger amount = BigInteger.ZERO;
+    Iterator<TransactionInput> cellIterator =
+        new CellBlockIterator(api, Collections.singletonList(address), false, 0, typeHash);
+    while (cellIterator.hasNext()) {
+      TransactionInput transactionInput = cellIterator.next();
+      if (transactionInput == null) break;
+      CellWithStatus cellWithStatus = api.getLiveCell(transactionInput.input.previousOutput, true);
+      String outputsData = cellWithStatus.cell.data.content;
+      if (Strings.isEmpty(outputsData)) break;
+      amount = amount.add(new UInt128(outputsData).getValue());
+    }
+    return amount;
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {

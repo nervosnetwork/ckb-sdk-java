@@ -26,15 +26,22 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
   private List<String> addresses;
   private Api api;
   private boolean skipDataAndType;
+  private String typeHash;
 
   CellBlockIterator(
-      Api api, List<String> addresses, boolean skipDataAndType, long fromBlockNumber) {
+      Api api,
+      List<String> addresses,
+      boolean skipDataAndType,
+      long fromBlockNumber,
+      String typeHash) {
     this.api = api;
     this.addresses = addresses;
     this.skipDataAndType = skipDataAndType;
     this.fromBlockNumber = fromBlockNumber;
+    this.typeHash = typeHash;
 
     toBlockNumber = 0;
+
     addressIndex = 0;
     inputIndex = 0;
 
@@ -43,14 +50,6 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  CellBlockIterator(Api api, List<String> addresses, boolean skipDataAndType) {
-    this(api, addresses, skipDataAndType, 0);
-  }
-
-  CellBlockIterator(Api api, List<String> addresses) {
-    this(api, addresses, true);
   }
 
   @Override
@@ -117,6 +116,16 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
             CellOutput cellOutput = cellWithStatus.cell.output;
             if ((!Strings.isEmpty(outputsDataContent) && !"0x".equals(outputsDataContent))
                 || cellOutput.type != null) {
+              continue;
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        } else if (!Strings.isEmpty(typeHash)) {
+          try {
+            CellWithStatus cellWithStatus = api.getLiveCell(cellOutputWithOutPoint.outPoint, false);
+            CellOutput cellOutput = cellWithStatus.cell.output;
+            if (cellOutput.type == null || !typeHash.equals(cellOutput.type.computeHash())) {
               continue;
             }
           } catch (IOException e) {

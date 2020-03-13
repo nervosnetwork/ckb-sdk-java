@@ -18,7 +18,7 @@ public class UInt128 extends FixedType<BigInteger> {
   }
 
   public UInt128(String hexString) {
-    this.value = Numeric.toBigInt(hexString);
+    this(Numeric.hexStringToByteArray(hexString));
   }
 
   // generate int value from little endian bytes

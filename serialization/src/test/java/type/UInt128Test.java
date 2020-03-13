@@ -23,6 +23,19 @@ public class UInt128Test {
   }
 
   @Test
+  void toBytesTest2() {
+    UInt128 data = new UInt128(10000000000L);
+    Assertions.assertEquals(
+        "00e40b54020000000000000000000000", Numeric.toHexStringNoPrefix(data.toBytes()));
+  }
+
+  @Test
+  void toFromBytes2() {
+    UInt128 data = new UInt128(Numeric.hexStringToByteArray("00e40b54020000000000000000000000"));
+    Assertions.assertEquals(10000000000L, data.getValue().longValue());
+  }
+
+  @Test
   void getLengthTest() {
     UInt128 data = new UInt128(BigInteger.TEN.pow(30));
     Assertions.assertEquals(16, data.toBytes().length);

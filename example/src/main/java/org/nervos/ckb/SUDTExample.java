@@ -29,8 +29,8 @@ public class SUDTExample {
   private static final BigInteger SUDT_MIN_CELL_CAPACITY = Utils.ckbToShannon(142);
   private static final String ReceiveAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
   private static final String TestPrivateKey =
-      "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-  private static final String TestAddress = "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
+      "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc";
+  private static final String TestAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
 
   private static final String NODE_URL = "http://localhost:8114";
   private static Api api;
@@ -39,13 +39,20 @@ public class SUDTExample {
     api = new Api(NODE_URL, false);
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws Exception {
     System.out.println("Tip block number: " + api.getTipBlockNumber());
-    String hash = issue(BigInteger.valueOf(10000000000L));
+    Script udtType =
+        new Script(SUDT_CODE_HASH, LockUtils.generateLockHashWithAddress(TestAddress), Script.DATA);
+    String hash = issue(BigInteger.valueOf(10000000000L), udtType);
     System.out.println(hash);
+
+    Thread.sleep(10000);
+
+    String balance = getUdtBalance(TestAddress, udtType.computeHash());
+    System.out.println("Balance: " + balance);
   }
 
-  private static String issue(BigInteger sudtAmount) throws IOException {
+  private static String issue(BigInteger sudtAmount, Script udtType) throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -55,9 +62,7 @@ public class SUDTExample {
     List<CellOutput> cellOutputs =
         txUtils.generateOutputs(Collections.singletonList(receiver), TestAddress);
 
-    String lockHash = LockUtils.generateLockHashWithAddress(TestAddress);
-    cellOutputs.get(0).type = new Script(SUDT_CODE_HASH, lockHash, Script.DATA);
-    ;
+    cellOutputs.get(0).type = udtType;
     List<String> cellOutputsData =
         Arrays.asList(Numeric.toHexString(new UInt128(sudtAmount).toBytes()), "0x");
 
@@ -100,6 +105,10 @@ public class SUDTExample {
           scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
     return api.sendTransaction(signBuilder.buildTx());
+  }
+
+  private static String getUdtBalance(String address, String typeHash) throws IOException {
+    return new CollectUtils(api).getUdtBalanceWithAddress(address, typeHash).toString(10);
   }
 
   private static void mint() {}
