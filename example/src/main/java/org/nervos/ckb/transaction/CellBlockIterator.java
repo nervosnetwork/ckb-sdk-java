@@ -80,14 +80,14 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     do {
       String lockHash = AddressParser.parse(addresses.get(addressIndex)).script.computeHash();
       transactionInputs = fetchTransactionInputsByLockHash(lockHash);
-      if (transactionInputs == null || transactionInputs.size() == 0) {
+      if (transactionInputs.size() == 0) {
         fromBlockNumber = 1;
         addressIndex++;
       }
       if (addressIndex >= addresses.size()) {
         return null;
       }
-    } while (transactionInputs == null || transactionInputs.size() == 0);
+    } while (transactionInputs.size() == 0);
     return transactionInputs;
   }
 
@@ -127,11 +127,10 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
         BigInteger capacity = Numeric.toBigInt(cellOutputWithOutPoint.capacity);
         transactionInputs.add(new TransactionInput(cellInput, capacity, lockHash));
       }
-      fromBlockNumber = currentToBlockNumber + 1;
-      if (fromBlockNumber > toBlockNumber) {
-        transactionInputs.clear();
-        break;
+      if (transactionInputs.size() == 0) {
+        cellOutputList.clear();
       }
+      fromBlockNumber = currentToBlockNumber + 1;
     } while (cellOutputList.size() == 0);
     return transactionInputs;
   }
