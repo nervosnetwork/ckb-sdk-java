@@ -1,6 +1,5 @@
 package org.nervos.ckb.transaction;
 
-import io.reactivex.annotations.NonNull;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -9,11 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.fixed.UInt128;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -32,8 +28,7 @@ public class CollectUtils {
       BigInteger feeRate,
       int initialLength,
       boolean skipDataAndType,
-      long fromBlockNumber,
-      String typeHash)
+      long fromBlockNumber)
       throws IOException {
     return new CellCollector(api)
         .collectInputs(
@@ -41,13 +36,13 @@ public class CollectUtils {
             transaction,
             feeRate,
             initialLength,
-            new CellBlockIterator(api, addresses, skipDataAndType, fromBlockNumber, typeHash));
+            new CellBlockIterator(api, addresses, skipDataAndType, fromBlockNumber));
   }
 
   public CollectResult collectInputs(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return collectInputs(addresses, transaction, feeRate, initialLength, true, 0, null);
+    return collectInputs(addresses, transaction, feeRate, initialLength, true, 0);
   }
 
   public CollectResult collectInputsWithIndexer(
@@ -77,7 +72,7 @@ public class CollectUtils {
     Iterator<TransactionInput> cellIterator =
         withIndexer
             ? new CellIndexerIterator(api, Collections.singletonList(address))
-            : new CellBlockIterator(api, Collections.singletonList(address), true, 0, null);
+            : new CellBlockIterator(api, Collections.singletonList(address), true, null);
     while (cellIterator.hasNext()) {
       TransactionInput transactionInput = cellIterator.next();
       if (transactionInput == null) break;
@@ -88,22 +83,6 @@ public class CollectUtils {
 
   public BigInteger getCapacityWithAddress(String address) {
     return getCapacityWithAddress(address, false);
-  }
-
-  public BigInteger getUdtBalanceWithAddress(String address, @NonNull String typeHash)
-      throws IOException {
-    BigInteger amount = BigInteger.ZERO;
-    Iterator<TransactionInput> cellIterator =
-        new CellBlockIterator(api, Collections.singletonList(address), false, 0, typeHash);
-    while (cellIterator.hasNext()) {
-      TransactionInput transactionInput = cellIterator.next();
-      if (transactionInput == null) break;
-      CellWithStatus cellWithStatus = api.getLiveCell(transactionInput.input.previousOutput, true);
-      String outputsData = cellWithStatus.cell.data.content;
-      if (Strings.isEmpty(outputsData)) break;
-      amount = amount.add(new UInt128(outputsData).getValue());
-    }
-    return amount;
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
