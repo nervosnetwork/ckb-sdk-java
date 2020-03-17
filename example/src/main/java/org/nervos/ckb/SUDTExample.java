@@ -57,9 +57,14 @@ public class SUDTExample {
 
     String transferHash = transfer(BigInteger.valueOf(100000L), udtType);
     System.out.println("UDT transfer hash: " + transferHash);
+
+    Thread.sleep(30000);
+
+    String burnHash = burn(BigInteger.valueOf(1000L), udtType);
+    System.out.println("UDT burn hash: " + burnHash);
   }
 
-  private static String issue(BigInteger sudtAmount, Script udtType) throws IOException {
+  private static String issue(BigInteger udtAmount, Script udtType) throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -71,7 +76,7 @@ public class SUDTExample {
 
     cellOutputs.get(0).type = udtType;
     List<String> cellOutputsData =
-        Arrays.asList(Numeric.toHexString(new UInt128(sudtAmount).toBytes()), "0x");
+        Arrays.asList(Numeric.toHexString(new UInt128(udtAmount).toBytes()), "0x");
 
     txBuilder.addOutputs(cellOutputs);
     txBuilder.setOutputsData(cellOutputsData);
@@ -118,7 +123,7 @@ public class SUDTExample {
     return new UDTCellCollector(api).getUdtBalanceWithAddress(address, typeHash).toString(10);
   }
 
-  private static String transfer(BigInteger sudtAmount, Script udtType) throws IOException {
+  private static String transfer(BigInteger udtAmount, Script udtType) throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -135,7 +140,7 @@ public class SUDTExample {
 
     List<String> cellOutputsData =
         Arrays.asList(
-            Numeric.toHexString(new UInt128(sudtAmount).toBytes()),
+            Numeric.toHexString(new UInt128(udtAmount).toBytes()),
             Numeric.toHexString(new UInt128(OUTPUTS_DATE_PLACEHOLDER).toBytes()));
     txBuilder.setOutputsData(cellOutputsData);
 
@@ -154,16 +159,14 @@ public class SUDTExample {
                 feeRate,
                 Sign.SIGN_LENGTH * 2,
                 udtType.computeHash(),
-                sudtAmount);
+                udtAmount);
 
     // update change output capacity after collecting cells
-    CellOutput changeOutput = cellOutputs.get(1);
-    changeOutput.capacity = result.changeCapacity;
-    cellOutputs.set(1, changeOutput);
+    cellOutputs.get(1).capacity = result.changeCapacity;
 
     txBuilder.setOutputs(cellOutputs);
 
-    cellOutputsData.set(1, Numeric.toHexString(new UInt128(result.udtAmount).toBytes()));
+    cellOutputsData.set(1, Numeric.toHexString(new UInt128(result.changeUdtAmount).toBytes()));
     txBuilder.setOutputsData(cellOutputsData);
 
     int startIndex = 0;
@@ -187,5 +190,64 @@ public class SUDTExample {
     return api.sendTransaction(signBuilder.buildTx());
   }
 
-  private static void burn() {}
+  private static String burn(BigInteger udtAmount, Script udtType) throws IOException {
+    List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
+
+    TransactionBuilder txBuilder = new TransactionBuilder(api);
+    CollectUtils txUtils = new CollectUtils(api);
+
+    Receiver receiver = new Receiver(TestAddress, SUDT_MIN_CELL_CAPACITY);
+    List<CellOutput> cellOutputs =
+        txUtils.generateOutputs(Collections.singletonList(receiver), TestAddress);
+
+    cellOutputs.get(1).type = udtType;
+    txBuilder.addOutputs(cellOutputs);
+
+    List<String> cellOutputsData =
+        Arrays.asList("0x", Numeric.toHexString(new UInt128(OUTPUTS_DATE_PLACEHOLDER).toBytes()));
+    txBuilder.setOutputsData(cellOutputsData);
+
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_OUT_POINT_TX_HASH, "0x0"), CellDep.CODE));
+
+    // You can get fee rate by rpc or set a simple number
+    // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
+    BigInteger feeRate = BigInteger.valueOf(1024);
+
+    // initial_length = 2 * secp256k1_signature_byte.length
+    UDTCollectResult result =
+        new UDTCellCollector(api)
+            .collectInputs(
+                Collections.singletonList(TestAddress),
+                txBuilder.buildTx(),
+                feeRate,
+                Sign.SIGN_LENGTH * 2,
+                udtType.computeHash(),
+                udtAmount);
+
+    // update change output capacity after collecting cells
+    cellOutputs.get(1).capacity = result.changeCapacity;
+    txBuilder.setOutputs(cellOutputs);
+
+    cellOutputsData.set(1, Numeric.toHexString(new UInt128(result.changeUdtAmount).toBytes()));
+    txBuilder.setOutputsData(cellOutputsData);
+
+    int startIndex = 0;
+    for (CellsWithAddress cellsWithAddress : result.cellsWithAddresses) {
+      txBuilder.addInputs(cellsWithAddress.inputs);
+      for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
+        txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
+      }
+      scriptGroupWithPrivateKeysList.add(
+          new ScriptGroupWithPrivateKeys(
+              new ScriptGroup(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
+              Collections.singletonList(TestPrivateKey)));
+    }
+    Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
+
+    for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
+      signBuilder.sign(
+          scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
+    }
+    return api.sendTransaction(signBuilder.buildTx());
+  }
 }

@@ -93,10 +93,17 @@ public class UDTCellCollector {
         for (CellOutputWithOutPoint cellOutputWithOutPoint : cellOutputList) {
           CellWithStatus cellWithStatus = api.getLiveCell(cellOutputWithOutPoint.outPoint, true);
           CellOutput cellOutput = cellWithStatus.cell.output;
-          if (cellOutput.type == null || !typeHash.equals(cellOutput.type.computeHash())) {
+          String outputsData = cellWithStatus.cell.data.content;
+          boolean udtTypeValid =
+              cellOutput.type != null && typeHash.equals(cellOutput.type.computeHash());
+          boolean udtAmountValid =
+              outputsData != null
+                  && !"0x".equals(outputsData)
+                  && Numeric.toBigInt(outputsData).compareTo(BigInteger.ZERO) > 0;
+          if (!udtTypeValid || !udtAmountValid) {
             continue;
           }
-          inputUdtAmount = inputUdtAmount.add(Numeric.toBigInt(cellWithStatus.cell.data.content));
+          inputUdtAmount = inputUdtAmount.add(new UInt128(outputsData).getValue());
           CellInput cellInput = new CellInput(cellOutputWithOutPoint.outPoint, "0x0");
           inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellOutputWithOutPoint.capacity));
           List<CellInput> cellInputList = lockInputsMap.get(lockHash);
@@ -138,7 +145,7 @@ public class UDTCellCollector {
     }
     BigInteger changeCapacity =
         inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
-    BigInteger changeUdtAmount = inputUdtAmount.subtract(inputUdtAmount);
+    BigInteger changeUdtAmount = inputUdtAmount.subtract(udtAmount);
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
     for (Map.Entry<String, List<CellInput>> entry : lockInputsMap.entrySet()) {
       cellsWithAddresses.add(

@@ -7,11 +7,13 @@ import org.nervos.ckb.transaction.CollectResult;
 
 /** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class UDTCollectResult extends CollectResult {
-  public BigInteger udtAmount;
+  public BigInteger changeUdtAmount;
 
   public UDTCollectResult(
-      List<CellsWithAddress> cellsWithAddresses, String changeCapacity, BigInteger udtAmount) {
+      List<CellsWithAddress> cellsWithAddresses,
+      String changeCapacity,
+      BigInteger changeUdtAmount) {
     super(cellsWithAddresses, changeCapacity);
-    this.udtAmount = udtAmount;
+    this.changeUdtAmount = changeUdtAmount;
   }
 }
