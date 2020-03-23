@@ -17,4 +17,7 @@ public class TxPoolInfo {
 
   @SerializedName("total_tx_size")
   public String totalTxSize;
+
+  @SerializedName("min_fee_rate")
+  public String minFeeRate;
 }

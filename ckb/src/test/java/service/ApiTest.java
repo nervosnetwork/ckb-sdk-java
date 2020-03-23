@@ -48,7 +48,7 @@ public class ApiTest {
 
   @Test
   public void testGetBlockEconomicState() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
+    String blockHash = api.getBlockHash("0x2");
     BlockEconomicState blockEconomicState = api.getBlockEconomicState(blockHash);
     Assertions.assertNotNull(blockEconomicState);
   }
@@ -135,6 +135,7 @@ public class ApiTest {
   public void txPoolInfo() throws IOException {
     TxPoolInfo txPoolInfo = api.txPoolInfo();
     Assertions.assertNotNull(txPoolInfo);
+    Assertions.assertNotNull(txPoolInfo.minFeeRate);
   }
 
   @Test
