@@ -47,6 +47,13 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetBlockEconomicState() throws IOException {
+    String blockHash = api.getBlockHash("0x1");
+    BlockEconomicState blockEconomicState = api.getBlockEconomicState(blockHash);
+    Assertions.assertNotNull(blockEconomicState);
+  }
+
+  @Test
   public void testBlockAndTransaction() throws IOException {
     String blockHash = api.getBlockHash("0x1");
     Block block = api.getBlock(blockHash);

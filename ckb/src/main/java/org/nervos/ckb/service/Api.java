@@ -61,6 +61,11 @@ public class Api {
         CellbaseOutputCapacity.class);
   }
 
+  public BlockEconomicState getBlockEconomicState(String blockHash) throws IOException {
+    return rpcService.post(
+        "get_block_economic_state", Collections.singletonList(blockHash), BlockEconomicState.class);
+  }
+
   public Header getTipHeader() throws IOException {
     return rpcService.post("get_tip_header", Collections.<String>emptyList(), Header.class);
   }
