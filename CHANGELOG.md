@@ -1,6 +1,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.30.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.29.0...v0.30.0) (2020-3-23)
+
+### Feature
+
+* Add `min_tx_fee` to `tx_pool_info` rpc ([d9203d4](https://github.com/nervosnetwork/ckb-sdk-java/commit/d9203d401c008b7c7766e8ec1f55dbe116bdbc47))
+* Add `get_block_economic_state` rpc ([542dc26](https://github.com/nervosnetwork/ckb-sdk-java/commit/542dc261d5fd683aed8a09aded0144ef51ba96e6))
+
+### Refactor
+
+* Replace test private key with dev chain private key ([ad94180](https://github.com/nervosnetwork/ckb-sdk-java/commit/ad941802e9cb2b075f085399007cef16cb866c01))
+* Add fromBlockNumber to collectInputs method ([3a66ab5](https://github.com/nervosnetwork/ckb-sdk-java/commit/3a66ab54d9ba0dba372f533a5a9a152484120baf))
+* Refactor epoch parser class and method name ([ca45791](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca45791f6ce1bfb72fe37dd149750fc14311c7b7))
+
+
+### BugFix
+
+* Fix cell collector bug ([80eca88](https://github.com/nervosnetwork/ckb-sdk-java/commit/80eca88fdbcbd8c626ff6f99fa64edbddddfca9d))
+
+
 # [v0.29.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.28.0...v0.29.0) (2020-2-28)
 
 ### Refactor

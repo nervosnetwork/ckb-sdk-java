@@ -15,6 +15,12 @@ public class UInt64Test {
   }
 
   @Test
+  void toFromBytes() {
+    UInt64 data = new UInt64(Numeric.hexStringToByteArray("0x9abd020000000000"));
+    Assertions.assertEquals("179610", data.getValue().toString());
+  }
+
+  @Test
   void getLengthTest() {
     UInt64 data = new UInt64(25689834934789L);
     Assertions.assertEquals(8, data.toBytes().length);
