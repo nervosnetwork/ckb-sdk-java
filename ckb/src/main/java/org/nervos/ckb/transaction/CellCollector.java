@@ -114,7 +114,8 @@ public class CellCollector {
     }
 
     if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
-      throw new IOException("Capacity not enough!");
+      throw new IOException(
+          "Capacity not enough, please check inputs capacity and change output capacity!");
     }
     BigInteger changeCapacity =
         inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
