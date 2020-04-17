@@ -1,4 +1,4 @@
-name: CKB SDK Java CI
+name: CI
 
 on: [push]
 
