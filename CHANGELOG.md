@@ -1,5 +1,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+# [v0.31.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.30.0...v0.31.0) (2020-4-17)
+
+### Refactor
+
+* Update cell collector error information ([1468d85](https://github.com/nervosnetwork/ckb-sdk-java/commit/1468d850597ff89be5e6daeb654c5eabdbf39e06))
+
+### BugFix
+
+* Update output size calculating method ([3e7f6d8](https://github.com/nervosnetwork/ckb-sdk-java/commit/3e7f6d8cf955c30fc4e25d6718d3d60ae5447b34))
+
 
 # [v0.30.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.29.0...v0.30.0) (2020-3-23)
 
