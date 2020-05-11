@@ -31,6 +31,17 @@ public class CellCollector {
       int initialLength,
       Iterator<TransactionInput> iterator)
       throws IOException {
+    return collectInputs(addresses, tx, feeRate, initialLength, iterator, BigInteger.ZERO);
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses,
+      Transaction tx,
+      BigInteger feeRate,
+      int initialLength,
+      Iterator<TransactionInput> iterator,
+      BigInteger initialInputCapacity)
+      throws IOException {
 
     List<String> lockHashes = new ArrayList<>();
     for (String address : addresses) {
@@ -60,7 +71,7 @@ public class CellCollector {
             tx.outputsData,
             Collections.emptyList());
 
-    BigInteger inputsCapacity = BigInteger.ZERO;
+    BigInteger inputsCapacity = initialInputCapacity;
     for (CellInput cellInput : tx.inputs) {
       cellInputs.add(cellInput);
 

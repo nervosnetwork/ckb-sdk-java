@@ -28,7 +28,8 @@ public class CollectUtils {
       BigInteger feeRate,
       int initialLength,
       boolean skipDataAndType,
-      long fromBlockNumber)
+      long fromBlockNumber,
+      BigInteger initialInputCapacity)
       throws IOException {
     return new CellCollector(api)
         .collectInputs(
@@ -36,13 +37,25 @@ public class CollectUtils {
             transaction,
             feeRate,
             initialLength,
-            new CellBlockIterator(api, addresses, skipDataAndType, fromBlockNumber));
+            new CellBlockIterator(api, addresses, skipDataAndType, fromBlockNumber),
+            initialInputCapacity);
   }
 
   public CollectResult collectInputs(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return collectInputs(addresses, transaction, feeRate, initialLength, true, 0);
+    return collectInputs(addresses, transaction, feeRate, initialLength, true, 0, BigInteger.ZERO);
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses,
+      Transaction transaction,
+      BigInteger feeRate,
+      int initialLength,
+      BigInteger initialInputCapacity)
+      throws IOException {
+    return collectInputs(
+        addresses, transaction, feeRate, initialLength, true, 0, initialInputCapacity);
   }
 
   public CollectResult collectInputsWithIndexer(
