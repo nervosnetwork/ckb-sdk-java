@@ -106,7 +106,7 @@ public class NervosDaoExample {
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
-    CollectUtils collectUtils = new CollectUtils(api, true);
+    CollectUtils collectUtils = new CollectUtils(api);
     CollectResult collectResult =
         collectUtils.collectInputs(
             Collections.singletonList(DaoTestAddress),
@@ -177,7 +177,7 @@ public class NervosDaoExample {
     // You can get fee rate by rpc or set a simple number
     // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
-    CollectUtils collectUtils = new CollectUtils(api, true);
+    CollectUtils collectUtils = new CollectUtils(api);
     CollectResult collectResult =
         collectUtils.collectInputs(
             Collections.singletonList(DaoTestAddress),

@@ -17,15 +17,9 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CollectUtils {
 
   private Api api;
-  private boolean skipDataAndType;
-
-  public CollectUtils(Api api, boolean skipDataAndType) {
-    this.api = api;
-    this.skipDataAndType = skipDataAndType;
-  }
 
   public CollectUtils(Api api) {
-    this(api, true);
+    this.api = api;
   }
 
   public CollectResult collectInputs(
@@ -33,6 +27,7 @@ public class CollectUtils {
       Transaction transaction,
       BigInteger feeRate,
       int initialLength,
+      boolean skipDataAndType,
       long fromBlockNumber)
       throws IOException {
     return new CellCollector(api)
@@ -47,11 +42,15 @@ public class CollectUtils {
   public CollectResult collectInputs(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return collectInputs(addresses, transaction, feeRate, initialLength, 0);
+    return collectInputs(addresses, transaction, feeRate, initialLength, true, 0);
   }
 
   public CollectResult collectInputsWithIndexer(
-      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
+      List<String> addresses,
+      Transaction transaction,
+      BigInteger feeRate,
+      int initialLength,
+      boolean skipDataAndType)
       throws IOException {
     return new CellCollector(api)
         .collectInputs(
@@ -62,12 +61,18 @@ public class CollectUtils {
             new CellIndexerIterator(api, addresses, skipDataAndType));
   }
 
+  public CollectResult collectInputsWithIndexer(
+      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
+      throws IOException {
+    return collectInputsWithIndexer(addresses, transaction, feeRate, initialLength, true);
+  }
+
   public BigInteger getCapacityWithAddress(String address, boolean withIndexer) {
     BigInteger capacity = BigInteger.ZERO;
     Iterator<TransactionInput> cellIterator =
         withIndexer
             ? new CellIndexerIterator(api, Collections.singletonList(address))
-            : new CellBlockIterator(api, Collections.singletonList(address));
+            : new CellBlockIterator(api, Collections.singletonList(address), true, null);
     while (cellIterator.hasNext()) {
       TransactionInput transactionInput = cellIterator.next();
       if (transactionInput == null) break;

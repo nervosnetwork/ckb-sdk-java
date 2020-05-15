@@ -35,6 +35,7 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     this.fromBlockNumber = fromBlockNumber;
 
     toBlockNumber = 0;
+
     addressIndex = 0;
     inputIndex = 0;
 
@@ -45,12 +46,8 @@ public class CellBlockIterator implements Iterator<TransactionInput> {
     }
   }
 
-  CellBlockIterator(Api api, List<String> addresses, boolean skipDataAndType) {
+  CellBlockIterator(Api api, List<String> addresses, boolean skipDataAndType, String typeHash) {
     this(api, addresses, skipDataAndType, 0);
-  }
-
-  CellBlockIterator(Api api, List<String> addresses) {
-    this(api, addresses, true);
   }
 
   @Override

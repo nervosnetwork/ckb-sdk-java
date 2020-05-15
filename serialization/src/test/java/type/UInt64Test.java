@@ -15,7 +15,7 @@ public class UInt64Test {
   }
 
   @Test
-  void toFromBytes() {
+  void toFromBytesTest() {
     UInt64 data = new UInt64(Numeric.hexStringToByteArray("0x9abd020000000000"));
     Assertions.assertEquals("179610", data.getValue().toString());
   }
