@@ -17,7 +17,7 @@ public class UInt128Test {
   }
 
   @Test
-  void toFromBytes() {
+  void toFromBytesTest() {
     UInt128 data = new UInt128(Numeric.hexStringToByteArray("00000040eaed7446d09c2c9f0c000000"));
     Assertions.assertEquals(BigInteger.TEN.pow(30), data.getValue());
   }
@@ -30,7 +30,7 @@ public class UInt128Test {
   }
 
   @Test
-  void toFromBytes2() {
+  void toFromBytesTest2() {
     UInt128 data = new UInt128(Numeric.hexStringToByteArray("00e40b54020000000000000000000000"));
     Assertions.assertEquals(10000000000L, data.getValue().longValue());
   }
