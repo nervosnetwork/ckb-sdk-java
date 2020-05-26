@@ -1,5 +1,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+# [v0.32.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.31.0...v0.32.0) (2020-5-26)
+
+### Feature
+
+* Add Simple UDT example ([18a15f5](https://github.com/nervosnetwork/ckb-sdk-java/commit/18a15f5c4f9d90a62a4b5368a46a94ca89d912e6))
+
+
 # [v0.31.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.30.0...v0.31.0) (2020-4-17)
 
 ### Refactor
