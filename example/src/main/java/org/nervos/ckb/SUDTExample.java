@@ -27,7 +27,7 @@ public class SUDTExample {
   private static final String SUDT_CODE_HASH =
       "0x48dbf59b4c7ee1547238021b4869bceedf4eea6b43772e5d66ef8865b6ae7212";
   private static final String SUDT_OUT_POINT_TX_HASH =
-      "0x78fbb1d420d242295f8668cb5cf38869adac3500f6d4ce18583ed42ff348fa64";
+      "0xc1b2ae129fad7465aaa9acc9785f842ba3e6e8b8051d899defa89f5508a77958";
   private static final String OUTPUTS_DATE_PLACEHOLDER = "00000000000000000000000000000000";
   private static final BigInteger SUDT_MIN_CELL_CAPACITY = Utils.ckbToShannon(142);
   private static final BigInteger SUDT_ISSUE_CELL_CAPACITY = Utils.ckbToShannon(1000);
