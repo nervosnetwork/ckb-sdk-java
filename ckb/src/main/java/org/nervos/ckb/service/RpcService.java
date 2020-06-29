@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.jetbrains.annotations.NotNull;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 class RpcService {
@@ -106,6 +107,11 @@ class RpcService {
     for (List request : requests) {
       if (request.size() == 0 || !(request.get(0) instanceof String)) {
         throw new IOException("RPC method name must be a non-null string");
+      }
+      for (int i = 1; i < request.size(); i++) {
+        if (Numeric.isIntegerValue(request.get(i).toString())) {
+          request.set(i, Numeric.toHexString(request.get(i).toString()));
+        }
       }
       paramsList.add(
           new RequestParams(request.get(0).toString(), request.subList(1, request.size())));

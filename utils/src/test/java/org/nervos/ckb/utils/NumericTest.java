@@ -183,6 +183,17 @@ public class NumericTest {
   }
 
   @Test
+  public void testIsIntegerValue2() {
+    Assertions.assertTrue(Numeric.isIntegerValue("20"));
+    Assertions.assertTrue(Numeric.isIntegerValue("-20"));
+    Assertions.assertTrue(Numeric.isIntegerValue("0"));
+
+    Assertions.assertFalse(Numeric.isIntegerValue("0x20"));
+    Assertions.assertFalse(Numeric.isIntegerValue("abc"));
+    Assertions.assertFalse(Numeric.isIntegerValue("#%34"));
+  }
+
+  @Test
   public void testLittleEndian() {
     String littleEndian = Numeric.littleEndian(71);
     Assertions.assertEquals("0x4700000000000000", littleEndian);
