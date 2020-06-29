@@ -1,12 +1,15 @@
 package service;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.type.cell.CellTransaction;
@@ -342,5 +345,40 @@ public class ApiTest {
     Assertions.assertNotNull(lockHashCapacity);
     Assertions.assertNotNull(lockHashCapacity.capacity);
     Assertions.assertNotNull(lockHashCapacity.cellsCount);
+  }
+
+  @Test
+  public void testBatchRpc() throws IOException {
+    List<RpcResponse> rpcResponses =
+        api.batchRPC(
+            Arrays.asList(
+                Arrays.asList("get_block_hash", "0x200"),
+                Arrays.asList("get_block_by_number", "0x300")));
+    Assertions.assertNotNull(rpcResponses);
+    Assertions.assertEquals(2, rpcResponses.size());
+    Assertions.assertTrue(rpcResponses.get(0).result instanceof String);
+    Assertions.assertTrue(
+        new Gson().fromJson(rpcResponses.get(1).result.toString(), Block.class).transactions.size()
+            > 0);
+
+    Assertions.assertThrows(
+        IOException.class,
+        new Executable() {
+          @Override
+          public void execute() throws Throwable {
+            api.batchRPC(Collections.singletonList(Arrays.asList(1, "0x300")));
+          }
+        },
+        "RPC method name must be a non-null string");
+
+    Assertions.assertThrows(
+        IOException.class,
+        new Executable() {
+          @Override
+          public void execute() throws Throwable {
+            api.batchRPC(Collections.singletonList(Collections.EMPTY_LIST));
+          }
+        },
+        "RPC method name must be a non-null string");
   }
 }

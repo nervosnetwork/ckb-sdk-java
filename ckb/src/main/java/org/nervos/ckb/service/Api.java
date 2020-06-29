@@ -255,4 +255,16 @@ public class Api {
     return rpcService.post(
         "get_capacity_by_lock_hash", Collections.singletonList(lockHash), LockHashCapacity.class);
   }
+
+  /**
+   * Batch RPC request
+   *
+   * @param requests: A list of rpc method and parameters and the first element of each list must be
+   *     rpc method. Example: [["get_block_hash", "0x200"],["get_block_by_number", "0x300"]]
+   * @return A list of rpc response
+   * @throws IOException Request or response error will throw exception
+   */
+  public List<RpcResponse> batchRPC(List<List> requests) throws IOException {
+    return rpcService.batchPost(requests);
+  }
 }

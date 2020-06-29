@@ -6,7 +6,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -40,7 +42,7 @@ class RpcService {
     Request request = new Request.Builder().url(url).post(body).build();
     Response response = client.newCall(request).execute();
     if (response.isSuccessful()) {
-      String responseBody = response.body().string();
+      String responseBody = Objects.requireNonNull(response.body()).string();
       RpcResponse rpcResponse =
           gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
 
@@ -78,7 +80,7 @@ class RpcService {
               public void onResponse(@NotNull Call call, @NotNull Response response)
                   throws IOException {
                 if (response.isSuccessful()) {
-                  String responseBody = response.body().string();
+                  String responseBody = Objects.requireNonNull(response.body()).string();
                   RpcResponse<T> rpcResponse =
                       gson.fromJson(responseBody, new TypeToken<RpcResponse<T>>() {}.getType());
                   if (rpcResponse.error != null) {
@@ -99,6 +101,26 @@ class RpcService {
             });
   }
 
+  List<RpcResponse> batchPost(List<List> requests) throws IOException {
+    List<RequestParams> paramsList = new ArrayList<>();
+    for (List request : requests) {
+      if (request.size() == 0 || !(request.get(0) instanceof String)) {
+        throw new IOException("RPC method name must be a non-null string");
+      }
+      paramsList.add(
+          new RequestParams(request.get(0).toString(), request.subList(1, request.size())));
+    }
+    RequestBody body = RequestBody.create(gson.toJson(paramsList), JSON_MEDIA_TYPE);
+    Request request = new Request.Builder().url(url).post(body).build();
+    Response response = client.newCall(request).execute();
+    if (response.isSuccessful()) {
+      String responseBody = Objects.requireNonNull(response.body()).string();
+      return gson.fromJson(responseBody, new TypeToken<List<RpcResponse>>() {}.getType());
+    } else {
+      throw new IOException("RpcService error code " + response.code());
+    }
+  }
+
   static class RequestParams {
     String jsonrpc = "2.0";
     String method;
@@ -109,18 +131,6 @@ class RpcService {
       this.method = method;
       this.params = params;
       this.id = nextId.getAndIncrement();
-    }
-  }
-
-  static class RpcResponse<T> {
-    long id;
-    String jsonrpc;
-    T result;
-    Error error;
-
-    class Error {
-      public int code;
-      public String message;
     }
   }
 }
