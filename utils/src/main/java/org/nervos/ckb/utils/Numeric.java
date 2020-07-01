@@ -221,6 +221,15 @@ public final class Numeric {
     return value.signum() == 0 || value.scale() <= 0 || value.stripTrailingZeros().scale() <= 0;
   }
 
+  public static boolean isIntegerValue(String value) {
+    try {
+      Integer.parseInt(value);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    return true;
+  }
+
   public static List<Byte> intToBytes(int value) {
     return Bytes.asList(Numeric.hexStringToByteArray(Integer.toHexString(value)));
   }
