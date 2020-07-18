@@ -46,6 +46,9 @@ public class AddressParser extends AddressBaseOperator {
       }
     }
 
+    if (payload.length() < 66) {
+      throw new AddressFormatException("Invalid full address payload length");
+    }
     String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
     String args = Numeric.prependHexPrefix(payload.substring(66));
     if (TYPE_FULL_DATA.equals(type)) {
