@@ -148,6 +148,10 @@ public class Api {
     return rpcService.post("tx_pool_info", Collections.emptyList(), TxPoolInfo.class);
   }
 
+  public String clearTxPool() throws IOException {
+    return rpcService.post("clear_tx_pool", Collections.emptyList(), String.class);
+  }
+
   public String sendTransaction(Transaction transaction) throws IOException {
     return rpcService.post(
         "send_transaction",
