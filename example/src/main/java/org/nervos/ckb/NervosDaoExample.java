@@ -104,7 +104,6 @@ public class NervosDaoExample {
         new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.CODE));
 
     // You can get fee rate by rpc or set a simple number
-    // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
     CollectUtils collectUtils = new CollectUtils(api);
     CollectResult collectResult =
@@ -175,7 +174,6 @@ public class NervosDaoExample {
     txBuilder.addInput(new CellInput(depositOutPoint, "0x0"));
 
     // You can get fee rate by rpc or set a simple number
-    // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
     CollectUtils collectUtils = new CollectUtils(api);
     CollectResult collectResult =

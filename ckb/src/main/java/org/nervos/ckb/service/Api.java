@@ -148,6 +148,10 @@ public class Api {
     return rpcService.post("tx_pool_info", Collections.emptyList(), TxPoolInfo.class);
   }
 
+  public String clearTxPool() throws IOException {
+    return rpcService.post("clear_tx_pool", Collections.emptyList(), String.class);
+  }
+
   public String sendTransaction(Transaction transaction) throws IOException {
     return rpcService.post(
         "send_transaction",
@@ -181,6 +185,7 @@ public class Api {
         Cycles.class);
   }
 
+  @Deprecated
   public String computeTransactionHash(Transaction transaction) throws IOException {
     return rpcService.post(
         "_compute_transaction_hash",
@@ -188,15 +193,9 @@ public class Api {
         String.class);
   }
 
+  @Deprecated
   public String computeScriptHash(Script script) throws IOException {
     return rpcService.post("_compute_script_hash", Collections.singletonList(script), String.class);
-  }
-
-  public FeeRate estimateFeeRate(String expectedConfirmBlocks) throws IOException {
-    return rpcService.post(
-        "estimate_fee_rate",
-        Collections.singletonList(Numeric.toHexString(expectedConfirmBlocks)),
-        FeeRate.class);
   }
 
   public String calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
@@ -254,5 +253,17 @@ public class Api {
   public LockHashCapacity getCapacityByLockHash(String lockHash) throws IOException {
     return rpcService.post(
         "get_capacity_by_lock_hash", Collections.singletonList(lockHash), LockHashCapacity.class);
+  }
+
+  /**
+   * Batch RPC request
+   *
+   * @param requests: A list of rpc method and parameters and the first element of each list must be
+   *     rpc method. Example: [["get_block_hash", "0x200"],["get_block_by_number", "0x300"]]
+   * @return A list of rpc response
+   * @throws IOException Request or response error will throw exception
+   */
+  public List<RpcResponse> batchRPC(List<List> requests) throws IOException {
+    return rpcService.batchPost(requests);
   }
 }

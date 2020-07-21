@@ -20,6 +20,7 @@ hs_err_pid*
 */out/
 
 gradle.properties
+local.properties
 
 # Ignore RPCTest because loachost can not visit
 RpcTest

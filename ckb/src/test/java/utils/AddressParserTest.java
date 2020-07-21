@@ -198,4 +198,19 @@ public class AddressParserTest {
     Assertions.assertTrue(
         exception.getMessage().contains("Short address args byte length must be equal to 20"));
   }
+
+  @Test
+  void testAddressPayloadLengthException() {
+    String address = "ckt1qsvf96jqmq4483ncl7yrzfzshwchu9jd0glq4yy5r2jcsw04r0l5xl";
+    AddressFormatException exception =
+        Assertions.assertThrows(
+            AddressFormatException.class,
+            new Executable() {
+              @Override
+              public void execute() throws Throwable {
+                AddressParser.parse(address);
+              }
+            });
+    Assertions.assertTrue(exception.getMessage().contains("Invalid full address payload length"));
+  }
 }

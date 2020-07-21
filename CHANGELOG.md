@@ -1,5 +1,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [v0.34.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.33.0...v0.34.0) (2020-7-21)
+
+### Feature
+
+ * Add batch rpc request ([e5eef53](https://github.com/nervosnetwork/ckb-sdk-java/commit/e5eef53b98f671620f5d8c05c0cc7b1e62f7674f))
+ * Add `clearTxPool` rpc request([64819d9](https://github.com/nervosnetwork/ckb-sdk-java/commit/64819d9e6be352ae193c5ee4da1949868e96426a))
+ * Remove `estimateFeeRate` rpc request ([054bd01](https://github.com/nervosnetwork/ckb-sdk-java/commit/054bd01e22b77591ec0d5735d23f679cc6712e4b))
+ * Set `computeScriptHash` and `computeTransactionHash` as deprecated rpc request ([fec42ec](https://github.com/nervosnetwork/ckb-sdk-java/commit/fec42ec72248d49cb5c62f6933a3d54be35c13dd))
+
+### BugFix
+
+* Check full address payload length ([02a425a](https://github.com/nervosnetwork/ckb-sdk-java/commit/02a425ae70110439e8118db8dc9fbbdcc829c05b))
+* Fix address parse method bug ([cf3997b](https://github.com/nervosnetwork/ckb-sdk-java/commit/cf3997b51baefd44a63d9c449b488c47c1373a74))
+
+### BreakingChanges
+
+* Remove `estimateFeeRate` rpc request ([054bd01](https://github.com/nervosnetwork/ckb-sdk-java/commit/054bd01e22b77591ec0d5735d23f679cc6712e4b))
+
+
 # [v0.33.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.32.0...v0.33.0) (2020-6-22)
 
 Bump version to v0.33.0
