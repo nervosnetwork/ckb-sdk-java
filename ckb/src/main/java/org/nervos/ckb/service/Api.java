@@ -185,6 +185,7 @@ public class Api {
         Cycles.class);
   }
 
+  @Deprecated
   public String computeTransactionHash(Transaction transaction) throws IOException {
     return rpcService.post(
         "_compute_transaction_hash",
@@ -192,6 +193,7 @@ public class Api {
         String.class);
   }
 
+  @Deprecated
   public String computeScriptHash(Script script) throws IOException {
     return rpcService.post("_compute_script_hash", Collections.singletonList(script), String.class);
   }
