@@ -135,10 +135,16 @@ public class ApiTest {
   }
 
   @Test
-  public void txPoolInfo() throws IOException {
+  public void testTxPoolInfo() throws IOException {
     TxPoolInfo txPoolInfo = api.txPoolInfo();
     Assertions.assertNotNull(txPoolInfo);
     Assertions.assertNotNull(txPoolInfo.minFeeRate);
+  }
+
+  @Test
+  public void testClearTxPool() throws IOException {
+    String txPoolInfo = api.clearTxPool();
+    Assertions.assertNull(txPoolInfo);
   }
 
   @Test
@@ -278,11 +284,6 @@ public class ApiTest {
                 Collections.emptyList(),
                 Collections.emptyList()));
     Assertions.assertNotNull(transactionHash);
-  }
-
-  @Test
-  public void testEstimateFeeRate() {
-    Assertions.assertThrows(IOException.class, () -> api.estimateFeeRate("0xa"));
   }
 
   @Test
