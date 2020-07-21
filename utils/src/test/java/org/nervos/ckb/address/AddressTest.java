@@ -61,9 +61,15 @@ public class AddressTest {
   }
 
   @Test
-  public void testBlake160FromAddressTestnet() {
+  public void testBlake160FromAddressTestnet1() {
     String blake160 = AddressUtils.parse("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
     Assertions.assertEquals(blake160, "36c329ed630d6ce750712a477543672adab57f4c");
+  }
+
+  @Test
+  public void testBlake160FromAddressTestnet2() {
+    String blake160 = AddressUtils.parse("ckt1qyq2742g7yajdcahqsyn63spqrlspyy8g5pq7xg9tu");
+    Assertions.assertEquals(blake160, "af5548f13b26e3b704093d460100ff0090874502");
   }
 
   @Test
