@@ -80,7 +80,6 @@ public class SingleKeySingleSigTxExample {
     txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
-    // BigInteger feeRate = Numeric.toBigInt(api.estimateFeeRate("5").feeRate);
     BigInteger feeRate = BigInteger.valueOf(1024);
 
     // initial_length = 2 * secp256k1_signature_byte.length
