@@ -13,6 +13,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### BugFix
 
 * Check full address payload length ([02a425a](https://github.com/nervosnetwork/ckb-sdk-java/commit/02a425ae70110439e8118db8dc9fbbdcc829c05b))
+* Fix address parse method bug ([cf3997b](https://github.com/nervosnetwork/ckb-sdk-java/commit/cf3997b51baefd44a63d9c449b488c47c1373a74))
 
 ### BreakingChanges
 
