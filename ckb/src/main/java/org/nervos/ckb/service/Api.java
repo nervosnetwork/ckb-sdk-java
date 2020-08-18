@@ -119,6 +119,7 @@ public class Api {
     return rpcService.post("get_blockchain_info", Collections.emptyList(), BlockchainInfo.class);
   }
 
+  @Deprecated
   public List<PeerState> getPeersState() throws IOException {
     return rpcService.post(
         "get_peers_state", Collections.emptyList(), new TypeToken<List<PeerState>>() {}.getType());
