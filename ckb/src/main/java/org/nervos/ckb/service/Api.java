@@ -181,6 +181,10 @@ public class Api {
     return rpcService.post("sync_state", Collections.emptyList(), SyncState.class);
   }
 
+  public String setNetworkActive(Boolean state) throws IOException {
+    return rpcService.post("set_network_active", Collections.singletonList(state), String.class);
+  }
+
   /** Experiment RPC */
   public Cycles dryRunTransaction(Transaction transaction) throws IOException {
     return rpcService.post(

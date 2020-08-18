@@ -19,7 +19,7 @@ import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-@Disabled
+ @Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest {
 
@@ -125,6 +125,12 @@ public class ApiTest {
     SyncState state = api.syncState();
     Assertions.assertNotNull(state);
     Assertions.assertNotNull(state.bestKnownBlockNumber);
+  }
+
+  @Test
+  public void testSetNetworkActive() throws IOException {
+    String result = api.setNetworkActive(true);
+    Assertions.assertNull(result);
   }
 
   @Test
