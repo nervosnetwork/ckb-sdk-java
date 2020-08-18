@@ -185,6 +185,14 @@ public class Api {
     return rpcService.post("set_network_active", Collections.singletonList(state), String.class);
   }
 
+  public String addNode(String peerId, String address) throws IOException {
+    return rpcService.post("add_node", Arrays.asList(peerId, address), String.class);
+  }
+
+  public String removeNode(String peerId) throws IOException {
+    return rpcService.post("remove_node", Collections.singletonList(peerId), String.class);
+  }
+
   /** Experiment RPC */
   public Cycles dryRunTransaction(Transaction transaction) throws IOException {
     return rpcService.post(

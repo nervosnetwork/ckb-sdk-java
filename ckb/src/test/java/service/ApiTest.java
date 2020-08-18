@@ -19,7 +19,7 @@ import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
- @Disabled
+@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest {
 
@@ -130,6 +130,20 @@ public class ApiTest {
   @Test
   public void testSetNetworkActive() throws IOException {
     String result = api.setNetworkActive(true);
+    Assertions.assertNull(result);
+  }
+
+  @Test
+  public void testAddNode() throws IOException {
+    String result =
+        api.addNode(
+            "QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
+    Assertions.assertNull(result);
+  }
+
+  @Test
+  public void testRemoveNode() throws IOException {
+    String result = api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
     Assertions.assertNull(result);
   }
 
