@@ -172,9 +172,9 @@ public class Api {
     return rpcService.post("local_node_info", Collections.emptyList(), NodeInfo.class);
   }
 
-  public List<NodeInfo> getPeers() throws IOException {
+  public List<PeerNodeInfo> getPeers() throws IOException {
     return rpcService.post(
-        "get_peers", Collections.emptyList(), new TypeToken<List<NodeInfo>>() {}.getType());
+        "get_peers", Collections.emptyList(), new TypeToken<List<PeerNodeInfo>>() {}.getType());
   }
 
   public SyncState syncState() throws IOException {

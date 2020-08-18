@@ -112,12 +112,19 @@ public class ApiTest {
   public void testLocalNodeInfo() throws IOException {
     NodeInfo nodeInfo = api.localNodeInfo();
     Assertions.assertNotNull(nodeInfo);
+    Assertions.assertTrue(nodeInfo.addresses.size() > 0);
+    Assertions.assertTrue(nodeInfo.protocols.size() > 0);
+    Assertions.assertTrue(nodeInfo.protocols.get(0).supportVersions.size() > 0);
   }
 
   @Test
   public void testGetPeers() throws IOException {
-    List<NodeInfo> peers = api.getPeers();
+    List<PeerNodeInfo> peers = api.getPeers();
     Assertions.assertNotNull(peers);
+    Assertions.assertTrue(peers.size() > 0);
+    Assertions.assertTrue(peers.get(0).addresses.size() > 0);
+    Assertions.assertTrue(peers.get(0).protocols.size() > 0);
+    Assertions.assertNotNull(peers.get(0).protocols.get(0).version);
   }
 
   @Test
