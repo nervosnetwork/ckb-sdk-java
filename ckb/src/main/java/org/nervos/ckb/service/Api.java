@@ -177,6 +177,10 @@ public class Api {
         "get_peers", Collections.emptyList(), new TypeToken<List<NodeInfo>>() {}.getType());
   }
 
+  public SyncState syncState() throws IOException {
+    return rpcService.post("sync_state", Collections.emptyList(), SyncState.class);
+  }
+
   /** Experiment RPC */
   public Cycles dryRunTransaction(Transaction transaction) throws IOException {
     return rpcService.post(

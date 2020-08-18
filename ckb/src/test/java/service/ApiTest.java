@@ -109,15 +109,22 @@ public class ApiTest {
   }
 
   @Test
-  public void localNodeInfo() throws IOException {
+  public void testLocalNodeInfo() throws IOException {
     NodeInfo nodeInfo = api.localNodeInfo();
     Assertions.assertNotNull(nodeInfo);
   }
 
   @Test
-  public void getPeers() throws IOException {
+  public void testGetPeers() throws IOException {
     List<NodeInfo> peers = api.getPeers();
     Assertions.assertNotNull(peers);
+  }
+
+  @Test
+  public void testSyncState() throws IOException {
+    SyncState state = api.syncState();
+    Assertions.assertNotNull(state);
+    Assertions.assertNotNull(state.bestKnownBlockNumber);
   }
 
   @Test
