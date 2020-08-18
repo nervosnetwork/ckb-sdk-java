@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TxPoolInfo {
 
-  public String pending;
-  public String staging;
   public String orphan;
+  public String pending;
+  public String proposed;
 
   @SerializedName("last_txs_updated_at")
   public String lastTxsUpdatedAt;
@@ -20,4 +20,10 @@ public class TxPoolInfo {
 
   @SerializedName("min_fee_rate")
   public String minFeeRate;
+
+  @SerializedName("tip_hash")
+  public String tipHash;
+
+  @SerializedName("tip_number")
+  public String tipNumber;
 }

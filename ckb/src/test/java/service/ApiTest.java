@@ -146,6 +146,7 @@ public class ApiTest {
     TxPoolInfo txPoolInfo = api.txPoolInfo();
     Assertions.assertNotNull(txPoolInfo);
     Assertions.assertNotNull(txPoolInfo.minFeeRate);
+    Assertions.assertNotNull(txPoolInfo.tipHash);
   }
 
   @Test
