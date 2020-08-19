@@ -109,15 +109,49 @@ public class ApiTest {
   }
 
   @Test
-  public void localNodeInfo() throws IOException {
+  public void testLocalNodeInfo() throws IOException {
     NodeInfo nodeInfo = api.localNodeInfo();
     Assertions.assertNotNull(nodeInfo);
+    Assertions.assertTrue(nodeInfo.addresses.size() > 0);
+    Assertions.assertTrue(nodeInfo.protocols.size() > 0);
+    Assertions.assertTrue(nodeInfo.protocols.get(0).supportVersions.size() > 0);
   }
 
   @Test
-  public void getPeers() throws IOException {
-    List<NodeInfo> peers = api.getPeers();
+  public void testGetPeers() throws IOException {
+    List<PeerNodeInfo> peers = api.getPeers();
     Assertions.assertNotNull(peers);
+    Assertions.assertTrue(peers.size() > 0);
+    Assertions.assertTrue(peers.get(0).addresses.size() > 0);
+    Assertions.assertTrue(peers.get(0).protocols.size() > 0);
+    Assertions.assertNotNull(peers.get(0).protocols.get(0).version);
+  }
+
+  @Test
+  public void testSyncState() throws IOException {
+    SyncState state = api.syncState();
+    Assertions.assertNotNull(state);
+    Assertions.assertNotNull(state.bestKnownBlockNumber);
+  }
+
+  @Test
+  public void testSetNetworkActive() throws IOException {
+    String result = api.setNetworkActive(true);
+    Assertions.assertNull(result);
+  }
+
+  @Test
+  public void testAddNode() throws IOException {
+    String result =
+        api.addNode(
+            "QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
+    Assertions.assertNull(result);
+  }
+
+  @Test
+  public void testRemoveNode() throws IOException {
+    String result = api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
+    Assertions.assertNull(result);
   }
 
   @Test
@@ -139,6 +173,7 @@ public class ApiTest {
     TxPoolInfo txPoolInfo = api.txPoolInfo();
     Assertions.assertNotNull(txPoolInfo);
     Assertions.assertNotNull(txPoolInfo.minFeeRate);
+    Assertions.assertNotNull(txPoolInfo.tipHash);
   }
 
   @Test
