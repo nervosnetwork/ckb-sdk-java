@@ -7,7 +7,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.service.CkbIndexerApi;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.indexer.CkbIndexerCellsCapacityResponse;
+import org.nervos.ckb.indexer.SearchKey;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
@@ -17,9 +20,14 @@ import org.nervos.ckb.utils.address.AddressParser;
 public class CollectUtils {
 
   private Api api;
+  private CkbIndexerApi ckbIndexerApi;
 
   public CollectUtils(Api api) {
     this.api = api;
+  }
+
+  public CollectUtils(CkbIndexerApi api) {
+    this.ckbIndexerApi = api;
   }
 
   public CollectResult collectInputs(
@@ -61,10 +69,33 @@ public class CollectUtils {
             new CellIndexerIterator(api, addresses, skipDataAndType));
   }
 
+  public CollectResult collectInputsWithCkbIndexer(
+          List<String> addresses,
+          Transaction transaction,
+          BigInteger feeRate,
+          int initialLength,
+          boolean skipDataAndType)
+          throws IOException {
+    return new CellCollector(api)
+        .collectInputs(
+            addresses,
+            transaction,
+            feeRate,
+            initialLength,
+            new CellCkbIndexerIterator(ckbIndexerApi, addresses, skipDataAndType));
+  }
+
   public CollectResult collectInputsWithIndexer(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
     return collectInputsWithIndexer(addresses, transaction, feeRate, initialLength, true);
+  }
+
+  public BigInteger getCapacityWithAddressByCkbIndexer(String address) throws IOException {
+    AddressParseResult rs = AddressParser.parse(address);
+    CkbIndexerCellsCapacityResponse capacityInfo = ckbIndexerApi.getCellsCapacity(new SearchKey(rs.script));
+
+    return Numeric.toBigInt(capacityInfo.capacity);
   }
 
   public BigInteger getCapacityWithAddress(String address, boolean withIndexer) {
