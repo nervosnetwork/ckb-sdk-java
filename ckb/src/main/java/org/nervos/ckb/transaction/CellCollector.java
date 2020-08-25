@@ -96,7 +96,7 @@ public class CellCollector {
         // update witness of group first element
         int witnessIndex = 0;
         for (String hash : lockHashes) {
-          if (lockInputsMap.get(hash).size() == 0) break;
+          if (lockInputsMap.get(hash).size() == 0) continue;
           witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
           witnessIndex += lockInputsMap.get(hash).size();
         }
