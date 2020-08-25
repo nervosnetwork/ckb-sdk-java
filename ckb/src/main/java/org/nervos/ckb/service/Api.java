@@ -119,6 +119,7 @@ public class Api {
     return rpcService.post("get_blockchain_info", Collections.emptyList(), BlockchainInfo.class);
   }
 
+  @Deprecated
   public List<PeerState> getPeersState() throws IOException {
     return rpcService.post(
         "get_peers_state", Collections.emptyList(), new TypeToken<List<PeerState>>() {}.getType());
@@ -172,9 +173,25 @@ public class Api {
     return rpcService.post("local_node_info", Collections.emptyList(), NodeInfo.class);
   }
 
-  public List<NodeInfo> getPeers() throws IOException {
+  public List<PeerNodeInfo> getPeers() throws IOException {
     return rpcService.post(
-        "get_peers", Collections.emptyList(), new TypeToken<List<NodeInfo>>() {}.getType());
+        "get_peers", Collections.emptyList(), new TypeToken<List<PeerNodeInfo>>() {}.getType());
+  }
+
+  public SyncState syncState() throws IOException {
+    return rpcService.post("sync_state", Collections.emptyList(), SyncState.class);
+  }
+
+  public String setNetworkActive(Boolean state) throws IOException {
+    return rpcService.post("set_network_active", Collections.singletonList(state), String.class);
+  }
+
+  public String addNode(String peerId, String address) throws IOException {
+    return rpcService.post("add_node", Arrays.asList(peerId, address), String.class);
+  }
+
+  public String removeNode(String peerId) throws IOException {
+    return rpcService.post("remove_node", Collections.singletonList(peerId), String.class);
   }
 
   /** Experiment RPC */
