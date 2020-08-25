@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.35.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.34.0...v0.35.0) (2020-8-25)
+
+### Feature
+
+ * Add `sync_state` rpc ([202fda9](https://github.com/nervosnetwork/ckb-sdk-java/commit/202fda9d121fb4477d3934eaa6ce37934960f2c5))
+ * Add tipHash to txPoolInfo([af8c54f](https://github.com/nervosnetwork/ckb-sdk-java/commit/af8c54fd928446d3244826d49deffde6e4d8d02a))
+ * Add `set_network_active` rpc ([bcd2c2b](https://github.com/nervosnetwork/ckb-sdk-java/commit/bcd2c2b041721a7e515060c02ea8a75c09867eea))
+ * Add add_node and remove_node rpc ([7cd8b9b](https://github.com/nervosnetwork/ckb-sdk-java/commit/7cd8b9be7bbdef31077dd27d6abcedf1b689475b))
+ * Add more fields to node_info and peer ([bba542e](https://github.com/nervosnetwork/ckb-sdk-java/commit/bba542e36dce8236c8618aa14db931db1b5cd7fd))
+ * Set `get_peers_state` as deprecated rpc request ([d2c4baf](https://github.com/nervosnetwork/ckb-sdk-java/commit/d2c4bafa9671060badb17e9db8a99ff2e0b8f50f))
+
+
 # [v0.34.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.33.0...v0.34.0) (2020-7-21)
 
 ### Feature
