@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.35.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.35.0...v0.35.1) (2020-8-26)
+
+### Feature
+
+ * Add a `ckb-indexer` example ([0f4eeda](https://github.com/nervosnetwork/ckb-sdk-java/commit/0f4eeda0805fcf8eaa9b9e2b028b35dd246762fc))
+ 
+ ### BugFix
+ 
+ * Fix transaction fee calculating bug ([6bb687e](https://github.com/nervosnetwork/ckb-sdk-java/commit/6bb687ef4cf2c78582bac138eb002b499e6a1544))
+ * Fix witnesses updating bug ([7873fe4](https://github.com/nervosnetwork/ckb-sdk-java/commit/7873fe43681005aaaf37d05dd0ccfa134efa1ce1))
+
+
 # [v0.35.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.34.0...v0.35.0) (2020-8-25)
 
 ### Feature

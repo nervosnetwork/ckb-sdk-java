@@ -33,7 +33,7 @@ public class CellCollector {
       Iterator<TransactionInput> iterator)
       throws IOException {
 
-    List<String> lockHashes = new ArrayList<>();
+    Set<String> lockHashes = new LinkedHashSet<>();
     for (String address : addresses) {
       AddressParseResult addressParseResult = AddressParser.parse(address);
       lockHashes.add(addressParseResult.script.computeHash());
@@ -96,7 +96,7 @@ public class CellCollector {
         // update witness of group first element
         int witnessIndex = 0;
         for (String hash : lockHashes) {
-          if (lockInputsMap.get(hash).size() == 0) break;
+          if (lockInputsMap.get(hash).size() == 0) continue;
           witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
           witnessIndex += lockInputsMap.get(hash).size();
         }
@@ -120,10 +120,11 @@ public class CellCollector {
     BigInteger changeCapacity =
         inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
+    List<String> lockHashList = Arrays.asList(lockHashes.toArray(new String[0]));
     for (Map.Entry<String, List<CellInput>> entry : lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(
-              entry.getValue(), addresses.get(lockHashes.indexOf(entry.getKey()))));
+              entry.getValue(), addresses.get(lockHashList.indexOf(entry.getKey()))));
     }
     if (tx.inputs != null && tx.inputs.size() > 0) {
       cellsWithAddresses.get(0).inputs.addAll(0, tx.inputs);
