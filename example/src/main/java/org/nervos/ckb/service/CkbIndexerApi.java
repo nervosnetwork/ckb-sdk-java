@@ -9,7 +9,7 @@ import org.nervos.ckb.indexer.CkbIndexerCellsCapacityResponse;
 import org.nervos.ckb.indexer.SearchKey;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+/** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class CkbIndexerApi {
 
   private RpcService rpcService;
