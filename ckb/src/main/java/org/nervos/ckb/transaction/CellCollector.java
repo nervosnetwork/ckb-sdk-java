@@ -120,11 +120,11 @@ public class CellCollector {
     BigInteger changeCapacity =
         inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    List<String> lockHashArray = Arrays.asList(lockHashes.toArray(new String[0]));
+    List<String> lockHashList = Arrays.asList(lockHashes.toArray(new String[0]));
     for (Map.Entry<String, List<CellInput>> entry : lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(
-              entry.getValue(), addresses.get(lockHashArray.indexOf(entry.getKey()))));
+              entry.getValue(), addresses.get(lockHashList.indexOf(entry.getKey()))));
     }
     if (tx.inputs != null && tx.inputs.size() > 0) {
       cellsWithAddresses.get(0).inputs.addAll(0, tx.inputs);
