@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import org.nervos.ckb.indexer.CkbIndexerCellsCapacityResponse;
+import org.nervos.ckb.indexer.SearchKey;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.CkbIndexerApi;
 import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.indexer.CkbIndexerCellsCapacityResponse;
-import org.nervos.ckb.indexer.SearchKey;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
@@ -70,12 +70,12 @@ public class CollectUtils {
   }
 
   public CollectResult collectInputsWithCkbIndexer(
-          List<String> addresses,
-          Transaction transaction,
-          BigInteger feeRate,
-          int initialLength,
-          boolean skipDataAndType)
-          throws IOException {
+      List<String> addresses,
+      Transaction transaction,
+      BigInteger feeRate,
+      int initialLength,
+      boolean skipDataAndType)
+      throws IOException {
     return new CellCollector(api)
         .collectInputs(
             addresses,
@@ -93,7 +93,8 @@ public class CollectUtils {
 
   public BigInteger getCapacityWithAddressByCkbIndexer(String address) throws IOException {
     AddressParseResult rs = AddressParser.parse(address);
-    CkbIndexerCellsCapacityResponse capacityInfo = ckbIndexerApi.getCellsCapacity(new SearchKey(rs.script));
+    CkbIndexerCellsCapacityResponse capacityInfo =
+        ckbIndexerApi.getCellsCapacity(new SearchKey(rs.script));
 
     return Numeric.toBigInt(capacityInfo.capacity);
   }

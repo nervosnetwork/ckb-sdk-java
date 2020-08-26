@@ -5,6 +5,7 @@ import org.nervos.ckb.type.Script;
 
 public class SearchKey {
   public Script script;
+
   @SerializedName("script_type")
   public String scriptType;
 
@@ -12,6 +13,7 @@ public class SearchKey {
     this.script = script;
     this.scriptType = scriptType;
   }
+
   public SearchKey(Script script) {
     this.script = script;
     this.scriptType = "lock";

@@ -1,5 +1,11 @@
 package org.nervos.ckb;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.CkbIndexerApi;
@@ -8,13 +14,6 @@ import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Utils;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SingleSigWithCkbIndexerTxExample {
@@ -34,17 +33,16 @@ public class SingleSigWithCkbIndexerTxExample {
     SendPrivateKeys =
         Arrays.asList(
             "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
-            "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2");
+            "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
     SendAddresses =
         Arrays.asList(
             "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
-            "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
+            "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
     ReceiveAddresses =
         Arrays.asList(
             "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
             "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek");
   }
-
 
   public static void main(String[] args) throws Exception {
 

@@ -1,21 +1,20 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.indexer.SearchKey;
-import org.nervos.ckb.service.CkbIndexerApi;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.indexer.CkbIndexerCell;
-import org.nervos.ckb.indexer.CkbIndexerCellResponse;
-import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Strings;
-import org.nervos.ckb.utils.address.AddressParser;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.nervos.ckb.indexer.CkbIndexerCell;
+import org.nervos.ckb.indexer.CkbIndexerCellResponse;
+import org.nervos.ckb.indexer.SearchKey;
+import org.nervos.ckb.service.CkbIndexerApi;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Strings;
+import org.nervos.ckb.utils.address.AddressParser;
 
 public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   private static final int PAGE_SIZE = 50;
@@ -31,7 +30,13 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   private final String order;
   private final BigInteger limit;
 
-  CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses, boolean skipDataAndType, String order, BigInteger limit, String afterCursor) {
+  CellCkbIndexerIterator(
+      CkbIndexerApi api,
+      List<String> addresses,
+      boolean skipDataAndType,
+      String order,
+      BigInteger limit,
+      String afterCursor) {
     this.api = api;
     this.addresses = addresses;
     this.skipDataAndType = skipDataAndType;
@@ -93,10 +98,10 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
           continue;
         }
       }
-      CellInput cellInput =
-          new CellInput(liveCell.outPoint, "0x0");
+      CellInput cellInput = new CellInput(liveCell.outPoint, "0x0");
       BigInteger capacity = Numeric.toBigInt(liveCell.output.capacity);
-      transactionInputs.add(new TransactionInput(cellInput, capacity, searchKey.script.computeHash()));
+      transactionInputs.add(
+          new TransactionInput(cellInput, capacity, searchKey.script.computeHash()));
     }
     if (liveCells.size() == 0) {
       transactionInputs.clear();
