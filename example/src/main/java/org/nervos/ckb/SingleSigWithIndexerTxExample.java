@@ -30,7 +30,7 @@ public class SingleSigWithIndexerTxExample {
     api = new Api(NODE_URL, false);
     SendPrivateKeys =
         Arrays.asList(
-            "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc",
+            "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
             "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
     SendAddresses =
         Arrays.asList(
