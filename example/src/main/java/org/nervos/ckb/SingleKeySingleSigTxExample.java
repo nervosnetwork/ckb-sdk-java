@@ -40,7 +40,11 @@ public class SingleKeySingleSigTxExample {
     String testPublicKey = ECKeyPair.publicKeyFromPrivate(TestPrivateKey);
     if (!TestAddress.equals(utils.generateFromPublicKey(testPublicKey))) {
       System.out.println(
-          "private key " + TestPrivateKey + " and address " + TestAddress + " are not match");
+          "private key ..."
+              + TestPrivateKey.substring(TestPrivateKey.length() - 4)
+              + " and address "
+              + TestAddress
+              + " are not match");
       return;
     }
     List<Receiver> receivers =

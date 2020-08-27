@@ -55,7 +55,11 @@ public class SingleSigWithIndexerTxExample {
       String address = SendAddresses.get(i);
       if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
         System.out.println(
-            "private key " + privateKey + " and address " + address + " are not match");
+            "private key ..."
+                + privateKey.substring(privateKey.length() - 4)
+                + " and address "
+                + address
+                + " are not match");
         return;
       }
     }
