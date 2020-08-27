@@ -39,12 +39,7 @@ public class SingleKeySingleSigTxExample {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     String testPublicKey = ECKeyPair.publicKeyFromPrivate(TestPrivateKey);
     if (!TestAddress.equals(utils.generateFromPublicKey(testPublicKey))) {
-      System.out.println(
-          "private key ..."
-              + TestPrivateKey.substring(TestPrivateKey.length() - 4)
-              + " and address "
-              + TestAddress
-              + " are not match");
+      System.out.println("private key " + "and address " + TestAddress + " are not matched");
       return;
     }
     List<Receiver> receivers =

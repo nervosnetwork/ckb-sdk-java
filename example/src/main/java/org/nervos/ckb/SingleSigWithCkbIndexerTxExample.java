@@ -54,12 +54,7 @@ public class SingleSigWithCkbIndexerTxExample {
       String testPublicKey = ECKeyPair.publicKeyFromPrivate(SendPrivateKeys.get(i));
       String address = SendAddresses.get(i);
       if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
-        System.out.println(
-            "private key ..."
-                + privateKey.substring(privateKey.length() - 4)
-                + " and address "
-                + address
-                + " are not match");
+        System.out.println("private key " + "and address " + address + " are not matched");
         return;
       }
     }

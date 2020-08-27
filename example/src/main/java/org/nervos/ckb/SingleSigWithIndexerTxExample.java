@@ -30,7 +30,7 @@ public class SingleSigWithIndexerTxExample {
     api = new Api(NODE_URL, false);
     SendPrivateKeys =
         Arrays.asList(
-            "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
+            "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc",
             "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
     SendAddresses =
         Arrays.asList(
@@ -54,12 +54,7 @@ public class SingleSigWithIndexerTxExample {
       String testPublicKey = ECKeyPair.publicKeyFromPrivate(SendPrivateKeys.get(i));
       String address = SendAddresses.get(i);
       if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
-        System.out.println(
-            "private key ..."
-                + privateKey.substring(privateKey.length() - 4)
-                + " and address "
-                + address
-                + " are not match");
+        System.out.println("private key " + "and address " + address + " are not matched");
         return;
       }
     }
