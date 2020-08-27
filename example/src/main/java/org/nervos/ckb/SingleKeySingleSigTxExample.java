@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.nervos.ckb.address.AddressUtils;
+import org.nervos.ckb.address.Network;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
@@ -33,6 +36,13 @@ public class SingleKeySingleSigTxExample {
   }
 
   public static void main(String[] args) throws Exception {
+    AddressUtils utils = new AddressUtils(Network.TESTNET);
+    String testPublicKey = ECKeyPair.publicKeyFromPrivate(TestPrivateKey);
+    if (!TestAddress.equals(utils.generateFromPublicKey(testPublicKey))) {
+      System.out.println(
+          "private key " + TestPrivateKey + " and address " + TestAddress + " are not match");
+      return;
+    }
     List<Receiver> receivers =
         Arrays.asList(
             new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(8000)),

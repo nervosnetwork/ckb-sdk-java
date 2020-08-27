@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.nervos.ckb.address.AddressUtils;
+import org.nervos.ckb.address.Network;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.CkbIndexerApi;
@@ -45,6 +48,17 @@ public class SingleSigWithCkbIndexerTxExample {
   }
 
   public static void main(String[] args) throws Exception {
+    AddressUtils utils = new AddressUtils(Network.TESTNET);
+    for (int i = 0; i < SendAddresses.size() - 1; i++) {
+      String privateKey = SendPrivateKeys.get(i);
+      String testPublicKey = ECKeyPair.publicKeyFromPrivate(SendPrivateKeys.get(i));
+      String address = SendAddresses.get(i);
+      if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
+        System.out.println(
+            "private key " + privateKey + " and address " + address + " are not match");
+        return;
+      }
+    }
 
     System.out.println("Wait some time for ckb-indexer running");
 
