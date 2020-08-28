@@ -50,7 +50,6 @@ public class SingleSigWithIndexerTxExample {
   public static void main(String[] args) throws Exception {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     for (int i = 0; i < SendAddresses.size() - 1; i++) {
-      String privateKey = SendPrivateKeys.get(i);
       String testPublicKey = ECKeyPair.publicKeyFromPrivate(SendPrivateKeys.get(i));
       String address = SendAddresses.get(i);
       if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
