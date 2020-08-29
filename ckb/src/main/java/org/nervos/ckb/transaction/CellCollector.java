@@ -72,7 +72,7 @@ public class CellCollector {
 
     CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
     boolean haveChangeOutput = false;
-    //  if the last cllOutput's capacity is not zero it means there is no changeOutput
+    //  If the last cellOutput's capacity is not zero,  it means there is no changeOutput
     if (Numeric.toBigInt(changeOutput.capacity).compareTo(BigInteger.ZERO) == 0) {
       haveChangeOutput = true;
     }
