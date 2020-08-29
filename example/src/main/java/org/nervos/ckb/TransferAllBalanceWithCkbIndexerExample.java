@@ -62,7 +62,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
             + " CKB");
 
     // For transferring all balance, change address is set to be null
-    //  Because the transfer of the entire balance will not set the change cell, you need to
+    // Because the transfer of the entire balance will not set the change cell, you need to
     // carefully calculate the transfer amount
     String hash = sendCapacity(receivers, null);
     System.out.println("Transaction hash: " + hash);
