@@ -126,7 +126,7 @@ public class CollectUtils {
               Numeric.toHexStringWithPrefix(receiver.capacity), addressParseResult.script));
     }
     //  If change address is null or an empty string it means caller wants to transfer all balance,
-    // So there is no need to set changeOutput
+    // so change output is not needed
     if (changeAddress != null && !changeAddress.trim().isEmpty()) {
       AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
       cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
