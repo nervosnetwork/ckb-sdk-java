@@ -14,6 +14,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -112,9 +113,11 @@ public class SingleSigWithIndexerTxExample {
         txUtils.collectInputsWithIndexer(
             SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
-    // update change cell output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
-    txBuilder.setOutputs(cellOutputs);
+    // update change cell output capacity after collecting cells if there is changeOutput
+    if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {
+      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      txBuilder.setOutputs(cellOutputs);
+    }
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {

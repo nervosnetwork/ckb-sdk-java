@@ -125,8 +125,13 @@ public class CollectUtils {
           new CellOutput(
               Numeric.toHexStringWithPrefix(receiver.capacity), addressParseResult.script));
     }
-    AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
-    cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
+    //  If change address is null or an empty string it means caller wants to transfer all balance,
+    // so change output is not needed
+    if (changeAddress != null && !changeAddress.trim().isEmpty()) {
+      AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
+      cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
+    }
+
     return cellOutputs;
   }
 }
