@@ -22,7 +22,7 @@ import org.nervos.ckb.utils.Utils;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SingleSigWithCkbIndexerTxExample {
 
-  private static final String NODE_URL = "http://localhost:8118";
+  private static final String NODE_URL = "http://localhost:8114";
   private static final String CKB_INDEXER_NODE_URL = "http://localhost:8116";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
@@ -45,7 +45,8 @@ public class SingleSigWithCkbIndexerTxExample {
     ReceiveAddresses =
         Arrays.asList(
             "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
-            "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek");
+            "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek",
+            "ckt1qg8mxsu48mncexvxkzgaa7mz2g25uza4zpz062relhjmyuc52ps3zn47dugwyk5e6mgxvlf5ukx7k3uyq9wlkkmegke");
   }
 
   public static void main(String[] args) throws Exception {
@@ -64,7 +65,8 @@ public class SingleSigWithCkbIndexerTxExample {
     List<Receiver> receivers =
         Arrays.asList(
             new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(800)),
-            new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(900)));
+            new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(900)),
+            new Receiver(ReceiveAddresses.get(2), Utils.ckbToShannon(1000)));
 
     System.out.println(
         "Before transferring, first sender's balance: "
