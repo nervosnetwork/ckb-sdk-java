@@ -223,11 +223,13 @@ public class Api {
 
   /* Indexer RPC */
 
+  @Deprecated
   public LockHashIndexState indexLockHash(String lockHash) throws IOException {
     return rpcService.post(
         "index_lock_hash", Collections.singletonList(lockHash), LockHashIndexState.class);
   }
 
+  @Deprecated
   public LockHashIndexState indexLockHash(String lockHash, String indexFrom) throws IOException {
     return rpcService.post(
         "index_lock_hash",
@@ -235,6 +237,7 @@ public class Api {
         LockHashIndexState.class);
   }
 
+  @Deprecated
   public List<String> deindexLockHash(String lockHash) throws IOException {
     return rpcService.post(
         "deindex_lock_hash",
@@ -242,6 +245,7 @@ public class Api {
         new TypeToken<List<String>>() {}.getType());
   }
 
+  @Deprecated
   public List<LockHashIndexState> getLockHashIndexStates() throws IOException {
     return rpcService.post(
         "get_lock_hash_index_states",
@@ -249,6 +253,7 @@ public class Api {
         new TypeToken<List<LockHashIndexState>>() {}.getRawType());
   }
 
+  @Deprecated
   public List<LiveCell> getLiveCellsByLockHash(
       String lockHash, String page, String pageSize, boolean reverseOrder) throws IOException {
     return rpcService.post(
@@ -258,6 +263,7 @@ public class Api {
         new TypeToken<List<LiveCell>>() {}.getType());
   }
 
+  @Deprecated
   public List<CellTransaction> getTransactionsByLockHash(
       String lockHash, String page, String pageSize, boolean reverseOrder) throws IOException {
     return rpcService.post(
@@ -267,6 +273,7 @@ public class Api {
         new TypeToken<List<CellTransaction>>() {}.getType());
   }
 
+  @Deprecated
   public LockHashCapacity getCapacityByLockHash(String lockHash) throws IOException {
     return rpcService.post(
         "get_capacity_by_lock_hash", Collections.singletonList(lockHash), LockHashCapacity.class);
