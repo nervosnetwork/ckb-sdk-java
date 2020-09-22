@@ -1,7 +1,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.36.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.35.0...v0.36.0) (2020-09-22)
+# [v0.36.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.36.0...v0.36.1) (2020-09-22)
+
+### BugFix
+
+ * Package ckb-sdk.jar with jdk8
+
+
+# [v0.36.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.35.1...v0.36.0) (2020-09-22)
 
 ### Feature
 
