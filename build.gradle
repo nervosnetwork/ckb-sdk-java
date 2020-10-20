@@ -6,7 +6,7 @@ buildscript {
     ext.okhttpVersion = '4.9.0'
     ext.loggingOkhttpVersion = '4.9.0'
     ext.slf4jVersion = '1.7.30'
-    ext.guavaVersion = '29.0-jre'
+    ext.guavaVersion = '30.0-jre'
 
     ext.junitVersion = '5.7.0'
 
