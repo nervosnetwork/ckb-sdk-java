@@ -11,7 +11,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.type.cell.CellTransaction;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.cell.LiveCell;
@@ -226,14 +225,6 @@ public class ApiTest {
   public void testGetPeersState() throws IOException {
     List<PeerState> peerStates = api.getPeersState();
     Assertions.assertNotNull(peerStates);
-  }
-
-  @Test
-  public void testGetCellsByLockHash() throws IOException {
-    List<CellOutputWithOutPoint> cellOutputWithOutPoints =
-        api.getCellsByLockHash(
-            "0xecaeea8c8581d08a3b52980272001dbf203bc6fa2afcabe7cc90cc2afff488ba", "0", "100");
-    Assertions.assertTrue(cellOutputWithOutPoints.size() > 0);
   }
 
   @Test

@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.type.cell.CellTransaction;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.cell.LiveCell;
@@ -68,15 +67,6 @@ public class Api {
 
   public Header getTipHeader() throws IOException {
     return rpcService.post("get_tip_header", Collections.<String>emptyList(), Header.class);
-  }
-
-  public List<CellOutputWithOutPoint> getCellsByLockHash(
-      String lockHash, String fromBlockNumber, String toBlockNumber) throws IOException {
-    return rpcService.post(
-        "get_cells_by_lock_hash",
-        Arrays.asList(
-            lockHash, Numeric.toHexString(fromBlockNumber), Numeric.toHexString(toBlockNumber)),
-        new TypeToken<List<CellOutputWithOutPoint>>() {}.getType());
   }
 
   public CellWithStatus getLiveCell(OutPoint outPoint, boolean withData) throws IOException {
