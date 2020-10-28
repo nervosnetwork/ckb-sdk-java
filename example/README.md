@@ -16,7 +16,7 @@ If you want to call asynchronous http request, you can use `RpcService.postAsync
 
 #### Transaction Examples
 
-Transaction examples include simple signature transaction, multiply private keys transaction and multi-sig transaction and transaction examples use same cell indexerCollector(except SingleSigWithIndexerTxExample) to collect live cells to build transaction 
+Transaction examples include simple signature transaction, multiply private keys transaction and multi-sig transaction and transaction examples use same cell collector to collect live cells to build transaction 
 and use Secp256K1 signature builder([Secp256k1SighashAllBuilder](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/ckb/src/main/java/org/nervos/ckb/transaction/Secp256k1SighashAllBuilder.java) and [Secp256k1MultisigAllBuilder](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/ckb/src/main/java/org/nervos/ckb/transaction/Secp256k1MultisigAllBuilder.java)) to sign transaction.
 
 - Simple signature transaction ([SingleSigWithCkbIndexerTxExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/SingleSigWithCkbIndexerTxExample.java)
