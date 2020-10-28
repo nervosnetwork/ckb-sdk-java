@@ -114,6 +114,22 @@ public class Api {
         Header.class);
   }
 
+  public TransactionProof getTransactionProof(List<String> txHashes) throws IOException {
+    return rpcService.post(
+        "get_transaction_proof", Collections.singletonList(txHashes), TransactionProof.class);
+  }
+
+  public TransactionProof getTransactionProof(List<String> txHashes, String blockHash)
+      throws IOException {
+    return rpcService.post(
+        "get_transaction_proof", Arrays.asList(txHashes, blockHash), TransactionProof.class);
+  }
+
+  public String verifyTransactionProof(TransactionProof transactionProof) throws IOException {
+    return rpcService.post(
+        "verify_transaction_proof", Collections.singletonList(transactionProof), String.class);
+  }
+
   /** Stats RPC */
   public BlockchainInfo getBlockchainInfo() throws IOException {
     return rpcService.post("get_blockchain_info", Collections.emptyList(), BlockchainInfo.class);
@@ -123,25 +139,6 @@ public class Api {
   public List<PeerState> getPeersState() throws IOException {
     return rpcService.post(
         "get_peers_state", Collections.emptyList(), new TypeToken<List<PeerState>>() {}.getType());
-  }
-
-  public String setBan(BannedAddress bannedAddress) throws IOException {
-    return rpcService.post(
-        "set_ban",
-        Arrays.asList(
-            bannedAddress.address,
-            bannedAddress.command,
-            Numeric.toHexStringWithPrefix(new BigInteger(bannedAddress.banTime)),
-            bannedAddress.absolute,
-            bannedAddress.reason),
-        String.class);
-  }
-
-  public List<BannedResultAddress> getBannedAddress() throws IOException {
-    return rpcService.post(
-        "get_banned_address",
-        Collections.emptyList(),
-        new TypeToken<List<BannedResultAddress>>() {}.getType());
   }
 
   /** Pool RPC */
@@ -192,6 +189,33 @@ public class Api {
 
   public String removeNode(String peerId) throws IOException {
     return rpcService.post("remove_node", Collections.singletonList(peerId), String.class);
+  }
+
+  public String setBan(BannedAddress bannedAddress) throws IOException {
+    return rpcService.post(
+        "set_ban",
+        Arrays.asList(
+            bannedAddress.address,
+            bannedAddress.command,
+            Numeric.toHexStringWithPrefix(new BigInteger(bannedAddress.banTime)),
+            bannedAddress.absolute,
+            bannedAddress.reason),
+        String.class);
+  }
+
+  public List<BannedResultAddress> getBannedAddresses() throws IOException {
+    return rpcService.post(
+        "get_banned_addresses",
+        Collections.emptyList(),
+        new TypeToken<List<BannedResultAddress>>() {}.getType());
+  }
+
+  public String clearBannedAddresses() throws IOException {
+    return rpcService.post("clear_banned_addresses", Collections.emptyList(), String.class);
+  }
+
+  public String pingPeers() throws IOException {
+    return rpcService.post("ping_peers", Collections.emptyList(), String.class);
   }
 
   /** Experiment RPC */
