@@ -1,6 +1,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.37.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.36.1...v0.37.0) (2020-10-29)
+
+### Feature
+
+ * Add new rpc (`ping_peers`, `clear_banned_addresses`, `get_transaction_proof`, `verify_transaction_proof`) ([ad83ea7](https://github.com/nervosnetwork/ckb-sdk-java/commit/ad83ea7b4965f49b92dc5f77918a431d59007e26))
+ 
+### Refactor
+ 
+ * Remove `get_cells_by_lock_hash` and indexer examples ([d70522f](https://github.com/nervosnetwork/ckb-sdk-java/commit/d70522fce4a6722a02ce731e34b37b378b34e6e4))
+
+### BreakingChanges
+
+* Remove `get_cells_by_lock_hash` rpc 
+* Remove indexer and udt examples and new sudt examples will be added in the next release
+
+
 # [v0.36.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.36.0...v0.36.1) (2020-09-22)
 
 ### BugFix
