@@ -11,7 +11,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellOutputWithOutPoint;
 import org.nervos.ckb.type.cell.CellTransaction;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.cell.LiveCell;
@@ -109,6 +108,28 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetTransactionProof() throws IOException {
+    TransactionProof transactionProof =
+        api.getTransactionProof(
+            Collections.singletonList(
+                "0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3"));
+    Assertions.assertNotNull(transactionProof);
+    Assertions.assertNotNull(transactionProof.blockHash);
+    Assertions.assertTrue(transactionProof.proof.indices.size() > 0);
+  }
+
+  @Test
+  public void testVerifyTransactionProof() throws IOException {
+    TransactionProof transactionProof =
+        new TransactionProof(
+            new TransactionProof.Proof(Collections.singletonList("0x"), Collections.emptyList()),
+            "0x7978ec7ce5b507cfb52e149e36b1a23f6062ed150503c85bbf825da3599095ed",
+            "0x2bb631f4a251ec39d943cc238fc1e39c7f0e99776e8a1e7be28a03c70c4f4853");
+    String result = api.verifyTransactionProof(transactionProof);
+    Assertions.assertNotNull(result);
+  }
+
+  @Test
   public void testLocalNodeInfo() throws IOException {
     NodeInfo nodeInfo = api.localNodeInfo();
     Assertions.assertNotNull(nodeInfo);
@@ -163,9 +184,21 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetBannedAddress() throws IOException {
-    List<BannedResultAddress> bannedAddresses = api.getBannedAddress();
+  public void testGetBannedAddresses() throws IOException {
+    List<BannedResultAddress> bannedAddresses = api.getBannedAddresses();
     Assertions.assertNotNull(bannedAddresses);
+  }
+
+  @Test
+  public void testClearBannedAddresses() throws IOException {
+    String result = api.clearBannedAddresses();
+    Assertions.assertNull(result);
+  }
+
+  @Test
+  public void testPingPeers() throws IOException {
+    String result = api.clearBannedAddresses();
+    Assertions.assertNull(result);
   }
 
   @Test
@@ -192,14 +225,6 @@ public class ApiTest {
   public void testGetPeersState() throws IOException {
     List<PeerState> peerStates = api.getPeersState();
     Assertions.assertNotNull(peerStates);
-  }
-
-  @Test
-  public void testGetCellsByLockHash() throws IOException {
-    List<CellOutputWithOutPoint> cellOutputWithOutPoints =
-        api.getCellsByLockHash(
-            "0xecaeea8c8581d08a3b52980272001dbf203bc6fa2afcabe7cc90cc2afff488ba", "0", "100");
-    Assertions.assertTrue(cellOutputWithOutPoints.size() > 0);
   }
 
   @Test

@@ -10,6 +10,7 @@ import java.util.List;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
@@ -26,8 +27,10 @@ import org.nervos.ckb.utils.address.AddressGenerator;
 public class MultiSignTransactionExample {
 
   private static final String NODE_URL = "http://localhost:8114";
+  private static final String CKB_INDEXER_URL = "http://localhost:8116";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
+  private static CkbIndexerApi ckbIndexerApi;
   private static List<String> privateKeys;
   private static List<String> publicKeys;
   private static Configuration configuration;
@@ -35,6 +38,7 @@ public class MultiSignTransactionExample {
 
   static {
     api = new Api(NODE_URL, false);
+    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
     privateKeys =
         Arrays.asList(
             "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
@@ -87,14 +91,14 @@ public class MultiSignTransactionExample {
   }
 
   public static String getMultiSigBalance() throws IOException {
-    return new CollectUtils(api)
-        .getCapacityWithAddress(configuration.address())
+    return new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(configuration.address())
         .divide(UnitCKB)
         .toString();
   }
 
-  public static String getBalance(String address) {
-    return new CollectUtils(api).getCapacityWithAddress(address).divide(UnitCKB).toString();
+  public static String getBalance(String address) throws IOException {
+    return new IndexerCollector(api, ckbIndexerApi).getCapacity(address).divide(UnitCKB).toString();
   }
 
   public static Transaction generateTx(
@@ -104,7 +108,7 @@ public class MultiSignTransactionExample {
     }
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api, true);
-    CollectUtils txUtils = new CollectUtils(api);
+    IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
     List<CellOutput> cellOutputs =
         txUtils.generateOutputs(

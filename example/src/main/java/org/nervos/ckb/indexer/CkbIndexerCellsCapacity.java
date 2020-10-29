@@ -2,7 +2,7 @@ package org.nervos.ckb.indexer;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CkbIndexerCellsCapacityResponse {
+public class CkbIndexerCellsCapacity {
   @SerializedName("block_hash")
   public String blockHash;
 

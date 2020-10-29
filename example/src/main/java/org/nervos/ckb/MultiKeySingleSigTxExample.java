@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
@@ -18,14 +19,17 @@ import org.nervos.ckb.utils.Utils;
 public class MultiKeySingleSigTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
+  private static final String CKB_INDEXER_URL = "http://localhost:8116";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static final String TestAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
   private static Api api;
+  private static CkbIndexerApi ckbIndexerApi;
   private static List<String> PrivateKeys;
   private static List<String> Addresses;
 
   static {
     api = new Api(NODE_URL, false);
+    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
     PrivateKeys =
         Arrays.asList(
             "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
@@ -118,8 +122,11 @@ public class MultiKeySingleSigTxExample {
         "After transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
   }
 
-  private static String getBalance(String address) {
-    return new CollectUtils(api).getCapacityWithAddress(address).divide(UnitCKB).toString(10);
+  private static String getBalance(String address) throws IOException {
+    return new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(address)
+        .divide(UnitCKB)
+        .toString(10);
   }
 
   private static String sendCapacity(
@@ -145,7 +152,7 @@ public class MultiKeySingleSigTxExample {
       throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
-    CollectUtils txUtils = new CollectUtils(api);
+    IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
     txBuilder.addOutputs(cellOutputs);

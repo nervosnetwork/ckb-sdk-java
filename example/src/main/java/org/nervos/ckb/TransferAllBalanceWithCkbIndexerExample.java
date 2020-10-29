@@ -9,8 +9,8 @@ import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.service.CkbIndexerApi;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -21,8 +21,8 @@ import org.nervos.ckb.utils.Utils;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransferAllBalanceWithCkbIndexerExample {
 
-  private static final String NODE_URL = "http://localhost:8118";
-  private static final String CKB_INDEXER_NODE_URL = "http://localhost:8116";
+  private static final String NODE_URL = "http://localhost:8114";
+  private static final String CKB_INDEXER_URL = "http://localhost:8116";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
@@ -32,7 +32,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
 
   static {
     api = new Api(NODE_URL, false);
-    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_NODE_URL, false);
+    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
     SendPrivateKeys =
         Collections.singletonList(
             "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
@@ -77,7 +77,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
   }
 
   private static BigInteger getBalance(String address) throws IOException {
-    return new CollectUtils(ckbIndexerApi).getCapacityWithAddressByCkbIndexer(address);
+    return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
@@ -85,7 +85,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
-    CollectUtils txUtils = new CollectUtils(ckbIndexerApi);
+    IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
     txBuilder.addOutputs(cellOutputs);
@@ -96,8 +96,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
     CollectResult collectResult =
-        txUtils.collectInputsWithCkbIndexer(
-            SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, true);
+        txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {

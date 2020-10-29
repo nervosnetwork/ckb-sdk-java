@@ -1,7 +1,6 @@
 # CKB SDK Java
 
 [![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/LICENSE)
-[![Build Status](https://travis-ci.com/nervosnetwork/ckb-sdk-java.svg?branch=develop)](https://travis-ci.com/nervosnetwork/ckb-sdk-java)
 [![Github Actions CI](https://github.com/nervosnetwork/ckb-sdk-java/workflows/CI/badge.svg?branch=develop)](https://github.com/nervosnetwork/ckb-sdk-java/actions)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.nervos.ckb/ckb/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.nervos.ckb/ckb)
 [![Telegram Group](https://cdn.rawgit.com/Patrolavia/telegram-badge/8fe3382b/chat.svg)](https://t.me/nervos_ckb_dev)
@@ -107,7 +106,7 @@ You can see more JSON-RPC requests from [RPC Document](https://github.com/nervos
 > Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 
-[SingleKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SingleKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to a private key.
+[SingleSigWithCkbIndexerTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SingleSigWithCkbIndexerTxExample.java) provides `sendCapacity` method with any amount inputs which belong to a private key.
 
 [MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
 

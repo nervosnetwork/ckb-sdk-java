@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-class RpcService {
+public class RpcService {
 
   private static final MediaType JSON_MEDIA_TYPE = MediaType.get("application/json; charset=utf-8");
   private static AtomicLong nextId = new AtomicLong(0);
@@ -25,8 +25,8 @@ class RpcService {
   private String url;
   private Gson gson;
 
-  RpcService(String nodeUrl, boolean isDebug) {
-    url = nodeUrl;
+  public RpcService(String rpcUrl, boolean isDebug) {
+    url = rpcUrl;
     if (isDebug) {
       HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
       logging.level(HttpLoggingInterceptor.Level.BODY);
@@ -37,7 +37,7 @@ class RpcService {
     gson = new Gson();
   }
 
-  <T> T post(@NotNull String method, List params, Type cls) throws IOException {
+  public <T> T post(@NotNull String method, List params, Type cls) throws IOException {
     RequestParams requestParams = new RequestParams(method, params);
     RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
     Request request = new Request.Builder().url(url).post(body).build();
@@ -63,7 +63,7 @@ class RpcService {
     }
   }
 
-  <T> void postAsync(
+  public <T> void postAsync(
       @NotNull String method, List params, @NotNull Type cls, @NotNull RpcCallback<T> callback) {
     RequestParams requestParams = new RequestParams(method, params);
     RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);

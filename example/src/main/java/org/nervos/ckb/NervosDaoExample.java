@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
@@ -34,7 +35,9 @@ public class NervosDaoExample {
   private static final int DAO_MATURITY_BLOCKS = 5;
 
   private static final String NODE_URL = "http://localhost:8114";
+  private static final String CKB_INDEXER_URL = "http://localhost:8116";
   private static Api api;
+  private static CkbIndexerApi ckbIndexerApi;
   private static String DaoTestPrivateKey =
       "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2";
   private static String DaoTestAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
@@ -45,6 +48,7 @@ public class NervosDaoExample {
 
   static {
     api = new Api(NODE_URL, false);
+    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
   }
 
   public static void main(String[] args) throws Exception {
@@ -79,15 +83,18 @@ public class NervosDaoExample {
     }
   }
 
-  private static String getBalance(String address) {
-    return new CollectUtils(api).getCapacityWithAddress(address).divide(UnitCKB).toString(10);
+  private static String getBalance(String address) throws IOException {
+    return new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(address)
+        .divide(UnitCKB)
+        .toString(10);
   }
 
   private static Transaction generateDepositingToDaoTx(BigInteger capacity) throws IOException {
     Script type =
         new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, "0x", Script.TYPE);
 
-    CollectUtils txUtils = new CollectUtils(api);
+    IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
     List<CellOutput> cellOutputs =
         txUtils.generateOutputs(
@@ -105,9 +112,9 @@ public class NervosDaoExample {
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
-    CollectUtils collectUtils = new CollectUtils(api);
+    IndexerCollector indexerCollector = new IndexerCollector(api, ckbIndexerApi);
     CollectResult collectResult =
-        collectUtils.collectInputs(
+        indexerCollector.collectInputs(
             Collections.singletonList(DaoTestAddress),
             txBuilder.buildTx(),
             feeRate,
@@ -175,9 +182,9 @@ public class NervosDaoExample {
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
-    CollectUtils collectUtils = new CollectUtils(api);
+    IndexerCollector indexerCollector = new IndexerCollector(api, ckbIndexerApi);
     CollectResult collectResult =
-        collectUtils.collectInputs(
+        indexerCollector.collectInputs(
             Collections.singletonList(DaoTestAddress),
             txBuilder.buildTx(),
             feeRate,
