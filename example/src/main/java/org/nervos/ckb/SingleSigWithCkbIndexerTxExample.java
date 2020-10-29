@@ -10,8 +10,8 @@ import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.service.CkbIndexerApi;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -23,7 +23,7 @@ import org.nervos.ckb.utils.Utils;
 public class SingleSigWithCkbIndexerTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
-  private static final String CKB_INDEXER_NODE_URL = "http://localhost:8116";
+  private static final String CKB_INDEXER_URL = "http://localhost:8116";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
@@ -33,18 +33,13 @@ public class SingleSigWithCkbIndexerTxExample {
 
   static {
     api = new Api(NODE_URL, false);
-    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_NODE_URL, false);
+    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
     SendPrivateKeys =
-        Arrays.asList(
-            "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
-            "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
-    SendAddresses =
-        Arrays.asList(
-            "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
-            "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
+        Arrays.asList("e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3");
+    SendAddresses = Arrays.asList("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
     ReceiveAddresses =
         Arrays.asList(
-            "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
+            "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37",
             "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek",
             "ckt1qg8mxsu48mncexvxkzgaa7mz2g25uza4zpz062relhjmyuc52ps3zn47dugwyk5e6mgxvlf5ukx7k3uyq9wlkkmegke");
   }
@@ -64,9 +59,9 @@ public class SingleSigWithCkbIndexerTxExample {
 
     List<Receiver> receivers =
         Arrays.asList(
-            new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(800)),
-            new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(900)),
-            new Receiver(ReceiveAddresses.get(2), Utils.ckbToShannon(1000)));
+            new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(200)),
+            new Receiver(ReceiveAddresses.get(1), Utils.ckbToShannon(200)),
+            new Receiver(ReceiveAddresses.get(2), Utils.ckbToShannon(300)));
 
     System.out.println(
         "Before transferring, first sender's balance: "
@@ -86,7 +81,7 @@ public class SingleSigWithCkbIndexerTxExample {
   }
 
   private static BigInteger getBalance(String address) throws IOException {
-    return new CollectUtils(ckbIndexerApi).getCapacityWithAddressByCkbIndexer(address);
+    return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
@@ -94,7 +89,7 @@ public class SingleSigWithCkbIndexerTxExample {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
-    CollectUtils txUtils = new CollectUtils(ckbIndexerApi);
+    IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
     txBuilder.addOutputs(cellOutputs);
@@ -105,8 +100,7 @@ public class SingleSigWithCkbIndexerTxExample {
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
     CollectResult collectResult =
-        txUtils.collectInputsWithCkbIndexer(
-            SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, true);
+        txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {

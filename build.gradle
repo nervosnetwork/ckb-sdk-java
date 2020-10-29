@@ -1,12 +1,12 @@
 buildscript {
 
     ext.bouncycastleVersion = '1.66'
-    ext.rxjavaVersion = '2.2.19'
+    ext.rxjavaVersion = '2.2.20'
     ext.gsonVersion = '2.8.6'
     ext.okhttpVersion = '4.9.0'
     ext.loggingOkhttpVersion = '4.9.0'
     ext.slf4jVersion = '1.7.30'
-    ext.guavaVersion = '29.0-jre'
+    ext.guavaVersion = '30.0-jre'
 
     ext.junitVersion = '5.7.0'
 
@@ -22,7 +22,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
     id 'java'
     id 'com.github.sherter.google-java-format' version '0.8'
     id 'com.jfrog.bintray' version '1.8.5'
@@ -43,7 +43,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.36.1'
+    version '0.37.0'
     apply plugin: 'java'
 
     repositories {
@@ -112,7 +112,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '0.36.1'
+                version '0.37.0'
                 from components.java
             }
         }

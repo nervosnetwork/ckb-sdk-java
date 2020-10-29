@@ -1,12 +1,10 @@
-package org.nervos.ckb.service;
+package org.nervos.ckb.indexer;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
-import org.nervos.ckb.indexer.CkbIndexerCellResponse;
-import org.nervos.ckb.indexer.CkbIndexerCellsCapacityResponse;
-import org.nervos.ckb.indexer.SearchKey;
+import org.nervos.ckb.service.RpcService;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2020 Nervos Foundation. All rights reserved. */
@@ -14,33 +12,31 @@ public class CkbIndexerApi {
 
   private RpcService rpcService;
 
-  public CkbIndexerApi(String nodeUrl) {
-    this(nodeUrl, false);
+  public CkbIndexerApi(String indexerUrl) {
+    this(indexerUrl, false);
   }
 
-  public CkbIndexerApi(String nodeUrl, boolean isDebug) {
-    rpcService = new RpcService(nodeUrl, isDebug);
+  public CkbIndexerApi(String indexerUrl, boolean isDebug) {
+    rpcService = new RpcService(indexerUrl, isDebug);
   }
 
-  public CkbIndexerCellResponse getCells(
+  public CkbIndexerCells getCells(
       SearchKey searchKey, String order, BigInteger limit, String afterCursor) throws IOException {
     if ("0x".equals(afterCursor)) {
       return rpcService.post(
           "get_cells",
           Arrays.asList(searchKey, order, Numeric.toHexStringWithPrefix(limit)),
-          CkbIndexerCellResponse.class);
+          CkbIndexerCells.class);
     } else {
       return rpcService.post(
           "get_cells",
           Arrays.asList(searchKey, order, Numeric.toHexStringWithPrefix(limit), afterCursor),
-          CkbIndexerCellResponse.class);
+          CkbIndexerCells.class);
     }
   }
 
-  public CkbIndexerCellsCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
+  public CkbIndexerCellsCapacity getCellsCapacity(SearchKey searchKey) throws IOException {
     return rpcService.post(
-        "get_cells_capacity",
-        Collections.singletonList(searchKey),
-        CkbIndexerCellsCapacityResponse.class);
+        "get_cells_capacity", Collections.singletonList(searchKey), CkbIndexerCellsCapacity.class);
   }
 }

@@ -16,20 +16,18 @@ If you want to call asynchronous http request, you can use `RpcService.postAsync
 
 #### Transaction Examples
 
-Transaction examples include simple signature transaction, multiply private keys transaction and multi-sig transaction and transaction examples use same cell collector(except SingleSigWithIndexerTxExample) to collect live cells to build transaction 
+Transaction examples include simple signature transaction, multiply private keys transaction and multi-sig transaction and transaction examples use same cell collector to collect live cells to build transaction 
 and use Secp256K1 signature builder([Secp256k1SighashAllBuilder](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/ckb/src/main/java/org/nervos/ckb/transaction/Secp256k1SighashAllBuilder.java) and [Secp256k1MultisigAllBuilder](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/ckb/src/main/java/org/nervos/ckb/transaction/Secp256k1MultisigAllBuilder.java)) to sign transaction.
 
-> Note: After sending capacity or calling `index_lock_hash` rpc request, you should wait a moment (N*BlockTime) to make transaction into blockchain or indexer execute finish
-
-- Simple signature transaction ([SingleKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/SingleKeySingleSigTxExample.java) and [SingleSigWithIndexerTxExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/SingleSigWithIndexerTxExample.java))
+- Simple signature transaction ([SingleSigWithCkbIndexerTxExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/SingleSigWithCkbIndexerTxExample.java)
    - Execute main method to run transaction example and log will be displayed in console window
    - Support single private key to sign transaction with any number of inputs and outputs
-   - Support two rpc methods to collect live cells which are `get_cells_by_lock_hash`(collect live cells block by block) and `get_live_cells_by_lock_hash`(collect live cells page by page)
+   - Use [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) to collect live cells 
    
 - Multi private keys signature transaction ([MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/MultiKeySingleSigTxExample.java))
    - Execute main method to run transaction example and log will be displayed in console window
    - Support multi private keys to sign transaction with any number of inputs and outputs
-   - Use rpc `get_cells_by_lock_hash` to collect live cells
+   - Use [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) to collect live cells 
    
 - Multi-sig transaction ([MultiSignTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/blob/develop/example/src/main/java/org/nervos/ckb/MultiSignTransactionExample.java))
    - Execute main method to run transaction example and log will be displayed in console window

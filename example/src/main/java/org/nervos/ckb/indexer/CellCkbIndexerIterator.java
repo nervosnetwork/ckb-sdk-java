@@ -1,14 +1,11 @@
-package org.nervos.ckb.transaction;
+package org.nervos.ckb.indexer;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.nervos.ckb.indexer.CkbIndexerCell;
-import org.nervos.ckb.indexer.CkbIndexerCellResponse;
-import org.nervos.ckb.indexer.SearchKey;
-import org.nervos.ckb.service.CkbIndexerApi;
+import org.nervos.ckb.transaction.TransactionInput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -25,19 +22,19 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   private String afterCursor;
 
   private final List<String> addresses;
-  private final CkbIndexerApi api;
+  private final CkbIndexerApi indexerApi;
   private final boolean skipDataAndType;
   private final String order;
   private final BigInteger limit;
 
   CellCkbIndexerIterator(
-      CkbIndexerApi api,
+      CkbIndexerApi indexerApi,
       List<String> addresses,
       boolean skipDataAndType,
       String order,
       BigInteger limit,
       String afterCursor) {
-    this.api = api;
+    this.indexerApi = indexerApi;
     this.addresses = addresses;
     this.skipDataAndType = skipDataAndType;
     this.afterCursor = afterCursor;
@@ -82,15 +79,15 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   }
 
   private List<TransactionInput> fetchTransactionInputsByLock(SearchKey searchKey) {
-    List<CkbIndexerCell> liveCells = new ArrayList<>();
+    List<CkbIndexerCells.Cell> liveCells = new ArrayList<>();
     try {
-      CkbIndexerCellResponse response = api.getCells(searchKey, order, limit, afterCursor);
+      CkbIndexerCells response = indexerApi.getCells(searchKey, order, limit, afterCursor);
       liveCells = response.objects;
       afterCursor = response.lastCursor;
     } catch (IOException e) {
       e.printStackTrace();
     }
-    for (CkbIndexerCell liveCell : liveCells) {
+    for (CkbIndexerCells.Cell liveCell : liveCells) {
       if (skipDataAndType) {
         CellOutput cellOutput = liveCell.output;
         if ((!Strings.isEmpty(liveCell.outputData) && !"0x".equals(liveCell.outputData))

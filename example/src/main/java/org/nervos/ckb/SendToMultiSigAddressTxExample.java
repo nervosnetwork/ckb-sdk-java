@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
@@ -16,8 +17,10 @@ import org.nervos.ckb.utils.Utils;
 public class SendToMultiSigAddressTxExample {
 
   private static final String NODE_URL = "http://localhost:8114";
+  private static final String CKB_INDEXER_URL = "http://localhost:8116";
   private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
+  private static CkbIndexerApi ckbIndexerApi;
   private static String MultiSigAddress = "ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq";
   private static String TestPrivateKey =
       "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc";
@@ -25,6 +28,7 @@ public class SendToMultiSigAddressTxExample {
 
   static {
     api = new Api(NODE_URL, false);
+    ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
   }
 
   public static void main(String[] args) throws Exception {
@@ -53,13 +57,16 @@ public class SendToMultiSigAddressTxExample {
     System.out.println("After transferring, change address balance: " + getBalance() + " CKB");
   }
 
-  private static String getBalance() {
-    return new CollectUtils(api).getCapacityWithAddress(TestAddress).divide(UnitCKB).toString(10);
+  private static String getBalance() throws IOException {
+    return new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(TestAddress)
+        .divide(UnitCKB)
+        .toString(10);
   }
 
-  private static String getMultiSigBalance() {
-    return new CollectUtils(api)
-        .getCapacityWithAddress(MultiSigAddress)
+  private static String getMultiSigBalance() throws IOException {
+    return new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(MultiSigAddress)
         .divide(UnitCKB)
         .toString(10);
   }
@@ -67,7 +74,7 @@ public class SendToMultiSigAddressTxExample {
   private static String sendCapacity(List<Receiver> receivers, String changeAddress)
       throws IOException {
     TransactionBuilder txBuilder = new TransactionBuilder(api);
-    CollectUtils txUtils = new CollectUtils(api);
+    IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
     txBuilder.addOutputs(cellOutputs);
