@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.37.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.37.0...v0.37.1) (2020-11-10)
+
+### Feature
+
+ * Lock bouncycastle version to 1.65 ([79b870d](https://github.com/nervosnetwork/ckb-sdk-java/commit/79b870db9a27dc76c868e02546726658cbddb662))
+
 # [v0.37.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.36.1...v0.37.0) (2020-10-29)
 
 ### Feature
