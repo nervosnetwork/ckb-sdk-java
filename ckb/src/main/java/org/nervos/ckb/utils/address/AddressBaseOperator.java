@@ -13,11 +13,16 @@ class AddressBaseOperator {
 
   static final String CODE_HASH_IDX_BLAKE160 = "00";
   static final String CODE_HASH_IDX_MULTISIG = "01";
+  static final String CODE_HASH_IDX_ANYONE_CAN_PAY = "02";
 
   static final String SECP_BLAKE160_CODE_HASH =
       "9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8";
   static final String MULTISIG_CODE_HASH =
       "5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8";
+  static final String ACP_MAINNET_CODE_HASH =
+      "d369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354";
+  static final String ACP_TESTNET_CODE_HASH =
+      "3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356";
 
   static byte[] convertBits(List<Byte> data, int fromBits, int toBits, boolean pad)
       throws AddressFormatException {

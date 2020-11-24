@@ -54,6 +54,28 @@ public class AddressGeneratorTest {
   }
 
   @Test
+  void testACPShortTestnetAddressGenerate() {
+    Script acpShortScript =
+        new Script(
+            "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356",
+            "0x81312ae06eeb0504b737e6bcfa5397be35a928de",
+            Script.TYPE);
+    String address = AddressGenerator.generate(Network.TESTNET, acpShortScript);
+    Assertions.assertEquals("ckt1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qnzefn9", address);
+  }
+
+  @Test
+  void testACPShortMainnetAddressGenerate() {
+    Script acpShortScript =
+        new Script(
+            "0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354",
+            "0x81312ae06eeb0504b737e6bcfa5397be35a928de",
+            Script.TYPE);
+    String address = AddressGenerator.generate(Network.MAINNET, acpShortScript);
+    Assertions.assertEquals("ckb1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qw88kle", address);
+  }
+
+  @Test
   void testTypeFullTestnetAddressGenerate() {
     Script typeFullScript =
         new Script(
