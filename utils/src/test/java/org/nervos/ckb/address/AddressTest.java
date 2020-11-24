@@ -34,6 +34,33 @@ public class AddressTest {
   }
 
   @Test
+  public void testArgToAddressTestnet1() throws AddressFormatException {
+    String expected = "ckt1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qnzefn9";
+    String args = "0x81312ae06eeb0504b737e6bcfa5397be35a928de";
+    AddressUtils utils = new AddressUtils(Network.TESTNET, CodeHashType.ANYONE_CAN_APY);
+    String actual = utils.generate(args);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void testArgToAddressMainnet() throws AddressFormatException {
+    String expected = "ckb1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qw88kle";
+    String args = "0x81312ae06eeb0504b737e6bcfa5397be35a928de";
+    AddressUtils utils = new AddressUtils(Network.MAINNET, CodeHashType.ANYONE_CAN_APY);
+    String actual = utils.generate(args);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void testArgToAddressMainnet1() throws AddressFormatException {
+    String expected = "ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd";
+    String args = "36c329ed630d6ce750712a477543672adab57f4c";
+    AddressUtils utils = new AddressUtils(Network.MAINNET, CodeHashType.BLAKE160);
+    String actual = utils.generate(args);
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
   public void testPublicKeyHashToAddressTestnet() {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     Assertions.assertEquals(
