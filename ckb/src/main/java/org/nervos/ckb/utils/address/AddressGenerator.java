@@ -22,7 +22,7 @@ public class AddressGenerator extends AddressBaseOperator {
     String args = Numeric.cleanHexPrefix(script.args);
     if (Script.TYPE.equals(script.hashType)
         && args.length() >= 40
-        && args.length() <= 42
+        && args.length() <= 44
         && codeHashes.contains(codeHash)) {
       return generateShortAddress(network, codeHash, args);
     }
