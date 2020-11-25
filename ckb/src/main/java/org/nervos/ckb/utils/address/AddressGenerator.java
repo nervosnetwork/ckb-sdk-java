@@ -3,6 +3,7 @@ package org.nervos.ckb.utils.address;
 import java.util.Arrays;
 import java.util.List;
 import org.nervos.ckb.address.Network;
+import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
@@ -20,7 +21,8 @@ public class AddressGenerator extends AddressBaseOperator {
     String codeHash = Numeric.cleanHexPrefix(script.codeHash);
     String args = Numeric.cleanHexPrefix(script.args);
     if (Script.TYPE.equals(script.hashType)
-        && args.length() == 40
+        && args.length() >= 40
+        && args.length() <= 44
         && codeHashes.contains(codeHash)) {
       return generateShortAddress(network, codeHash, args);
     }
@@ -29,12 +31,20 @@ public class AddressGenerator extends AddressBaseOperator {
 
   private static String generateShortAddress(Network network, String codeHash, String args) {
     // Payload: type(01) | code hash index(00, P2PH / 01, multi-sig / 02, anyone_can_pay) | args
-    String codeHashIndex = CODE_HASH_IDX_BLAKE160;
-    if (MULTISIG_CODE_HASH.equals(codeHash)) {
-      codeHashIndex = CODE_HASH_IDX_MULTISIG;
-    } else if (ACP_MAINNET_CODE_HASH.equals(codeHash) || ACP_TESTNET_CODE_HASH.equals(codeHash)) {
+    String codeHashIndex = "";
+    if (ACP_MAINNET_CODE_HASH.equals(codeHash) || ACP_TESTNET_CODE_HASH.equals(codeHash)) {
       codeHashIndex = CODE_HASH_IDX_ANYONE_CAN_PAY;
+    } else if (args.length() == 40) {
+      if (SECP_BLAKE160_CODE_HASH.equals(codeHash)) {
+        codeHashIndex = CODE_HASH_IDX_BLAKE160;
+      } else if (MULTISIG_CODE_HASH.equals(codeHash)) {
+        codeHashIndex = CODE_HASH_IDX_MULTISIG;
+      }
     }
+    if (codeHashIndex.isEmpty()) {
+      throw new AddressFormatException("Code hash index of address format error");
+    }
+
     String payload = TYPE_SHORT + codeHashIndex + args;
     byte[] data = Numeric.hexStringToByteArray(payload);
     return Bech32.encode(
