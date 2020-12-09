@@ -9,6 +9,10 @@ Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
 The ckb-sdk-java is still under development and **NOT** production ready. You should get familiar with CKB transaction structure and RPC before using it.
 
+**Note: All RPC methods in the indexer module have been deprecated since CKB version `v0.36.0` and they will be removed in the near future.
+As a temporary solution, you can set `enable_deprecated_rpc = true` in `ckb.toml`. We strongly recommend migrating to [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) as soon as possible.
+You can refer to the [examples](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb) of [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) in this project.**
+
 ### Prerequisites
 
 * Java 8
