@@ -73,6 +73,36 @@ public class AddressParserTest {
   }
 
   @Test
+  void testACPShortTestnetAddressParse() {
+    String address = "ckt1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qnzefn9";
+    Script multiSigShortScript =
+        new Script(
+            "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356",
+            "0x81312ae06eeb0504b737e6bcfa5397be35a928de",
+            Script.TYPE);
+    AddressParseResult addressParseResult = AddressParser.parse(address);
+    Assertions.assertEquals(Network.TESTNET, addressParseResult.network);
+    Assertions.assertEquals(multiSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertEquals(multiSigShortScript.hashType, addressParseResult.script.hashType);
+  }
+
+  @Test
+  void testACPShortMainnetAddressParse() {
+    String address = "ckb1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qw88kle";
+    Script multiSigShortScript =
+        new Script(
+            "0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354",
+            "0x81312ae06eeb0504b737e6bcfa5397be35a928de",
+            Script.TYPE);
+    AddressParseResult addressParseResult = AddressParser.parse(address);
+    Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
+    Assertions.assertEquals(multiSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertEquals(multiSigShortScript.hashType, addressParseResult.script.hashType);
+  }
+
+  @Test
   void testTypeFullTestnetAddressParse() {
     String address =
         "ckt1qsvf96jqmq4483ncl7yrzfzshwchu9jd0glq4yy5r2jcsw04d7xlydkr98kkxrtvuag8z2j8w4pkw2k6k4l5c02auef";
@@ -180,7 +210,7 @@ public class AddressParserTest {
               }
             });
     Assertions.assertTrue(
-        exception.getMessage().contains("Short address code hash index must be 00 or 01"));
+        exception.getMessage().contains("Short address code hash index must be 00, 01 or 02"));
   }
 
   @Test

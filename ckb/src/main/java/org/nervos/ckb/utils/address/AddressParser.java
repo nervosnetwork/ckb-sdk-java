@@ -25,24 +25,33 @@ public class AddressParser extends AddressBaseOperator {
       throw new AddressFormatException("Address bech32 decode fail");
     }
     String type = payload.substring(0, 2);
+    Network network = parseNetwork(address);
     if (TYPE_SHORT.equals(type)) {
       String codeHashIndex = payload.substring(2, 4);
       String args = Numeric.prependHexPrefix(payload.substring(4));
-      if (Numeric.cleanHexPrefix(args).length() / 2 != 20) {
+      if (!codeHashIndex.equals(CODE_HASH_IDX_ANYONE_CAN_PAY)
+          && Numeric.cleanHexPrefix(args).length() / 2 != 20) {
         throw new AddressFormatException("Short address args byte length must be equal to 20");
       }
-      if (CODE_HASH_IDX_BLAKE160.equals(codeHashIndex)) {
-        return new AddressParseResult(
-            parseNetwork(address),
-            new Script(Numeric.prependHexPrefix(SECP_BLAKE160_CODE_HASH), args, Script.TYPE),
-            AddressParseResult.Type.SHORT);
-      } else if (CODE_HASH_IDX_MULTISIG.equals(codeHashIndex)) {
-        return new AddressParseResult(
-            parseNetwork(address),
-            new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
-            AddressParseResult.Type.SHORT);
-      } else {
-        throw new AddressFormatException("Short address code hash index must be 00 or 01");
+      switch (codeHashIndex) {
+        case CODE_HASH_IDX_BLAKE160:
+          return new AddressParseResult(
+              network,
+              new Script(Numeric.prependHexPrefix(SECP_BLAKE160_CODE_HASH), args, Script.TYPE),
+              AddressParseResult.Type.SHORT);
+        case CODE_HASH_IDX_MULTISIG:
+          return new AddressParseResult(
+              network,
+              new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
+              AddressParseResult.Type.SHORT);
+        case CODE_HASH_IDX_ANYONE_CAN_PAY:
+          String codeHash =
+              Numeric.prependHexPrefix(
+                  network == Network.MAINNET ? ACP_MAINNET_CODE_HASH : ACP_TESTNET_CODE_HASH);
+          return new AddressParseResult(
+              network, new Script(codeHash, args, Script.TYPE), AddressParseResult.Type.SHORT);
+        default:
+          throw new AddressFormatException("Short address code hash index must be 00, 01 or 02");
       }
     }
 
@@ -53,14 +62,10 @@ public class AddressParser extends AddressBaseOperator {
     String args = Numeric.prependHexPrefix(payload.substring(66));
     if (TYPE_FULL_DATA.equals(type)) {
       return new AddressParseResult(
-          parseNetwork(address),
-          new Script(codeHash, args, Script.DATA),
-          AddressParseResult.Type.FULL);
+          network, new Script(codeHash, args, Script.DATA), AddressParseResult.Type.FULL);
     } else if (TYPE_FULL_TYPE.equals(type)) {
       return new AddressParseResult(
-          parseNetwork(address),
-          new Script(codeHash, args, Script.TYPE),
-          AddressParseResult.Type.FULL);
+          network, new Script(codeHash, args, Script.TYPE), AddressParseResult.Type.FULL);
     }
     throw new AddressFormatException("Full address type must be 02 or 04");
   }

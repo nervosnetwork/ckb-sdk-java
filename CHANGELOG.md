@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.38.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.38.0...v0.38.1) (2020-12-16)
+
+### Feature
+
+ *  Add anyone_can_pay short address([5585ad1](https://github.com/nervosnetwork/ckb-sdk-java/commit/5585ad159c329cc079c1170f3c2224d4e95abb99))
+ *  Add note of indexer rpc deprecated([e6f91a9](https://github.com/nervosnetwork/ckb-sdk-java/commit/e6f91a99295928c641e5d566a70a4ad57dc2dc7f))
+ 
+### BugFix
+
+ * Update interface RpcCallback public([b3f6b61](https://github.com/nervosnetwork/ckb-sdk-java/commit/b3f6b61e155aef3aa22e201408287ca4d253685e))
+
 # [v0.38.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.37.1...v0.38.0) (2020-11-23)
 
 Bump version to v0.38.0

@@ -20,6 +20,7 @@ public class AddressUtils {
   private static final String TYPE = "01"; // short address format
   private static final String CODE_HASH_IDX_BLAKE160 = "00";
   private static final String CODE_HASH_IDX_MULTISIG = "01";
+  private static final String CODE_HASH_IDX_ACP = "02";
 
   private Network network;
   private CodeHashType codeHashType;
@@ -34,8 +35,17 @@ public class AddressUtils {
     this.codeHashType = CodeHashType.BLAKE160;
   }
 
-  private String getCodeHashIdx() {
-    return codeHashType == CodeHashType.BLAKE160 ? CODE_HASH_IDX_BLAKE160 : CODE_HASH_IDX_MULTISIG;
+  private String getCodeHashIdx() throws AddressFormatException {
+    switch (codeHashType) {
+      case BLAKE160:
+        return CODE_HASH_IDX_BLAKE160;
+      case MULTISIG:
+        return CODE_HASH_IDX_MULTISIG;
+      case ANYONE_CAN_APY:
+        return CODE_HASH_IDX_ACP;
+      default:
+        throw new AddressFormatException("Code hash index error");
+    }
   }
 
   public String generateFromPublicKey(String publicKey) throws AddressFormatException {
@@ -43,7 +53,7 @@ public class AddressUtils {
   }
 
   public String generate(String args) throws AddressFormatException {
-    // Payload: type(01) | code hash index(00, P2PH /01, multi sig) | args
+    // Payload: type(01) | code hash index(00, P2PH /01, multi sig /02, ACP) | args
     String payload = TYPE + getCodeHashIdx() + Numeric.cleanHexPrefix(args);
     byte[] data = Numeric.hexStringToByteArray(payload);
     return Bech32.encode(prefix(), convertBits(Bytes.asList(data), 8, 5, true));
