@@ -120,6 +120,10 @@ public class Api {
         "verify_transaction_proof", Collections.singletonList(transactionProof), String.class);
   }
 
+  public Consensus getConsensus() throws IOException {
+    return rpcService.post("get_consensus", Collections.emptyList(), Consensus.class);
+  }
+
   /** Stats RPC */
   public BlockchainInfo getBlockchainInfo() throws IOException {
     return rpcService.post("get_blockchain_info", Collections.emptyList(), BlockchainInfo.class);
@@ -138,6 +142,15 @@ public class Api {
 
   public String clearTxPool() throws IOException {
     return rpcService.post("clear_tx_pool", Collections.emptyList(), String.class);
+  }
+
+  public RawTxPool getRawTxPool() throws IOException {
+    return rpcService.post("get_raw_tx_pool", Collections.emptyList(), RawTxPool.class);
+  }
+
+  public RawTxPoolVerbose getRawTxPoolVerbose() throws IOException {
+    return rpcService.post(
+        "get_raw_tx_pool", Collections.singletonList(true), RawTxPoolVerbose.class);
   }
 
   public String sendTransaction(Transaction transaction) throws IOException {

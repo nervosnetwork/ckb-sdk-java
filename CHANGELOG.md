@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.39.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.38.1...v0.39.0) (2021-01-12)
+
+### Feature
+
+ *  Add rpc `get_raw_tx_pool`([41a5e3d](https://github.com/nervosnetwork/ckb-sdk-java/commit/41a5e3d66f5508176a1fa9697c23596da96c48bc))
+ *  Add rpc `get_consensus`([a036153](https://github.com/nervosnetwork/ckb-sdk-java/commit/a036153e11f014d0f2bea84c24439833ca5862f6))
+ 
 # [v0.38.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.38.0...v0.38.1) (2020-12-16)
 
 ### Feature
