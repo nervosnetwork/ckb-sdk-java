@@ -120,6 +120,10 @@ public class Api {
         "verify_transaction_proof", Collections.singletonList(transactionProof), String.class);
   }
 
+  public Consensus getConsensus() throws IOException {
+    return rpcService.post("get_consensus", Collections.emptyList(), Consensus.class);
+  }
+
   /** Stats RPC */
   public BlockchainInfo getBlockchainInfo() throws IOException {
     return rpcService.post("get_blockchain_info", Collections.emptyList(), BlockchainInfo.class);

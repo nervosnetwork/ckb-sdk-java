@@ -109,6 +109,14 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetConsensus() throws IOException {
+    Consensus consensus = api.getConsensus();
+    Assertions.assertNotNull(consensus);
+    Assertions.assertNotNull(consensus.blockVersion);
+    Assertions.assertNotNull(consensus.proposerRewardRatio.denom);
+  }
+
+  @Test
   public void testGetTransactionProof() throws IOException {
     TransactionProof transactionProof =
         api.getTransactionProof(
