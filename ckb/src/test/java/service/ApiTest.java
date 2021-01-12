@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
@@ -213,6 +214,28 @@ public class ApiTest {
   public void testClearTxPool() throws IOException {
     String txPoolInfo = api.clearTxPool();
     Assertions.assertNull(txPoolInfo);
+  }
+
+  @Test
+  public void testGetRawTxPool() throws IOException {
+    RawTxPool rawTxPool = api.getRawTxPool();
+    Assertions.assertNotNull(rawTxPool);
+  }
+
+  @Test
+  public void testGetRawTxPoolVerbose() throws IOException {
+    RawTxPoolVerbose rawTxPoolVerbose = api.getRawTxPoolVerbose();
+    Assertions.assertNotNull(rawTxPoolVerbose);
+
+    for (Map.Entry<String, RawTxPoolVerbose.VerboseDetail> entry :
+        rawTxPoolVerbose.pending.entrySet()) {
+      Assertions.assertNotNull((entry.getValue()));
+    }
+
+    for (Map.Entry<String, RawTxPoolVerbose.VerboseDetail> entry :
+        rawTxPoolVerbose.proposed.entrySet()) {
+      Assertions.assertNotNull((entry.getValue()));
+    }
   }
 
   @Test

@@ -140,6 +140,15 @@ public class Api {
     return rpcService.post("clear_tx_pool", Collections.emptyList(), String.class);
   }
 
+  public RawTxPool getRawTxPool() throws IOException {
+    return rpcService.post("get_raw_tx_pool", Collections.emptyList(), RawTxPool.class);
+  }
+
+  public RawTxPoolVerbose getRawTxPoolVerbose() throws IOException {
+    return rpcService.post(
+        "get_raw_tx_pool", Collections.singletonList(true), RawTxPoolVerbose.class);
+  }
+
   public String sendTransaction(Transaction transaction) throws IOException {
     return rpcService.post(
         "send_transaction",
