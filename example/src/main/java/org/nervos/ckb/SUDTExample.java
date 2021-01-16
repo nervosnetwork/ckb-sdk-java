@@ -39,11 +39,11 @@ public class SUDTExample {
 
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
-  private static List<String> SendPrivateKeys =
+  private static final List<String> SendPrivateKeys =
       Collections.singletonList("08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2");
-  private static List<String> SendAddresses =
+  private static final List<String> SendAddresses =
       Collections.singletonList("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
-  private static List<String> ReceiveAddresses =
+  private static final List<String> ReceiveAddresses =
       Collections.singletonList("ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
   private static Script sudtType;
 
@@ -62,11 +62,11 @@ public class SUDTExample {
             + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
-    //        System.out.println("Issue SUDT tx hash: " + issue());
+    System.out.println("Issue SUDT tx hash: " + issue());
 
     // waiting transaction into block, sometimes you should wait more seconds
-    //        Thread.sleep(30000);
-    //
+    Thread.sleep(30000);
+
     System.out.println("Transfer SUDT tx hash: " + transfer());
   }
 
