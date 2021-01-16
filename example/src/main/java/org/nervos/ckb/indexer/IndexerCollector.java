@@ -7,6 +7,7 @@ import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
 import org.nervos.ckb.transaction.CollectResult;
+import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
@@ -34,6 +35,22 @@ public class IndexerCollector {
             feeRate,
             initialLength,
             new CellCkbIndexerIterator(indexerApi, addresses, true));
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses,
+      Transaction transaction,
+      BigInteger feeRate,
+      int initialLength,
+      Script type)
+      throws IOException {
+    return new CellCollector(api)
+        .collectInputs(
+            addresses,
+            transaction,
+            feeRate,
+            initialLength,
+            new CellCkbIndexerIterator(indexerApi, addresses, type));
   }
 
   public BigInteger getCapacity(String address) throws IOException {
