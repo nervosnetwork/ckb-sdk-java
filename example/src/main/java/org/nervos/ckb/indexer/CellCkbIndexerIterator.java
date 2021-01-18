@@ -26,6 +26,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   private final boolean skipDataAndType;
   private final String order;
   private final BigInteger limit;
+  private final Script type;
 
   CellCkbIndexerIterator(
       CkbIndexerApi indexerApi,
@@ -33,24 +34,30 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
       boolean skipDataAndType,
       String order,
       BigInteger limit,
-      String afterCursor) {
+      String afterCursor,
+      Script type) {
     this.indexerApi = indexerApi;
     this.addresses = addresses;
     this.skipDataAndType = skipDataAndType;
     this.afterCursor = afterCursor;
     this.order = order;
     this.limit = limit;
+    this.type = type;
 
     addressIndex = 0;
     inputIndex = 0;
   }
 
   CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses) {
-    this(api, addresses, true, "asc", BigInteger.valueOf(100), "0x");
+    this(api, addresses, true, "asc", BigInteger.valueOf(100), "0x", null);
   }
 
   CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses, boolean skipDataAndType) {
-    this(api, addresses, skipDataAndType, "asc", BigInteger.valueOf(100), "0x");
+    this(api, addresses, skipDataAndType, "asc", BigInteger.valueOf(100), "0x", null);
+  }
+
+  CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses, Script type) {
+    this(api, addresses, false, "asc", BigInteger.valueOf(100), "0x", type);
   }
 
   @Override
@@ -64,8 +71,15 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
       transactionInputs.clear();
       inputIndex = 0;
       do {
-        Script script = AddressParser.parse(addresses.get(addressIndex)).script;
-        transactionInputs = fetchTransactionInputsByLock(new SearchKey(script));
+        if (type != null) {
+          String address = addresses.get(addressIndex);
+          String lockHash = AddressParser.parse(address).script.computeHash();
+          transactionInputs = fetchTransactionInputsByType(lockHash, new SearchKey(type, "type"));
+        } else {
+          transactionInputs =
+              fetchTransactionInputsByLock(
+                  new SearchKey(AddressParser.parse(addresses.get(addressIndex)).script));
+        }
         if (transactionInputs == null || transactionInputs.size() == 0) {
           afterCursor = "0x";
           addressIndex++;
@@ -94,11 +108,43 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
             || cellOutput.type != null) {
           continue;
         }
+      } else if (liveCell.output.type != type) {
+        continue;
       }
       CellInput cellInput = new CellInput(liveCell.outPoint, "0x0");
       BigInteger capacity = Numeric.toBigInt(liveCell.output.capacity);
       transactionInputs.add(
           new TransactionInput(cellInput, capacity, searchKey.script.computeHash()));
+    }
+    if (liveCells.size() == 0) {
+      transactionInputs.clear();
+    }
+    return transactionInputs;
+  }
+
+  private List<TransactionInput> fetchTransactionInputsByType(
+      String lockHash, SearchKey searchKey) {
+    List<CkbIndexerCells.Cell> liveCells = new ArrayList<>();
+    try {
+      CkbIndexerCells response = indexerApi.getCells(searchKey, order, limit, afterCursor);
+      liveCells = response.objects;
+      afterCursor = response.lastCursor;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    for (CkbIndexerCells.Cell liveCell : liveCells) {
+      if (skipDataAndType) {
+        CellOutput cellOutput = liveCell.output;
+        if ((!Strings.isEmpty(liveCell.outputData) && !"0x".equals(liveCell.outputData))
+            || cellOutput.type != null) {
+          continue;
+        }
+      } else if (!liveCell.output.type.computeHash().equals(type.computeHash())) {
+        continue;
+      }
+      CellInput cellInput = new CellInput(liveCell.outPoint, "0x0");
+      BigInteger capacity = Numeric.toBigInt(liveCell.output.capacity);
+      transactionInputs.add(new TransactionInput(cellInput, capacity, lockHash));
     }
     if (liveCells.size() == 0) {
       transactionInputs.clear();
