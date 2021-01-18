@@ -138,7 +138,7 @@ public class SUDTExample {
     IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
     List<Receiver> receivers =
-        Collections.singletonList(new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(150)));
+        Collections.singletonList(new Receiver(ReceiveAddresses.get(0), Utils.ckbToShannon(142)));
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, SendAddresses.get(0));
     cellOutputs.get(0).type = sudtType;
     txBuilder.addOutputs(cellOutputs);
