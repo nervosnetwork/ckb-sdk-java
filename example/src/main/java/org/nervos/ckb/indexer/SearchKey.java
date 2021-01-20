@@ -1,6 +1,7 @@
 package org.nervos.ckb.indexer;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 import org.nervos.ckb.type.Script;
 
 public class SearchKey {
@@ -32,8 +33,33 @@ public class SearchKey {
   public static class Filter {
     public Script script;
 
+    @SerializedName("args_len")
+    public String argsLen;
+
+    @SerializedName("output_data_len_range")
+    public List<String> outputDataLenRange;
+
+    @SerializedName("output_capacity_range")
+    public List<String> outputCapacityRange;
+
+    @SerializedName("block_range")
+    public List<String> blockRange;
+
     public Filter(Script script) {
       this.script = script;
+    }
+
+    public Filter(
+        Script script,
+        String argsLen,
+        List<String> outputDataLenRange,
+        List<String> outputCapacityRange,
+        List<String> blockRange) {
+      this.script = script;
+      this.argsLen = argsLen;
+      this.outputDataLenRange = outputDataLenRange;
+      this.outputCapacityRange = outputCapacityRange;
+      this.blockRange = blockRange;
     }
   }
 }
