@@ -26,10 +26,11 @@ import org.nervos.ckb.utils.address.AddressGenerator;
 import org.nervos.ckb.utils.address.AddressParser;
 
 /** Copyright © 2021 Nervos Foundation. All rights reserved. */
+// ACP RFC:
+// https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0026-anyone-can-pay/0026-anyone-can-pay.md
 public class ACPTransactionExample {
   // ACP_CKB_MINIMUM is set to 9, which means in each transaction, one must at least transfers 10^9
-  // shannons,
-  // or 10 CKBytes into the anyone-can-pay cel
+  // shannons, or 10 CKBytes into the anyone-can-pay cel
   private static final String ACP_CKB_MINIMUM = "09";
 
   private static Api api;

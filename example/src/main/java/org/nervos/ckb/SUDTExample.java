@@ -24,6 +24,8 @@ import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressParser;
 
 /** Copyright © 2021 Nervos Foundation. All rights reserved. */
+// SUDT RFC:
+// https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0025-simple-udt/0025-simple-udt.md
 public class SUDTExample {
   private static final BigInteger SUDT_ISSUE_SUM_AMOUNT = new BigInteger("1000000000000");
   private static final BigInteger SUDT_TRANSFER_AMOUNT = new BigInteger("60000000000");
