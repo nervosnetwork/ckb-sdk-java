@@ -81,7 +81,6 @@ public class AddressUtils {
   public static String parse(String address) throws AddressFormatException {
     String payload = parsePrefix(address);
     String prefixCodeHash = payload.substring(TYPE.length());
-    System.out.println(payload);
     if (prefixCodeHash.startsWith(CODE_HASH_IDX_BLAKE160)) {
       return payload.substring((TYPE + CODE_HASH_IDX_BLAKE160).length());
     }
