@@ -4,8 +4,8 @@ import java.math.BigInteger;
 
 /** Copyright © 2021 Nervos Foundation. All rights reserved. */
 public class Const {
-  public static final String NODE_URL = "https://testnet.ckb.dev/rpc";
-  public static final String CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
+  public static final String NODE_URL = "http://localhost:8114";
+  public static final String CKB_INDEXER_URL = "http://localhost:8116";
 
   public static final BigInteger UnitCKB = new BigInteger("100000000");
   public static final BigInteger MIN_CKB = new BigInteger("6100000000");
