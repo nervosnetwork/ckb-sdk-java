@@ -30,8 +30,9 @@ import org.nervos.ckb.utils.address.AddressParser;
 // https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0026-anyone-can-pay/0026-anyone-can-pay.md
 public class ACPTransactionExample {
   // ACP_CKB_MINIMUM is set to 9, which means in each transaction, one must at least transfers 10^9
-  // shannons, or 10 CKBytes into the anyone-can-pay cel
+  // shannons, or 10 CKBytes into the anyone-can-pay cell
   private static final String ACP_CKB_MINIMUM = "09";
+  private static final String ACP_SUDT_MINIMUM = "00";
 
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
@@ -50,7 +51,7 @@ public class ACPTransactionExample {
 
     Script receiverScript = AddressParser.parse(ReceiveAddresses.get(0)).script;
     receiverScript.codeHash = ACP_CODE_HASH;
-    receiverScript.args = receiverScript.args + ACP_CKB_MINIMUM;
+    receiverScript.args = receiverScript.args + ACP_CKB_MINIMUM + ACP_SUDT_MINIMUM;
     receiverAcpAddress = AddressGenerator.generate(Network.TESTNET, receiverScript);
   }
 
@@ -65,7 +66,7 @@ public class ACPTransactionExample {
 
     // waiting transaction into block, sometimes you should wait more seconds
     Thread.sleep(30000);
-    System.out.println("Transfer SUDT tx hash: " + transfer(new OutPoint(acpHash, "0x0")));
+    System.out.println("Transfer acp tx hash: " + transfer(new OutPoint(acpHash, "0x0")));
   }
 
   private static BigInteger getBalance(String address) throws IOException {
@@ -83,7 +84,7 @@ public class ACPTransactionExample {
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, SendAddresses.get(0));
     txBuilder.addOutputs(cellOutputs);
 
-    txBuilder.setOutputsData(Arrays.asList("0x", "0x"));
+    txBuilder.setOutputsData(Collections.singletonList("0x"));
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, "0x0"), CellDep.DEP_GROUP));
 
     // You can get fee rate by rpc or set a simple number
@@ -98,6 +99,7 @@ public class ACPTransactionExample {
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
+      txBuilder.setOutputsData(Arrays.asList("0x", "0x"));
     }
 
     int startIndex = 0;
@@ -137,6 +139,7 @@ public class ACPTransactionExample {
         Collections.singletonList(new Receiver(receiverAcpAddress, Utils.ckbToShannon(210)));
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, SendAddresses.get(0));
     txBuilder.addOutputs(cellOutputs);
+    txBuilder.setOutputsData(Collections.singletonList("0x"));
 
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, "0x0"), CellDep.DEP_GROUP));
 
@@ -152,9 +155,8 @@ public class ACPTransactionExample {
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
+      txBuilder.setOutputsData(Arrays.asList("0x", "0x"));
     }
-
-    txBuilder.setOutputsData(Arrays.asList("0x", "0x"));
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
