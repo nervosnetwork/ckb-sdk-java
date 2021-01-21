@@ -1,5 +1,7 @@
 package org.nervos.ckb;
 
+import static org.nervos.ckb.utils.Const.*;
+
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -9,8 +11,6 @@ import org.nervos.ckb.type.BlockchainInfo;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class RpcExample {
-
-  private static final String NODE_URL = "http://localhost:8114";
 
   private static Api api;
 

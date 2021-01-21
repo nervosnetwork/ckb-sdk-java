@@ -48,10 +48,6 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
     inputIndex = 0;
   }
 
-  CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses) {
-    this(api, addresses, true, "asc", BigInteger.valueOf(100), "0x", null);
-  }
-
   CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses, boolean skipDataAndType) {
     this(api, addresses, skipDataAndType, "asc", BigInteger.valueOf(100), "0x", null);
   }
@@ -73,8 +69,11 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
       do {
         if (type != null) {
           String address = addresses.get(addressIndex);
-          String lockHash = AddressParser.parse(address).script.computeHash();
-          transactionInputs = fetchTransactionInputsByType(lockHash, new SearchKey(type, "type"));
+          Script lock = AddressParser.parse(address).script;
+          String lockHash = lock.computeHash();
+          transactionInputs =
+              fetchTransactionInputsByType(
+                  lockHash, new SearchKey(lock, "lock", new SearchKey.Filter(type)));
         } else {
           transactionInputs =
               fetchTransactionInputsByLock(
@@ -108,7 +107,8 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
             || cellOutput.type != null) {
           continue;
         }
-      } else if (liveCell.output.type != type) {
+      } else if (liveCell.output.type == null
+          || !liveCell.output.type.computeHash().equals(type.computeHash())) {
         continue;
       }
       CellInput cellInput = new CellInput(liveCell.outPoint, "0x0");
@@ -139,7 +139,8 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
             || cellOutput.type != null) {
           continue;
         }
-      } else if (!liveCell.output.type.computeHash().equals(type.computeHash())) {
+      } else if (liveCell.output.type == null
+          || !liveCell.output.type.computeHash().equals(type.computeHash())) {
         continue;
       }
       CellInput cellInput = new CellInput(liveCell.outPoint, "0x0");

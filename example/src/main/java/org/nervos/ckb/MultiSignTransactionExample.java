@@ -1,5 +1,7 @@
 package org.nervos.ckb;
 
+import static org.nervos.ckb.utils.Const.*;
+
 import com.google.common.primitives.Bytes;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -26,9 +28,6 @@ import org.nervos.ckb.utils.address.AddressGenerator;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class MultiSignTransactionExample {
 
-  private static final String NODE_URL = "http://localhost:8114";
-  private static final String CKB_INDEXER_URL = "http://localhost:8116";
-  private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
   private static List<String> privateKeys;
