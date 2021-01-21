@@ -5,7 +5,6 @@ import static org.nervos.ckb.utils.Const.*;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.address.Network;
@@ -84,7 +83,6 @@ public class ACPTransactionExample {
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, SendAddresses.get(0));
     txBuilder.addOutputs(cellOutputs);
 
-    txBuilder.setOutputsData(Collections.singletonList("0x"));
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, "0x0"), CellDep.DEP_GROUP));
 
     // You can get fee rate by rpc or set a simple number
@@ -99,7 +97,6 @@ public class ACPTransactionExample {
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
-      txBuilder.setOutputsData(Arrays.asList("0x", "0x"));
     }
 
     int startIndex = 0;
@@ -139,7 +136,6 @@ public class ACPTransactionExample {
         Collections.singletonList(new Receiver(receiverAcpAddress, Utils.ckbToShannon(210)));
     List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, SendAddresses.get(0));
     txBuilder.addOutputs(cellOutputs);
-    txBuilder.setOutputsData(Collections.singletonList("0x"));
 
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, "0x0"), CellDep.DEP_GROUP));
 
@@ -155,7 +151,6 @@ public class ACPTransactionExample {
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
-      txBuilder.setOutputsData(Arrays.asList("0x", "0x"));
     }
 
     int startIndex = 0;
