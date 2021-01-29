@@ -159,6 +159,13 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
 >
 [SUDTExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SUDTExample.java) provides `issue` and `transfer` methods to issue Simple UDT and transfer Simple UDT to other address.
 
+#### ACP Create and Transfer
+
+> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
+> And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
+>
+[ACPTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/ACPTransactionExample.java) provides `create` and `transfer` methods to create an ACP cell with SUDT and transfer CKB and SUDT to the ACP address.
+
 #### Address
 
 You can generate ckb address through this SDK as below:
