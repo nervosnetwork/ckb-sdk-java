@@ -110,7 +110,7 @@ public class Serializer {
   }
 
   public static Dynamic<Type> serializeWitnesses(List witnesses) {
-    List witnessList = new ArrayList<>();
+    List<Type> witnessList = new ArrayList<>();
     for (Object witness : witnesses) {
       if (witness.getClass() == Witness.class) {
         witnessList.add(new Bytes(serializeWitnessArgs((Witness) witness).toBytes()));
@@ -118,7 +118,7 @@ public class Serializer {
         witnessList.add(new Bytes((String) witness));
       }
     }
-    return new Dynamic<Type>(witnessList);
+    return new Dynamic<>(witnessList);
   }
 
   public static Table serializeRawTransaction(Transaction transaction) {
