@@ -95,17 +95,25 @@ public class Serializer {
 
   public static Table serializeWitnessArgs(Witness witness) {
     return new Table(
-        new Option(Strings.isEmpty(witness.lock) ? new Empty() : new Bytes(witness.lock)),
-        new Option(Strings.isEmpty(witness.inputType) ? new Empty() : new Bytes(witness.inputType)),
         new Option(
-            Strings.isEmpty(witness.outputType) ? new Empty() : new Bytes(witness.outputType)));
+            Strings.isEmpty(witness.lock) || "0x".equals(witness.lock)
+                ? new Empty()
+                : new Bytes(witness.lock)),
+        new Option(
+            Strings.isEmpty(witness.inputType) || "0x".equals(witness.inputType)
+                ? new Empty()
+                : new Bytes(witness.inputType)),
+        new Option(
+            Strings.isEmpty(witness.outputType) || "0x".equals(witness.outputType)
+                ? new Empty()
+                : new Bytes(witness.outputType)));
   }
 
   public static Dynamic<Type> serializeWitnesses(List witnesses) {
     List witnessList = new ArrayList<>();
     for (Object witness : witnesses) {
       if (witness.getClass() == Witness.class) {
-        witnessList.add(serializeWitnessArgs((Witness) witness));
+        witnessList.add(new Bytes(serializeWitnessArgs((Witness) witness).toBytes()));
       } else {
         witnessList.add(new Bytes((String) witness));
       }
