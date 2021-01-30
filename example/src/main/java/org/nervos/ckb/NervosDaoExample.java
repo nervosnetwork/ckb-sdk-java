@@ -1,5 +1,7 @@
 package org.nervos.ckb;
 
+import static org.nervos.ckb.utils.Const.*;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -30,12 +32,9 @@ import org.nervos.ckb.utils.Utils;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NervosDaoExample {
   private static final String NERVOS_DAO_DATA = "0x0000000000000000";
-  private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static final int DAO_LOCK_PERIOD_EPOCHS = 180;
   private static final int DAO_MATURITY_BLOCKS = 5;
 
-  private static final String NODE_URL = "http://localhost:8114";
-  private static final String CKB_INDEXER_URL = "http://localhost:8116";
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
   private static String DaoTestPrivateKey =

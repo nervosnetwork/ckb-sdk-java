@@ -1,5 +1,7 @@
 package org.nervos.ckb;
 
+import static org.nervos.ckb.utils.Const.*;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -16,9 +18,6 @@ import org.nervos.ckb.utils.Utils;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SendToMultiSigAddressTxExample {
 
-  private static final String NODE_URL = "http://localhost:8114";
-  private static final String CKB_INDEXER_URL = "http://localhost:8116";
-  private static final BigInteger UnitCKB = new BigInteger("100000000");
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
   private static String MultiSigAddress = "ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq";

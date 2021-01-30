@@ -1,6 +1,7 @@
 package org.nervos.ckb.type;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
+// The Witness class here corresponds to the WitnessArgs of CKB
 public class Witness {
 
   public static final String SIGNATURE_PLACEHOLDER =

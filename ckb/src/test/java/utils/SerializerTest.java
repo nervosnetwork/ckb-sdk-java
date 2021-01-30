@@ -125,6 +125,45 @@ public class SerializerTest {
   }
 
   @Test
+  public void testSerializeWitnessArgs() {
+    Assertions.assertArrayEquals(
+        Serializer.serializeWitnessArgs(new Witness("", "0x", "")).toBytes(),
+        Numeric.hexStringToByteArray("0x10000000100000001000000010000000"));
+
+    Assertions.assertArrayEquals(
+        Serializer.serializeWitnessArgs(new Witness("", "0x10", "0x20")).toBytes(),
+        Numeric.hexStringToByteArray("0x1a00000010000000100000001500000001000000100100000020"));
+
+    Assertions.assertArrayEquals(
+        Serializer.serializeWitnessArgs(
+                new Witness(
+                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                    "",
+                    ""))
+            .toBytes(),
+        Numeric.hexStringToByteArray(
+            "55000000100000005500000055000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"));
+  }
+
+  @Test
+  public void testSerializeWitnesses() {
+    Assertions.assertArrayEquals(
+        Serializer.serializeWitnesses(Collections.emptyList()).toBytes(),
+        Numeric.hexStringToByteArray("0x04000000"));
+
+    Assertions.assertArrayEquals(
+        Serializer.serializeWitnesses(Arrays.asList("0x10", "0x01")).toBytes(),
+        Numeric.hexStringToByteArray("0x160000000c0000001100000001000000100100000001"));
+
+    Assertions.assertArrayEquals(
+        Serializer.serializeWitnesses(
+                Collections.singletonList("0x3954acece65096bfa81258983ddb83915fc56bd8"))
+            .toBytes(),
+        Numeric.hexStringToByteArray(
+            "0x2000000008000000140000003954acece65096bfa81258983ddb83915fc56bd8"));
+  }
+
+  @Test
   public void testSerializeBytes() {
     Assertions.assertArrayEquals(
         Serializer.serializeBytes(tx.outputsData).toBytes(),

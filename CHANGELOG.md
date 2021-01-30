@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.39.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.39.0...v0.39.1) (2021-01-30)
+
+### Feature
+
+ *  Add sudt example with ckb-indexer([176bfa1](https://github.com/nervosnetwork/ckb-sdk-java/commit/176bfa13855925b9c140d88cbf061aa31b1e650c))
+ *  Add acp example with ckb-indexer([c4a2502](https://github.com/nervosnetwork/ckb-sdk-java/commit/c4a2502e2233906edaeaa0554a0de29600c8c6ca))
+ 
+ ### Bugfix
+ 
+ *  Fix WitnessArgs serialization size([bb73a39](https://github.com/nervosnetwork/ckb-sdk-java/commit/bb73a3947ad1ce3822845cdba8cd7b681397d8b2))
+
 # [v0.39.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.38.1...v0.39.0) (2021-01-12)
 
 ### Feature
