@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellTransaction;
 import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.cell.LiveCell;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
@@ -52,6 +50,7 @@ public class Api {
         String.class);
   }
 
+  @Deprecated
   public CellbaseOutputCapacity getCellbaseOutputCapacityDetails(String blockHash)
       throws IOException {
     return rpcService.post(
@@ -246,64 +245,6 @@ public class Api {
       throws IOException {
     return rpcService.post(
         "calculate_dao_maximum_withdraw", Arrays.asList(outPoint, withdrawBlockHash), String.class);
-  }
-
-  /* Indexer RPC */
-
-  @Deprecated
-  public LockHashIndexState indexLockHash(String lockHash) throws IOException {
-    return rpcService.post(
-        "index_lock_hash", Collections.singletonList(lockHash), LockHashIndexState.class);
-  }
-
-  @Deprecated
-  public LockHashIndexState indexLockHash(String lockHash, String indexFrom) throws IOException {
-    return rpcService.post(
-        "index_lock_hash",
-        Arrays.asList(lockHash, Numeric.toHexString(indexFrom)),
-        LockHashIndexState.class);
-  }
-
-  @Deprecated
-  public List<String> deindexLockHash(String lockHash) throws IOException {
-    return rpcService.post(
-        "deindex_lock_hash",
-        Collections.singletonList(lockHash),
-        new TypeToken<List<String>>() {}.getType());
-  }
-
-  @Deprecated
-  public List<LockHashIndexState> getLockHashIndexStates() throws IOException {
-    return rpcService.post(
-        "get_lock_hash_index_states",
-        Collections.emptyList(),
-        new TypeToken<List<LockHashIndexState>>() {}.getRawType());
-  }
-
-  @Deprecated
-  public List<LiveCell> getLiveCellsByLockHash(
-      String lockHash, String page, String pageSize, boolean reverseOrder) throws IOException {
-    return rpcService.post(
-        "get_live_cells_by_lock_hash",
-        Arrays.asList(
-            lockHash, Numeric.toHexString(page), Numeric.toHexString(pageSize), reverseOrder),
-        new TypeToken<List<LiveCell>>() {}.getType());
-  }
-
-  @Deprecated
-  public List<CellTransaction> getTransactionsByLockHash(
-      String lockHash, String page, String pageSize, boolean reverseOrder) throws IOException {
-    return rpcService.post(
-        "get_transactions_by_lock_hash",
-        Arrays.asList(
-            lockHash, Numeric.toHexString(page), Numeric.toHexString(pageSize), reverseOrder),
-        new TypeToken<List<CellTransaction>>() {}.getType());
-  }
-
-  @Deprecated
-  public LockHashCapacity getCapacityByLockHash(String lockHash) throws IOException {
-    return rpcService.post(
-        "get_capacity_by_lock_hash", Collections.singletonList(lockHash), LockHashCapacity.class);
   }
 
   /**
