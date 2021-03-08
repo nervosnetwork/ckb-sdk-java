@@ -12,9 +12,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellTransaction;
 import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.cell.LiveCell;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 
@@ -375,68 +373,6 @@ public class ApiTest {
                 Collections.emptyList(),
                 Collections.emptyList()));
     Assertions.assertNotNull(transactionHash);
-  }
-
-  @Test
-  public void testIndexLockHash() throws IOException {
-    LockHashIndexState lockHashIndexState =
-        api.indexLockHash("0x59d90b1718471f5802de59501604100a5e3b463865cdfe56fa70ed23865ee32e");
-    Assertions.assertNotNull(lockHashIndexState);
-  }
-
-  @Test
-  public void testIndexLockHashWithBlockNumber() throws IOException {
-    LockHashIndexState lockHashIndexState =
-        api.indexLockHash(
-            "0x59d90b1718471f5802de59501604100a5e3b463865cdfe56fa70ed23865ee32e", "0");
-    Assertions.assertNotNull(lockHashIndexState);
-  }
-
-  @Test
-  public void testDeindexLockHash() throws IOException {
-    List<String> lockHashs =
-        api.deindexLockHash("0x59d90b1718471f5802de59501604100a5e3b463865cdfe56fa70ed23865ee32e");
-    Assertions.assertNull(lockHashs);
-  }
-
-  @Test
-  public void testGetLockHashIndexStates() throws IOException {
-    List<LockHashIndexState> lockHashIndexStates = api.getLockHashIndexStates();
-    Assertions.assertNotNull(lockHashIndexStates);
-  }
-
-  @Test
-  public void testGetLiveCellsByLockHash() throws IOException {
-    List<LiveCell> liveCells =
-        api.getLiveCellsByLockHash(
-            "0xecaeea8c8581d08a3b52980272001dbf203bc6fa2afcabe7cc90cc2afff488ba",
-            "0",
-            "100",
-            false);
-    Assertions.assertNotNull(liveCells);
-  }
-
-  @Test
-  public void testGetTransactionsByLockHash() throws IOException {
-    List<CellTransaction> cellTransactions =
-        api.getTransactionsByLockHash(
-            "0xecaeea8c8581d08a3b52980272001dbf203bc6fa2afcabe7cc90cc2afff488ba",
-            "0",
-            "100",
-            false);
-    Assertions.assertNotNull(cellTransactions);
-  }
-
-  @Test
-  public void testGetCapacityByLockHash() throws Exception {
-    // Call index_lock_hash rpc before calling get_capacity_by_lock_hash and wait some time
-    // api.indexLockHash("0x1f2615a8dde4e28ca736ff763c2078aff990043f4cbf09eb4b3a58a140a0862d");
-    LockHashCapacity lockHashCapacity =
-        api.getCapacityByLockHash(
-            "0x1f2615a8dde4e28ca736ff763c2078aff990043f4cbf09eb4b3a58a140a0862d");
-    Assertions.assertNotNull(lockHashCapacity);
-    Assertions.assertNotNull(lockHashCapacity.capacity);
-    Assertions.assertNotNull(lockHashCapacity.cellsCount);
   }
 
   @Test
