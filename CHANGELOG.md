@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.40.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.39.1...v0.40.0) (2021-03-08)
+
+### Feature
+
+ *  Remove indexer module rpc and disable get_cellbase_output_capacity_details rpc([0872f27](https://github.com/nervosnetwork/ckb-sdk-java/commit/0872f279692aac96006474903fe088f9fbeda2b7))
+ 
+ ### BreakingChanges
+ 
+ * Remove indexer module rpc
+ * Add @Deprecated to get_cellbase_output_capacity_details rpc
+
 # [v0.39.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.39.0...v0.39.1) (2021-01-30)
 
 ### Feature
