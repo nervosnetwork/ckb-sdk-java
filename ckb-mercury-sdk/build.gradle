@@ -1,0 +1,16 @@
+description 'SDK for CKB mercury'
+
+dependencies {
+    compile project(":ckb")
+    compile "com.google.code.gson:gson:$gsonVersion"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
+
+apply from: rootProject.file('gradle/checkstyle.gradle')
+
+
+test {
+    useJUnitPlatform()
+}
