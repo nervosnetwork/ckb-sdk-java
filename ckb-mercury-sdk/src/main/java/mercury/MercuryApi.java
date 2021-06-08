@@ -2,14 +2,14 @@ package mercury;
 
 import model.CreateWalletPayload;
 import model.TransferPayload;
+import model.resp.GetBalanceResponse;
 import model.resp.TransferCompletionResponse;
 
 import java.io.IOException;
 
 public interface MercuryApi {
-    String getCkbBalance(String address) throws IOException;
-    String getSudtBalance(String sudtHash, String address) throws IOException;
-//    String getXudtBalance(String sudtHash, String address);
+
+    GetBalanceResponse getBalance(String sudtHash, String address) throws IOException;
 
     TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException;
 

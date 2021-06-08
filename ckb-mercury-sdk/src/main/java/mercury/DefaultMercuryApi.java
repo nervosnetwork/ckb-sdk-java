@@ -1,8 +1,10 @@
 package mercury;
 
 import com.google.gson.Gson;
+import model.Action;
 import model.CreateWalletPayload;
 import model.TransferPayload;
+import model.resp.GetBalanceResponse;
 import model.resp.TransferCompletionResponse;
 import org.nervos.ckb.service.RpcService;
 
@@ -20,17 +22,17 @@ public class DefaultMercuryApi implements MercuryApi {
     }
 
     @Override
-    public String getCkbBalance(String address) throws IOException {
-        return this.rpcService.post(RpcMethods.GET_CKB_BALANCE, Arrays.asList(address), String.class);
-    }
-
-    @Override
-    public String getSudtBalance(String sudtHash, String address) throws IOException {
-        return this.rpcService.post(RpcMethods.GET_SUDT_BALANCE, Arrays.asList(sudtHash, address), String.class);
+    public GetBalanceResponse getBalance(String sudtHash, String address) throws IOException {
+        return this.rpcService.post(RpcMethods.GET_BALANCE, Arrays.asList(sudtHash, address), GetBalanceResponse.class);
     }
 
     @Override
     public TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException {
+        boolean b = payload.getItems().stream().anyMatch(item -> !item.getTo().getAction().equals(Action.pay_by_from));
+        if(payload.getItems().stream().anyMatch(item -> !item.getTo().getAction().equals(Action.pay_by_from))
+                && (payload.getUdt_hash() == null || payload.getUdt_hash() == "")) {
+            throw new RuntimeException("The transaction does not support ckb");
+        }
         return this.rpcService.post(RpcMethods.TRANSFER_COMPLETION, Arrays.asList(payload), TransferCompletionResponse.class);
     }
 
@@ -39,8 +41,4 @@ public class DefaultMercuryApi implements MercuryApi {
         return this.rpcService.post(RpcMethods.CREATE_WALLET, Arrays.asList(payload), TransferCompletionResponse.class);
     }
 
-//    @Override
-//    public String getXudtBalance(String sudtHash, String address) {
-//        return null;
-//    }
 }
