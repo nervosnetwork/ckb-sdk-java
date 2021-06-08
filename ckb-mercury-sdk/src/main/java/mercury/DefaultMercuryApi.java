@@ -1,6 +1,7 @@
 package mercury;
 
 import com.google.gson.Gson;
+import model.CreateWalletPayload;
 import model.TransferPayload;
 import model.resp.TransferCompletionResponse;
 import org.nervos.ckb.service.RpcService;
@@ -31,6 +32,11 @@ public class DefaultMercuryApi implements MercuryApi {
     @Override
     public TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException {
         return this.rpcService.post(RpcMethods.TRANSFER_COMPLETION, Arrays.asList(payload), TransferCompletionResponse.class);
+    }
+
+    @Override
+    public TransferCompletionResponse createWallet(CreateWalletPayload payload) throws IOException {
+        return this.rpcService.post(RpcMethods.CREATE_WALLET, Arrays.asList(payload), TransferCompletionResponse.class);
     }
 
 //    @Override

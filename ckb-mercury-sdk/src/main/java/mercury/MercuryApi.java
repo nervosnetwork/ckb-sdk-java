@@ -1,5 +1,6 @@
 package mercury;
 
+import model.CreateWalletPayload;
 import model.TransferPayload;
 import model.resp.TransferCompletionResponse;
 
@@ -11,4 +12,8 @@ public interface MercuryApi {
 //    String getXudtBalance(String sudtHash, String address);
 
     TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException;
+
+    TransferCompletionResponse createWallet(CreateWalletPayload payload) throws IOException;
+
+
 }
