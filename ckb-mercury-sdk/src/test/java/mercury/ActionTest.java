@@ -154,6 +154,9 @@ public class ActionTest {
   private Transaction sign(TransferCompletionResponse s) throws IOException {
     List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
+
+    scriptGroups.get(0).inputIndexes = Arrays.asList(0, 1);
+
     for (MercuryScriptGroup sg : scriptGroups) {
       signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
     }

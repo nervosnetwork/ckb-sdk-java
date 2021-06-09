@@ -26,10 +26,7 @@ public class CreateWalletTest {
     builder.fee(new BigInteger("400"));
     builder.ident(AddressWithKeyHolder.testAddress4());
     builder.addWalletInfo(
-        new WalletInfo(
-            "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd",
-            new BigInteger("100"),
-            new BigInteger("100")));
+        new WalletInfo("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd", 100));
 
     try {
       TransferCompletionResponse s =
