@@ -89,10 +89,10 @@ public class TransferCompletioTest {
     private void sendTx(TransferPayloadBuilder builder) throws IOException {
         TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
         List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
-        Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.getTx_view());
+        Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
 
         for (MercuryScriptGroup sg : scriptGroups) {
-            signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.getPubKey()));
+            signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
         }
 
         Transaction tx = signBuilder.buildTx();

@@ -1,12 +1,12 @@
 package model.resp;
 
-import lombok.Data;
+import com.google.gson.annotations.SerializedName;
 
-import java.math.BigInteger;
 
-@Data
 public class GetBalanceResponse {
-    private String owned;
-    private String claimable;
-    private String in_lock;
+    public String owned;
+    public String claimable;
+
+    @SerializedName("in_lock")
+    private String inLock;
 }

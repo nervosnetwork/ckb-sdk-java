@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public interface MercuryApi {
 
-    GetBalanceResponse getBalance(String sudtHash, String address) throws IOException;
+    GetBalanceResponse getBalance(String udtHash, String address) throws IOException;
 
     TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException;
 

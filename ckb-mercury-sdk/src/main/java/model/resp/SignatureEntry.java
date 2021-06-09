@@ -1,11 +1,15 @@
 package model.resp;
 
-import lombok.Data;
+import com.google.gson.annotations.SerializedName;
 
-@Data
 public class SignatureEntry {
-    private String type;
-    private Integer index;
-    private String pub_key;
-    private Byte[] message;
+
+    public String type;
+
+    public Integer index;
+
+    @SerializedName("pub_key")
+    public String pubKey;
+
+    public Byte[] message;
 }

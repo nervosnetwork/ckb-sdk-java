@@ -1,18 +1,23 @@
 package model;
 
-import lombok.Data;
+import com.google.gson.annotations.SerializedName;
 
 import java.math.BigInteger;
 
-@Data
 public class WalletInfo {
-    private String udt_hash;
-    private BigInteger min_ckb;
-    private BigInteger min_udt;
 
-    public WalletInfo(String udt_hash, BigInteger min_ckb, BigInteger min_udt) {
-        this.udt_hash = udt_hash;
-        this.min_ckb = min_ckb;
-        this.min_udt = min_udt;
+    @SerializedName("udt_hash")
+    public String udtHash;
+
+    @SerializedName("min_ckb")
+    public BigInteger minCkb;
+
+    @SerializedName("min_udt")
+    public BigInteger minUdt;
+
+    public WalletInfo(String udtHash, BigInteger minCkb, BigInteger minUdt) {
+        this.udtHash = udtHash;
+        this.minCkb = minCkb;
+        this.minUdt = minUdt;
     }
 }

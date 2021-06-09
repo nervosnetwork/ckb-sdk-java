@@ -22,15 +22,14 @@ public class DefaultMercuryApi implements MercuryApi {
     }
 
     @Override
-    public GetBalanceResponse getBalance(String sudtHash, String address) throws IOException {
-        return this.rpcService.post(RpcMethods.GET_BALANCE, Arrays.asList(sudtHash, address), GetBalanceResponse.class);
+    public GetBalanceResponse getBalance(String udtHash, String address) throws IOException {
+        return this.rpcService.post(RpcMethods.GET_BALANCE, Arrays.asList(udtHash, address), GetBalanceResponse.class);
     }
 
     @Override
     public TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException {
-        boolean b = payload.getItems().stream().anyMatch(item -> !item.getTo().getAction().equals(Action.pay_by_from));
-        if(payload.getItems().stream().anyMatch(item -> !item.getTo().getAction().equals(Action.pay_by_from))
-                && (payload.getUdt_hash() == null || payload.getUdt_hash() == "")) {
+        if(payload.items.stream().anyMatch(item -> !item.to.action.equals(Action.pay_by_from))
+                && (payload.udtHash == null || payload.udtHash == "")) {
             throw new RuntimeException("The transaction does not support ckb");
         }
         return this.rpcService.post(RpcMethods.TRANSFER_COMPLETION, Arrays.asList(payload), TransferCompletionResponse.class);

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TransferPayloadBuilder {
 
-    private String udt_hash;
+    private String udtHash;
     private FromAccount from;
     private List<TransferItem> items = new ArrayList<>(8);
     private String change;
@@ -17,7 +17,7 @@ public class TransferPayloadBuilder {
     }
 
     public void addUdtHash(String udtHash) {
-        this.udt_hash = udtHash;
+        this.udtHash = udtHash;
     }
 
     public void addItem(ToAccount to, BigInteger amount) {
@@ -33,12 +33,10 @@ public class TransferPayloadBuilder {
     }
 
     public TransferPayload build() {
-//        assert (!(this.udt_hash == null) || !(this.udt_hash == "")) : "udtHash not empty";
         assert !(this.from == null) : "from not null";
         assert !(this.items.size() <= 0) : "items not empty";
-//        assert !(Integer.parseInt(this.fee) < 0) : "fee cannot be less than 0";
 
-        TransferPayload payload = new TransferPayload(this.udt_hash, this.from, this.items, this.change, this.fee);
+        TransferPayload payload = new TransferPayload(this.udtHash, this.from, this.items, this.change, this.fee);
         return payload;
 
     }

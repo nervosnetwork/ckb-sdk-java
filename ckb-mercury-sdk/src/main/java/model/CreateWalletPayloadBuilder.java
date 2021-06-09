@@ -6,9 +6,9 @@ import java.util.List;
 
 public class CreateWalletPayloadBuilder {
 
-    private String address;
-    private List<WalletInfo> info = new ArrayList<>(2);
-    private BigInteger fee;
+    public String address;
+    public List<WalletInfo> info = new ArrayList<>(2);
+    public BigInteger fee;
 
     public void address(String address) {
         this.address = address;
