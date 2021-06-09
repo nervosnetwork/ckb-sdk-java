@@ -6,25 +6,25 @@ import java.util.List;
 
 public class CreateWalletPayloadBuilder {
 
-    public String address;
-    public List<WalletInfo> info = new ArrayList<>(2);
-    public BigInteger fee;
+  public String ident;
 
-    public void address(String address) {
-        this.address = address;
-    }
+  public List<WalletInfo> info = new ArrayList<>(2);
 
-    public void addWalletInfo(WalletInfo info) {
-        this.info.add(info);
-    }
+  public BigInteger fee;
 
-    public void fee(BigInteger fee) {
-        this.fee = fee;
-    }
+  public void ident(String ident) {
+    this.ident = ident;
+  }
 
-    public CreateWalletPayload build() {
-        return new CreateWalletPayload(address, info, fee);
-    }
+  public void addWalletInfo(WalletInfo info) {
+    this.info.add(info);
+  }
 
+  public void fee(BigInteger fee) {
+    this.fee = fee;
+  }
 
+  public CreateWalletPayload build() {
+    return new CreateWalletPayload(ident, info, fee);
+  }
 }

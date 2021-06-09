@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class SignatureEntry {
 
-    public String type;
+  public String type;
 
-    public Integer index;
+  public Integer index;
 
-    @SerializedName("pub_key")
-    public String pubKey;
+  @SerializedName("pub_key")
+  public String pubKey;
 
-    public Byte[] message;
+  public Byte[] message;
 }

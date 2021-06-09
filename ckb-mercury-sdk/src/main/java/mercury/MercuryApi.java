@@ -9,11 +9,9 @@ import java.io.IOException;
 
 public interface MercuryApi {
 
-    GetBalanceResponse getBalance(String udtHash, String address) throws IOException;
+  GetBalanceResponse getBalance(String udtHash, String ident) throws IOException;
 
-    TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException;
+  TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException;
 
-    TransferCompletionResponse createWallet(CreateWalletPayload payload) throws IOException;
-
-
+  TransferCompletionResponse createWallet(CreateWalletPayload payload) throws IOException;
 }

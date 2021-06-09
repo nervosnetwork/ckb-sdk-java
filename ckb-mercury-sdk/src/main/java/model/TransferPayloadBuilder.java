@@ -6,38 +6,42 @@ import java.util.List;
 
 public class TransferPayloadBuilder {
 
-    private String udtHash;
-    private FromAccount from;
-    private List<TransferItem> items = new ArrayList<>(8);
-    private String change;
-    private BigInteger fee;
+  private String udtHash;
 
-    public void addFrom(FromAccount from) {
-        this.from = from;
-    }
+  private FromAccount from;
 
-    public void addUdtHash(String udtHash) {
-        this.udtHash = udtHash;
-    }
+  private List<TransferItem> items = new ArrayList<>(8);
 
-    public void addItem(ToAccount to, BigInteger amount) {
-        this.items.add(new TransferItem(to, amount));
-    }
+  private String change;
 
-    public void addChange(String change) {
-        this.change = change;
-    }
+  private BigInteger fee;
 
-    public void addFee(BigInteger fee) {
-        this.fee = fee;
-    }
+  public void from(FromAccount from) {
+    this.from = from;
+  }
 
-    public TransferPayload build() {
-        assert !(this.from == null) : "from not null";
-        assert !(this.items.size() <= 0) : "items not empty";
+  public void udtHash(String udtHash) {
+    this.udtHash = udtHash;
+  }
 
-        TransferPayload payload = new TransferPayload(this.udtHash, this.from, this.items, this.change, this.fee);
-        return payload;
+  public void addItem(ToAccount to, BigInteger amount) {
+    this.items.add(new TransferItem(to, amount));
+  }
 
-    }
+  public void change(String change) {
+    this.change = change;
+  }
+
+  public void fee(BigInteger fee) {
+    this.fee = fee;
+  }
+
+  public TransferPayload build() {
+    assert !(this.from == null) : "from not null";
+    assert !(this.items.size() <= 0) : "items not empty";
+
+    TransferPayload payload =
+        new TransferPayload(this.udtHash, this.from, this.items, this.change, this.fee);
+    return payload;
+  }
 }

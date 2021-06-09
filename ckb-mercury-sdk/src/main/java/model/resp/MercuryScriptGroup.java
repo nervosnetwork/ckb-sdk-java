@@ -6,12 +6,10 @@ import java.util.List;
 
 public class MercuryScriptGroup extends ScriptGroup {
 
-    public String pubKey;
+  public String pubKey;
 
-    public MercuryScriptGroup(String pubKey, List<Integer> inputIndexes) {
-        super(inputIndexes);
-        this.pubKey = pubKey;
-
-    }
-
+  public MercuryScriptGroup(String pubKey, List<Integer> inputIndexes) {
+    super(inputIndexes);
+    this.pubKey = pubKey;
+  }
 }

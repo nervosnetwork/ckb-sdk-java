@@ -18,89 +18,104 @@ import java.util.List;
 
 public class TransferCompletioTest {
 
-    Gson g = new Gson();
+  Gson g = new Gson();
 
-    @Test
-    void SingleFromSingleTo() {
-        TransferPayloadBuilder builder = new TransferPayloadBuilder();
-        builder.addFrom(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.owned));
-        builder.addItem(new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from), new BigInteger("100"));
-        builder.addFee(new BigInteger("464"));
+  @Test
+  void SingleFromSingleTo() {
+    TransferPayloadBuilder builder = new TransferPayloadBuilder();
+    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.owned));
+    builder.addItem(
+        new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
+        new BigInteger("100"));
+    builder.fee(new BigInteger("464"));
 
-        try {
-            sendTx(builder);
+    try {
+      sendTx(builder);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  void SingleFromMultiTo() {
+    TransferPayloadBuilder builder = new TransferPayloadBuilder();
+    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.owned));
+    builder.addItem(
+        new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
+        new BigInteger("100"));
+    builder.addItem(
+        new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
+        new BigInteger("100"));
+    builder.fee(new BigInteger("464"));
+
+    try {
+      sendTx(builder);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  void MultiFromSingleTo() {
+    TransferPayloadBuilder builder = new TransferPayloadBuilder();
+    builder.from(
+        new FromAccount(
+            Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()),
+            Source.owned));
+    builder.addItem(
+        new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
+        new BigInteger("10000"));
+    builder.fee(new BigInteger("464"));
+
+    System.out.println(g.toJson(builder.build()));
+
+    try {
+      sendTx(builder);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  void MultiFromMultiTo() {
+    TransferPayloadBuilder builder = new TransferPayloadBuilder();
+    builder.from(
+        new FromAccount(
+            Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()),
+            Source.owned));
+    builder.addItem(
+        new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
+        new BigInteger("100"));
+    builder.addItem(
+        new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
+        new BigInteger("100"));
+    builder.fee(new BigInteger("464"));
+
+    System.out.println(g.toJson(builder.build()));
+
+    try {
+      sendTx(builder);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void sendTx(TransferPayloadBuilder builder) throws IOException {
+    TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+    List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
+    Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
+
+    for (MercuryScriptGroup sg : scriptGroups) {
+      signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
     }
 
-    @Test
-    void SingleFromMultiTo() {
-        TransferPayloadBuilder builder = new TransferPayloadBuilder();
-        builder.addFrom(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.owned));
-        builder.addItem(new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from), new BigInteger("100"));
-        builder.addItem(new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from), new BigInteger("100"));
-        builder.addFee(new BigInteger("464"));
+    Transaction tx = signBuilder.buildTx();
 
-        try {
-            sendTx(builder);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Test
-    void MultiFromSingleTo() {
-        TransferPayloadBuilder builder = new TransferPayloadBuilder();
-        builder.addFrom(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()), Source.owned));
-        builder.addItem(new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from), new BigInteger("10000"));
-        builder.addFee(new BigInteger("464"));
-
-        System.out.println(g.toJson(builder.build()));
-
-        try {
-            sendTx(builder);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    void MultiFromMultiTo() {
-        TransferPayloadBuilder builder = new TransferPayloadBuilder();
-        builder.addFrom(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()), Source.owned));
-        builder.addItem(new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from), new BigInteger("100"));
-        builder.addItem(new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_from), new BigInteger("100"));
-        builder.addFee(new BigInteger("464"));
-
-        System.out.println(g.toJson(builder.build()));
-
-        try {
-            sendTx(builder);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sendTx(TransferPayloadBuilder builder) throws IOException {
-        TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
-        List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
-        Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
-
-        for (MercuryScriptGroup sg : scriptGroups) {
-            signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
-        }
-
-        Transaction tx = signBuilder.buildTx();
-
-        System.out.println(g.toJson(tx));
-        String txHash = CkbHolder.getApi().sendTransaction(tx);
-        System.out.println(txHash);
-    }
-
-
+    System.out.println(g.toJson(tx));
+    String txHash = CkbHolder.getApi().sendTransaction(tx);
+    System.out.println(txHash);
+  }
 }

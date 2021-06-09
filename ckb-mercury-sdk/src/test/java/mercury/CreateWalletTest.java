@@ -18,34 +18,37 @@ import java.util.List;
 
 public class CreateWalletTest {
 
-    Gson g = new Gson();
+  Gson g = new Gson();
 
-    @Test
-    void CreateWallet() {
-        CreateWalletPayloadBuilder builder = new CreateWalletPayloadBuilder();
-        builder.fee(new BigInteger("400"));
-        builder.address(AddressWithKeyHolder.testAddress4());
-        builder.addWalletInfo(new WalletInfo("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd", new BigInteger("100"), new BigInteger("100")));
+  @Test
+  void CreateWallet() {
+    CreateWalletPayloadBuilder builder = new CreateWalletPayloadBuilder();
+    builder.fee(new BigInteger("400"));
+    builder.ident(AddressWithKeyHolder.testAddress4());
+    builder.addWalletInfo(
+        new WalletInfo(
+            "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd",
+            new BigInteger("100"),
+            new BigInteger("100")));
 
-        try {
-            TransferCompletionResponse s = MercuryApiHolder.getApi().createWallet(builder.build());
+    try {
+      TransferCompletionResponse s = MercuryApiHolder.getApi().createWallet(builder.build());
 
-            List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
-            Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
+      List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
+      Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
 
-            for (MercuryScriptGroup sg : scriptGroups) {
-                signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
-            }
+      for (MercuryScriptGroup sg : scriptGroups) {
+        signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
+      }
 
-            Transaction tx = signBuilder.buildTx();
+      Transaction tx = signBuilder.buildTx();
 
-            System.out.println(g.toJson(tx));
-            String txHash = CkbHolder.getApi().sendTransaction(tx);
-            System.out.println(txHash);
+      System.out.println(g.toJson(tx));
+      String txHash = CkbHolder.getApi().sendTransaction(tx);
+      System.out.println(txHash);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
+  }
 }
