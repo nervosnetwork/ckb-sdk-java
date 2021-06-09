@@ -28,7 +28,8 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException {
+  public TransferCompletionResponse buildTransferTransaction(TransferPayload payload)
+      throws IOException {
     if (payload.items.stream().anyMatch(item -> !item.to.action.equals(Action.pay_by_from))
         && (payload.udtHash == null || payload.udtHash == "")) {
       throw new RuntimeException("The transaction does not support ckb");
@@ -38,7 +39,8 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public TransferCompletionResponse createWallet(CreateWalletPayload payload) throws IOException {
+  public TransferCompletionResponse buildWalletCreationTransaction(CreateWalletPayload payload)
+      throws IOException {
     return this.rpcService.post(
         RpcMethods.CREATE_WALLET, Arrays.asList(payload), TransferCompletionResponse.class);
   }

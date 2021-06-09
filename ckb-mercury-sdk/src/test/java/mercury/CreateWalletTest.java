@@ -32,7 +32,8 @@ public class CreateWalletTest {
             new BigInteger("100")));
 
     try {
-      TransferCompletionResponse s = MercuryApiHolder.getApi().createWallet(builder.build());
+      TransferCompletionResponse s =
+          MercuryApiHolder.getApi().buildWalletCreationTransaction(builder.build());
 
       List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
       Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);

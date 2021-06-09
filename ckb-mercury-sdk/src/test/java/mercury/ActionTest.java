@@ -32,7 +32,8 @@ public class ActionTest {
     builder.fee(new BigInteger("464"));
 
     try {
-      TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+      TransferCompletionResponse s =
+          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
 
       String result = CkbHolder.getApi().sendTransaction(tx);
@@ -54,7 +55,8 @@ public class ActionTest {
     builder.fee(new BigInteger("464"));
 
     try {
-      TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+      TransferCompletionResponse s =
+          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
 
       String result = CkbHolder.getApi().sendTransaction(tx);
@@ -75,7 +77,8 @@ public class ActionTest {
     builder.fee(new BigInteger("464"));
 
     try {
-      TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+      TransferCompletionResponse s =
+          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
     } catch (Exception e) {
       assertEquals("The transaction does not support ckb", e.getMessage());
     }
@@ -92,7 +95,8 @@ public class ActionTest {
     builder.fee(new BigInteger("464"));
 
     try {
-      TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+      TransferCompletionResponse s =
+          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
       System.out.println(g.toJson(s.txView));
 
@@ -114,7 +118,8 @@ public class ActionTest {
     builder.fee(new BigInteger("464"));
 
     try {
-      TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+      TransferCompletionResponse s =
+          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
     } catch (Exception e) {
       assertEquals("The transaction does not support ckb", e.getMessage());
     }
@@ -133,7 +138,8 @@ public class ActionTest {
     System.out.println(g.toJson(builder.build()));
 
     try {
-      TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+      TransferCompletionResponse s =
+          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
       System.out.println(g.toJson(s.txView));
 

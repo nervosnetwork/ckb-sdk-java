@@ -104,7 +104,8 @@ public class TransferCompletioTest {
   }
 
   private void sendTx(TransferPayloadBuilder builder) throws IOException {
-    TransferCompletionResponse s = MercuryApiHolder.getApi().transferCompletion(builder.build());
+    TransferCompletionResponse s =
+        MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
     List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
 

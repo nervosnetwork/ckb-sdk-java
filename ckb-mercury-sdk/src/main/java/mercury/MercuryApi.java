@@ -11,7 +11,8 @@ public interface MercuryApi {
 
   GetBalanceResponse getBalance(String udtHash, String ident) throws IOException;
 
-  TransferCompletionResponse transferCompletion(TransferPayload payload) throws IOException;
+  TransferCompletionResponse buildTransferTransaction(TransferPayload payload) throws IOException;
 
-  TransferCompletionResponse createWallet(CreateWalletPayload payload) throws IOException;
+  TransferCompletionResponse buildWalletCreationTransaction(CreateWalletPayload payload)
+      throws IOException;
 }

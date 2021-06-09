@@ -5,14 +5,14 @@ import java.util.List;
 
 public class CreateWalletPayload {
 
-  public String address;
+  public String ident;
 
   public List<WalletInfo> info;
 
   public BigInteger fee;
 
-  public CreateWalletPayload(String address, List<WalletInfo> info, BigInteger fee) {
-    this.address = address;
+  public CreateWalletPayload(String ident, List<WalletInfo> info, BigInteger fee) {
+    this.ident = ident;
     this.info = info;
     this.fee = fee;
   }
