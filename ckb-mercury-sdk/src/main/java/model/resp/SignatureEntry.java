@@ -8,8 +8,9 @@ public class SignatureEntry {
 
   public Integer index;
 
+  @SerializedName("group_len")
+  public Integer groupLen;
+
   @SerializedName("pub_key")
   public String pubKey;
-
-  public Byte[] message;
 }

@@ -4,10 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class GetBalanceResponse {
 
-  public String owned;
+  @SerializedName("owned")
+  public String unconstrained;
 
-  public String claimable;
+  @SerializedName("claimable")
+  public String fleeting;
 
-  @SerializedName("in_lock")
-  private String inLock;
+  @SerializedName("locked")
+  private String locked;
 }

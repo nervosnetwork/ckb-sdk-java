@@ -5,7 +5,7 @@ import model.Action;
 import model.CreateWalletPayload;
 import model.TransferPayload;
 import model.resp.GetBalanceResponse;
-import model.resp.TransferCompletionResponse;
+import model.resp.TransactionCompletionResponse;
 import org.nervos.ckb.service.RpcService;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public TransferCompletionResponse buildTransferTransaction(TransferPayload payload)
+  public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException {
     if (payload.items.stream().anyMatch(item -> !item.to.action.equals(Action.pay_by_from))
         && (payload.udtHash == null || payload.udtHash == "")) {
@@ -37,15 +37,15 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.BUILD_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
-        TransferCompletionResponse.class);
+        TransactionCompletionResponse.class);
   }
 
   @Override
-  public TransferCompletionResponse buildWalletCreationTransaction(CreateWalletPayload payload)
+  public TransactionCompletionResponse buildWalletCreationTransaction(CreateWalletPayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_WALLET_CREATION_TRANSACTION,
         Arrays.asList(payload),
-        TransferCompletionResponse.class);
+        TransactionCompletionResponse.class);
   }
 }

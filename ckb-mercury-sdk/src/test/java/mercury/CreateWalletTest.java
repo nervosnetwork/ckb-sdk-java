@@ -7,7 +7,7 @@ import mercury.constant.MercuryApiHolder;
 import model.CreateWalletPayloadBuilder;
 import model.WalletInfo;
 import model.resp.MercuryScriptGroup;
-import model.resp.TransferCompletionResponse;
+import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -23,13 +23,13 @@ public class CreateWalletTest {
   @Test
   void CreateWallet() {
     CreateWalletPayloadBuilder builder = new CreateWalletPayloadBuilder();
-    builder.fee(new BigInteger("400"));
+    builder.fee(new BigInteger("1000000"));
     builder.ident(AddressWithKeyHolder.testAddress4());
     builder.addWalletInfo(
         new WalletInfo("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd"));
 
     try {
-      TransferCompletionResponse s =
+      TransactionCompletionResponse s =
           MercuryApiHolder.getApi().buildWalletCreationTransaction(builder.build());
 
       List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();

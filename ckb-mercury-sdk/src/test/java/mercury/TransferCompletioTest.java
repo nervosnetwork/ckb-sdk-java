@@ -6,7 +6,7 @@ import mercury.constant.CkbHolder;
 import mercury.constant.MercuryApiHolder;
 import model.*;
 import model.resp.MercuryScriptGroup;
-import model.resp.TransferCompletionResponse;
+import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -23,11 +23,11 @@ public class TransferCompletioTest {
   @Test
   void SingleFromSingleTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.owned));
+    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));
-    builder.fee(new BigInteger("1"));
+    builder.fee(new BigInteger("1000000"));
 
     try {
       sendTx(builder);
@@ -40,14 +40,14 @@ public class TransferCompletioTest {
   @Test
   void SingleFromMultiTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.owned));
+    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
         new BigInteger("100"));
-    builder.fee(new BigInteger("1"));
+    builder.fee(new BigInteger("1000000"));
 
     try {
       sendTx(builder);
@@ -62,11 +62,11 @@ public class TransferCompletioTest {
     builder.from(
         new FromAccount(
             Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()),
-            Source.owned));
+            Source.unconstrained));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
-        new BigInteger("10000"));
-    builder.fee(new BigInteger("1"));
+        new BigInteger("100"));
+    builder.fee(new BigInteger("1000000"));
 
     System.out.println(g.toJson(builder.build()));
 
@@ -84,14 +84,14 @@ public class TransferCompletioTest {
     builder.from(
         new FromAccount(
             Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()),
-            Source.owned));
+            Source.unconstrained));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
         new BigInteger("100"));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
         new BigInteger("100"));
-    builder.fee(new BigInteger("1"));
+    builder.fee(new BigInteger("1000000"));
 
     System.out.println(g.toJson(builder.build()));
 
@@ -104,7 +104,7 @@ public class TransferCompletioTest {
   }
 
   private void sendTx(TransferPayloadBuilder builder) throws IOException {
-    TransferCompletionResponse s =
+    TransactionCompletionResponse s =
         MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
     List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);

@@ -35,6 +35,10 @@ public class AddressWithKeyHolder {
     return addressWithKey.get(address);
   }
 
+  public static String testAddress0() {
+    return TEST_ADDRESS0;
+  }
+
   public static String testAddress1() {
     return TEST_ADDRESS1;
   }
