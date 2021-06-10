@@ -7,23 +7,28 @@ public class AddressWithKeyHolder {
 
   private static Map<String, String> addressWithKey = new HashMap<>(4);
 
-  private static String TEST_ADDRESS1 = "ckt1qyqzse99vquwj6t32xyt6s7p25ymjlslam7s583h63";
-
-  private static String TEST_ADDRESS2 = "ckt1qyqd3ygn34kjgkh59tlzygdke3nulp6856msqnkzet";
-
-  private static String TEST_ADDRESS3 = "ckt1qyq0g3352qz3wvy64t6j4t5xph7p8gdcv7xsnn2sve";
-
-  private static String TEST_ADDRESS4 = "ckt1qyqqyfm4m7ag092xmg2mu7l72zcq8xw9fa2sfw7eve";
+  //// 0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b
+  private static String TEST_ADDRESS0 = "ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0";
+  //// 0xaf0b41c627807fbddcee75afa174d5a7e5135ebd
+  private static String TEST_ADDRESS1 = "ckt1qyq27z6pccncqlaamnh8ttapwn260egnt67ss2cwvz";
+  //// 0x05a1fabfa84db9e538e2e7fe3ca9adf849f55ce0
+  private static String TEST_ADDRESS2 = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+  //// 0x202647fecc5b9d8cbdb4ae7167e40f5ab1e4baaf
+  private static String TEST_ADDRESS3 = "ckt1qyqzqfj8lmx9h8vvhk62uut8us844v0yh2hsnqvvgc";
+  //// 0x839f1806e85b40c13d3c73866045476cc9a8c214
+  private static String TEST_ADDRESS4 = "ckt1qyqg88ccqm59ksxp85788pnqg4rkejdgcg2qxcu2qf";
 
   static {
     addressWithKey.put(
-        TEST_ADDRESS1, "5997dcc69ae4949508adfd40e179e8d35209f33e47be9f162c023e7fb0a12c26");
+        TEST_ADDRESS0, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
     addressWithKey.put(
-        TEST_ADDRESS2, "3c04883b003824c965d6779141b3b8cc5681e7f205a453fa36ad2d6f698518a1");
+        TEST_ADDRESS1, "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f");
     addressWithKey.put(
-        TEST_ADDRESS3, "9e8ba28b74c7ceeb4dbad33869e18dde393c4e563540bc80dbdd9fc854e9e0af");
+        TEST_ADDRESS2, "88a09e06735d89452552e359a052315ab5130dc2e4d864ae3eed21d6505b2f67");
     addressWithKey.put(
-        TEST_ADDRESS4, "78728b7530989527a0a3a296317025654f2f0ca5e65b53139828ee78db23be40");
+        TEST_ADDRESS3, "2d4cf0546a1dc93092ad56f2e18fbe6e41ee477d9dec0575cf43b69740ce9f74");
+    addressWithKey.put(
+        TEST_ADDRESS4, "5e46fdbb6ffd86d232080dc71f24b60df2a119e0102ca45a7c165472de14c104");
   }
 
   public static String getKey(String address) {
