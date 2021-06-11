@@ -1,19 +1,20 @@
 package mercury;
 
 import com.google.gson.Gson;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
-import mercury.constant.CkbHolder;
-import mercury.constant.MercuryApiHolder;
+import mercury.constant.CkbNodeFactory;
+import mercury.constant.MercuryApiFactory;
 import model.*;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 
 public class TransferCompletioTest {
 
@@ -106,7 +107,7 @@ public class TransferCompletioTest {
 
   private void sendTx(TransferPayloadBuilder builder) throws IOException {
     TransactionCompletionResponse s =
-        MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
+        MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
     List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
     Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
 
@@ -117,7 +118,7 @@ public class TransferCompletioTest {
     Transaction tx = signBuilder.buildTx();
 
     System.out.println(g.toJson(tx));
-    String txHash = CkbHolder.getApi().sendTransaction(tx);
+    String txHash = CkbNodeFactory.getApi().sendTransaction(tx);
     System.out.println(txHash);
   }
 }

@@ -1,12 +1,9 @@
 package mercury;
 
 import com.google.gson.Gson;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
-import mercury.constant.CkbHolder;
-import mercury.constant.MercuryApiHolder;
+import mercury.constant.CkbNodeFactory;
+import mercury.constant.MercuryApiFactory;
 import model.CreateWalletPayloadBuilder;
 import model.WalletInfo;
 import model.resp.MercuryScriptGroup;
@@ -14,6 +11,10 @@ import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
 
 public class CreateWalletTest {
 
@@ -29,7 +30,7 @@ public class CreateWalletTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiHolder.getApi().buildWalletCreationTransaction(builder.build());
+          MercuryApiFactory.getApi().buildWalletCreationTransaction(builder.build());
 
       List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
       Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
@@ -41,7 +42,7 @@ public class CreateWalletTest {
       Transaction tx = signBuilder.buildTx();
 
       System.out.println(g.toJson(tx));
-      String txHash = CkbHolder.getApi().sendTransaction(tx);
+      String txHash = CkbNodeFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {

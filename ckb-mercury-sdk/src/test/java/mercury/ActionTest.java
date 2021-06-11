@@ -1,21 +1,22 @@
 package mercury;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.google.gson.Gson;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
-import mercury.constant.CkbHolder;
-import mercury.constant.MercuryApiHolder;
+import mercury.constant.CkbNodeFactory;
+import mercury.constant.MercuryApiFactory;
 import model.*;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ActionTest {
 
@@ -33,11 +34,11 @@ public class ActionTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
+          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
       System.out.println(g.toJson(s));
       Transaction tx = sign(s);
 
-      String result = CkbHolder.getApi().sendTransaction(tx);
+      String result = CkbNodeFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -58,10 +59,10 @@ public class ActionTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
+          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
 
-      String result = CkbHolder.getApi().sendTransaction(tx);
+      String result = CkbNodeFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -81,7 +82,7 @@ public class ActionTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
+          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
     } catch (Exception e) {
       assertEquals("The transaction does not support ckb", e.getMessage());
     }
@@ -100,11 +101,11 @@ public class ActionTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
+          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
       System.out.println(g.toJson(s.txView));
 
-      String result = CkbHolder.getApi().sendTransaction(tx);
+      String result = CkbNodeFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -124,7 +125,7 @@ public class ActionTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
+          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
     } catch (Exception e) {
       assertEquals("The transaction does not support ckb", e.getMessage());
     }
@@ -145,11 +146,11 @@ public class ActionTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiHolder.getApi().buildTransferTransaction(builder.build());
+          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
       System.out.println(g.toJson(s.txView));
 
-      String result = CkbHolder.getApi().sendTransaction(tx);
+      String result = CkbNodeFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
