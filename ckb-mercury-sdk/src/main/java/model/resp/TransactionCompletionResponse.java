@@ -1,11 +1,10 @@
 package model.resp;
 
 import com.google.gson.annotations.SerializedName;
-import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.transaction.Transaction;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.nervos.ckb.type.Witness;
+import org.nervos.ckb.type.transaction.Transaction;
 
 public class TransactionCompletionResponse {
 
@@ -21,7 +20,9 @@ public class TransactionCompletionResponse {
 
     for (int i = 0; i < this.sigsEntry.size(); i++) {
       MercuryScriptGroup sg =
-          new MercuryScriptGroup(this.sigsEntry.get(i).pubKey, this.getInputIndexes(this.sigsEntry.get(i).index, this.sigsEntry.get(i).groupLen));
+          new MercuryScriptGroup(
+              this.sigsEntry.get(i).pubKey,
+              this.getInputIndexes(this.sigsEntry.get(i).index, this.sigsEntry.get(i).groupLen));
       scriptGroups.add(sg);
     }
 
@@ -30,7 +31,8 @@ public class TransactionCompletionResponse {
 
   private void signaturePlaceholder() {
     for (int i = 0; i < this.txView.inputs.size(); i++) {
-      this.txView.witnesses.add(this.is_sig_entry(i) ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
+      this.txView.witnesses.add(
+          this.is_sig_entry(i) ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
     }
   }
 

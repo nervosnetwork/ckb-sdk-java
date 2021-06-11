@@ -1,6 +1,10 @@
 package mercury;
 
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbHolder;
 import mercury.constant.MercuryApiHolder;
@@ -11,11 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-
 public class TransferCompletioTest {
 
   Gson g = new Gson();
@@ -23,7 +22,8 @@ public class TransferCompletioTest {
   @Test
   void SingleFromSingleTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+    builder.from(
+        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));
@@ -40,7 +40,8 @@ public class TransferCompletioTest {
   @Test
   void SingleFromMultiTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.from(new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+    builder.from(
+        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
     builder.addItem(
         new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));

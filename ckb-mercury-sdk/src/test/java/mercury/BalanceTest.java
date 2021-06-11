@@ -1,13 +1,12 @@
 package mercury;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.io.IOException;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.MercuryApiHolder;
 import model.resp.GetBalanceResponse;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BalanceTest {
 

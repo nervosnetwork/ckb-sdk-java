@@ -1,8 +1,7 @@
 package model.resp;
 
-import org.nervos.ckb.transaction.ScriptGroup;
-
 import java.util.List;
+import org.nervos.ckb.transaction.ScriptGroup;
 
 public class MercuryScriptGroup extends ScriptGroup {
 

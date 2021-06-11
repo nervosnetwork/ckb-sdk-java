@@ -1,15 +1,14 @@
 package mercury;
 
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.Arrays;
 import model.Action;
 import model.CreateWalletPayload;
 import model.TransferPayload;
 import model.resp.GetBalanceResponse;
 import model.resp.TransactionCompletionResponse;
 import org.nervos.ckb.service.RpcService;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 public class DefaultMercuryApi implements MercuryApi {
 

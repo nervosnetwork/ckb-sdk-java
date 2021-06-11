@@ -1,6 +1,9 @@
 package mercury;
 
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbHolder;
 import mercury.constant.MercuryApiHolder;
@@ -11,10 +14,6 @@ import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.List;
 
 public class CreateWalletTest {
 
