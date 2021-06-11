@@ -11,5 +11,5 @@ public class GetBalanceResponse {
   public String fleeting;
 
   @SerializedName("locked")
-  private String locked;
+  public String locked;
 }
