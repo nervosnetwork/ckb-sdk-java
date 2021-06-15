@@ -4,7 +4,7 @@ dependencies {
     compile project(":ckb")
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
-    implementation 'org.projectlombok:lombok:1.18.8'
+    implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M4")
