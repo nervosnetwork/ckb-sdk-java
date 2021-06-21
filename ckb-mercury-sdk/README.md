@@ -1,28 +1,31 @@
 ## 1. Introduction
 
-Mercury 是为开发者提供的一站式代币服务工具。
+[Mercury](https://github.com/nervosnetwork/mercury) 是为开发者提供的一站式代币服务工具。
 
-Nervos CKB 设计的 Cell 模型类似比特币的 UTXO 模型。Cell 是 CKB 的基本单元，就像人体的细胞。所有未被花费的 Cell 构成了整个 CKB 区块链的全局状态。跟 UTXO 不同的是，Cell
-可以用来存储任意类型的数据。CKB 的原生代币 CK Byte（通常也简称为 CKB，为了与 CKB 区块链区分，本文用小写 ckb 表示原生代币）代表全局状态的空间资源。 你有多少 ckb，就能最多占用多少全局状态空间（1 个
-ckb最多可占用 1 Byte 的全局状态空间）。
+Nervos CKB 设计的 [Cell 模型](https://docs.nervos.org/docs/basics/concepts/cell-model) 类似比特币的 [UTXO 模型](https://en.wikipedia.org/wiki/Unspent_transaction_output) 。
+Cell 是 CKB 的基本单元，就像人体的细胞。所有未被花费的 Cell 构成了整个 CKB 区块链的全局状态。跟 UTXO 不同的是，
+Cell 可以用来存储任意类型的数据。CKB 的原生代币 CK Byte（通常也简称为 CKB，为了与 CKB 区块链区分，本文用小写 ckb 表示原生代币）代表全局状态的空间资源。 
+你有多少 ckb，就能最多占用多少全局状态空间（1 个 ckb最多可占用 1 Byte 的全局状态空间）。
 
-Nervos 已经推出了自己的代币标准 sUDT（simple User-Defined Token） 和 xUDT（Extensible User-Defined Token）。通过这些标准，开发者可以在 Nervos
-网络上创建和发行自己的代币。Nervos 设计了一些特殊类型的 Cell 用于存储代币，我们把这些 Cell 称为钱包。一个钱包只能存储一种类型的代币。 钱包占用了全局状态空间，因而需要一定大小的 ckb（一般为 142 ckb），那么这些
-ckb 该由谁来买单呢？为了适应不同的业务需要，Nervos 提供了多套解决方案：
+Nervos 已经推出了自己的代币标准 [sUDT](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0025-simple-udt/0025-simple-udt.md) (simple User-Defined Token)
+和 [xUDT](https://talk.nervos.org/t/rfc-extensible-udt/5337) (Extensible User-Defined Token)。
+通过这些标准，开发者可以在 Nervos 网络上创建和发行自己的代币。Nervos 设计了特殊的 Cell 类型用于存储代币，这种特殊的 Cell 称为[资产账户](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0026-anyone-can-pay/0026-anyone-can-pay.md)) 。
+一个资产账户只能存储一种类型的代币。 资产账户占用了全局状态空间，因而需要一定大小的 ckb（一般为 142 ckb），那么这些 ckb 该由谁来提供呢？
+为了适应不同的业务需要，Mercury SDK 提供了多套解决方案：
 
-* 收款方提供钱包。若收款方已经创建了相应的代币钱包，付款方直接向收款方的钱包地址转账即可。（该解决方案在主网和测试网均已部署）
-* 付款方支付钱包。若收款方没有创建相应的代币钱包，则付款方可以为收款方创建代币钱包并转账。钱包的所有权属于收款方。（该解决方案在主网和测试网均已部署）
-* 付款方借出钱包。若收款方没有创建相应的代币钱包，付款方还可以创建一个临时钱包，临时钱包的所有权属于付款方。收款方须在一定时限内从这个临时钱包里转移或花费代币，否则代币将退还收款方。（该解决方案已在测试网部署，主网近期将会部署）
+* 收款方提供资产账户。若收款方已经创建了相应的资产账户，付款方直接向收款方的账户地址转账即可。（该解决方案在主网和测试网均已部署）
+* 付款方提供资产账户。若收款方没有创建相应的资产账户，则付款方可以为收款方创建资产账户并转账。资产账户的所有权属于收款方。（该解决方案在主网和测试网均已部署）
+* 付款方提供[临时账户](https://talk.nervos.org/t/sudt-cheque-deposit-design-and-implementation/5209) 。若收款方没有创建相应的资产账户，付款方还可以创建一个临时账户（一般需占用 162 ckb），临时账户的所有权属于付款方。收款方须在一定时限内从这个临时账户里转移或花费代币，否则代币将退还收款方。（该解决方案已在测试网部署，主网近期将会部署）
 
-Mercury 集成了这些解决方案，通过调用转账接口，指定 action 参数就可以生成相应解决方案的转账交易（PayByTo -> 收款方提供钱包, PayByFrom -> 付款方支付钱包, LendByFrom ->
-付款方借出钱包）。Mercury 还提供了创建钱包的接口方便为用户生成指定的代币钱包。
+Mercury 集成了这些解决方案，通过调用转账接口，指定 action 参数就可以生成相应解决方案的转账交易（PayByTo -> 收款方提供资产账户, PayByFrom -> 付款方提供资产账户, LendByFrom ->
+付款方提供临时账户）。Mercury 还提供了创建资产账户的接口方便为用户生成指定的资产账户。
 
 根据使用限制的不同，我们将用户的代币资金划分成三种类型：
 
 * Unconstrained。没有了任何限制的，可以随时使用的资金。
-* Locked。处于锁定状态的资金，这里锁定目前包含两种含义。一是用于创建钱包而被占用的 ckb 属于 Locked 类别。二是锁定期是代币发行中常见的需求，被锁定的代币只能在锁定期过后才能被解锁使用。通过锁定期的资金归属于
+* Locked。处于锁定状态的资金，这里锁定目前包含两种含义。一是用于创建资产账户或临时账户而被占用的 ckb 属于 Locked 类别。二是锁定期是代币发行中常见的需求，被锁定的代币只能在锁定期过后才能被解锁使用。通过锁定期的资金归属于
   Unconstrained 类别。
-* Fleeting。必须在一定时间内转移的代币。付款方创建的临时钱包中的代币，在超时前属于收款方的 Fleeting 类别，超时后则属于付款方的 Unconstrained 类别。 收款方或付款方可在转账时将 source 参数设为
+* Fleeting。必须在一定时间内转移的代币。付款方创建的临时账户中的代币，在超时前属于收款方的 Fleeting 类别，超时后则属于付款方的 Unconstrained 类别。 收款方或付款方可在转账时将 source 参数设为
   fleeting，从而花费或转移 Fleeting 类别的代币。
 
 Mercury 提供的余额查询接口会按这三种类型分别显示余额。
@@ -67,7 +70,7 @@ public class FromAccount {
     private List<String> idents;
     // - idents 表示付款方的付款地址，支持同时使用多个地址付款
     private Source source;
-    // -source 用于指定用于付款的代币资金类型，包括两个选项：owned 和 claimable。
+    // -source 用于指定用于付款的代币资金类型，包括两个选项：unconstrained 和 fleeting。
 }
 
 public enum Source {
@@ -86,7 +89,7 @@ public class ToAccount {
     private String ident;
     // - ident 表示收款方的地址
     private Action action;
-    // - action 指定收款方的钱包由谁买单，包括三种选项：pay_by_from，lend_by_from 和 pay_by_to
+    // - action 指定收款方的账户由谁提供，包括三种选项：pay_by_from，lend_by_from 和 pay_by_to
 }
 
 public enum Action {
@@ -103,23 +106,23 @@ public class TransactionCompletionResponse {
 }
 ```
 
-3. 构建创建钱包交易：自动完成凑钱操作并返回拼装好的未签名的创建钱包的交易以及签名槽位。
+3. 构建创建资产账户交易：自动完成凑钱操作并返回拼装好的未签名的创建资产账户的交易以及签名槽位。
 
 ```
 TransactionCompletionResponse buildWalletCreationTransaction(CreateWalletPayload payload) throws IOException;
 
 public class CreateWalletPayload {
     private String ident;
-    // - ident 表示创建的钱包地址，该地址必须有足够创建钱包的 ckb（一般是 142 ckb）
+    // - ident 表示用于创建资产账户的地址，该地址必须有足够创建资产账户的 ckb（一般是 142 ckb）
     private List<WalletInfo> info;
-    // - info 表示钱包的类型和参数
+    // - info 表示资产账户的资产类型
     private BigInteger fee;
     // - fee 表示交易费，金额单位是 Shannon，1 ckb = 10^8 Shannon
 }
 
 public class WalletInfo {
     private String udt_hash;
-    // - udt_hash 指定钱包的代币类型，不能为空
+    // - udt_hash 指定资产账户的代币类型，不能为空
 }
 ```
 
@@ -128,4 +131,4 @@ public class WalletInfo {
 1. [查询账户余额](./src/test/java/mercury/BalanceTest.java)
 2. [Action](./src/test/java/mercury/ActionTest.java)
 3. [转账](./src/test/java/mercury/TransferCompletioTest.java)
-4. [创建钱包](./src/test/java/mercury/CreateWalletTest.java)
+4. [创建资产账户](./src/test/java/mercury/CreateWalletTest.java)
