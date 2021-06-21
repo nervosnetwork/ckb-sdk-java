@@ -1,13 +1,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.41.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.41.0...v0.41.1) (2021-06-12)
+
+### Bugfix
+* Fix JDK version 15 to 8
+
+# [v0.41.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.40.0...v0.41.0) (2021-06-12)
+
+### Feature
+* Implement Mercury SDK([0a2b5fc](https://github.com/nervosnetwork/ckb-sdk-java/commit/455967c0b4b6304423f82d6b46d279c5e0a2b5fc))
+
 # [v0.40.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.39.1...v0.40.0) (2021-03-08)
 
 ### Feature
 
  *  Remove indexer module rpc and disable get_cellbase_output_capacity_details rpc([0872f27](https://github.com/nervosnetwork/ckb-sdk-java/commit/0872f279692aac96006474903fe088f9fbeda2b7))
  
- ### BreakingChanges
+### BreakingChanges
  
  * Remove indexer module rpc
  * Add @Deprecated to get_cellbase_output_capacity_details rpc
@@ -19,7 +29,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
  *  Add sudt example with ckb-indexer([176bfa1](https://github.com/nervosnetwork/ckb-sdk-java/commit/176bfa13855925b9c140d88cbf061aa31b1e650c))
  *  Add acp example with ckb-indexer([c4a2502](https://github.com/nervosnetwork/ckb-sdk-java/commit/c4a2502e2233906edaeaa0554a0de29600c8c6ca))
  
- ### Bugfix
+### Bugfix
  
  *  Fix WitnessArgs serialization size([bb73a39](https://github.com/nervosnetwork/ckb-sdk-java/commit/bb73a3947ad1ce3822845cdba8cd7b681397d8b2))
 
