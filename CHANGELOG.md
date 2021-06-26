@@ -1,7 +1,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.41.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.41.0...v0.41.1) (2021-06-12)
+# [v0.42.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.41.1...v0.42.0) (2021-06-25)
+
+### BreakingChanges
+* Remove `get_peers_state` rpc
+* Remove `get_cellbase_output_capacity_details` rpc
+
+# [v0.41.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.41.0...v0.41.1) (2021-06-12)
 
 ### Bugfix
 * Fix JDK version 15 to 8

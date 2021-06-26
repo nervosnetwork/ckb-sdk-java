@@ -50,15 +50,6 @@ public class Api {
         String.class);
   }
 
-  @Deprecated
-  public CellbaseOutputCapacity getCellbaseOutputCapacityDetails(String blockHash)
-      throws IOException {
-    return rpcService.post(
-        "get_cellbase_output_capacity_details",
-        Collections.singletonList(blockHash),
-        CellbaseOutputCapacity.class);
-  }
-
   public BlockEconomicState getBlockEconomicState(String blockHash) throws IOException {
     return rpcService.post(
         "get_block_economic_state", Collections.singletonList(blockHash), BlockEconomicState.class);
@@ -126,12 +117,6 @@ public class Api {
   /** Stats RPC */
   public BlockchainInfo getBlockchainInfo() throws IOException {
     return rpcService.post("get_blockchain_info", Collections.emptyList(), BlockchainInfo.class);
-  }
-
-  @Deprecated
-  public List<PeerState> getPeersState() throws IOException {
-    return rpcService.post(
-        "get_peers_state", Collections.emptyList(), new TypeToken<List<PeerState>>() {}.getType());
   }
 
   /** Pool RPC */
