@@ -18,6 +18,7 @@ hs_err_pid*
 /out
 */build/
 */out/
+*/build**/
 
 gradle.properties
 local.properties
