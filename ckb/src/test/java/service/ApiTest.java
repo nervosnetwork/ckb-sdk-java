@@ -41,13 +41,6 @@ public class ApiTest {
   }
 
   @Test
-  public void testGetCellbaseOutputCapacityDetails() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
-    CellbaseOutputCapacity cellbaseOutputCapacity = api.getCellbaseOutputCapacityDetails(blockHash);
-    Assertions.assertNotNull(cellbaseOutputCapacity);
-  }
-
-  @Test
   public void testGetBlockEconomicState() throws IOException {
     String blockHash = api.getBlockHash("0x2");
     BlockEconomicState blockEconomicState = api.getBlockEconomicState(blockHash);
@@ -248,12 +241,6 @@ public class ApiTest {
   public void testGetBlockchainInfo() throws IOException {
     BlockchainInfo blockchainInfo = api.getBlockchainInfo();
     Assertions.assertNotNull(blockchainInfo);
-  }
-
-  @Test
-  public void testGetPeersState() throws IOException {
-    List<PeerState> peerStates = api.getPeersState();
-    Assertions.assertNotNull(peerStates);
   }
 
   @Test
