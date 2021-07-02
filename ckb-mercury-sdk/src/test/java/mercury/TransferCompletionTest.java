@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
 
-public class TransferCompletioTest {
+public class TransferCompletionTest {
 
   Gson g = new Gson();
 
