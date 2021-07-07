@@ -3,13 +3,12 @@ package mercury;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.nervos.ckb.service.RpcService;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import indexer.DefaultIndexerApi;
 import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
 import model.GetGenericBlockPayload;
@@ -26,9 +25,7 @@ import model.resp.TransactionCompletionResponse;
 
 import static java.util.stream.Collectors.toList;
 
-public class DefaultMercuryApi implements MercuryApi {
-
-  private RpcService rpcService;
+public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
 
   private Gson g =
       new GsonBuilder()
@@ -37,7 +34,7 @@ public class DefaultMercuryApi implements MercuryApi {
           .create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {
-    this.rpcService = new RpcService(mercuryUrl, isDebug);
+    super(mercuryUrl, isDebug);
   }
 
   @Override
