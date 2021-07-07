@@ -1,15 +1,16 @@
 package indexer;
 
-import indexer.model.resp.TipResp;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
+import indexer.model.resp.TipResponse;
 
 public class TipTest {
   @Test
   void getTip() {
     try {
-      TipResp tip = CkbIndexerFactory.getApi().getTip();
+      TipResponse tip = CkbIndexerFactory.getApi().getTip();
       System.out.println(tip.blockHash);
       System.out.println(tip.blockNumber);
     } catch (IOException e) {

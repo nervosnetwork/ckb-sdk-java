@@ -1,15 +1,17 @@
 package indexer;
 
 import com.google.gson.Gson;
-import indexer.model.SearchKey;
-import indexer.model.resp.CellCapacityResp;
-import indexer.model.resp.CellsResp;
-import indexer.model.resp.TipResp;
-import indexer.model.resp.TransactionResp;
-import org.nervos.ckb.service.RpcService;
+
+import org.nervos.jsonrpc.service.RpcService;
 
 import java.io.IOException;
 import java.util.Arrays;
+
+import indexer.model.SearchKey;
+import indexer.model.resp.CellCapacityResponse;
+import indexer.model.resp.CellsResponse;
+import indexer.model.resp.TipResponse;
+import indexer.model.resp.TransactionResponse;
 
 public class DefaultIndexerApi implements CkbIndexerApi {
 
@@ -22,31 +24,33 @@ public class DefaultIndexerApi implements CkbIndexerApi {
   }
 
   @Override
-  public TipResp getTip() throws IOException {
-    return this.rpcService.post(CkbIndexerRpcMethods.GET_TIP, Arrays.asList(), TipResp.class);
+  public TipResponse getTip() throws IOException {
+    return this.rpcService.post(CkbIndexerRpcMethods.GET_TIP, Arrays.asList(), TipResponse.class);
   }
 
   @Override
-  public CellsResp getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+  public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
       throws IOException {
     return this.rpcService.post(
         CkbIndexerRpcMethods.GET_CELLS,
         Arrays.asList(searchKey, order, limit, afterCursor),
-        CellsResp.class);
+        CellsResponse.class);
   }
 
   @Override
-  public TransactionResp getTransactions(
+  public TransactionResponse getTransactions(
       SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
     return this.rpcService.post(
         CkbIndexerRpcMethods.GET_TRANSACTIONS,
         Arrays.asList(searchKey, order, limit, afterCursor),
-        TransactionResp.class);
+        TransactionResponse.class);
   }
 
   @Override
-  public CellCapacityResp getCellsCapacity(SearchKey searchKey) throws IOException {
+  public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
     return this.rpcService.post(
-        CkbIndexerRpcMethods.GET_CELLS_CAPACITY, Arrays.asList(searchKey), CellCapacityResp.class);
+        CkbIndexerRpcMethods.GET_CELLS_CAPACITY,
+        Arrays.asList(searchKey),
+        CellCapacityResponse.class);
   }
 }

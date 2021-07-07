@@ -4,9 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CellsResp {
+public class TransactionResponse {
+
   @SerializedName("last_cursor")
   public String lastCursor;
 
-  public List<Cell> objects;
+  public List<TransactionInfoResponse> objects;
 }

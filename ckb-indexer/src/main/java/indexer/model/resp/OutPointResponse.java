@@ -2,7 +2,7 @@ package indexer.model.resp;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OutPoint {
+public class OutPointResponse {
   public String index;
 
   @SerializedName("tx_hash")

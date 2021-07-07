@@ -1,7 +1,7 @@
 description 'SDK for CKB indexer'
 
 dependencies {
-    compile project(":ckb")
+    compile project(":json-rpc")
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")

@@ -1,13 +1,15 @@
 package indexer;
 
 import com.google.gson.Gson;
-import indexer.model.Script;
-import indexer.model.ScriptType;
-import indexer.model.SearchKeyBuilder;
-import indexer.model.resp.CellCapacityResp;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+
+import indexer.model.Script;
+import indexer.model.ScriptType;
+import indexer.model.SearchKeyBuilder;
+import indexer.model.resp.CellCapacityResponse;
 
 public class CapacityTest {
 
@@ -24,7 +26,7 @@ public class CapacityTest {
     System.out.println(new Gson().toJson(key.build()));
 
     try {
-      CellCapacityResp capacity = CkbIndexerFactory.getApi().getCellsCapacity(key.build());
+      CellCapacityResponse capacity = CkbIndexerFactory.getApi().getCellsCapacity(key.build());
       System.out.println(new Gson().toJson(capacity));
     } catch (IOException e) {
       e.printStackTrace();

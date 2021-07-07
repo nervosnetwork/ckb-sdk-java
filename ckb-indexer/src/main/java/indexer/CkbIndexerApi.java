@@ -1,21 +1,21 @@
 package indexer;
 
-import indexer.model.SearchKey;
-import indexer.model.resp.CellCapacityResp;
-import indexer.model.resp.CellsResp;
-import indexer.model.resp.TipResp;
-import indexer.model.resp.TransactionResp;
-
 import java.io.IOException;
 
-public interface CkbIndexerApi {
-  TipResp getTip() throws IOException;
+import indexer.model.SearchKey;
+import indexer.model.resp.CellCapacityResponse;
+import indexer.model.resp.CellsResponse;
+import indexer.model.resp.TipResponse;
+import indexer.model.resp.TransactionResponse;
 
-  CellsResp getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+public interface CkbIndexerApi {
+  TipResponse getTip() throws IOException;
+
+  CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
       throws IOException;
 
-  TransactionResp getTransactions(
+  TransactionResponse getTransactions(
       SearchKey searchKey, String order, String limit, String afterCursor) throws IOException;
 
-  CellCapacityResp getCellsCapacity(SearchKey searchKey) throws IOException;
+  CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
 }

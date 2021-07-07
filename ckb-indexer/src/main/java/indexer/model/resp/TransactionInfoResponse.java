@@ -2,18 +2,18 @@ package indexer.model.resp;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Cell {
-
+public class TransactionInfoResponse {
   @SerializedName("block_number")
   public String blockNumber;
 
-  @SerializedName("out_point")
-  public OutPoint outPoint;
+  @SerializedName("io_index")
+  public String ioIndex;
 
-  public Output output;
+  @SerializedName("io_type")
+  public String ioType;
 
-  @SerializedName("output_data")
-  public String outputData;
+  @SerializedName("tx_hash")
+  public String txHash;
 
   @SerializedName("tx_index")
   public String txIndex;
