@@ -20,6 +20,10 @@ public class CkbIndexerApi {
     rpcService = new RpcService(indexerUrl, isDebug);
   }
 
+  public CkbIndexerTip getTip() throws IOException {
+    return rpcService.post("get_tip", Collections.<String>emptyList(), CkbIndexerTip.class);
+  }
+
   public CkbIndexerCells getCells(
       SearchKey searchKey, String order, BigInteger limit, String afterCursor) throws IOException {
     if ("0x".equals(afterCursor)) {

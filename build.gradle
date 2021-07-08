@@ -32,6 +32,9 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'application'
 apply plugin: 'io.codearte.nexus-staging'
 
+compileJava.dependsOn(tasks.googleJavaFormat)
+verifyGoogleJavaFormat.mustRunAfter(tasks.googleJavaFormat)
+
 mainClassName = 'org.nervos.ckb.example.RpcExample'
 applicationName = 'ckb-sdk-java'
 
@@ -43,7 +46,8 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.42.0'
+    version '0.42.2'
+
     apply plugin: 'java'
 
     repositories {
@@ -112,7 +116,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '0.42.0'
+                version '0.42.2'
                 from components.java
             }
         }
