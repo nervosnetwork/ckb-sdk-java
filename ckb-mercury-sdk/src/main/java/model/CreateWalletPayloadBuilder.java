@@ -10,7 +10,7 @@ public class CreateWalletPayloadBuilder {
 
   public List<WalletInfo> info = new ArrayList<>(2);
 
-  public BigInteger fee;
+  public BigInteger feeRate = new BigInteger("1000");
 
   public void ident(String ident) {
     this.ident = ident;
@@ -20,11 +20,11 @@ public class CreateWalletPayloadBuilder {
     this.info.add(info);
   }
 
-  public void fee(BigInteger fee) {
-    this.fee = fee;
+  public void feeRate(BigInteger feeRate) {
+    this.feeRate = feeRate;
   }
 
   public CreateWalletPayload build() {
-    return new CreateWalletPayload(ident, info, fee);
+    return new CreateWalletPayload(ident, info, feeRate);
   }
 }

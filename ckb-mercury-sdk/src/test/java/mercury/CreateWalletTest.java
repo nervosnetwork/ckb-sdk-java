@@ -2,7 +2,6 @@ package mercury;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
@@ -22,7 +21,6 @@ public class CreateWalletTest {
   @Test
   void CreateWallet() {
     CreateWalletPayloadBuilder builder = new CreateWalletPayloadBuilder();
-    builder.fee(new BigInteger("1000000"));
     builder.ident(AddressWithKeyHolder.testAddress4());
     builder.addWalletInfo(
         new WalletInfo("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd"));

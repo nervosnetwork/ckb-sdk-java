@@ -14,7 +14,7 @@ public class TransferPayloadBuilder {
 
   private String change;
 
-  private BigInteger fee;
+  private BigInteger feeRate = new BigInteger("1000");
 
   public void from(FromAccount from) {
     this.from = from;
@@ -32,8 +32,8 @@ public class TransferPayloadBuilder {
     this.change = change;
   }
 
-  public void fee(BigInteger fee) {
-    this.fee = fee;
+  public void feeRate(BigInteger feeRate) {
+    this.feeRate = feeRate;
   }
 
   public TransferPayload build() {
@@ -41,7 +41,7 @@ public class TransferPayloadBuilder {
     assert !(this.items.size() <= 0) : "items not empty";
 
     TransferPayload payload =
-        new TransferPayload(this.udtHash, this.from, this.items, this.change, this.fee);
+        new TransferPayload(this.udtHash, this.from, this.items, this.change, this.feeRate);
     return payload;
   }
 }

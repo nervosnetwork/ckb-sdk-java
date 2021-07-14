@@ -60,7 +60,6 @@ public class SourceTest {
     builder.from(new FromAccount(Arrays.asList(senderAddress), Source.unconstrained));
     builder.addItem(
         new ToAccount(chequeCellReceiverAddress, Action.lend_by_from), new BigInteger("100"));
-    builder.fee(new BigInteger("1000000"));
 
     try {
       TransactionCompletionResponse s =
@@ -89,7 +88,6 @@ public class SourceTest {
     builder.udtHash(udtHash);
     builder.from(new FromAccount(Arrays.asList(chequeCellReceiverAddress), Source.fleeting));
     builder.addItem(new ToAccount(receiverAddress, Action.pay_by_from), new BigInteger("99"));
-    builder.fee(new BigInteger("1000000"));
 
     try {
       TransactionCompletionResponse s =

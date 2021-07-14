@@ -15,14 +15,19 @@ public class TransferPayload {
 
   public String change;
 
-  public BigInteger fee;
+  @SerializedName("fee_rate")
+  public BigInteger feeRate = new BigInteger("1000");
 
   public TransferPayload(
-      String udtHash, FromAccount from, List<TransferItem> items, String change, BigInteger fee) {
+      String udtHash,
+      FromAccount from,
+      List<TransferItem> items,
+      String change,
+      BigInteger feeRate) {
     this.udtHash = udtHash;
     this.from = from;
     this.items = items;
     this.change = change;
-    this.fee = fee;
+    this.feeRate = feeRate;
   }
 }
