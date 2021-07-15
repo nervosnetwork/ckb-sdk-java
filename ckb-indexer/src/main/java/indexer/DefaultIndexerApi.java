@@ -1,17 +1,14 @@
 package indexer;
 
 import com.google.gson.Gson;
-
-import org.nervos.jsonrpc.service.RpcService;
-
-import java.io.IOException;
-import java.util.Arrays;
-
 import indexer.model.SearchKey;
 import indexer.model.resp.CellCapacityResponse;
 import indexer.model.resp.CellsResponse;
 import indexer.model.resp.TipResponse;
 import indexer.model.resp.TransactionResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import org.nervos.jsonrpc.service.RpcService;
 
 public class DefaultIndexerApi implements CkbIndexerApi {
 

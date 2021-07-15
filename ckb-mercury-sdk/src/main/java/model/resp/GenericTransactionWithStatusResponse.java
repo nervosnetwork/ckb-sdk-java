@@ -1,10 +1,8 @@
 package model.resp;
 
 import com.google.gson.annotations.SerializedName;
-
-import org.nervos.ckb.type.transaction.TransactionWithStatus;
-
 import java.math.BigInteger;
+import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class GenericTransactionWithStatusResponse {

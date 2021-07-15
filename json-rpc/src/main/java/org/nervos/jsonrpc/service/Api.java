@@ -1,19 +1,17 @@
 package org.nervos.jsonrpc.service;
 
 import com.google.gson.reflect.TypeToken;
-
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.ckb.utils.Convert;
 import org.nervos.ckb.utils.Numeric;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Api {

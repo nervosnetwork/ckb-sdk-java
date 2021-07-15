@@ -1,7 +1,6 @@
 package model;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.math.BigInteger;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */

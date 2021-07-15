@@ -1,16 +1,13 @@
 package indexer;
 
 import com.google.gson.Gson;
-
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.math.BigInteger;
-
 import indexer.model.Script;
 import indexer.model.ScriptType;
 import indexer.model.SearchKeyBuilder;
 import indexer.model.resp.TransactionResponse;
+import java.io.IOException;
+import org.junit.jupiter.api.Test;
+import org.nervos.ckb.utils.Numeric;
 
 public class TransactionTest {
 
@@ -29,7 +26,7 @@ public class TransactionTest {
     try {
       TransactionResponse txs =
           CkbIndexerFactory.getApi()
-              .getTransactions(key.build(), "asc", "0x" + new BigInteger("10").toString(16), null);
+              .getTransactions(key.build(), "asc", Numeric.toHexString("10"), null);
       System.out.println(new Gson().toJson(txs));
     } catch (IOException e) {
       e.printStackTrace();

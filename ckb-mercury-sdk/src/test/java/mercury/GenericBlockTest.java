@@ -1,18 +1,15 @@
 package mercury;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.google.gson.Gson;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.math.BigInteger;
-
 import mercury.constant.MercuryApiFactory;
 import model.GetGenericBlockPayloadBuilder;
 import model.resp.GenericBlockResponse;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class GenericBlockTest {

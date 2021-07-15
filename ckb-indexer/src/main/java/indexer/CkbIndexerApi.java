@@ -1,12 +1,11 @@
 package indexer;
 
-import java.io.IOException;
-
 import indexer.model.SearchKey;
 import indexer.model.resp.CellCapacityResponse;
 import indexer.model.resp.CellsResponse;
 import indexer.model.resp.TipResponse;
 import indexer.model.resp.TransactionResponse;
+import java.io.IOException;
 
 public interface CkbIndexerApi {
   TipResponse getTip() throws IOException;

@@ -1,16 +1,13 @@
 package indexer;
 
 import com.google.gson.Gson;
-
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.math.BigInteger;
-
 import indexer.model.Script;
 import indexer.model.ScriptType;
 import indexer.model.SearchKeyBuilder;
 import indexer.model.resp.CellsResponse;
+import java.io.IOException;
+import java.math.BigInteger;
+import org.junit.jupiter.api.Test;
 
 public class CellsTest {
 
@@ -30,6 +27,7 @@ public class CellsTest {
       CellsResponse cells =
           CkbIndexerFactory.getApi()
               .getCells(key.build(), "asc", "0x" + new BigInteger("10").toString(16), null);
+
       System.out.println(new Gson().toJson(cells));
     } catch (IOException e) {
       e.printStackTrace();

@@ -1,8 +1,7 @@
 package mercury;
 
-import java.io.IOException;
-
 import indexer.CkbIndexerApi;
+import java.io.IOException;
 import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
 import model.GetGenericBlockPayload;
