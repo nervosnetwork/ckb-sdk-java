@@ -9,8 +9,11 @@ import java.util.concurrent.TimeUnit;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
-import model.*;
-import model.resp.GetBalanceResponse;
+import model.Action;
+import model.FromAccount;
+import model.Source;
+import model.ToAccount;
+import model.TransferPayloadBuilder;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
@@ -41,17 +44,19 @@ public class SourceTest {
   }
 
   private void printBalance() throws IOException {
-    GetBalanceResponse ckbBalanceA = MercuryApiFactory.getApi().getBalance(null, senderAddress);
-    GetBalanceResponse udtBalanceA = MercuryApiFactory.getApi().getBalance(udtHash, senderAddress);
-    System.out.println("sender ckb balance: " + g.toJson(ckbBalanceA));
-    System.out.println("sender udt balance: " + g.toJson(udtBalanceA));
-
-    GetBalanceResponse ckbBalanceB =
-        MercuryApiFactory.getApi().getBalance(null, chequeCellReceiverAddress);
-    GetBalanceResponse udtBalanceB =
-        MercuryApiFactory.getApi().getBalance(udtHash, chequeCellReceiverAddress);
-    System.out.println("cheque cell receiver ckb balance: " + g.toJson(ckbBalanceB));
-    System.out.println("cheque cell receiver udt balance: " + g.toJson(udtBalanceB));
+    //    GetBalanceResponse ckbBalanceA = MercuryApiFactory.getApi().getBalance(null,
+    // senderAddress);
+    //    GetBalanceResponse udtBalanceA = MercuryApiFactory.getApi().getBalance(udtHash,
+    // senderAddress);
+    //    System.out.println("sender ckb balance: " + g.toJson(ckbBalanceA));
+    //    System.out.println("sender udt balance: " + g.toJson(udtBalanceA));
+    //
+    //    GetBalanceResponse ckbBalanceB =
+    //        MercuryApiFactory.getApi().getBalance(null, chequeCellReceiverAddress);
+    //    GetBalanceResponse udtBalanceB =
+    //        MercuryApiFactory.getApi().getBalance(udtHash, chequeCellReceiverAddress);
+    //    System.out.println("cheque cell receiver ckb balance: " + g.toJson(ckbBalanceB));
+    //    System.out.println("cheque cell receiver udt balance: " + g.toJson(udtBalanceB));
   }
 
   private void issuingChequeCell() {

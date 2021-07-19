@@ -1,10 +1,13 @@
 package model.resp;
 
+import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
+import java.util.List;
+
 public class GetBalanceResponse {
 
-  public String unconstrained;
+  @SerializedName("block_num")
+  public BigInteger blockNum;
 
-  public String fleeting;
-
-  public String locked;
+  public List<BalanceResponse> balances;
 }

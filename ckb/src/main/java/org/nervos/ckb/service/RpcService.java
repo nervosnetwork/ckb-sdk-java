@@ -10,7 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.nervos.ckb.utils.Numeric;
@@ -38,6 +44,32 @@ public class RpcService {
   }
 
   public <T> T post(@NotNull String method, List params, Type cls) throws IOException {
+    RequestParams requestParams = new RequestParams(method, params);
+    RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
+    Request request = new Request.Builder().url(url).post(body).build();
+    Response response = client.newCall(request).execute();
+    if (response.isSuccessful()) {
+      String responseBody = Objects.requireNonNull(response.body()).string();
+      RpcResponse rpcResponse =
+          gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
+
+      if (rpcResponse.error != null) {
+        throw new IOException(
+            "RpcService method " + method + " error " + gson.toJson(rpcResponse.error));
+      }
+
+      JsonElement jsonElement =
+          new JsonParser().parse(responseBody).getAsJsonObject().get("result");
+      if (jsonElement.isJsonObject()) {
+        return gson.fromJson(jsonElement.getAsJsonObject(), cls);
+      }
+      return gson.fromJson(jsonElement, cls);
+    } else {
+      throw new IOException("RpcService method " + method + " error code " + response.code());
+    }
+  }
+
+  public <T> T post(@NotNull String method, List params, Type cls, Gson gson) throws IOException {
     RequestParams requestParams = new RequestParams(method, params);
     RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
     Request request = new Request.Builder().url(url).post(body).build();
