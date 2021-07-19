@@ -14,7 +14,8 @@ public class GetBalancePayload {
 
   public QueryAddress address;
 
-  public GetBalancePayload(HashSet<String> udtHashes, BigInteger blockNum, QueryAddress address) {
+  protected GetBalancePayload(
+      HashSet<String> udtHashes, BigInteger blockNum, QueryAddress address) {
     this.udtHashes = udtHashes;
     this.blockNum = blockNum;
     this.address = address;
