@@ -9,7 +9,7 @@ public class TransferPayload {
   @SerializedName("udt_hash")
   public String udtHash;
 
-  public FromAccount from;
+  public FromAddresses from;
 
   public List<TransferItem> items;
 
@@ -20,7 +20,7 @@ public class TransferPayload {
 
   public TransferPayload(
       String udtHash,
-      FromAccount from,
+      FromAddresses from,
       List<TransferItem> items,
       String change,
       BigInteger feeRate) {

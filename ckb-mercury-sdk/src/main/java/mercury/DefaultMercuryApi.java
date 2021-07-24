@@ -1,15 +1,20 @@
 package mercury;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.Arrays;
-import model.Action;
-import model.CreateWalletPayload;
+import java.util.List;
+import java.util.Objects;
+import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
 import model.KeyAddress;
 import model.NormalAddress;
 import model.QueryAddress;
+import model.ToKeyAddress;
+import model.TransferItem;
 import model.TransferPayload;
 import model.resp.GetBalanceResponse;
 import model.resp.TransactionCompletionResponse;
@@ -39,10 +44,19 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException {
-    if (payload.items.stream().anyMatch(item -> !item.to.action.equals(Action.pay_by_from))
-        && (payload.udtHash == null || payload.udtHash == "")) {
-      throw new RuntimeException("The transaction does not support ckb");
+    List<TransferItem> transferItems =
+        payload
+            .items
+            .stream()
+            .filter(x -> Objects.equals(x.to.getClass(), ToKeyAddress.class))
+            .collect(toList());
+    if (transferItems.size() > 0) {
+      if (payload.items.stream().anyMatch(item -> !item.to.isPayByFrom())
+          && (payload.udtHash == null || payload.udtHash == "")) {
+        throw new RuntimeException("The transaction does not support ckb");
+      }
     }
+
     return this.rpcService.post(
         RpcMethods.BUILD_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
@@ -50,10 +64,10 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildWalletCreationTransaction(CreateWalletPayload payload)
-      throws IOException {
+  public TransactionCompletionResponse buildAssetAccountCreationTransaction(
+      CreateAssetAccountPayload payload) throws IOException {
     return this.rpcService.post(
-        RpcMethods.BUILD_WALLET_CREATION_TRANSACTION,
+        RpcMethods.BUILD_ASSET_ACCOUNT_CREATION_TRANSACTION,
         Arrays.asList(payload),
         TransactionCompletionResponse.class);
   }

@@ -1,19 +1,22 @@
-package mercury;
+package mercury.keyAddress;
 
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import model.Action;
-import model.FromAccount;
+import model.FromKeyAddresses;
+import model.GetBalancePayloadBuilder;
 import model.Source;
-import model.ToAccount;
+import model.ToKeyAddress;
 import model.TransferPayloadBuilder;
+import model.resp.GetBalanceResponse;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
@@ -44,27 +47,41 @@ public class SourceTest {
   }
 
   private void printBalance() throws IOException {
-    //    GetBalanceResponse ckbBalanceA = MercuryApiFactory.getApi().getBalance(null,
-    // senderAddress);
-    //    GetBalanceResponse udtBalanceA = MercuryApiFactory.getApi().getBalance(udtHash,
-    // senderAddress);
-    //    System.out.println("sender ckb balance: " + g.toJson(ckbBalanceA));
-    //    System.out.println("sender udt balance: " + g.toJson(udtBalanceA));
-    //
-    //    GetBalanceResponse ckbBalanceB =
-    //        MercuryApiFactory.getApi().getBalance(null, chequeCellReceiverAddress);
-    //    GetBalanceResponse udtBalanceB =
-    //        MercuryApiFactory.getApi().getBalance(udtHash, chequeCellReceiverAddress);
-    //    System.out.println("cheque cell receiver ckb balance: " + g.toJson(ckbBalanceB));
-    //    System.out.println("cheque cell receiver udt balance: " + g.toJson(udtBalanceB));
+
+    System.out.println("sender ckb balance: " + g.toJson(getBalance(senderAddress, null)));
+    System.out.println("sender udt balance: " + g.toJson(getBalance(senderAddress, udtHash)));
+
+    System.out.println(
+        "cheque cell receiver ckb balance: "
+            + g.toJson(getBalance(chequeCellReceiverAddress, null)));
+    System.out.println(
+        "cheque cell receiver udt balance: "
+            + g.toJson(getBalance(chequeCellReceiverAddress, udtHash)));
+  }
+
+  private GetBalanceResponse getBalance(String addr, String udtHash) {
+    try {
+
+      GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
+      builder.address(addr);
+      builder.addUdtHash(udtHash);
+
+      return MercuryApiFactory.getApi().getBalance(builder.build());
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return null;
   }
 
   private void issuingChequeCell() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash(udtHash);
-    builder.from(new FromAccount(Arrays.asList(senderAddress), Source.unconstrained));
+    builder.from(
+        new FromKeyAddresses(new HashSet<>(Arrays.asList(senderAddress)), Source.unconstrained));
     builder.addItem(
-        new ToAccount(chequeCellReceiverAddress, Action.lend_by_from), new BigInteger("100"));
+        new ToKeyAddress(chequeCellReceiverAddress, Action.lend_by_from), new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =
@@ -77,7 +94,7 @@ public class SourceTest {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }
-      TimeUnit.SECONDS.sleep(20);
+      TimeUnit.SECONDS.sleep(60);
 
       System.out.println("send hash of cheque cell transactions: " + hash);
 
@@ -91,8 +108,10 @@ public class SourceTest {
   private void claimChequeCell() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash(udtHash);
-    builder.from(new FromAccount(Arrays.asList(chequeCellReceiverAddress), Source.fleeting));
-    builder.addItem(new ToAccount(receiverAddress, Action.pay_by_from), new BigInteger("99"));
+    builder.from(
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(chequeCellReceiverAddress)), Source.fleeting));
+    builder.addItem(new ToKeyAddress(receiverAddress, Action.pay_by_from), new BigInteger("99"));
 
     try {
       TransactionCompletionResponse s =
@@ -105,7 +124,7 @@ public class SourceTest {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }
-      TimeUnit.SECONDS.sleep(20);
+      TimeUnit.SECONDS.sleep(60);
 
       System.out.println("claim hash of cheque cell transactions: " + hash);
 

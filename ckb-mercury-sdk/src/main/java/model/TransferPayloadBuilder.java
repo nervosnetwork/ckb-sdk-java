@@ -8,7 +8,7 @@ public class TransferPayloadBuilder {
 
   private String udtHash;
 
-  private FromAccount from;
+  private FromAddresses from;
 
   private List<TransferItem> items = new ArrayList<>(8);
 
@@ -16,7 +16,7 @@ public class TransferPayloadBuilder {
 
   private BigInteger feeRate = new BigInteger("1000");
 
-  public void from(FromAccount from) {
+  public void from(FromAddresses from) {
     this.from = from;
   }
 
@@ -24,7 +24,7 @@ public class TransferPayloadBuilder {
     this.udtHash = udtHash;
   }
 
-  public void addItem(ToAccount to, BigInteger amount) {
+  public void addItem(ToAddress to, BigInteger amount) {
     this.items.add(new TransferItem(to, amount));
   }
 
