@@ -1,17 +1,24 @@
 package mercury.keyAddress;
 
 import com.google.gson.Gson;
+
+import org.junit.jupiter.api.Test;
+import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
+import org.nervos.ckb.type.transaction.Transaction;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import model.Action;
 import model.FromKeyAddresses;
+import model.GetBalancePayload;
 import model.GetBalancePayloadBuilder;
 import model.Source;
 import model.ToKeyAddress;
@@ -19,9 +26,6 @@ import model.TransferPayloadBuilder;
 import model.resp.GetBalanceResponse;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
-import org.junit.jupiter.api.Test;
-import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
-import org.nervos.ckb.type.transaction.Transaction;
 
 public class SourceTest {
   private String senderAddress = AddressWithKeyHolder.testAddress1();
@@ -145,5 +149,12 @@ public class SourceTest {
 
     Transaction tx = signBuilder.buildTx();
     return tx;
+  }
+
+  private GetBalancePayload getQueryBalancePayload(String addr, String udtHash) {
+    GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
+    builder.address(addr);
+    builder.addUdtHash(udtHash);
+    return builder.build();
   }
 }
