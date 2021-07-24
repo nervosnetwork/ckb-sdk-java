@@ -1,4 +1,4 @@
-package mercury;
+package mercury.keyAddress;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -6,11 +6,16 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
-import model.*;
+import model.Action;
+import model.FromKeyAddresses;
+import model.Source;
+import model.ToKeyAddress;
+import model.TransferPayloadBuilder;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
@@ -24,11 +29,16 @@ public class ActionTest {
   @Test
   void transferCompletionCkbWithPayByFrom() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
+
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress0()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress0())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
         new BigInteger("100")); // unit: CKB, 1 CKB = 10^8 Shannon
+
+    System.out.println(new Gson().toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
@@ -49,9 +59,11 @@ public class ActionTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd");
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));
 
     try {
@@ -71,9 +83,11 @@ public class ActionTest {
   void transferCompletionCkbWithLendByFrom() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress2(), Action.lend_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.lend_by_from),
         new BigInteger("100"));
 
     try {
@@ -89,9 +103,11 @@ public class ActionTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd");
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress2(), Action.lend_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.lend_by_from),
         new BigInteger("100"));
 
     try {
@@ -112,9 +128,11 @@ public class ActionTest {
   void transferCompletionCkbWithPayByTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress1(), Action.pay_by_to),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress1(), Action.pay_by_to),
         new BigInteger("100"));
 
     try {
@@ -130,9 +148,11 @@ public class ActionTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd");
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_to),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_to),
         new BigInteger("100"));
 
     System.out.println(g.toJson(builder.build()));

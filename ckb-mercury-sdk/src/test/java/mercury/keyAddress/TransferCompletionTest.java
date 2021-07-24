@@ -1,14 +1,19 @@
-package mercury;
+package mercury.keyAddress;
 
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
-import model.*;
+import model.Action;
+import model.FromKeyAddresses;
+import model.Source;
+import model.ToKeyAddress;
+import model.TransferPayloadBuilder;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
@@ -23,9 +28,11 @@ public class TransferCompletionTest {
   void SingleFromSingleTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));
 
     try {
@@ -40,12 +47,14 @@ public class TransferCompletionTest {
   void SingleFromMultiTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress1()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
         new BigInteger("100"));
 
     try {
@@ -59,11 +68,13 @@ public class TransferCompletionTest {
   void MultiFromSingleTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(
-            Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()),
+        new FromKeyAddresses(
+            new HashSet<>(
+                Arrays.asList(
+                    AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2())),
             Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
         new BigInteger("100"));
 
     System.out.println(g.toJson(builder.build()));
@@ -80,14 +91,16 @@ public class TransferCompletionTest {
   void MultiFromMultiTo() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(
-            Arrays.asList(AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2()),
+        new FromKeyAddresses(
+            new HashSet<>(
+                Arrays.asList(
+                    AddressWithKeyHolder.testAddress1(), AddressWithKeyHolder.testAddress2())),
             Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress3(), Action.pay_by_from),
         new BigInteger("100"));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
         new BigInteger("100"));
 
     System.out.println(g.toJson(builder.build()));

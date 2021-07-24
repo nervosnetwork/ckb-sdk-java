@@ -1,7 +1,7 @@
 package mercury;
 
 import java.io.IOException;
-import model.CreateWalletPayload;
+import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
 import model.TransferPayload;
 import model.resp.GetBalanceResponse;
@@ -14,6 +14,6 @@ public interface MercuryApi {
   TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException;
 
-  TransactionCompletionResponse buildWalletCreationTransaction(CreateWalletPayload payload)
-      throws IOException;
+  TransactionCompletionResponse buildAssetAccountCreationTransaction(
+      CreateAssetAccountPayload payload) throws IOException;
 }

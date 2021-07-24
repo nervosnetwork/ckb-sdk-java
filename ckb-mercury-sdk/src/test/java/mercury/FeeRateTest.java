@@ -4,11 +4,16 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
-import model.*;
+import model.Action;
+import model.FromKeyAddresses;
+import model.Source;
+import model.ToKeyAddress;
+import model.TransferPayloadBuilder;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
@@ -23,9 +28,11 @@ public class FeeRateTest {
 
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress0()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress0())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
         new BigInteger("100")); // unit: CKB, 1 CKB = 10^8 Shannon
     // default 1000 shannons/KB
     //    builder.feeRate(new BigInteger("1000"));
@@ -55,9 +62,11 @@ public class FeeRateTest {
   void customizedFeeRate() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
-        new FromAccount(Arrays.asList(AddressWithKeyHolder.testAddress0()), Source.unconstrained));
+        new FromKeyAddresses(
+            new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress0())),
+            Source.unconstrained));
     builder.addItem(
-        new ToAccount(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
+        new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
         new BigInteger("100")); // unit: CKB, 1 CKB = 10^8 Shannon
     builder.feeRate(new BigInteger("10000"));
 
