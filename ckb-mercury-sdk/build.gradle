@@ -1,6 +1,7 @@
 description 'SDK for CKB mercury'
 
 dependencies {
+    implementation 'org.nervos.ckb:ckb:0.42.0'
     compile project(":ckb-indexer")
     compile project(":json-rpc")
     compile "com.google.code.gson:gson:$gsonVersion"

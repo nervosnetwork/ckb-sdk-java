@@ -135,7 +135,7 @@ public class RpcService {
             });
   }
 
-  List<RpcResponse> batchPost(List<List> requests) throws IOException {
+  public List<RpcResponse> batchPost(List<List> requests) throws IOException {
     List<RequestParams> paramsList = new ArrayList<>();
     for (List request : requests) {
       if (request.size() == 0 || !(request.get(0) instanceof String)) {
