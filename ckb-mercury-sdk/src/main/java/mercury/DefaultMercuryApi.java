@@ -1,24 +1,30 @@
 package mercury;
 
-import static java.util.stream.Collectors.toList;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.nervos.ckb.service.RpcService;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
+import model.GetGenericBlockPayload;
 import model.KeyAddress;
 import model.NormalAddress;
 import model.QueryAddress;
 import model.ToKeyAddress;
 import model.TransferItem;
 import model.TransferPayload;
+import model.resp.GenericBlockResponse;
+import model.resp.GenericTransactionWithStatusResponse;
 import model.resp.GetBalanceResponse;
 import model.resp.TransactionCompletionResponse;
-import org.nervos.ckb.service.RpcService;
+
+import static java.util.stream.Collectors.toList;
 
 public class DefaultMercuryApi implements MercuryApi {
 
@@ -45,9 +51,7 @@ public class DefaultMercuryApi implements MercuryApi {
   public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException {
     List<TransferItem> transferItems =
-        payload
-            .items
-            .stream()
+        payload.items.stream()
             .filter(x -> Objects.equals(x.to.getClass(), ToKeyAddress.class))
             .collect(toList());
     if (transferItems.size() > 0) {
@@ -70,5 +74,20 @@ public class DefaultMercuryApi implements MercuryApi {
         RpcMethods.BUILD_ASSET_ACCOUNT_CREATION_TRANSACTION,
         Arrays.asList(payload),
         TransactionCompletionResponse.class);
+  }
+
+  @Override
+  public GenericTransactionWithStatusResponse getGenericTransaction(String txHash)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.GET_GENERIC_TRANSACTION,
+        Arrays.asList(txHash),
+        GenericTransactionWithStatusResponse.class);
+  }
+
+  @Override
+  public GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException {
+    return this.rpcService.post(
+        RpcMethods.GET_GENERIC_BLOCK, Arrays.asList(payload), GenericBlockResponse.class);
   }
 }

@@ -4,12 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
+import org.nervos.ckb.utils.Numeric;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -18,8 +23,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.jetbrains.annotations.NotNull;
-import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class RpcService {
@@ -36,9 +39,10 @@ public class RpcService {
     if (isDebug) {
       HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
       logging.level(HttpLoggingInterceptor.Level.BODY);
-      client = new OkHttpClient.Builder().addInterceptor(logging).build();
+      client =
+          new OkHttpClient.Builder().addInterceptor(logging).retryOnConnectionFailure(true).build();
     } else {
-      client = new OkHttpClient();
+      client = new OkHttpClient.Builder().retryOnConnectionFailure(true).build();
     }
     gson = new Gson();
   }
