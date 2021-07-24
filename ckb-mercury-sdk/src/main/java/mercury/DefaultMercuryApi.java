@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import indexer.DefaultIndexerApi;
 import java.io.IOException;
 import java.util.Arrays;
@@ -86,5 +87,13 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   public GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException {
     return this.rpcService.post(
         RpcMethods.GET_GENERIC_BLOCK, Arrays.asList(payload), GenericBlockResponse.class);
+  }
+
+  @Override
+  public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
+    return this.rpcService.post(
+        RpcMethods.REGISTER_ADDRESSES,
+        Arrays.asList(normalAddresses),
+        new TypeToken<List<String>>() {}.getType());
   }
 }
