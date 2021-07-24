@@ -1,13 +1,10 @@
 package mercury;
 
 import com.google.gson.Gson;
-
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
-
 import mercury.constant.MercuryApiFactory;
 import model.resp.GenericTransactionWithStatusResponse;
+import org.junit.jupiter.api.Test;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class GenericTransactionTest {

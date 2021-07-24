@@ -1,8 +1,6 @@
-description 'ckb-sdk-java is a lightweight Java library for integration with nervos CKB.'
+description 'jsonrpc support'
 
 dependencies {
-    compile project(":ckb-mercury-sdk")
-    compile project(":ckb-indexer")
     compile project(":utils")
     compile project(":serialization")
     compile "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
@@ -12,4 +10,4 @@ dependencies {
 }
 
 apply from: rootProject.file('gradle/checkstyle.gradle')
-apply plugin: 'com.github.johnrengelman.shadow'
+
