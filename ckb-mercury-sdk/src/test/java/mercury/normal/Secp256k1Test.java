@@ -1,4 +1,4 @@
-package mercury.normalAddresses;
+package mercury.normal;
 
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -22,15 +22,13 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 
 /** @author zjh @Created Date: 2021/7/23 @Description: @Modify by: */
-public class AcpTest {
-  String acpAddress = "ckt1qyp07nuu3fpu9rksy677uvchlmyv9ce5saes824qjq";
-  String key = "0x6aa38b72d55efc781c0c2bedcbd8adba2c946d90c1075189749d5049301ca84a";
-
+public class Secp256k1Test {
   @Test
-  void testFromAcp() {
+  void testFromSecp256k1() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash(UdtHolder.UDT_HASH);
-    builder.from(new FromNormalAddresses(new HashSet<>(Arrays.asList(acpAddress))));
+    builder.from(
+        new FromNormalAddresses(new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress1()))));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
         new BigInteger("100"));
@@ -39,7 +37,7 @@ public class AcpTest {
       TransactionCompletionResponse s =
           MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
       System.out.println(new Gson().toJson(s));
-      Transaction tx = SignUtils.signByKey(s, key);
+      Transaction tx = SignUtils.sign(s);
 
       String result = CkbNodeFactory.getApi().sendTransaction(tx);
       System.out.println(result);
@@ -50,14 +48,15 @@ public class AcpTest {
   }
 
   @Test
-  void testToAcp() {
+  void testToSecp256k1() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash(UdtHolder.UDT_HASH);
     builder.from(
         new FromKeyAddresses(
             new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress0())),
             Source.unconstrained));
-    builder.addItem(new ToNormalAddress(acpAddress), new BigInteger("100"));
+    builder.addItem(
+        new ToNormalAddress(AddressWithKeyHolder.testAddress4()), new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =

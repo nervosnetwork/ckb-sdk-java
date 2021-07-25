@@ -1,4 +1,4 @@
-package mercury.normalAddresses;
+package mercury.normal;
 
 import com.google.common.primitives.Bytes;
 import com.google.gson.Gson;

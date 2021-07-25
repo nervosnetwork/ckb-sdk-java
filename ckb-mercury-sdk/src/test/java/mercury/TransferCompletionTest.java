@@ -1,4 +1,4 @@
-package mercury.keyAddress;
+package mercury;
 
 import com.google.gson.Gson;
 import java.io.IOException;

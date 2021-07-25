@@ -1,11 +1,13 @@
 package model;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
 public class GetBalancePayloadBuilder {
-  public HashSet<String> udtHashes;
+  public Set<String> udtHashes;
 
   public BigInteger blockNum;
 
@@ -32,7 +34,7 @@ public class GetBalancePayloadBuilder {
   }
 
   public void allBalance() {
-    this.udtHashes = new HashSet<>(2, 1);
+    this.udtHashes = Collections.EMPTY_SET;
   }
 
   public GetBalancePayload build() {

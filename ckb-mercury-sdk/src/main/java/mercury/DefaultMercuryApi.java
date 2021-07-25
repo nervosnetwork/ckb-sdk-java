@@ -17,12 +17,14 @@ import model.GetGenericBlockPayload;
 import model.KeyAddress;
 import model.NormalAddress;
 import model.QueryAddress;
+import model.QueryGenericTransactionsPayload;
 import model.ToKeyAddress;
 import model.TransferItem;
 import model.TransferPayload;
 import model.resp.GenericBlockResponse;
 import model.resp.GenericTransactionWithStatusResponse;
 import model.resp.GetBalanceResponse;
+import model.resp.QueryGenericTransactionsResponse;
 import model.resp.TransactionCompletionResponse;
 
 public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
@@ -105,5 +107,14 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
         RpcMethods.BUILD_ASSET_COLLECTION_TRANSACTION,
         Arrays.asList(payload),
         TransactionCompletionResponse.class);
+  }
+
+  @Override
+  public QueryGenericTransactionsResponse queryGenericTransactions(
+      QueryGenericTransactionsPayload payload) throws IOException {
+    return this.rpcService.post(
+        RpcMethods.QUERY_GENERIC_TRANSACTIONS,
+        Arrays.asList(payload),
+        QueryGenericTransactionsResponse.class);
   }
 }

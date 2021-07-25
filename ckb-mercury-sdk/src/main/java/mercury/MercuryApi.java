@@ -7,10 +7,12 @@ import model.CollectAssetPayload;
 import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
 import model.GetGenericBlockPayload;
+import model.QueryGenericTransactionsPayload;
 import model.TransferPayload;
 import model.resp.GenericBlockResponse;
 import model.resp.GenericTransactionWithStatusResponse;
 import model.resp.GetBalanceResponse;
+import model.resp.QueryGenericTransactionsResponse;
 import model.resp.TransactionCompletionResponse;
 
 public interface MercuryApi extends CkbIndexerApi {
@@ -30,5 +32,8 @@ public interface MercuryApi extends CkbIndexerApi {
   List<String> registerAddresses(List<String> normalAddresses) throws IOException;
 
   TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
+      throws IOException;
+
+  QueryGenericTransactionsResponse queryGenericTransactions(QueryGenericTransactionsPayload payload)
       throws IOException;
 }

@@ -8,4 +8,5 @@ public interface RpcMethods {
   String GET_GENERIC_BLOCK = "get_generic_block";
   String REGISTER_ADDRESSES = "register_addresses";
   String BUILD_ASSET_COLLECTION_TRANSACTION = "build_asset_collection_transaction";
+  String QUERY_GENERIC_TRANSACTIONS = "query_generic_transactions";
 }
