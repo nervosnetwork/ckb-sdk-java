@@ -1,17 +1,14 @@
 package indexer;
 
 import com.google.gson.Gson;
-
-import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
 import indexer.model.Script;
 import indexer.model.ScriptType;
 import indexer.model.SearchKeyBuilder;
 import indexer.model.resp.CellCapacityResponse;
+import java.io.IOException;
 import mercury.DefaultMercuryApi;
 import mercury.MercuryApi;
+import org.junit.jupiter.api.Test;
 
 /** @author zjh @Created Date: 2021/7/25 @Description: @Modify by: */
 public class CkbIndexerTest {

@@ -3,6 +3,7 @@ package mercury;
 import indexer.CkbIndexerApi;
 import java.io.IOException;
 import java.util.List;
+import model.CollectAssetPayload;
 import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
 import model.GetGenericBlockPayload;
@@ -27,4 +28,7 @@ public interface MercuryApi extends CkbIndexerApi {
   GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException;
 
   List<String> registerAddresses(List<String> normalAddresses) throws IOException;
+
+  TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
+      throws IOException;
 }

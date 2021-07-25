@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import model.CollectAssetPayload;
 import model.CreateAssetAccountPayload;
 import model.GetBalancePayload;
 import model.GetGenericBlockPayload;
@@ -95,5 +96,14 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
         RpcMethods.REGISTER_ADDRESSES,
         Arrays.asList(normalAddresses),
         new TypeToken<List<String>>() {}.getType());
+  }
+
+  @Override
+  public TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.BUILD_ASSET_COLLECTION_TRANSACTION,
+        Arrays.asList(payload),
+        TransactionCompletionResponse.class);
   }
 }
