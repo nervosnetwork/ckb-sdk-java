@@ -43,7 +43,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '0.42.0'
+    version '0.43.0'
     apply plugin: 'java'
 
     repositories {
@@ -112,7 +112,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '0.42.0'
+                version '0.43.0'
                 from components.java
             }
         }
@@ -160,7 +160,8 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     }
 
     signing {
-        required { gradle.taskGraph.hasTask('uploadArchives') }  // only execute as part of this task
+        required { gradle.taskGraph.hasTask('uploadArchives') }
+        // only execute as part of this task
         sign configurations.archives
     }
 
