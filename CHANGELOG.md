@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.43.0](https://github.com/nervosnetwork/ckb-sdk-go/compare/v0.42.0...v0.43.0) (2021-07-25)
+# [v0.43.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.42.0...v0.43.0) (2021-07-25)
 
 ### Features
 
