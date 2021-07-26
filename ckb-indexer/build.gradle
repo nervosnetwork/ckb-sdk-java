@@ -1,0 +1,19 @@
+description 'SDK for CKB indexer'
+
+dependencies {
+    compile project(":json-rpc")
+    compile "com.google.code.gson:gson:$gsonVersion"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M4")
+
+    // Enable use of the JUnitPlatform Runner within the IDE
+    testCompile("org.junit.platform:junit-platform-runner:1.0.0-M4")
+}
+
+apply from: rootProject.file('gradle/checkstyle.gradle')
+
+
+test {
+    useJUnitPlatform()
+}

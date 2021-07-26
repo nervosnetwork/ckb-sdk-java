@@ -1,9 +1,10 @@
 rootProject.name = 'ckb'
 
 include 'ckb'
-include 'ckb-sdk'
 include 'utils'
 include 'serialization'
 include 'example'
 include 'ckb-mercury-sdk'
+include 'ckb-indexer'
+include 'json-rpc'
 

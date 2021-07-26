@@ -2,34 +2,34 @@ package mercury;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
-import model.CreateWalletPayloadBuilder;
-import model.WalletInfo;
+import model.CreateAssetAccountPayloadBuilder;
 import model.resp.MercuryScriptGroup;
 import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
 
-public class CreateWalletTest {
+public class CreateAssetAccountTest {
 
   Gson g = new Gson();
 
   @Test
   void CreateWallet() {
-    CreateWalletPayloadBuilder builder = new CreateWalletPayloadBuilder();
-    builder.fee(new BigInteger("1000000"));
-    builder.ident(AddressWithKeyHolder.testAddress4());
-    builder.addWalletInfo(
-        new WalletInfo("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd"));
+    CreateAssetAccountPayloadBuilder builder = new CreateAssetAccountPayloadBuilder();
+    builder.keyAddress(AddressWithKeyHolder.testAddress4());
+    builder.addUdtHash("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd");
+
+    System.out.println(new Gson().toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiFactory.getApi().buildWalletCreationTransaction(builder.build());
+          MercuryApiFactory.getApi().buildAssetAccountCreationTransaction(builder.build());
+
+      System.out.println(new Gson().toJson(s));
 
       List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
       Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);

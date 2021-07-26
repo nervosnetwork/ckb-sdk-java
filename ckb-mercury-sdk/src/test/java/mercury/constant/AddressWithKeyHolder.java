@@ -18,6 +18,11 @@ public class AddressWithKeyHolder {
   //// 0x839f1806e85b40c13d3c73866045476cc9a8c214
   private static String TEST_ADDRESS4 = "ckt1qyqg88ccqm59ksxp85788pnqg4rkejdgcg2qxcu2qf";
 
+  private static String CEX_ADDRESS = "ckt1qyqg03ul48cpvd3wzlqu2t5qpe80hdv3nqpq4hswge";
+
+  private static String QUERY_TRANSACTION_ADDRESS =
+      "ckt1qyqg6y6utyjqhc3znvv7as97tgqxkd9nkr9ssuxft0";
+
   static {
     addressWithKey.put(
         TEST_ADDRESS0, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
@@ -29,6 +34,11 @@ public class AddressWithKeyHolder {
         TEST_ADDRESS3, "2d4cf0546a1dc93092ad56f2e18fbe6e41ee477d9dec0575cf43b69740ce9f74");
     addressWithKey.put(
         TEST_ADDRESS4, "5e46fdbb6ffd86d232080dc71f24b60df2a119e0102ca45a7c165472de14c104");
+    addressWithKey.put(
+        CEX_ADDRESS, "6d88a2eab95e8546ee9b33160e941837625a40c77202cef35d9e3a1ae6f4edf1");
+    addressWithKey.put(
+        QUERY_TRANSACTION_ADDRESS,
+        "466aeb6035827e525b80f80a3b7148ce7396237680489689835c082e6f54bb28");
   }
 
   public static String getKey(String address) {
@@ -53,5 +63,13 @@ public class AddressWithKeyHolder {
 
   public static String testAddress4() {
     return TEST_ADDRESS4;
+  }
+
+  public static String cexAddress() {
+    return CEX_ADDRESS;
+  }
+
+  public static String queryTransactionAddress() {
+    return QUERY_TRANSACTION_ADDRESS;
   }
 }

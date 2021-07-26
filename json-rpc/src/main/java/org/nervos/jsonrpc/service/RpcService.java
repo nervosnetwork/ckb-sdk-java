@@ -1,4 +1,4 @@
-package org.nervos.ckb.service;
+package org.nervos.jsonrpc.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -10,7 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.nervos.ckb.utils.Numeric;
@@ -30,14 +36,41 @@ public class RpcService {
     if (isDebug) {
       HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
       logging.level(HttpLoggingInterceptor.Level.BODY);
-      client = new OkHttpClient.Builder().addInterceptor(logging).build();
+      client =
+          new OkHttpClient.Builder().addInterceptor(logging).retryOnConnectionFailure(true).build();
     } else {
-      client = new OkHttpClient();
+      client = new OkHttpClient.Builder().retryOnConnectionFailure(true).build();
     }
     gson = new Gson();
   }
 
   public <T> T post(@NotNull String method, List params, Type cls) throws IOException {
+    RequestParams requestParams = new RequestParams(method, params);
+    RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
+    Request request = new Request.Builder().url(url).post(body).build();
+    Response response = client.newCall(request).execute();
+    if (response.isSuccessful()) {
+      String responseBody = Objects.requireNonNull(response.body()).string();
+      RpcResponse rpcResponse =
+          gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
+
+      if (rpcResponse.error != null) {
+        throw new IOException(
+            "RpcService method " + method + " error " + gson.toJson(rpcResponse.error));
+      }
+
+      JsonElement jsonElement =
+          new JsonParser().parse(responseBody).getAsJsonObject().get("result");
+      if (jsonElement.isJsonObject()) {
+        return gson.fromJson(jsonElement.getAsJsonObject(), cls);
+      }
+      return gson.fromJson(jsonElement, cls);
+    } else {
+      throw new IOException("RpcService method " + method + " error code " + response.code());
+    }
+  }
+
+  public <T> T post(@NotNull String method, List params, Type cls, Gson gson) throws IOException {
     RequestParams requestParams = new RequestParams(method, params);
     RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
     Request request = new Request.Builder().url(url).post(body).build();
@@ -102,7 +135,7 @@ public class RpcService {
             });
   }
 
-  List<RpcResponse> batchPost(List<List> requests) throws IOException {
+  public List<RpcResponse> batchPost(List<List> requests) throws IOException {
     List<RequestParams> paramsList = new ArrayList<>();
     for (List request : requests) {
       if (request.size() == 0 || !(request.get(0) instanceof String)) {

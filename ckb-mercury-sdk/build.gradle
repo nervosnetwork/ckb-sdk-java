@@ -1,14 +1,13 @@
 description 'SDK for CKB mercury'
 
 dependencies {
-    compile project(":ckb")
+    implementation 'org.nervos.ckb:ckb:0.42.0'
+    compile project(":ckb-indexer")
+    compile project(":json-rpc")
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
-    implementation 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M4")
-
     // Enable use of the JUnitPlatform Runner within the IDE
     testCompile("org.junit.platform:junit-platform-runner:1.0.0-M4")
 }

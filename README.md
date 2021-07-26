@@ -7,11 +7,15 @@
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
-The ckb-sdk-java is still under development and **NOT** production ready. You should get familiar with CKB transaction structure and RPC before using it.
+The ckb-sdk-java is still under development and **NOT** production ready. You should get familiar
+with CKB transaction structure and RPC before using it.
 
-**Note: All RPC methods in the indexer module have been deprecated since CKB version `v0.36.0` and they have been removed in the CKB version of `v0.40.0`.
-We strongly recommend migrating to the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) as soon as possible.
-You can refer to the [examples](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb) of the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) in this project.**
+**Note: All RPC methods in the indexer module have been deprecated since CKB version `v0.36.0` and
+they have been removed in the CKB version of `v0.40.0`. We strongly recommend migrating to
+the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) as soon as possible. You can refer
+to
+the [examples](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb)
+of the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) in this project.**
 
 ### Prerequisites
 
@@ -20,11 +24,12 @@ You can refer to the [examples](https://github.com/nervosnetwork/ckb-sdk-java/tr
 
 ### Installation
 
-#### Install from repositories:  
+#### Install from repositories:
 
 ##### version <= 0.24.0
 
-- Maven  
+- Maven
+
 ```
 <dependency>
   <groupId>org.nervos.ckb</groupId>
@@ -34,13 +39,15 @@ You can refer to the [examples](https://github.com/nervosnetwork/ckb-sdk-java/tr
 ```
 
 - Gradle
+
 ```
 implementation 'org.nervos.ckb:core:{version}'
 ```
 
 ##### version >= 0.24.1
 
-- Maven  
+- Maven
+
 ```
 <dependency>
   <groupId>org.nervos.ckb</groupId>
@@ -50,6 +57,7 @@ implementation 'org.nervos.ckb:core:{version}'
 ```
 
 - Gradle
+
 ```
 implementation 'org.nervos.ckb:ckb:{version}'
 ```
@@ -68,103 +76,138 @@ gradle shadowJar  // ./gradlew shadowJar
 
 ##### version <= 0.24.0
 
-A `console-{version}-all.jar` package will be generated in `console/build/libs`, which you can put into your project to develop with it.
+A `console-{version}-all.jar` package will be generated in `console/build/libs`, which you can put
+into your project to develop with it.
 
 ##### version >= 0.24.1
 
-A `ckb-sdk-{version}-all.jar` package will be generated in `ckb-sdk/build/libs`, which you can put into your project to develop with it.
+A `ckb-sdk-{version}-all.jar` package will be generated in `ckb-sdk/build/libs`, which you can put
+into your project to develop with it.
 
-If you don't want to generate the jar by yourself, you can download a build from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
+If you don't want to generate the jar by yourself, you can download a build
+from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
 
 #### Import Jar to Project
 
-When you need to import `ckb-java-sdk` dependency to your project, you can add the `console-{version}-all.jar` or `ckb-sdk-{version}-all.jar` to your project `libs` package. 
+When you need to import `ckb-java-sdk` dependency to your project, you can add
+the `console-{version}-all.jar` or `ckb-sdk-{version}-all.jar` to your project `libs` package.
 
-If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can import jar according to IDE option help documents.
+If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can import jar according to
+IDE option help documents.
 
-### Usage
+## SDK RPC
 
-#### JSON-RPC
+### 1. CKB RPC
 
-You can make JSON-RPC request to your CKB node URL with this SDK. Below are some examples:
+[CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 
-```Java
-Api api = new Api("your-ckb-node-url");
+#### example
 
-// using RPC `get_tip_block_number`, it will return the latest block number
-BigInteger blockNumber = api.getTipBlockNumber();
+TODO
 
-// using RPC `get_block_hash` with block number as parameter, it will return block hash
-String blockNumber = "0"
-String blockHash = api.getBlockHash(blockNumber);
+### 2. Mercury RPC
 
-// using RPC `get_block` with block hash as parameter, it will return block object
-Block block = api.getBlock(blockHash);
+[Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md)
 
-```
+#### example
 
-You can see more JSON-RPC requests from [RPC Document](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
+1. [`get_balance` example](./ckb-mercury-sdk/src/test/java/mercury/BalanceTest.java)
+2. [`get_generic_block` example](./ckb-mercury-sdk/src/test/java/mercury/GenericBlockTest.java)
+3. [`get_generic_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/GenericTransactionTest.java)
+4. [`query_generic_transactions` example](./ckb-mercury-sdk/src/test/java/mercury/QueryGenericTransactionsPagesTest.java)
+5. [`register_addresses` example](./ckb-mercury-sdk/src/test/java/mercury/RegisterAddressesTest.java)
+6. [`build_transfer_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/TransferCompletionTest.java)
+7. [`build_transfer_transaction` by action example](./ckb-mercury-sdk/src/test/java/mercury/ActionTest.java)
+8. [`build_transfer_transaction` by source example](./ckb-mercury-sdk/src/test/java/mercury/SourceTest.java)
+9. [`build_transfer_transaction` by acp example](./ckb-mercury-sdk/src/test/java/mercury/normal/AcpTest.java)
+10. [`build_transfer_transaction` by cheque_cell example](./ckb-mercury-sdk/src/test/java/mercury/normal/ChequeTest.java)
+11. [`build_transfer_transaction` by shor address example](./ckb-mercury-sdk/src/test/java/mercury/normal/Secp256k1Test.java)
+12. [`build_asset_account_creation_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildAssetCollectionTransactionTest.java)
+13. [`build_asset_collection_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/CreateAssetAccountTest.java)
+14. [`fee_rate` example](./ckb-mercury-sdk/src/test/java/mercury/FeeRateTest.java)
+
+### 3. ckb-indexer RPC
+
+[ckb-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
+
+#### example
+
+1. [get_tip example](./ckb-indexer/src/test/java/indexer/TipTest.java)
+2. [get_cells example](./ckb-indexer/src/test/java/indexer/CellsTest.java)
+3. [get_cells_capacity example](./ckb-indexer/src/test/java/indexer/CapacityTest.java)
+4. [get_transactions example](./ckb-indexer/src/test/java/indexer/TransactionTest.java)
+5. [filter example](./ckb-indexer/src/test/java/indexer/FilterTest.java)
 
 #### Single-sig Transfer
 
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
+> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 
-[SingleSigWithCkbIndexerTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SingleSigWithCkbIndexerTxExample.java) provides `sendCapacity` method with any amount inputs which belong to a private key.
+[SingleSigWithCkbIndexerTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SingleSigWithCkbIndexerTxExample.java)
+provides `sendCapacity` method with any amount inputs which belong to a private key.
 
-[MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiKeySingleSigTxExample.java) provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
+[MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiKeySingleSigTxExample.java)
+provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
 
 You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
 
 ```Java
-  Api api = new Api("your-ckb-node-url");
+  Api api=new Api("your-ckb-node-url");
 
-  List<CellInput> inputs = Arrays.asList(
-    new CellInput(inputs1), // Input from address 'cktxxx', capacity 100 CKB
-    new CellInput(inputs2), // Input from address 'cktxxx', capacity 200 CKB
-    new CellInput(inputs3), // Input from address 'cktxxx', capacity 300 CKB
-  );
-  
-  List<CellOutput> outputs = Arrays.asList(
-    output1, // Output to address 'cktxxx', capacity 200
-    output2, // Output to address 'cktxxx', capacity 300
-    output3, // Output to address 'cktxxx' as change, capacity 100
-  );
-  
-  TransactionBuilder txBuilder = new TransactionBuilder(api);
-  
-  SignatureBuilder signBuilder = new SignatureBuilder(txBuilder.buildTx());
-  
-  // A script group is defined as scripts that share the same hash.
-  for (ScriptGroup scriptGroup : scriptGroups) {
-    signBuilder.sign(scriptGroup);
-  }
-  
-  String hash = api.sendTransaction(signBuilder.buildTx());
+        List<CellInput> inputs=Arrays.asList(
+        new CellInput(inputs1), // Input from address 'cktxxx', capacity 100 CKB
+        new CellInput(inputs2), // Input from address 'cktxxx', capacity 200 CKB
+        new CellInput(inputs3), // Input from address 'cktxxx', capacity 300 CKB
+        );
+
+        List<CellOutput> outputs=Arrays.asList(
+        output1, // Output to address 'cktxxx', capacity 200
+        output2, // Output to address 'cktxxx', capacity 300
+        output3, // Output to address 'cktxxx' as change, capacity 100
+        );
+
+        TransactionBuilder txBuilder=new TransactionBuilder(api);
+
+        SignatureBuilder signBuilder=new SignatureBuilder(txBuilder.buildTx());
+
+        // A script group is defined as scripts that share the same hash.
+        for(ScriptGroup scriptGroup:scriptGroups){
+        signBuilder.sign(scriptGroup);
+        }
+
+        String hash=api.sendTransaction(signBuilder.buildTx());
 ```
 
 #### Multi-sig Transfer
 
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
+> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 
-[SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SendToMultiSigAddressTxExample.java) provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig address.
+[SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SendToMultiSigAddressTxExample.java)
+provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig
+address.
 
-[MultiSignTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiSignTransactionExample.java) provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig address.
+[MultiSignTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiSignTransactionExample.java)
+provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig
+address.
 
 #### SUDT Issue and Transfer
 
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
+> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 >
-[SUDTExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SUDTExample.java) provides `issue` and `transfer` methods to issue Simple UDT and transfer Simple UDT to other address.
+[SUDTExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SUDTExample.java)
+provides `issue` and `transfer` methods to issue Simple UDT and transfer Simple UDT to other
+address.
 
 #### ACP Create and Transfer
 
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero. 
+> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 >
-[ACPTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/ACPTransactionExample.java) provides `create` and `transfer` methods to create an ACP cell with SUDT and transfer CKB and SUDT to the ACP address.
+[ACPTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/ACPTransactionExample.java)
+provides `create` and `transfer` methods to create an ACP cell with SUDT and transfer CKB and SUDT
+to the ACP address.
 
 #### Address
 
@@ -172,33 +215,40 @@ You can generate ckb address through this SDK as below:
 
 ```Java
 // Generate mainnet address with SECP256K1 and public blake160 hash
-String publicKey =
-    Sign.publicKeyFromPrivate(
-            Numeric.toBigInt(
-                "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3"),
-            true)
+String publicKey=
+        Sign.publicKeyFromPrivate(
+        Numeric.toBigInt(
+        "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3"),
+        true)
         .toString(16);
-Script script =
+        Script script=
         new Script(
-            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            Hash.blake160(publicKey),
-            Script.TYPE);
-String address = AddressGenerator.generate(Network.MAINNET, script);
+        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+        Hash.blake160(publicKey),
+        Script.TYPE);
+        String address=AddressGenerator.generate(Network.MAINNET,script);
 
 ```
 
 ### Development
 
-We use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping) and follow [Google Checkstyle](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml) for development.
+We
+use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
+and
+follow [Google Checkstyle](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)
+for development.
 
-If `verifyGoogleJavaFormat FAILED` happens when you build this project, please format your code with [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping) 
-or execute `./gradlew goJF` on macOS and Linux,  or `gradlew goJF` on Windows.
+If `verifyGoogleJavaFormat FAILED` happens when you build this project, please format your code
+with [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
+or execute `./gradlew goJF` on macOS and Linux, or `gradlew goJF` on Windows.
 
-If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code automatically.
+If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code
+automatically.
 
 ## License
 
-The SDK is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The SDK is available as open source under the terms of
+the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Changelog
 
