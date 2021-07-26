@@ -1,7 +1,6 @@
 rootProject.name = 'ckb'
 
 include 'ckb'
-include 'ckb-sdk'
 include 'utils'
 include 'serialization'
 include 'example'
