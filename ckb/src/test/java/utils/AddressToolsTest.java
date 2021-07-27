@@ -7,6 +7,7 @@ import java.security.NoSuchProviderException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
+import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressTools;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
@@ -47,5 +48,18 @@ public class AddressToolsTest {
     String actual = AddressTools.generateChequeAddress(senderAddress, receiverAddress);
 
     Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  void testParseAddress() {
+    String address = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+    AddressParseResult script = AddressTools.parse(address);
+    System.out.println(new Gson().toJson(script));
+  }
+
+  @Test
+  void testParseNetwork() {
+    String address = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+    Assertions.assertEquals(Network.TESTNET, AddressTools.parseNetwork(address));
   }
 }
