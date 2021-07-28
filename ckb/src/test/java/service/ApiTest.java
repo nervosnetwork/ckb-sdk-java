@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.BannedAddress;
 import org.nervos.ckb.type.BannedResultAddress;
 import org.nervos.ckb.type.Block;
@@ -34,7 +35,6 @@ import org.nervos.ckb.type.TxPoolInfo;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.jsonrpc.service.RpcResponse;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @Disabled

@@ -8,7 +8,7 @@ import indexer.model.resp.TipResponse;
 import indexer.model.resp.TransactionResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import org.nervos.jsonrpc.service.RpcService;
+import org.nervos.ckb.service.RpcService;
 
 public class DefaultIndexerApi implements CkbIndexerApi {
 
@@ -18,6 +18,10 @@ public class DefaultIndexerApi implements CkbIndexerApi {
 
   public DefaultIndexerApi(String mercuryUrl, boolean isDebug) {
     this.rpcService = new RpcService(mercuryUrl, isDebug);
+  }
+
+  public DefaultIndexerApi(RpcService rpcService) {
+    this.rpcService = rpcService;
   }
 
   @Override

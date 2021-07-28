@@ -1,0 +1,14 @@
+description 'SDK API'
+
+dependencies {
+    compile project(":ckb")
+    compile project(":ckb-mercury-sdk")
+    compile project(":ckb-indexer")
+}
+
+apply from: rootProject.file('gradle/checkstyle.gradle')
+
+
+test {
+    useJUnitPlatform()
+}

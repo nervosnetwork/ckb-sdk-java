@@ -1,4 +1,4 @@
-package org.nervos.jsonrpc.service;
+package org.nervos.ckb.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

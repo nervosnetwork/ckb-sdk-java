@@ -62,6 +62,24 @@ implementation 'org.nervos.ckb:core:{version}'
 implementation 'org.nervos.ckb:ckb:{version}'
 ```
 
+##### version >= 0.43.0
+
+- Maven
+
+```
+<dependency>
+  <groupId>org.nervos.ckb</groupId>
+  <artifactId>ckb-api</artifactId>
+  <version>{version}</version>
+</dependency>
+```
+
+- Gradle
+
+```
+implementation 'org.nervos.ckb-api:ckb:{version}'
+```
+
 #### Install manually
 
 You can generate the jar and import manually.

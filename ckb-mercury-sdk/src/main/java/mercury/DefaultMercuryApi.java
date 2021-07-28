@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import indexer.DefaultIndexerApi;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +25,11 @@ import model.resp.GenericTransactionWithStatusResponse;
 import model.resp.GetBalanceResponse;
 import model.resp.QueryGenericTransactionsResponse;
 import model.resp.TransactionCompletionResponse;
+import org.nervos.ckb.service.RpcService;
 
-public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
+public class DefaultMercuryApi implements MercuryApi {
 
+  private RpcService rpcService;
   private Gson g =
       new GsonBuilder()
           .registerTypeAdapter(QueryAddress.class, new KeyAddress(""))
@@ -36,7 +37,11 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
           .create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {
-    super(mercuryUrl, isDebug);
+    this.rpcService = new RpcService(mercuryUrl, isDebug);
+  }
+
+  public DefaultMercuryApi(RpcService rpcService) {
+    this.rpcService = rpcService;
   }
 
   @Override
