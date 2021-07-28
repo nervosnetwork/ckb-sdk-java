@@ -27,10 +27,7 @@ import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
-/**
- * The problem of cyclic dependencies, temporarily using. Copyright © 2019 Nervos Foundation. All
- * rights reserved.
- */
+/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public interface CkbRpcApi {
   Block getBlock(String blockHash) throws IOException;
 
