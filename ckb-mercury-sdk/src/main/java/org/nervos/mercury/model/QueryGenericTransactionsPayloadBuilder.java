@@ -3,7 +3,8 @@ package org.nervos.mercury.model;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
-import org.nervos.mercury.model.req.QueryAddress;
+import org.nervos.mercury.model.req.KeyAddress;
+import org.nervos.mercury.model.req.NormalAddress;
 import org.nervos.mercury.model.req.QueryGenericTransactionsPayload;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
@@ -15,7 +16,15 @@ public class QueryGenericTransactionsPayloadBuilder extends QueryGenericTransact
   }
 
   public void address(String address) {
-    this.address = QueryAddress.getQueryAddressByAddress(address);
+    this.address = new KeyAddress(address);
+  }
+
+  public void address(KeyAddress address) {
+    this.address = address;
+  }
+
+  public void address(NormalAddress address) {
+    this.address = address;
   }
 
   public void addUdtHash(String udtHash) {
