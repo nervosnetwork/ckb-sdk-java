@@ -1,5 +1,8 @@
 package indexer;
 
+import org.nervos.indexer.CkbIndexerApi;
+import org.nervos.indexer.DefaultIndexerApi;
+
 public class CkbIndexerFactory {
 
   private static final String NODE_URL = "http://127.0.0.1:8116";

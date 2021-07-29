@@ -7,8 +7,6 @@ import java.math.BigInteger;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
-import model.QueryGenericTransactionsPayloadBuilder;
-import model.resp.QueryGenericTransactionsResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
@@ -16,6 +14,8 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressGenerator;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
+import org.nervos.mercury.model.QueryGenericTransactionsPayloadBuilder;
+import org.nervos.mercury.model.resp.QueryGenericTransactionsResponse;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryGenericTransactionsPagesTest {
@@ -23,7 +23,7 @@ public class QueryGenericTransactionsPagesTest {
   Gson g = new Gson();
 
   @Test
-  void TestQueryGenericTransactionsWithCkb() {
+  void testQueryGenericTransactionsWithCkb() {
 
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
@@ -41,7 +41,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithUdt() {
+  void testQueryGenericTransactionsWithUdt() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());
@@ -59,7 +59,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithAll() {
+  void testQueryGenericTransactionsWithAll() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());
@@ -77,7 +77,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithChequeAddress() {
+  void testQueryGenericTransactionsWithChequeAddress() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(getChequeAddress());
@@ -95,7 +95,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithAcpAddress() {
+  void testQueryGenericTransactionsWithAcpAddress() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(getAcpAddress());
@@ -113,7 +113,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithFromBlock() {
+  void testQueryGenericTransactionsWithFromBlock() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());
@@ -132,7 +132,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithToBlock() {
+  void testQueryGenericTransactionsWithToBlock() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());
@@ -151,7 +151,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithFromBlockAndToBlock() {
+  void testQueryGenericTransactionsWithFromBlockAndToBlock() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());
@@ -171,7 +171,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithLimit() {
+  void testQueryGenericTransactionsWithLimit() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());
@@ -191,7 +191,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithOrder() {
+  void testQueryGenericTransactionsWithOrder() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());
@@ -211,7 +211,7 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void TestQueryGenericTransactionsWithOffset() {
+  void testQueryGenericTransactionsWithOffset() {
     try {
       QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
       builder.address(AddressWithKeyHolder.queryTransactionAddress());

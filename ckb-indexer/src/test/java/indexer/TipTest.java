@@ -1,8 +1,8 @@
 package indexer;
 
-import indexer.model.resp.TipResponse;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
+import org.nervos.indexer.model.resp.TipResponse;
 
 public class TipTest {
   @Test

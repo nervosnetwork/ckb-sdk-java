@@ -1,28 +1,8 @@
 package org.nervos.api;
 
-import indexer.CkbIndexerApi;
-import indexer.DefaultIndexerApi;
-import indexer.model.SearchKey;
-import indexer.model.resp.CellCapacityResponse;
-import indexer.model.resp.CellsResponse;
-import indexer.model.resp.TipResponse;
-import indexer.model.resp.TransactionResponse;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
-import mercury.DefaultMercuryApi;
-import mercury.MercuryApi;
-import model.CollectAssetPayload;
-import model.CreateAssetAccountPayload;
-import model.GetBalancePayload;
-import model.GetGenericBlockPayload;
-import model.QueryGenericTransactionsPayload;
-import model.TransferPayload;
-import model.resp.GenericBlockResponse;
-import model.resp.GenericTransactionWithStatusResponse;
-import model.resp.GetBalanceResponse;
-import model.resp.QueryGenericTransactionsResponse;
-import model.resp.TransactionCompletionResponse;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.RpcResponse;
@@ -49,6 +29,26 @@ import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
+import org.nervos.indexer.CkbIndexerApi;
+import org.nervos.indexer.DefaultIndexerApi;
+import org.nervos.indexer.model.SearchKey;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.indexer.model.resp.TipResponse;
+import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.mercury.DefaultMercuryApi;
+import org.nervos.mercury.MercuryApi;
+import org.nervos.mercury.model.req.CollectAssetPayload;
+import org.nervos.mercury.model.req.CreateAssetAccountPayload;
+import org.nervos.mercury.model.req.GetBalancePayload;
+import org.nervos.mercury.model.req.GetGenericBlockPayload;
+import org.nervos.mercury.model.req.QueryGenericTransactionsPayload;
+import org.nervos.mercury.model.req.TransferPayload;
+import org.nervos.mercury.model.resp.GenericBlockResponse;
+import org.nervos.mercury.model.resp.GenericTransactionWithStatusResponse;
+import org.nervos.mercury.model.resp.GetBalanceResponse;
+import org.nervos.mercury.model.resp.QueryGenericTransactionsResponse;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class DefaultCkbApi implements CkbApi {

@@ -9,16 +9,16 @@ import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
-import model.Action;
-import model.FromKeyAddresses;
-import model.Source;
-import model.ToKeyAddress;
-import model.TransferPayloadBuilder;
-import model.resp.MercuryScriptGroup;
-import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.mercury.model.TransferPayloadBuilder;
+import org.nervos.mercury.model.req.Action;
+import org.nervos.mercury.model.req.FromKeyAddresses;
+import org.nervos.mercury.model.req.Source;
+import org.nervos.mercury.model.req.ToKeyAddress;
+import org.nervos.mercury.model.resp.MercuryScriptGroup;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 public class FeeRateTest {
   Gson g = new Gson();
