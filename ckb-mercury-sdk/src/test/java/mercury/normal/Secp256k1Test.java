@@ -10,16 +10,16 @@ import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
-import model.Action;
-import model.FromKeyAddresses;
-import model.FromNormalAddresses;
-import model.Source;
-import model.ToKeyAddress;
-import model.ToNormalAddress;
-import model.TransferPayloadBuilder;
-import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.mercury.model.TransferPayloadBuilder;
+import org.nervos.mercury.model.req.Action;
+import org.nervos.mercury.model.req.FromKeyAddresses;
+import org.nervos.mercury.model.req.FromNormalAddresses;
+import org.nervos.mercury.model.req.Source;
+import org.nervos.mercury.model.req.ToKeyAddress;
+import org.nervos.mercury.model.req.ToNormalAddress;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 /** @author zjh @Created Date: 2021/7/23 @Description: @Modify by: */
 public class Secp256k1Test {

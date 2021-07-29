@@ -1,13 +1,13 @@
 package indexer;
 
 import com.google.gson.Gson;
-import indexer.model.Script;
-import indexer.model.ScriptType;
-import indexer.model.SearchKeyBuilder;
-import indexer.model.resp.CellsResponse;
 import java.io.IOException;
 import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
+import org.nervos.indexer.model.Script;
+import org.nervos.indexer.model.ScriptType;
+import org.nervos.indexer.model.SearchKeyBuilder;
+import org.nervos.indexer.model.resp.CellsResponse;
 
 public class CellsTest {
 

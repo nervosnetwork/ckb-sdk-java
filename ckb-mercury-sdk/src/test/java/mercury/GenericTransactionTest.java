@@ -3,8 +3,8 @@ package mercury;
 import com.google.gson.Gson;
 import java.io.IOException;
 import mercury.constant.MercuryApiFactory;
-import model.resp.GenericTransactionWithStatusResponse;
 import org.junit.jupiter.api.Test;
+import org.nervos.mercury.model.resp.GenericTransactionWithStatusResponse;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class GenericTransactionTest {

@@ -7,12 +7,12 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.MercuryApiFactory;
-import model.GetBalancePayloadBuilder;
-import model.KeyAddress;
-import model.NormalAddress;
-import model.QueryAddress;
-import model.resp.GetBalanceResponse;
 import org.junit.jupiter.api.Test;
+import org.nervos.mercury.model.GetBalancePayloadBuilder;
+import org.nervos.mercury.model.req.KeyAddress;
+import org.nervos.mercury.model.req.NormalAddress;
+import org.nervos.mercury.model.req.QueryAddress;
+import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 public class BalanceTest {
 

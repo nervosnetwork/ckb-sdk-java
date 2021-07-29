@@ -11,17 +11,6 @@ import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
-import model.Action;
-import model.CollectAssetPayloadBuilder;
-import model.FromKeyAddresses;
-import model.FromNormalAddresses;
-import model.GetBalancePayloadBuilder;
-import model.Source;
-import model.ToKeyAddress;
-import model.ToNormalAddress;
-import model.TransferPayloadBuilder;
-import model.resp.GetBalanceResponse;
-import model.resp.TransactionCompletionResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
@@ -30,8 +19,18 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressGenerator;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
+import org.nervos.mercury.model.CollectAssetPayloadBuilder;
+import org.nervos.mercury.model.GetBalancePayloadBuilder;
+import org.nervos.mercury.model.TransferPayloadBuilder;
+import org.nervos.mercury.model.req.Action;
+import org.nervos.mercury.model.req.FromKeyAddresses;
+import org.nervos.mercury.model.req.FromNormalAddresses;
+import org.nervos.mercury.model.req.Source;
+import org.nervos.mercury.model.req.ToKeyAddress;
+import org.nervos.mercury.model.req.ToNormalAddress;
+import org.nervos.mercury.model.resp.GetBalanceResponse;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
-/** @author zjh @Created Date: 2021/7/23 @Description: @Modify by: */
 public class BuildAssetCollectionTransactionTest {
 
   Gson g = new Gson();

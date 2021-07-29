@@ -1,7 +1,7 @@
 package mercury.constant;
 
-import mercury.DefaultMercuryApi;
-import mercury.MercuryApi;
+import org.nervos.mercury.DefaultMercuryApi;
+import org.nervos.mercury.MercuryApi;
 
 public class MercuryApiFactory {
 

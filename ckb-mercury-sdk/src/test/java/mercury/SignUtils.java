@@ -3,10 +3,10 @@ package mercury;
 import java.io.IOException;
 import java.util.List;
 import mercury.constant.AddressWithKeyHolder;
-import model.resp.MercuryScriptGroup;
-import model.resp.TransactionCompletionResponse;
 import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.mercury.model.resp.MercuryScriptGroup;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 /** @author zjh @Created Date: 2021/7/23 @Description: @Modify by: */
 public class SignUtils {

@@ -4,24 +4,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import indexer.CkbIndexerApi;
-import indexer.DefaultIndexerApi;
-import indexer.model.Script;
-import indexer.model.ScriptType;
-import indexer.model.SearchKeyBuilder;
-import indexer.model.resp.CellCapacityResponse;
 import java.io.IOException;
-import mercury.DefaultMercuryApi;
-import mercury.MercuryApi;
-import model.GetBalancePayloadBuilder;
-import model.KeyAddress;
-import model.NormalAddress;
-import model.QueryAddress;
-import model.resp.GetBalanceResponse;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.Header;
+import org.nervos.indexer.CkbIndexerApi;
+import org.nervos.indexer.DefaultIndexerApi;
+import org.nervos.indexer.model.Script;
+import org.nervos.indexer.model.ScriptType;
+import org.nervos.indexer.model.SearchKeyBuilder;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.mercury.DefaultMercuryApi;
+import org.nervos.mercury.MercuryApi;
+import org.nervos.mercury.model.GetBalancePayloadBuilder;
+import org.nervos.mercury.model.req.KeyAddress;
+import org.nervos.mercury.model.req.NormalAddress;
+import org.nervos.mercury.model.req.QueryAddress;
+import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 /** @author zjh @Created Date: 2021/7/25 @Description: @Modify by: */
 public class CkbApiTest {

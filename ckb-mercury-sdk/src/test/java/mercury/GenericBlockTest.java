@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import mercury.constant.MercuryApiFactory;
-import model.GetGenericBlockPayloadBuilder;
-import model.resp.GenericBlockResponse;
 import org.junit.jupiter.api.Test;
+import org.nervos.mercury.model.GetGenericBlockPayloadBuilder;
+import org.nervos.mercury.model.resp.GenericBlockResponse;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class GenericBlockTest {
