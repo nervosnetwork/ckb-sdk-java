@@ -26,10 +26,6 @@ public class GetBalancePayloadBuilder extends GetBalancePayload {
     this.blockNum = blockNum;
   }
 
-  public void address(String address) {
-    this.address = new KeyAddress(address);
-  }
-
   public void address(KeyAddress address) {
     this.address = address;
   }

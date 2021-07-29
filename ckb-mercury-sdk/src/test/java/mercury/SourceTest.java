@@ -15,6 +15,7 @@ import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.Action;
 import org.nervos.mercury.model.req.FromKeyAddresses;
+import org.nervos.mercury.model.req.KeyAddress;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.ToKeyAddress;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
@@ -60,7 +61,7 @@ public class SourceTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(addr);
+      builder.address(new KeyAddress(addr));
       builder.addUdtHash(udtHash);
 
       return MercuryApiFactory.getApi().getBalance(builder.build());

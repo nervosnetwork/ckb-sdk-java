@@ -25,6 +25,7 @@ import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.Action;
 import org.nervos.mercury.model.req.FromKeyAddresses;
 import org.nervos.mercury.model.req.FromNormalAddresses;
+import org.nervos.mercury.model.req.KeyAddress;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.ToKeyAddress;
 import org.nervos.mercury.model.req.ToNormalAddress;
@@ -398,7 +399,7 @@ public class BuildAssetCollectionTransactionTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(AddressWithKeyHolder.cexAddress());
+      builder.address(new KeyAddress(AddressWithKeyHolder.cexAddress()));
       builder.addUdtHash(UdtHolder.UDT_HASH);
 
       GetBalanceResponse balance = MercuryApiFactory.getApi().getBalance(builder.build());
@@ -447,7 +448,7 @@ public class BuildAssetCollectionTransactionTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(AddressWithKeyHolder.cexAddress());
+      builder.address(new KeyAddress(AddressWithKeyHolder.cexAddress()));
 
       GetBalanceResponse balance = MercuryApiFactory.getApi().getBalance(builder.build());
       System.out.printf("cex ckb balance: %s\n", g.toJson(balance));

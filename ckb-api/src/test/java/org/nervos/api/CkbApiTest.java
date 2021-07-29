@@ -91,7 +91,7 @@ public class CkbApiTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address("ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0");
+      builder.address(new KeyAddress("ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0"));
 
       System.out.println(g.toJson(builder.build()));
 

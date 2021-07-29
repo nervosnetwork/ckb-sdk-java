@@ -15,10 +15,6 @@ public class QueryGenericTransactionsPayloadBuilder extends QueryGenericTransact
     this.udtHashes.add(null);
   }
 
-  public void address(String address) {
-    this.address = new KeyAddress(address);
-  }
-
   public void address(KeyAddress address) {
     this.address = address;
   }
