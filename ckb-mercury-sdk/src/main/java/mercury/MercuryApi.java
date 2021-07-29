@@ -1,6 +1,5 @@
 package mercury;
 
-import indexer.CkbIndexerApi;
 import java.io.IOException;
 import java.util.List;
 import model.CollectAssetPayload;
@@ -15,7 +14,7 @@ import model.resp.GetBalanceResponse;
 import model.resp.QueryGenericTransactionsResponse;
 import model.resp.TransactionCompletionResponse;
 
-public interface MercuryApi extends CkbIndexerApi {
+public interface MercuryApi {
 
   GetBalanceResponse getBalance(GetBalancePayload payload) throws IOException;
 

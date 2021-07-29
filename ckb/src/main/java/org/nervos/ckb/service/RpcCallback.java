@@ -1,4 +1,4 @@
-package org.nervos.jsonrpc.service;
+package org.nervos.ckb.service;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public interface RpcCallback<T> {

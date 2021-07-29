@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
+import org.nervos.ckb.service.RpcService;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.jsonrpc.service.RpcService;
 
 /** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class CkbIndexerApi {
