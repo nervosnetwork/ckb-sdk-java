@@ -1,34 +1,27 @@
 package mercury.normal;
 
-import com.google.common.primitives.Bytes;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+import mercury.SignUtils;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.address.Network;
-import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.address.AddressGenerator;
-import org.nervos.ckb.utils.address.AddressParseResult;
-import org.nervos.ckb.utils.address.AddressParser;
+import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.Action;
 import org.nervos.mercury.model.req.FromKeyAddresses;
 import org.nervos.mercury.model.req.FromNormalAddresses;
+import org.nervos.mercury.model.req.KeyAddress;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.ToKeyAddress;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
-import org.nervos.mercury.model.resp.MercuryScriptGroup;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 public class ChequeTest {
@@ -71,7 +64,7 @@ public class ChequeTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(addr);
+      builder.address(new KeyAddress(addr));
       builder.addUdtHash(udtHash);
 
       return MercuryApiFactory.getApi().getBalance(builder.build());
@@ -121,7 +114,12 @@ public class ChequeTest {
   private void claimChequeCell() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.udtHash(udtHash);
-    builder.from(new FromNormalAddresses(new HashSet<>(Arrays.asList(getChequeAddress()))));
+    builder.from(
+        new FromNormalAddresses(
+            new HashSet<>(
+                Arrays.asList(
+                    AddressTools.generateChequeAddress(
+                        senderAddress, chequeCellReceiverAddress)))));
     builder.addItem(new ToKeyAddress(receiverAddress, Action.pay_by_from), new BigInteger("99"));
 
     System.out.println(new Gson().toJson(builder.build()));
@@ -149,57 +147,7 @@ public class ChequeTest {
   }
 
   private Transaction sign(TransactionCompletionResponse s) throws IOException {
-    List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
-    Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
-
-    for (MercuryScriptGroup sg : scriptGroups) {
-      signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
-    }
-
-    Transaction tx = signBuilder.buildTx();
+    Transaction tx = SignUtils.sign(s);
     return tx;
-  }
-
-  //  @Test
-  //  void test2() {
-  //    String chequeAddress = getChequeAddress();
-  //    AddressParseResult parse = AddressParser.parse(chequeAddress);
-  //    System.out.println(Numeric.cleanHexPrefix(parse.script.computeHash()).substring(0, 40));
-  //
-  //    AddressParseResult parse2 = AddressParser.parse(senderAddress);
-  //    System.out.println(Numeric.cleanHexPrefix(parse2.script.computeHash()).substring(0, 40));
-  //  }
-
-  private String getChequeAddress() {
-    AddressParseResult parse1 = AddressParser.parse(senderAddress);
-    System.out.println(new Gson().toJson(parse1));
-
-    AddressParseResult parse2 = AddressParser.parse(chequeCellReceiverAddress);
-    System.out.println(new Gson().toJson(parse2));
-
-    System.out.println(parse1.script.computeHash());
-    System.out.println(parse2.script.computeHash());
-
-    byte[] bytes =
-        Bytes.concat(
-            Numeric.hexStringToByteArray(
-                Numeric.cleanHexPrefix(parse2.script.computeHash()).substring(0, 40)),
-            Numeric.hexStringToByteArray(
-                Numeric.cleanHexPrefix(parse1.script.computeHash()).substring(0, 40)));
-
-    String pubKey = Numeric.toHexStringNoPrefix(bytes);
-    System.out.println(pubKey);
-
-    String fullAddress =
-        AddressGenerator.generate(
-            Network.TESTNET,
-            new Script(
-                "0x60d5f39efce409c587cb9ea359cefdead650ca128f0bd9cb3855348f98c70d5b",
-                pubKey,
-                "type"));
-
-    System.out.println(fullAddress);
-
-    return fullAddress;
   }
 }

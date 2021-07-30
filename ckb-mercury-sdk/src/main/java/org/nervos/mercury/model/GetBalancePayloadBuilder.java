@@ -4,7 +4,8 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
 import org.nervos.mercury.model.req.GetBalancePayload;
-import org.nervos.mercury.model.req.QueryAddress;
+import org.nervos.mercury.model.req.KeyAddress;
+import org.nervos.mercury.model.req.NormalAddress;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
 public class GetBalancePayloadBuilder extends GetBalancePayload {
@@ -25,8 +26,12 @@ public class GetBalancePayloadBuilder extends GetBalancePayload {
     this.blockNum = blockNum;
   }
 
-  public void address(String address) {
-    this.address = QueryAddress.getQueryAddressByAddress(address);
+  public void address(KeyAddress address) {
+    this.address = address;
+  }
+
+  public void address(NormalAddress address) {
+    this.address = address;
   }
 
   public void allBalance() {

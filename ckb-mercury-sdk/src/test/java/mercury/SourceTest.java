@@ -5,23 +5,20 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.transaction.Secp256k1SighashAllBuilder;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.Action;
 import org.nervos.mercury.model.req.FromKeyAddresses;
-import org.nervos.mercury.model.req.GetBalancePayload;
+import org.nervos.mercury.model.req.KeyAddress;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.ToKeyAddress;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
-import org.nervos.mercury.model.resp.MercuryScriptGroup;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 public class SourceTest {
@@ -64,7 +61,7 @@ public class SourceTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(addr);
+      builder.address(new KeyAddress(addr));
       builder.addUdtHash(udtHash);
 
       return MercuryApiFactory.getApi().getBalance(builder.build());
@@ -137,21 +134,7 @@ public class SourceTest {
   }
 
   private Transaction sign(TransactionCompletionResponse s) throws IOException {
-    List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();
-    Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(s.txView);
-
-    for (MercuryScriptGroup sg : scriptGroups) {
-      signBuilder.sign(sg, AddressWithKeyHolder.getKey(sg.pubKey));
-    }
-
-    Transaction tx = signBuilder.buildTx();
+    Transaction tx = SignUtils.sign(s);
     return tx;
-  }
-
-  private GetBalancePayload getQueryBalancePayload(String addr, String udtHash) {
-    GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.address(addr);
-    builder.addUdtHash(udtHash);
-    return builder.build();
   }
 }

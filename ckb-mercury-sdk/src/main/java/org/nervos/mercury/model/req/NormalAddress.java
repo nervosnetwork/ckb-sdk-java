@@ -2,7 +2,11 @@ package org.nervos.mercury.model.req;
 
 import com.google.gson.annotations.SerializedName;
 
-/** @author zjh @Created Date: 2021/7/17 @Description: @Modify by: */
+/**
+ * Only the balance of the address in the corresponding format is available. For example, the
+ * secp256k1 address will only query the balance of the secp256k1 format, and will not contain the
+ * balance of the remaining formats. Copyright © 2019 Nervos Foundation. All rights reserved.
+ */
 public class NormalAddress extends QueryAddress {
   @SerializedName("NormalAddress")
   public String normalAddress;
