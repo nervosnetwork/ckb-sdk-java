@@ -15,7 +15,13 @@ import org.nervos.ckb.type.dynamic.Bytes;
 import org.nervos.ckb.type.dynamic.Dynamic;
 import org.nervos.ckb.type.dynamic.Option;
 import org.nervos.ckb.type.dynamic.Table;
-import org.nervos.ckb.type.fixed.*;
+import org.nervos.ckb.type.fixed.Byte1;
+import org.nervos.ckb.type.fixed.Byte32;
+import org.nervos.ckb.type.fixed.Empty;
+import org.nervos.ckb.type.fixed.Fixed;
+import org.nervos.ckb.type.fixed.Struct;
+import org.nervos.ckb.type.fixed.UInt32;
+import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */

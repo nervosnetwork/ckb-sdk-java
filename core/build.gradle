@@ -1,0 +1,12 @@
+description 'CKB core'
+
+dependencies {
+    compile project(":serialization")
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    compile "com.google.code.gson:gson:$gsonVersion"
+    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$loggingOkhttpVersion"
+}
+
+apply from: rootProject.file('gradle/checkstyle.gradle')

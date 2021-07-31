@@ -1,15 +1,12 @@
 package type;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
@@ -197,13 +194,5 @@ class TransactionTest {
 
     Assertions.assertEquals(
         "0xe765f9912b06c72552dae11779f6371309236e968aa045ae3b8f426d8ec8ca05", tx.computeHash());
-  }
-
-  @Disabled
-  @Test
-  public void serializationTxTest() throws IOException {
-    Api api = new Api("http://localhost:8114");
-    Transaction transaction = api.getBlockByNumber("1").transactions.get(0);
-    Assertions.assertEquals(api.computeTransactionHash(transaction), transaction.computeHash());
   }
 }
