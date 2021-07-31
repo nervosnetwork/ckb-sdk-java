@@ -129,6 +129,14 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetBlockMedianTime() throws IOException {
+    String blockMedianTime =
+        api.getBlockMedianTime(
+            "0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40");
+    Assertions.assertNull(blockMedianTime);
+  }
+
+  @Test
   public void testGetTransactionProof() throws IOException {
     TransactionProof transactionProof =
         api.getTransactionProof(

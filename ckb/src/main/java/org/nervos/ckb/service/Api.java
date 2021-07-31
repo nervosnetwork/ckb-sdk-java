@@ -154,6 +154,11 @@ public class Api implements CkbRpcApi {
     return rpcService.post("get_consensus", Collections.emptyList(), Consensus.class);
   }
 
+  @Override
+  public String getBlockMedianTime(String blockHash) throws IOException {
+    return rpcService.post("get_block_median_time", Arrays.asList(blockHash), Consensus.class);
+  }
+
   /** Stats RPC */
   @Override
   public BlockchainInfo getBlockchainInfo() throws IOException {

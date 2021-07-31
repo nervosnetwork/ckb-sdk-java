@@ -169,6 +169,11 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
+  public String getBlockMedianTime(String blockHash) throws IOException {
+    return this.ckbApi.getBlockMedianTime(blockHash);
+  }
+
+  @Override
   public BlockchainInfo getBlockchainInfo() throws IOException {
     return this.ckbApi.getBlockchainInfo();
   }
