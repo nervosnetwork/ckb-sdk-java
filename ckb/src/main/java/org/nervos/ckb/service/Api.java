@@ -142,9 +142,11 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public String verifyTransactionProof(TransactionProof transactionProof) throws IOException {
+  public List<String> verifyTransactionProof(TransactionProof transactionProof) throws IOException {
     return rpcService.post(
-        "verify_transaction_proof", Collections.singletonList(transactionProof), String.class);
+        "verify_transaction_proof",
+        Collections.singletonList(transactionProof),
+        new TypeToken<List<String>>() {}.getType());
   }
 
   @Override

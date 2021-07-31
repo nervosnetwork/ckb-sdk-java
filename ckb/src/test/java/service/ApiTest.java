@@ -35,6 +35,7 @@ import org.nervos.ckb.type.TxPoolInfo;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @Disabled
@@ -142,11 +143,16 @@ public class ApiTest {
   public void testVerifyTransactionProof() throws IOException {
     TransactionProof transactionProof =
         new TransactionProof(
-            new TransactionProof.Proof(Collections.singletonList("0x"), Collections.emptyList()),
-            "0x7978ec7ce5b507cfb52e149e36b1a23f6062ed150503c85bbf825da3599095ed",
-            "0x2bb631f4a251ec39d943cc238fc1e39c7f0e99776e8a1e7be28a03c70c4f4853");
-    String result = api.verifyTransactionProof(transactionProof);
-    Assertions.assertNotNull(result);
+            new TransactionProof.Proof(
+                Collections.singletonList(Numeric.toHexString("2")),
+                Arrays.asList(
+                    "0x705d0774a1f870c1e92571e9db806bd85c0ac7f26015f3d6c7b822f7616c1fb4")),
+            "0x36038509b555c8acf360175b9bc4f67bd68be02b152f4a9d1131a424fffd8d23",
+            "0x56431856ad780db4cc1181c44b3fddf596380f1e21fb1c0b31db6deca2892c75");
+    List<String> result = api.verifyTransactionProof(transactionProof);
+    Assertions.assertEquals(
+        result,
+        Arrays.asList("0xc9ae96ff99b48e755ccdb350a69591ba80877be3d6c67ac9660bb9a0c52dc3d6"));
   }
 
   @Test
