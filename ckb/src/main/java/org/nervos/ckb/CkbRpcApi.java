@@ -61,6 +61,8 @@ public interface CkbRpcApi {
 
   Consensus getConsensus() throws IOException;
 
+  String getBlockMedianTime(String blockHash) throws IOException;
+
   BlockchainInfo getBlockchainInfo() throws IOException;
 
   TxPoolInfo txPoolInfo() throws IOException;
