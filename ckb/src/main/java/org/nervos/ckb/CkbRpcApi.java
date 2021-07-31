@@ -57,7 +57,7 @@ public interface CkbRpcApi {
 
   TransactionProof getTransactionProof(List<String> txHashes, String blockHash) throws IOException;
 
-  String verifyTransactionProof(TransactionProof transactionProof) throws IOException;
+  List<String> verifyTransactionProof(TransactionProof transactionProof) throws IOException;
 
   Consensus getConsensus() throws IOException;
 

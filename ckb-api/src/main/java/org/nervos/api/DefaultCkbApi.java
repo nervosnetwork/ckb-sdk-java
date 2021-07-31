@@ -159,7 +159,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public String verifyTransactionProof(TransactionProof transactionProof) throws IOException {
+  public List<String> verifyTransactionProof(TransactionProof transactionProof) throws IOException {
     return this.ckbApi.verifyTransactionProof(transactionProof);
   }
 
