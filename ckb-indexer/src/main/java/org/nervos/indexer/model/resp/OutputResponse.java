@@ -1,6 +1,6 @@
 package org.nervos.indexer.model.resp;
 
-import org.nervos.indexer.model.Script;
+import org.nervos.ckb.type.Script;
 
 public class OutputResponse {
   public String capacity;

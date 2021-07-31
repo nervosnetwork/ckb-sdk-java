@@ -1,6 +1,7 @@
 package org.nervos.indexer.model;
 
 import java.util.ArrayList;
+import org.nervos.ckb.type.Script;
 
 public class SearchKeyBuilder {
 
