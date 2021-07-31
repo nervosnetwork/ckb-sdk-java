@@ -59,6 +59,8 @@ public interface CkbRpcApi {
 
   List<String> verifyTransactionProof(TransactionProof transactionProof) throws IOException;
 
+  Block getForkBlock(String blockHash) throws IOException;
+
   Consensus getConsensus() throws IOException;
 
   String getBlockMedianTime(String blockHash) throws IOException;

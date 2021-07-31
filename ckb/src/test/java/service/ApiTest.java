@@ -164,6 +164,13 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetForkBlock() throws IOException {
+    Block forkBlock =
+        api.getForkBlock("0xdca341a42890536551f99357612cef7148ed471e3b6419d0844a4e400be6ee94");
+    System.out.println(new Gson().toJson(forkBlock));
+  }
+
+  @Test
   public void testLocalNodeInfo() throws IOException {
     NodeInfo nodeInfo = api.localNodeInfo();
     Assertions.assertNotNull(nodeInfo);
