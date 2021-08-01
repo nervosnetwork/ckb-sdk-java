@@ -164,6 +164,11 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
+  public Block getForkBlock(String blockHash) throws IOException {
+    return this.ckbApi.getForkBlock(blockHash);
+  }
+
+  @Override
   public Consensus getConsensus() throws IOException {
     return this.ckbApi.getConsensus();
   }

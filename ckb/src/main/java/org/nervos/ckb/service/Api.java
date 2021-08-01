@@ -150,6 +150,11 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public Block getForkBlock(String blockHash) throws IOException {
+    return rpcService.post("get_fork_block", Collections.singletonList(blockHash), Block.class);
+  }
+
+  @Override
   public Consensus getConsensus() throws IOException {
     return rpcService.post("get_consensus", Collections.emptyList(), Consensus.class);
   }
