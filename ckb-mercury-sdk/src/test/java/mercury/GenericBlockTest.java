@@ -16,7 +16,7 @@ public class GenericBlockTest {
     try {
 
       GetGenericBlockPayloadBuilder builder = new GetGenericBlockPayloadBuilder();
-      builder.blockNum(new BigInteger("2172093"));
+      builder.blockNumber(new BigInteger("2172093"));
 
       System.out.println(new Gson().toJson(builder.build()));
 
@@ -52,7 +52,7 @@ public class GenericBlockTest {
     try {
 
       GetGenericBlockPayloadBuilder builder = new GetGenericBlockPayloadBuilder();
-      builder.blockNum(new BigInteger("2172093"));
+      builder.blockNumber(new BigInteger("2172093"));
       builder.blockHash("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742");
 
       System.out.println(new Gson().toJson(builder.build()));
@@ -89,7 +89,7 @@ public class GenericBlockTest {
     try {
 
       GetGenericBlockPayloadBuilder builder = new GetGenericBlockPayloadBuilder();
-      builder.blockNum(new BigInteger("2172092"));
+      builder.blockNumber(new BigInteger("2172092"));
       builder.blockHash("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742");
 
       System.out.println(new Gson().toJson(builder.build()));
@@ -126,7 +126,7 @@ public class GenericBlockTest {
     try {
 
       GetGenericBlockPayloadBuilder builder = new GetGenericBlockPayloadBuilder();
-      builder.blockNum(new BigInteger("217209233"));
+      builder.blockNumber(new BigInteger("217209233"));
 
       System.out.println(new Gson().toJson(builder.build()));
 
