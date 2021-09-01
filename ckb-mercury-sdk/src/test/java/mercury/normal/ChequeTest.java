@@ -12,15 +12,11 @@ import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
-import org.nervos.mercury.model.req.Action;
-import org.nervos.mercury.model.req.FromKeyAddresses;
-import org.nervos.mercury.model.req.FromNormalAddresses;
-import org.nervos.mercury.model.req.KeyAddress;
-import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.ToKeyAddress;
+import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
@@ -82,7 +78,8 @@ public class ChequeTest {
     builder.from(
         new FromKeyAddresses(new HashSet<>(Arrays.asList(senderAddress)), Source.unconstrained));
     builder.addItem(
-        new ToKeyAddress(chequeCellReceiverAddress, Action.lend_by_from), new BigInteger("100"));
+        new ToKeyAddress(chequeCellReceiverAddress, Action.lend_by_from),
+        AmountUtils.ckbToShannon(100));
 
     System.out.println(new Gson().toJson(builder.build()));
 

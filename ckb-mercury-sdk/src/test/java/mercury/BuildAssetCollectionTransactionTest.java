@@ -3,7 +3,6 @@ package mercury;
 import com.google.common.primitives.Bytes;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressGenerator;
 import org.nervos.ckb.utils.address.AddressParseResult;
@@ -22,13 +22,7 @@ import org.nervos.ckb.utils.address.AddressParser;
 import org.nervos.mercury.model.CollectAssetPayloadBuilder;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
-import org.nervos.mercury.model.req.Action;
-import org.nervos.mercury.model.req.FromKeyAddresses;
-import org.nervos.mercury.model.req.FromNormalAddresses;
-import org.nervos.mercury.model.req.KeyAddress;
-import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.ToKeyAddress;
-import org.nervos.mercury.model.req.ToNormalAddress;
+import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
@@ -329,7 +323,7 @@ public class BuildAssetCollectionTransactionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.cexAddress(), Action.lend_by_from),
-        new BigInteger("100"));
+        AmountUtils.ckbToShannon(100));
 
     try {
       TransactionCompletionResponse s =
@@ -418,7 +412,7 @@ public class BuildAssetCollectionTransactionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.cexAddress(), Action.pay_by_from),
-        new BigInteger("100")); // unit: CKB, 1 CKB = 10^8 Shannon
+        AmountUtils.ckbToShannon(100)); // unit: CKB, 1 CKB = 10^8 Shannon
 
     try {
       TransactionCompletionResponse s =
