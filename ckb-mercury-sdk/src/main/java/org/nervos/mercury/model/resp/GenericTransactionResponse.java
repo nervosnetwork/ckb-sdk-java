@@ -8,5 +8,6 @@ public class GenericTransactionResponse {
   @SerializedName("tx_hash")
   public String txHash;
 
-  public List<OperationResponse> operations;
+  @SerializedName("operations")
+  public List<RecordResponse> records;
 }

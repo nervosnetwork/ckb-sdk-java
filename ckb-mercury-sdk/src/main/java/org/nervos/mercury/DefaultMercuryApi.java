@@ -21,11 +21,7 @@ import org.nervos.mercury.model.req.QueryGenericTransactionsPayload;
 import org.nervos.mercury.model.req.ToKeyAddress;
 import org.nervos.mercury.model.req.TransferItem;
 import org.nervos.mercury.model.req.TransferPayload;
-import org.nervos.mercury.model.resp.GenericBlockResponse;
-import org.nervos.mercury.model.resp.GenericTransactionWithStatusResponse;
-import org.nervos.mercury.model.resp.GetBalanceResponse;
-import org.nervos.mercury.model.resp.QueryGenericTransactionsResponse;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
+import org.nervos.mercury.model.resp.*;
 
 public class DefaultMercuryApi implements MercuryApi {
 
@@ -34,6 +30,7 @@ public class DefaultMercuryApi implements MercuryApi {
       new GsonBuilder()
           .registerTypeAdapter(QueryAddress.class, new KeyAddress(""))
           .registerTypeAdapter(QueryAddress.class, new NormalAddress(""))
+          .registerTypeAdapter(RecordResponse.class, new RecordResponse())
           .create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {
@@ -88,13 +85,14 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.GET_GENERIC_TRANSACTION,
         Arrays.asList(txHash),
-        GenericTransactionWithStatusResponse.class);
+        GenericTransactionWithStatusResponse.class,
+        g);
   }
 
   @Override
   public GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException {
     return this.rpcService.post(
-        RpcMethods.GET_GENERIC_BLOCK, Arrays.asList(payload), GenericBlockResponse.class);
+        RpcMethods.GET_GENERIC_BLOCK, Arrays.asList(payload), GenericBlockResponse.class, g);
   }
 
   @Override
