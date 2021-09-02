@@ -3,6 +3,7 @@ package mercury;
 import com.google.common.primitives.Bytes;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -324,7 +325,7 @@ public class BuildAssetCollectionTransactionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.cexAddress(), Action.lend_by_from),
-        AmountUtils.ckbToShannon(100));
+        new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =

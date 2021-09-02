@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import mercury.constant.AddressWithKeyHolder;
@@ -62,7 +63,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
-        AmountUtils.ckbToShannon(100));
+        new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =
@@ -106,7 +107,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.lend_by_from),
-        AmountUtils.ckbToShannon(100));
+        new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =
@@ -151,7 +152,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_to),
-        AmountUtils.ckbToShannon(100));
+        new BigInteger("100"));
 
     System.out.println(g.toJson(builder.build()));
 

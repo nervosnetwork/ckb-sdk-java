@@ -2,6 +2,7 @@ package mercury.normal;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import mercury.SignUtils;
@@ -11,7 +12,6 @@ import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
@@ -28,7 +28,7 @@ public class AcpTest {
     builder.from(new FromNormalAddresses(new HashSet<>(Arrays.asList(acpAddress))));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
-        AmountUtils.ckbToShannon(100));
+        new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =
@@ -52,7 +52,7 @@ public class AcpTest {
         new FromKeyAddresses(
             new HashSet<>(Arrays.asList(AddressWithKeyHolder.testAddress0())),
             Source.unconstrained));
-    builder.addItem(new ToNormalAddress(acpAddress), AmountUtils.ckbToShannon(100));
+    builder.addItem(new ToNormalAddress(acpAddress), new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =
