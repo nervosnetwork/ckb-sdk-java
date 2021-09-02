@@ -12,12 +12,12 @@ import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
 import org.nervos.mercury.model.resp.AssetInfo;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
-public class CreateAssetAccountTest {
+public class BuildAdjustAccountTest {
 
   Gson g = new Gson();
 
   @Test
-  void testCreateAssetAccount() {
+  void testBuildAdjustAccount() {
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
     builder.address(AddressWithKeyHolder.testAddress4());
     builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
@@ -26,7 +26,7 @@ public class CreateAssetAccountTest {
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiFactory.getApi().buildAssetAccountCreationTransaction(builder.build());
+          MercuryApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
 
       System.out.println(new Gson().toJson(s));
 

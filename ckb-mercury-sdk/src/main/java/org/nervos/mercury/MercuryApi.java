@@ -12,7 +12,7 @@ public interface MercuryApi {
   TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException;
 
-  TransactionCompletionResponse buildAssetAccountCreationTransaction(AdjustAccountPayload payload)
+  TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException;
 
   GenericTransactionWithStatusResponse getGenericTransaction(String txHash) throws IOException;

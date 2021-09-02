@@ -278,9 +278,9 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildAssetAccountCreationTransaction(
-      AdjustAccountPayload payload) throws IOException {
-    return this.mercuryApi.buildAssetAccountCreationTransaction(payload);
+  public TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
+      throws IOException {
+    return this.mercuryApi.buildAdjustAccountTransaction(payload);
   }
 
   @Override
