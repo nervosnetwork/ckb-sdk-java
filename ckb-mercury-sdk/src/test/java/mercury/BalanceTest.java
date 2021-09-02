@@ -9,11 +9,11 @@ import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.req.KeyAddress;
 import org.nervos.mercury.model.req.NormalAddress;
 import org.nervos.mercury.model.req.QueryAddress;
+import org.nervos.mercury.model.resp.AssetInfo;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 public class BalanceTest {
@@ -29,7 +29,8 @@ public class BalanceTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(new KeyAddress(AddressWithKeyHolder.testAddress4()));
+      builder.address(AddressWithKeyHolder.testAddress4());
+      builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
 
@@ -45,8 +46,8 @@ public class BalanceTest {
   void getSudtBalance() {
 
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.address(new KeyAddress(AddressWithKeyHolder.testAddress4()));
-    builder.addUdtHash(UdtHolder.UDT_HASH);
+    builder.address(AddressWithKeyHolder.testAddress4());
+    builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     System.out.println(g.toJson(builder.build()));
 
@@ -63,8 +64,7 @@ public class BalanceTest {
   void getAllBalance() {
 
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.address(new KeyAddress(AddressWithKeyHolder.testAddress4()));
-    builder.allBalance();
+    builder.address(AddressWithKeyHolder.testAddress4());
 
     System.out.println(g.toJson(builder.build()));
 
@@ -73,41 +73,6 @@ public class BalanceTest {
       assertNotNull(balance, "Balance is not empty");
       System.out.println(g.toJson(balance));
       System.out.println(balance.balances.size());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @Test
-  void testNormalAddressWithAcpAddress() {
-    GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.address(
-        new NormalAddress(AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4())));
-    builder.addUdtHash(UdtHolder.UDT_HASH);
-
-    System.out.println(g.toJson(builder.build()));
-
-    try {
-      GetBalanceResponse balance = MercuryApiFactory.getApi().getBalance(builder.build());
-      assertNotNull(balance, "Balance is not empty");
-      System.out.println(g.toJson(balance));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @Test
-  void testNormalAddressWithSecp256k1Address() {
-    GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.address(new NormalAddress(AddressWithKeyHolder.testAddress4()));
-    builder.addUdtHash(UdtHolder.UDT_HASH);
-
-    System.out.println(g.toJson(builder.build()));
-
-    try {
-      GetBalanceResponse balance = MercuryApiFactory.getApi().getBalance(builder.build());
-      assertNotNull(balance, "Balance is not empty");
-      System.out.println(g.toJson(balance));
     } catch (IOException e) {
       e.printStackTrace();
     }

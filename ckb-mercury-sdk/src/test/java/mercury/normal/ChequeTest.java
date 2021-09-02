@@ -10,6 +10,7 @@ import mercury.SignUtils;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
+import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
@@ -17,6 +18,7 @@ import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.*;
+import org.nervos.mercury.model.resp.AssetInfo;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
@@ -60,8 +62,8 @@ public class ChequeTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(new KeyAddress(addr));
-      builder.addUdtHash(udtHash);
+      builder.address(addr);
+      builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       return MercuryApiFactory.getApi().getBalance(builder.build());
 

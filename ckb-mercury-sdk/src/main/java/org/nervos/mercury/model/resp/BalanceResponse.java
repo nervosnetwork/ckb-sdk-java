@@ -4,16 +4,27 @@ import com.google.gson.annotations.SerializedName;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
 public class BalanceResponse {
+  public String address;
 
-  @SerializedName("key_address")
-  public String keyAddress;
+  public AssetInfo assetInfo;
 
-  @SerializedName("udt_hash")
-  public String udtHash;
+  public String free;
 
-  public String unconstrained;
+  public String claimable;
 
-  public String fleeting;
+  public String freezed;
 
-  public String locked;
+  public static class RpcBalanceResponse {
+    @SerializedName("key_address")
+    public String keyAddress;
+
+    @SerializedName("udt_hash")
+    public String udtHash;
+
+    public String unconstrained;
+
+    public String fleeting;
+
+    public String locked;
+  }
 }

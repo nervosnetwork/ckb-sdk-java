@@ -10,17 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
-import org.nervos.mercury.model.req.CollectAssetPayload;
-import org.nervos.mercury.model.req.CreateAssetAccountPayload;
-import org.nervos.mercury.model.req.GetBalancePayload;
-import org.nervos.mercury.model.req.GetGenericBlockPayload;
-import org.nervos.mercury.model.req.KeyAddress;
-import org.nervos.mercury.model.req.NormalAddress;
-import org.nervos.mercury.model.req.QueryAddress;
-import org.nervos.mercury.model.req.QueryGenericTransactionsPayload;
-import org.nervos.mercury.model.req.ToKeyAddress;
-import org.nervos.mercury.model.req.TransferItem;
-import org.nervos.mercury.model.req.TransferPayload;
+import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.*;
 
 public class DefaultMercuryApi implements MercuryApi {
@@ -44,8 +34,35 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public GetBalanceResponse getBalance(GetBalancePayload payload) throws IOException {
 
-    return this.rpcService.post(
-        RpcMethods.GET_BALANCE, Arrays.asList(payload), GetBalanceResponse.class, g);
+    GetBalanceResponse.RpcGetBalanceResponse resp =
+        this.rpcService.post(
+            RpcMethods.GET_BALANCE,
+            Arrays.asList(payload),
+            GetBalanceResponse.RpcGetBalanceResponse.class,
+            g);
+
+    GetBalanceResponse result = new GetBalanceResponse();
+    result.balances =
+        resp.balances
+            .stream()
+            .map(
+                x -> {
+                  BalanceResponse balance = new BalanceResponse();
+                  balance.address = x.keyAddress;
+                  balance.free = x.unconstrained;
+                  balance.claimable = x.fleeting;
+                  balance.freezed = x.locked;
+                  if (Objects.isNull(x.udtHash) || x.udtHash == "") {
+                    balance.assetInfo = AssetInfo.newCkbAsset();
+                  } else {
+                    balance.assetInfo = AssetInfo.newUdtAsset(x.udtHash);
+                  }
+
+                  return balance;
+                })
+            .collect(toList());
+
+    return result;
   }
 
   @Override
