@@ -10,6 +10,7 @@ import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.Action;
 import org.nervos.mercury.model.req.FromKeyAddresses;
@@ -30,7 +31,7 @@ public class FeeRateTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
-        new BigInteger("100")); // unit: CKB, 1 CKB = 10^8 Shannon
+        AmountUtils.ckbToShannon(100)); // unit: CKB, 1 CKB = 10^8 Shannon
     // default 1000 shannons/KB
     //    builder.feeRate(new BigInteger("1000"));
 
@@ -58,7 +59,7 @@ public class FeeRateTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
-        new BigInteger("100")); // unit: CKB, 1 CKB = 10^8 Shannon
+        AmountUtils.ckbToShannon(100)); // unit: CKB, 1 CKB = 10^8 Shannon
     builder.feeRate(new BigInteger("10000"));
 
     try {

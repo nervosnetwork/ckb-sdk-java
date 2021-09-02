@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import mercury.constant.AddressWithKeyHolder;
@@ -13,6 +12,7 @@ import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.Action;
 import org.nervos.mercury.model.req.FromKeyAddresses;
@@ -34,7 +34,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_from),
-        new BigInteger("100")); // unit: CKB, 1 CKB = 10^8 Shannon
+        AmountUtils.ckbToShannon(100)); // unit: CKB, 1 CKB = 10^8 Shannon
 
     System.out.println(new Gson().toJson(builder.build()));
 
@@ -62,7 +62,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.pay_by_from),
-        new BigInteger("100"));
+        AmountUtils.ckbToShannon(100));
 
     try {
       TransactionCompletionResponse s =
@@ -86,7 +86,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.lend_by_from),
-        new BigInteger("100"));
+        AmountUtils.ckbToShannon(100));
 
     try {
       TransactionCompletionResponse s =
@@ -106,7 +106,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress2(), Action.lend_by_from),
-        new BigInteger("100"));
+        AmountUtils.ckbToShannon(100));
 
     try {
       TransactionCompletionResponse s =
@@ -131,7 +131,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress1(), Action.pay_by_to),
-        new BigInteger("100"));
+        AmountUtils.ckbToShannon(100));
 
     try {
       TransactionCompletionResponse s =
@@ -151,7 +151,7 @@ public class ActionTest {
             Source.unconstrained));
     builder.addItem(
         new ToKeyAddress(AddressWithKeyHolder.testAddress4(), Action.pay_by_to),
-        new BigInteger("100"));
+        AmountUtils.ckbToShannon(100));
 
     System.out.println(g.toJson(builder.build()));
 
