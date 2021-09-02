@@ -50,10 +50,10 @@ public class RecordResponse
       if (fieldExist(amount, "status")) {
         JsonObject status = amount.get("status").getAsJsonObject();
         if (fieldExist(status, "claimable")) {
-          record.status = AssetStatus.Claimable;
+          record.status = AssetStatus.CLAIMABLE;
           record.blockNumber = status.get("claimable").getAsBigInteger();
         } else if (fieldExist(status, "fixed")) {
-          record.status = AssetStatus.Fixed;
+          record.status = AssetStatus.FIXED;
           record.blockNumber = status.get("fixed").getAsBigInteger();
         }
       }
