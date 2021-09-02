@@ -14,7 +14,7 @@ public class RecordResponse
 
   public BigInteger amount;
 
-  public String assetType;
+  public AssetInfo assetInfo;
 
   public AssetStatus status;
 
@@ -40,8 +40,12 @@ public class RecordResponse
       if (fieldExist(amount, "value")) {
         record.amount = amount.get("value").getAsBigInteger();
       }
+      record.assetInfo = new AssetInfo();
       if (fieldExist(amount, "udt_hash")) {
-        record.assetType = amount.get("udt_hash").getAsString();
+        record.assetInfo.udtHash = amount.get("udt_hash").getAsString();
+        record.assetInfo.assetType = AssetInfo.AssetType.UDT;
+      } else {
+        record.assetInfo.assetType = AssetInfo.AssetType.CKB;
       }
       if (fieldExist(amount, "status")) {
         JsonObject status = amount.get("status").getAsJsonObject();
