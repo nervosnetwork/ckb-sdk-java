@@ -89,7 +89,7 @@ public class DefaultMercuryApi implements MercuryApi {
 
   @Override
   public TransactionCompletionResponse buildAssetAccountCreationTransaction(
-      CreateAssetAccountPayload payload) throws IOException {
+      AdjustAccountPayload payload) throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_ASSET_ACCOUNT_CREATION_TRANSACTION,
         Arrays.asList(payload),

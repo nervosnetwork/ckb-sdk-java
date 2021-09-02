@@ -8,7 +8,8 @@ import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.mercury.model.CreateAssetAccountPayloadBuilder;
+import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
+import org.nervos.mercury.model.resp.AssetInfo;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 public class CreateAssetAccountTest {
@@ -17,9 +18,9 @@ public class CreateAssetAccountTest {
 
   @Test
   void testCreateAssetAccount() {
-    CreateAssetAccountPayloadBuilder builder = new CreateAssetAccountPayloadBuilder();
-    builder.keyAddress(AddressWithKeyHolder.testAddress4());
-    builder.addUdtHash(UdtHolder.UDT_HASH);
+    AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
+    builder.address(AddressWithKeyHolder.testAddress4());
+    builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     System.out.println(new Gson().toJson(builder.build()));
 

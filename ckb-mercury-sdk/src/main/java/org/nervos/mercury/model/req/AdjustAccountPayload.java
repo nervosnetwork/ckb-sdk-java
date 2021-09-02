@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import java.util.Set;
 
-public class CreateAssetAccountPayload {
+public class AdjustAccountPayload {
 
   @SerializedName("key_address")
-  public String keyAddress;
+  public String address;
 
   @SerializedName("udt_hashes")
   public Set<String> udtHashes;
@@ -15,5 +15,5 @@ public class CreateAssetAccountPayload {
   @SerializedName("fee_rate")
   public BigInteger feeRate;
 
-  protected CreateAssetAccountPayload() {}
+  protected AdjustAccountPayload() {}
 }

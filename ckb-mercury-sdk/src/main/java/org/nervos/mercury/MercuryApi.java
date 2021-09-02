@@ -2,17 +2,8 @@ package org.nervos.mercury;
 
 import java.io.IOException;
 import java.util.List;
-import org.nervos.mercury.model.req.CollectAssetPayload;
-import org.nervos.mercury.model.req.CreateAssetAccountPayload;
-import org.nervos.mercury.model.req.GetBalancePayload;
-import org.nervos.mercury.model.req.GetGenericBlockPayload;
-import org.nervos.mercury.model.req.QueryGenericTransactionsPayload;
-import org.nervos.mercury.model.req.TransferPayload;
-import org.nervos.mercury.model.resp.GenericBlockResponse;
-import org.nervos.mercury.model.resp.GenericTransactionWithStatusResponse;
-import org.nervos.mercury.model.resp.GetBalanceResponse;
-import org.nervos.mercury.model.resp.QueryGenericTransactionsResponse;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
+import org.nervos.mercury.model.req.*;
+import org.nervos.mercury.model.resp.*;
 
 public interface MercuryApi {
 
@@ -21,8 +12,8 @@ public interface MercuryApi {
   TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException;
 
-  TransactionCompletionResponse buildAssetAccountCreationTransaction(
-      CreateAssetAccountPayload payload) throws IOException;
+  TransactionCompletionResponse buildAssetAccountCreationTransaction(AdjustAccountPayload payload)
+      throws IOException;
 
   GenericTransactionWithStatusResponse getGenericTransaction(String txHash) throws IOException;
 

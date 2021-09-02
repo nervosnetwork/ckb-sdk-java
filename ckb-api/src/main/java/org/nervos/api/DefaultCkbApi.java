@@ -7,24 +7,7 @@ import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.service.RpcService;
-import org.nervos.ckb.type.BannedAddress;
-import org.nervos.ckb.type.BannedResultAddress;
-import org.nervos.ckb.type.Block;
-import org.nervos.ckb.type.BlockEconomicState;
-import org.nervos.ckb.type.BlockchainInfo;
-import org.nervos.ckb.type.Consensus;
-import org.nervos.ckb.type.Cycles;
-import org.nervos.ckb.type.Epoch;
-import org.nervos.ckb.type.Header;
-import org.nervos.ckb.type.NodeInfo;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.PeerNodeInfo;
-import org.nervos.ckb.type.RawTxPool;
-import org.nervos.ckb.type.RawTxPoolVerbose;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.SyncState;
-import org.nervos.ckb.type.TransactionProof;
-import org.nervos.ckb.type.TxPoolInfo;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -38,17 +21,8 @@ import org.nervos.indexer.model.resp.TipResponse;
 import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
-import org.nervos.mercury.model.req.CollectAssetPayload;
-import org.nervos.mercury.model.req.CreateAssetAccountPayload;
-import org.nervos.mercury.model.req.GetBalancePayload;
-import org.nervos.mercury.model.req.GetGenericBlockPayload;
-import org.nervos.mercury.model.req.QueryGenericTransactionsPayload;
-import org.nervos.mercury.model.req.TransferPayload;
-import org.nervos.mercury.model.resp.GenericBlockResponse;
-import org.nervos.mercury.model.resp.GenericTransactionWithStatusResponse;
-import org.nervos.mercury.model.resp.GetBalanceResponse;
-import org.nervos.mercury.model.resp.QueryGenericTransactionsResponse;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
+import org.nervos.mercury.model.req.*;
+import org.nervos.mercury.model.resp.*;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class DefaultCkbApi implements CkbApi {
@@ -305,7 +279,7 @@ public class DefaultCkbApi implements CkbApi {
 
   @Override
   public TransactionCompletionResponse buildAssetAccountCreationTransaction(
-      CreateAssetAccountPayload payload) throws IOException {
+      AdjustAccountPayload payload) throws IOException {
     return this.mercuryApi.buildAssetAccountCreationTransaction(payload);
   }
 
