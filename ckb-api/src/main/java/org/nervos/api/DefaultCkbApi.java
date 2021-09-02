@@ -284,6 +284,12 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
+  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
+      throws IOException {
+    return this.mercuryApi.buildSmartTransferTransaction(payload);
+  }
+
+  @Override
   public GenericTransactionWithStatusResponse getGenericTransaction(String txHash)
       throws IOException {
     return this.mercuryApi.getGenericTransaction(txHash);
@@ -309,5 +315,10 @@ public class DefaultCkbApi implements CkbApi {
   public QueryGenericTransactionsResponse queryGenericTransactions(
       QueryGenericTransactionsPayload payload) throws IOException {
     return this.mercuryApi.queryGenericTransactions(payload);
+  }
+
+  @Override
+  public Integer getAccountNumber(String address) throws IOException {
+    return this.mercuryApi.getAccountNumber(address);
   }
 }

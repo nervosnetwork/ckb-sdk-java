@@ -15,6 +15,9 @@ public interface MercuryApi {
   TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException;
 
+  TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
+      throws IOException;
+
   GenericTransactionWithStatusResponse getGenericTransaction(String txHash) throws IOException;
 
   GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException;
@@ -26,4 +29,6 @@ public interface MercuryApi {
 
   QueryGenericTransactionsResponse queryGenericTransactions(QueryGenericTransactionsPayload payload)
       throws IOException;
+
+  Integer getAccountNumber(String address) throws IOException;
 }

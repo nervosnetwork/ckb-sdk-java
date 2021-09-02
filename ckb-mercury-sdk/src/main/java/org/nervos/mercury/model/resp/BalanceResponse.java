@@ -1,6 +1,7 @@
 package org.nervos.mercury.model.resp;
 
 import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
 public class BalanceResponse {
@@ -8,11 +9,11 @@ public class BalanceResponse {
 
   public AssetInfo assetInfo;
 
-  public String free;
+  public BigInteger free;
 
-  public String claimable;
+  public BigInteger claimable;
 
-  public String freezed;
+  public BigInteger freezed;
 
   public static class RpcBalanceResponse {
     @SerializedName("key_address")
@@ -21,10 +22,10 @@ public class BalanceResponse {
     @SerializedName("udt_hash")
     public String udtHash;
 
-    public String unconstrained;
+    public BigInteger unconstrained;
 
-    public String fleeting;
+    public BigInteger fleeting;
 
-    public String locked;
+    public BigInteger locked;
   }
 }
