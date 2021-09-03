@@ -5,9 +5,9 @@ import java.math.BigInteger;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
-public class GenericTransactionWithStatusResponse {
+public class TransactionInfoWithStatusResponse {
 
-  public GenericTransactionResponse transaction;
+  public TransactionInfoResponse transaction;
 
   public TransactionWithStatus.Status status;
 

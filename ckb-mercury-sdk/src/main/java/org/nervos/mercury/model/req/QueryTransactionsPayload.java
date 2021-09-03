@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.Set;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
-public class QueryGenericTransactionsPayload {
+public class QueryTransactionsPayload {
 
   public QueryAddress address;
 
@@ -24,5 +24,5 @@ public class QueryGenericTransactionsPayload {
 
   public String order;
 
-  protected QueryGenericTransactionsPayload() {}
+  protected QueryTransactionsPayload() {}
 }

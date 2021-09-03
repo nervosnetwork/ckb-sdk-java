@@ -1,10 +1,10 @@
 package org.nervos.mercury.model;
 
 import java.math.BigInteger;
-import org.nervos.mercury.model.req.GetGenericBlockPayload;
+import org.nervos.mercury.model.req.GetBlockInfoPayload;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
-public class GetGenericBlockPayloadBuilder extends GetGenericBlockPayload {
+public class GetBlockInfoPayloadBuilder extends GetBlockInfoPayload {
 
   public void blockNumber(BigInteger blockNumber) {
     this.blockNumber = blockNumber;
@@ -14,7 +14,7 @@ public class GetGenericBlockPayloadBuilder extends GetGenericBlockPayload {
     this.blockHash = blockHash;
   }
 
-  public GetGenericBlockPayload build() {
+  public GetBlockInfoPayload build() {
     return this;
   }
 }

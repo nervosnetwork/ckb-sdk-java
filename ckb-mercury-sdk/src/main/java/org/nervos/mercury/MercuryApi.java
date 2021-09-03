@@ -18,17 +18,16 @@ public interface MercuryApi {
   TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
       throws IOException;
 
-  GenericTransactionWithStatusResponse getGenericTransaction(String txHash) throws IOException;
+  TransactionInfoWithStatusResponse getTransactionInfo(String txHash) throws IOException;
 
-  GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException;
+  BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException;
 
   List<String> registerAddresses(List<String> normalAddresses) throws IOException;
 
   TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
       throws IOException;
 
-  QueryGenericTransactionsResponse queryGenericTransactions(QueryGenericTransactionsPayload payload)
-      throws IOException;
+  QueryTransactionsResponse queryTransactions(QueryTransactionsPayload payload) throws IOException;
 
   Integer getAccountNumber(String address) throws IOException;
 }

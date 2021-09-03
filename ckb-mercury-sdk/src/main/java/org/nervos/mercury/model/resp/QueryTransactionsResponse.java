@@ -5,9 +5,9 @@ import java.math.BigInteger;
 import java.util.List;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
-public class QueryGenericTransactionsResponse {
+public class QueryTransactionsResponse {
 
-  public List<GenericTransactionResponse> txs;
+  public List<TransactionInfoResponse> txs;
 
   @SerializedName("total_count")
   public BigInteger totalCount;

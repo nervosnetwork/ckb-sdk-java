@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
-public class GenericBlockResponse {
+public class BlockInfoResponse {
   @SerializedName("block_number")
   public BigInteger blockNumber;
 
@@ -17,5 +17,5 @@ public class GenericBlockResponse {
 
   public BigInteger timestamp;
 
-  public List<GenericTransactionResponse> transactions;
+  public List<TransactionInfoResponse> transactions;
 }
