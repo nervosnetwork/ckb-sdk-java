@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import org.nervos.mercury.model.req.KeyAddress;
 import org.nervos.mercury.model.req.NormalAddress;
-import org.nervos.mercury.model.req.QueryGenericTransactionsPayload;
+import org.nervos.mercury.model.req.QueryTransactionsPayload;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
-public class QueryGenericTransactionsPayloadBuilder extends QueryGenericTransactionsPayload {
+public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
 
-  public QueryGenericTransactionsPayloadBuilder() {
+  public QueryTransactionsPayloadBuilder() {
     this.udtHashes = new HashSet<>(2, 1);
     this.udtHashes.add(null);
   }
@@ -54,7 +54,7 @@ public class QueryGenericTransactionsPayloadBuilder extends QueryGenericTransact
     this.order = order;
   }
 
-  public QueryGenericTransactionsPayload build() {
+  public QueryTransactionsPayload build() {
     return this;
   }
 }

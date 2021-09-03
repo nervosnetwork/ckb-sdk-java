@@ -290,14 +290,13 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public GenericTransactionWithStatusResponse getGenericTransaction(String txHash)
-      throws IOException {
-    return this.mercuryApi.getGenericTransaction(txHash);
+  public TransactionInfoWithStatusResponse getTransactionInfo(String txHash) throws IOException {
+    return this.mercuryApi.getTransactionInfo(txHash);
   }
 
   @Override
-  public GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException {
-    return this.mercuryApi.getGenericBlock(payload);
+  public BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException {
+    return this.mercuryApi.getBlockInfo(payload);
   }
 
   @Override
@@ -312,9 +311,9 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public QueryGenericTransactionsResponse queryGenericTransactions(
-      QueryGenericTransactionsPayload payload) throws IOException {
-    return this.mercuryApi.queryGenericTransactions(payload);
+  public QueryTransactionsResponse queryTransactions(QueryTransactionsPayload payload)
+      throws IOException {
+    return this.mercuryApi.queryTransactions(payload);
   }
 
   @Override

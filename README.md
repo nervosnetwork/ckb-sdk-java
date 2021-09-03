@@ -129,9 +129,9 @@ TODO
 #### example
 
 1. [`get_balance` example](./ckb-mercury-sdk/src/test/java/mercury/BalanceTest.java)
-2. [`get_generic_block` example](./ckb-mercury-sdk/src/test/java/mercury/GenericBlockTest.java)
-3. [`get_generic_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/GenericTransactionTest.java)
-4. [`query_generic_transactions` example](./ckb-mercury-sdk/src/test/java/mercury/QueryGenericTransactionsPagesTest.java)
+2. [`get_block_info` example](./ckb-mercury-sdk/src/test/java/mercury/BlockInfoTest.java)
+3. [`get_transaction_info` example](./ckb-mercury-sdk/src/test/java/mercury/TransactionInfoTest.java)
+4. [`query_transactions` example](./ckb-mercury-sdk/src/test/java/mercury/QueryTransactionsPagesTest.java)
 5. [`register_addresses` example](./ckb-mercury-sdk/src/test/java/mercury/RegisterAddressesTest.java)
 6. [`build_transfer_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/TransferCompletionTest.java)
 7. [`build_transfer_transaction` by action example](./ckb-mercury-sdk/src/test/java/mercury/ActionTest.java)

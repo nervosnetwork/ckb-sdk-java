@@ -8,25 +8,25 @@ import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.address.AddressTools;
-import org.nervos.mercury.model.QueryGenericTransactionsPayloadBuilder;
+import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
 import org.nervos.mercury.model.req.KeyAddress;
 import org.nervos.mercury.model.req.NormalAddress;
-import org.nervos.mercury.model.resp.QueryGenericTransactionsResponse;
+import org.nervos.mercury.model.resp.QueryTransactionsResponse;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
-public class QueryGenericTransactionsPagesTest {
+public class QueryTransactionsPagesTest {
 
   Gson g = new Gson();
 
   @Test
-  void testQueryGenericTransactionsWithCkb() {
+  void testQueryTransactionsWithCkb() {
 
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -37,14 +37,14 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithUdt() {
+  void testQueryTransactionsWithUdt() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.addUdtHash(UdtHolder.UDT_HASH);
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -55,14 +55,14 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithAll() {
+  void testQueryTransactionsWithAll() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.allTransactionType();
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -73,14 +73,14 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithChequeAddress() {
+  void testQueryTransactionsWithChequeAddress() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new NormalAddress(getChequeAddress()));
       builder.allTransactionType();
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -91,14 +91,14 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithAcpAddress() {
+  void testQueryTransactionsWithAcpAddress() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new NormalAddress(getAcpAddress()));
       builder.allTransactionType();
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -109,15 +109,15 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithFromBlock() {
+  void testQueryTransactionsWithFromBlock() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.allTransactionType();
       builder.fromBlock(new BigInteger("2224987"));
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -128,15 +128,15 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithToBlock() {
+  void testQueryTransactionsWithToBlock() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.allTransactionType();
       builder.toBlock(new BigInteger("2224987"));
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -147,16 +147,16 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithFromBlockAndToBlock() {
+  void testQueryTransactionsWithFromBlockAndToBlock() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.allTransactionType();
       builder.fromBlock(new BigInteger("2224993"));
       builder.toBlock(new BigInteger("2225023"));
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -167,16 +167,16 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithLimit() {
+  void testQueryTransactionsWithLimit() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.allTransactionType();
       // default limit 50
       builder.limit(new BigInteger("2"));
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -187,16 +187,16 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithOrder() {
+  void testQueryTransactionsWithOrder() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.allTransactionType();
       // default order desc
       builder.order("asc");
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));
@@ -207,16 +207,16 @@ public class QueryGenericTransactionsPagesTest {
   }
 
   @Test
-  void testQueryGenericTransactionsWithOffset() {
+  void testQueryTransactionsWithOffset() {
     try {
-      QueryGenericTransactionsPayloadBuilder builder = new QueryGenericTransactionsPayloadBuilder();
+      QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.address(new KeyAddress(AddressWithKeyHolder.queryTransactionAddress()));
       builder.allTransactionType();
       builder.limit(new BigInteger("1"));
       builder.offset(new BigInteger("1"));
 
-      QueryGenericTransactionsResponse resp =
-          MercuryApiFactory.getApi().queryGenericTransactions(builder.build());
+      QueryTransactionsResponse resp =
+          MercuryApiFactory.getApi().queryTransactions(builder.build());
 
       System.out.println(resp.txs.size());
       System.out.println(g.toJson(resp));

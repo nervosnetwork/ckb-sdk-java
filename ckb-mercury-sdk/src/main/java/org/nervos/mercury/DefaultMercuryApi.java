@@ -109,19 +109,18 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public GenericTransactionWithStatusResponse getGenericTransaction(String txHash)
-      throws IOException {
+  public TransactionInfoWithStatusResponse getTransactionInfo(String txHash) throws IOException {
     return this.rpcService.post(
-        RpcMethods.GET_GENERIC_TRANSACTION,
+        RpcMethods.GET_TRANSACTION_INFO,
         Arrays.asList(txHash),
-        GenericTransactionWithStatusResponse.class,
+        TransactionInfoWithStatusResponse.class,
         g);
   }
 
   @Override
-  public GenericBlockResponse getGenericBlock(GetGenericBlockPayload payload) throws IOException {
+  public BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException {
     return this.rpcService.post(
-        RpcMethods.GET_GENERIC_BLOCK, Arrays.asList(payload), GenericBlockResponse.class, g);
+        RpcMethods.GET_BLOCK_INFO, Arrays.asList(payload), BlockInfoResponse.class, g);
   }
 
   @Override
@@ -142,12 +141,10 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public QueryGenericTransactionsResponse queryGenericTransactions(
-      QueryGenericTransactionsPayload payload) throws IOException {
+  public QueryTransactionsResponse queryTransactions(QueryTransactionsPayload payload)
+      throws IOException {
     return this.rpcService.post(
-        RpcMethods.QUERY_GENERIC_TRANSACTIONS,
-        Arrays.asList(payload),
-        QueryGenericTransactionsResponse.class);
+        RpcMethods.QUERY_TRANSACTIONS, Arrays.asList(payload), QueryTransactionsResponse.class);
   }
 
   @Override
