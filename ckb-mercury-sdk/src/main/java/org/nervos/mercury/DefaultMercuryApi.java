@@ -166,7 +166,8 @@ public class DefaultMercuryApi implements MercuryApi {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(new FromKeyAddresses(payload.from.stream().collect(toSet()), source));
     for (SmartTo to : payload.to) {
-      if (this.getAccountNumber(to.address).compareTo(0) > 0) {
+      if (Objects.equals(payload.assetInfo.assetType, AssetInfo.AssetType.UDT)
+          && this.getAccountNumber(to.address).compareTo(0) > 0) {
         builder.addItem(new ToKeyAddress(to.address, Action.pay_by_to), to.amount);
       } else {
         builder.addItem(new ToKeyAddress(to.address, Action.pay_by_from), to.amount);
@@ -213,6 +214,10 @@ public class DefaultMercuryApi implements MercuryApi {
               .flatMap(x -> x.balances.stream().map(y -> y.address))
               .collect(toSet()));
 
+      return;
+    }
+
+    if (from.compareTo(feeThreshold) > 0) {
       return;
     }
 
