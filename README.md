@@ -142,6 +142,7 @@ TODO
 12. [`build_adjust_account_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildAdjustAccount.java)
 13. [`build_asset_collection_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildAssetCollectionTransactionTest.java)
 14. [`fee_rate` example](./ckb-mercury-sdk/src/test/java/mercury/FeeRateTest.java)
+15. [`build_smart_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildSmartTransferTransactionTest.java)
 
 ### 3. ckb-indexer RPC
 
