@@ -1,6 +1,7 @@
 package org.nervos.mercury;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
@@ -156,12 +156,15 @@ public class DefaultMercuryApi implements MercuryApi {
   private TransferPayload toTransferPayload(SmartTransferPayload payload) throws IOException {
 
     List<GetBalanceResponse> fromBalances = this.getBalance(payload.from, payload.assetInfo);
+    List<GetBalanceResponse> toBalance =
+        this.getBalance(
+            payload.to.stream().map(x -> x.address).collect(toList()), payload.assetInfo);
 
-    checkFeePay(fromBalances, payload.to);
+    feePay(payload, fromBalances, toBalance);
     Source source = getSource(payload.assetInfo, fromBalances, payload.to);
 
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.from(new FromKeyAddresses(payload.from.stream().collect(Collectors.toSet()), source));
+    builder.from(new FromKeyAddresses(payload.from.stream().collect(toSet()), source));
     for (SmartTo to : payload.to) {
       if (this.getAccountNumber(to.address).compareTo(0) > 0) {
         builder.addItem(new ToKeyAddress(to.address, Action.pay_by_to), to.amount);
@@ -173,6 +176,8 @@ public class DefaultMercuryApi implements MercuryApi {
     if (Objects.equals(payload.assetInfo.assetType, AssetInfo.AssetType.UDT)) {
       builder.udtHash(payload.assetInfo.udtHash);
     }
+
+    System.out.println(new Gson().toJson(builder.build()));
     return builder.build();
   }
 
@@ -189,15 +194,29 @@ public class DefaultMercuryApi implements MercuryApi {
     }
   }
 
-  private void checkFeePay(List<GetBalanceResponse> fromBalances, List<SmartTo> to) {
+  private void feePay(
+      SmartTransferPayload payload,
+      List<GetBalanceResponse> fromBalances,
+      List<GetBalanceResponse> toBalances) {
     BigInteger from = this.getBalance(fromBalances, AssetInfo.AssetType.CKB, "free");
-    BigInteger totalAmount =
-        to.stream().map(x -> x.amount).reduce(BigInteger.ZERO, (x, y) -> x.add(y));
+    BigInteger to = this.getBalance(toBalances, AssetInfo.AssetType.CKB, "free");
 
     BigInteger feeThreshold = AmountUtils.ckbToShannon(0.0001);
-    if (from.add(feeThreshold).compareTo(totalAmount) < 0) {
+    if (from.compareTo(feeThreshold) < 0 && to.compareTo(feeThreshold) < 0) {
       throw new RuntimeException("CKB Insufficient balance to pay the fee");
     }
+
+    if (from.compareTo(feeThreshold) < 0 && to.compareTo(feeThreshold) >= 0) {
+      payload.from.addAll(
+          toBalances
+              .stream()
+              .flatMap(x -> x.balances.stream().map(y -> y.address))
+              .collect(toSet()));
+
+      return;
+    }
+
+    throw new RuntimeException("CKB Insufficient balance to pay the fee");
   }
 
   private BigInteger getBalance(

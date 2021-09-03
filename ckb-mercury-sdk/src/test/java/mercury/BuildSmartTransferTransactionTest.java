@@ -32,7 +32,7 @@ public class BuildSmartTransferTransactionTest {
   }
 
   @Test
-  void testCkbInsufficientBalanceToPayTheFee() {
+  void testCkbInsufficientBalanceToPayTheFee1() {
     try {
       AddressTools.AddressGenerateResult from = AddressTools.generateShortAddress(Network.TESTNET);
       AddressTools.AddressGenerateResult to = AddressTools.generateShortAddress(Network.TESTNET);
@@ -44,6 +44,24 @@ public class BuildSmartTransferTransactionTest {
 
     } catch (Exception e) {
       assertEquals("CKB Insufficient balance to pay the fee", e.getMessage());
+    }
+  }
+
+  @Test
+  void testCkbInsufficientBalanceToPayTheFee2() {
+    try {
+      AddressTools.AddressGenerateResult from = AddressTools.generateShortAddress(Network.TESTNET);
+
+      SmartTransferPayloadBuilder builder = new SmartTransferPayloadBuilder();
+      builder.addFrom(from.address);
+      builder.addTo(
+          new SmartTo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100)));
+      builder.assetInfo(AssetInfo.newCkbAsset());
+
+      MercuryApiFactory.getApi().buildSmartTransferTransaction(builder.build());
+
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
