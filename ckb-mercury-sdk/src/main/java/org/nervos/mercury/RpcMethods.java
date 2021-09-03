@@ -9,4 +9,5 @@ public interface RpcMethods {
   String REGISTER_ADDRESSES = "register_addresses";
   String BUILD_ASSET_COLLECTION_TRANSACTION = "build_asset_collection_transaction";
   String QUERY_GENERIC_TRANSACTIONS = "query_generic_transactions";
+  String GET_ACCOUNT_NUMBER = "get_account_number";
 }

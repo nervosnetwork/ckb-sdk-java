@@ -4,8 +4,23 @@ public class AssetInfo {
   public AssetType assetType;
   public String udtHash;
 
-  enum AssetType {
+  public enum AssetType {
     CKB,
     UDT
+  }
+
+  public AssetInfo() {}
+
+  public AssetInfo(AssetType assetType, String udtHash) {
+    this.assetType = assetType;
+    this.udtHash = udtHash;
+  }
+
+  public static AssetInfo newCkbAsset() {
+    return new AssetInfo(AssetType.CKB, null);
+  }
+
+  public static AssetInfo newUdtAsset(String udtHash) {
+    return new AssetInfo(AssetType.UDT, udtHash);
   }
 }

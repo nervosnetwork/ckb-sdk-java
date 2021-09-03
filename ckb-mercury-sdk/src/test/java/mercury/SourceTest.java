@@ -2,18 +2,23 @@ package mercury;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.CkbNodeFactory;
 import mercury.constant.MercuryApiFactory;
+import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
-import org.nervos.mercury.model.req.*;
+import org.nervos.mercury.model.req.Action;
+import org.nervos.mercury.model.req.FromKeyAddresses;
+import org.nervos.mercury.model.req.Source;
+import org.nervos.mercury.model.req.ToKeyAddress;
+import org.nervos.mercury.model.resp.AssetInfo;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
@@ -57,8 +62,8 @@ public class SourceTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(new KeyAddress(addr));
-      builder.addUdtHash(udtHash);
+      builder.address(addr);
+      builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       return MercuryApiFactory.getApi().getBalance(builder.build());
 
@@ -75,8 +80,7 @@ public class SourceTest {
     builder.from(
         new FromKeyAddresses(new HashSet<>(Arrays.asList(senderAddress)), Source.unconstrained));
     builder.addItem(
-        new ToKeyAddress(chequeCellReceiverAddress, Action.lend_by_from),
-        AmountUtils.ckbToShannon(100));
+        new ToKeyAddress(chequeCellReceiverAddress, Action.lend_by_from), new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =
@@ -106,8 +110,7 @@ public class SourceTest {
     builder.from(
         new FromKeyAddresses(
             new HashSet<>(Arrays.asList(chequeCellReceiverAddress)), Source.fleeting));
-    builder.addItem(
-        new ToKeyAddress(receiverAddress, Action.pay_by_from), AmountUtils.ckbToShannon(100));
+    builder.addItem(new ToKeyAddress(receiverAddress, Action.pay_by_from), new BigInteger("100"));
 
     try {
       TransactionCompletionResponse s =
