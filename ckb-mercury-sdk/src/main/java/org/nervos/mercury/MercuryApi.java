@@ -49,6 +49,4 @@ public interface MercuryApi {
   DBInfo getDbInfo() throws IOException;
 
   MercuryInfo getMercuryInfo() throws IOException;
-
-  //  Integer getAccountNumber(String address) throws IOException;
 }

@@ -11,18 +11,19 @@ public class TransactionCompletionResponse {
   @SerializedName("tx_view")
   public Transaction txView;
 
-  @SerializedName("sigs_entry")
-  public List<SignatureEntry> sigsEntry;
+  @SerializedName("signature_entries")
+  public List<SignatureEntry> signatureEntries;
 
   public List<MercuryScriptGroup> getScriptGroup() {
     this.signaturePlaceholder();
-    List<MercuryScriptGroup> scriptGroups = new ArrayList<>(this.sigsEntry.size());
+    List<MercuryScriptGroup> scriptGroups = new ArrayList<>(this.signatureEntries.size());
 
-    for (int i = 0; i < this.sigsEntry.size(); i++) {
+    for (int i = 0; i < this.signatureEntries.size(); i++) {
       MercuryScriptGroup sg =
           new MercuryScriptGroup(
-              this.sigsEntry.get(i).pubKey,
-              this.getInputIndexes(this.sigsEntry.get(i).index, this.sigsEntry.get(i).groupLen));
+              this.signatureEntries.get(i).pubKey,
+              this.getInputIndexes(
+                  this.signatureEntries.get(i).index, this.signatureEntries.get(i).groupLen));
       scriptGroups.add(sg);
     }
 
@@ -56,8 +57,8 @@ public class TransactionCompletionResponse {
   }
 
   private boolean is_sig_entry(int index) {
-    for (int i = 0; i < this.sigsEntry.size(); i++) {
-      if (this.sigsEntry.get(i).index == index) {
+    for (int i = 0; i < this.signatureEntries.size(); i++) {
+      if (this.signatureEntries.get(i).index == index) {
         return true;
       }
     }

@@ -86,7 +86,7 @@ public class DefaultMercuryApi implements MercuryApi {
   public TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException {
     return this.rpcService.post(
-        RpcMethods.BUILD_ASSET_ACCOUNT_CREATION_TRANSACTION,
+        RpcMethods.BUILD_ADJUST_ACCOUNT_TRANSACTION,
         Arrays.asList(payload),
         TransactionCompletionResponse.class);
   }

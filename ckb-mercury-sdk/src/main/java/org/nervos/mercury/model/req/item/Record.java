@@ -65,10 +65,10 @@ public class Record implements Item {
 
   private byte[] intToByteArray(int value) {
     byte[] byteArray = new byte[4];
-    byteArray[0] = (byte) (value & 0xFF);
-    byteArray[1] = (byte) (value & 0xFF00);
-    byteArray[2] = (byte) (value & 0xFF0000);
-    byteArray[3] = (byte) (value & 0xFF000000);
+    byteArray[3] = (byte) (value & 0xFF);
+    byteArray[2] = (byte) (value & 0xFF00);
+    byteArray[1] = (byte) (value & 0xFF0000);
+    byteArray[0] = (byte) (value & 0xFF000000);
     return byteArray;
   }
 }
