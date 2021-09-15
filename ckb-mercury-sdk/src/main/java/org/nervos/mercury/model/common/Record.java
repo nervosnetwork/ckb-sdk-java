@@ -19,7 +19,7 @@ public class Record {
   @SerializedName("asset_info")
   public AssetInfo assetInfo;
 
-  public RecordStatus recordStatus;
+  public RecordStatus status;
 
   public ExtraFilter extra;
 }
