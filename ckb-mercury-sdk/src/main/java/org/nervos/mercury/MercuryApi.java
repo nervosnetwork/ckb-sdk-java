@@ -1,7 +1,5 @@
 package org.nervos.mercury;
 
-import java.io.IOException;
-import java.util.List;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
 import org.nervos.mercury.model.req.CollectAssetPayload;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
@@ -11,6 +9,9 @@ import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface MercuryApi {
 

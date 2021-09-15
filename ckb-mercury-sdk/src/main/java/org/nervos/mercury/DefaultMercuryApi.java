@@ -1,14 +1,8 @@
 package org.nervos.mercury;
 
-import static java.util.stream.Collectors.toList;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.RecordStatus;
@@ -18,6 +12,13 @@ import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+import static java.util.stream.Collectors.toList;
 
 public class DefaultMercuryApi implements MercuryApi {
 
@@ -53,9 +54,7 @@ public class DefaultMercuryApi implements MercuryApi {
   public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException {
     List<TransferItem> transferItems =
-        payload
-            .items
-            .stream()
+        payload.items.stream()
             .filter(x -> Objects.equals(x.to.getClass(), ToKeyAddress.class))
             .collect(toList());
     if (transferItems.size() > 0) {

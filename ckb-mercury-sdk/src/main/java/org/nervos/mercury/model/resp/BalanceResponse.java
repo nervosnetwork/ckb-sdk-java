@@ -1,8 +1,9 @@
 package org.nervos.mercury.model.resp;
 
 import com.google.gson.annotations.SerializedName;
-import java.math.BigInteger;
 import org.nervos.mercury.model.common.AssetInfo;
+
+import java.math.BigInteger;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
 public class BalanceResponse {

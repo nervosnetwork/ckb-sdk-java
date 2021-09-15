@@ -1,10 +1,7 @@
 package org.nervos.api;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.service.Api;
@@ -20,6 +17,10 @@ import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /** @author zjh @Created Date: 2021/7/25 @Description: @Modify by: */
 public class CkbApiTest {
