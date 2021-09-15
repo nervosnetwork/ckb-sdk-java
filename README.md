@@ -133,6 +133,7 @@ TODO
 1. [`get_balance` example](./ckb-api/src/test/java/org/nervos/api/mercury/BalanceTest.java)
 2. [`get_block_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/BlockInfoTest.java)
 3. [`get_transaction_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/TransactionInfoTest.java)
+   <<<<<<< HEAD
 4. [`query_transactions` example](./ckb-api/src/test/java/org/nervos/api/mercury/QueryTransactionsTest.java)
 5. [`build_adjust_account_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/BuildAdjustAccountTest.java)
 6. [`register_addresses` example](./ckb-mercury-sdk/src/test/java/mercury/RegisterAddressesTest.java)
