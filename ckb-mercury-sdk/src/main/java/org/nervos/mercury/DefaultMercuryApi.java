@@ -18,6 +18,7 @@ import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.*;
+import org.nervos.mercury.model.resp.info.DBInfo;
 
 public class DefaultMercuryApi implements MercuryApi {
 
@@ -151,6 +152,11 @@ public class DefaultMercuryApi implements MercuryApi {
   public Integer getAccountNumber(String address) throws IOException {
     return this.rpcService.post(
         RpcMethods.GET_ACCOUNT_NUMBER, Arrays.asList(address), Integer.class);
+  }
+
+  @Override
+  public DBInfo getDbInfo() throws IOException {
+    return this.rpcService.post(RpcMethods.GET_DB_INFO, Arrays.asList(), DBInfo.class);
   }
 
   private TransferPayload toTransferPayload(SmartTransferPayload payload) throws IOException {

@@ -23,6 +23,7 @@ import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.*;
+import org.nervos.mercury.model.resp.info.DBInfo;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class DefaultCkbApi implements CkbApi {
@@ -319,5 +320,10 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public Integer getAccountNumber(String address) throws IOException {
     return this.mercuryApi.getAccountNumber(address);
+  }
+
+  @Override
+  public DBInfo getDbInfo() throws IOException {
+    return this.mercuryApi.getDbInfo();
   }
 }
