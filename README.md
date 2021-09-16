@@ -143,6 +143,7 @@ TODO
 13. [`build_asset_collection_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildAssetCollectionTransactionTest.java)
 14. [`fee_rate` example](./ckb-mercury-sdk/src/test/java/mercury/FeeRateTest.java)
 15. [`build_smart_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildSmartTransferTransactionTest.java)
+16. [`get_db_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
 
 ### 3. ckb-indexer RPC
 

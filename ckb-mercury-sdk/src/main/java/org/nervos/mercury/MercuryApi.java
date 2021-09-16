@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.*;
+import org.nervos.mercury.model.resp.info.DBInfo;
 
 public interface MercuryApi {
 
@@ -30,4 +31,6 @@ public interface MercuryApi {
   QueryTransactionsResponse queryTransactions(QueryTransactionsPayload payload) throws IOException;
 
   Integer getAccountNumber(String address) throws IOException;
+
+  DBInfo getDbInfo() throws IOException;
 }

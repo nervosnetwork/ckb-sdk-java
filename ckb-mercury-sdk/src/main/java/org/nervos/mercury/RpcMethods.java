@@ -10,4 +10,5 @@ public interface RpcMethods {
   String BUILD_ASSET_COLLECTION_TRANSACTION = "build_asset_collection_transaction";
   String QUERY_TRANSACTIONS = "query_generic_transactions";
   String GET_ACCOUNT_NUMBER = "get_account_number";
+  String GET_DB_INFO = "get_db_info";
 }
