@@ -11,4 +11,5 @@ public interface RpcMethods {
   String QUERY_TRANSACTIONS = "query_generic_transactions";
   String GET_ACCOUNT_NUMBER = "get_account_number";
   String GET_DB_INFO = "get_db_info";
+  String GET_MERCURY_INFO = "get_mercury_info";
 }
