@@ -41,7 +41,6 @@ import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
-import org.nervos.mercury.model.req.CollectAssetPayload;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.TransferPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
@@ -342,12 +341,6 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
     return this.mercuryApi.registerAddresses(normalAddresses);
-  }
-
-  @Override
-  public TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
-      throws IOException {
-    return this.mercuryApi.buildAssetCollectionTransaction(payload);
   }
 
   @Override

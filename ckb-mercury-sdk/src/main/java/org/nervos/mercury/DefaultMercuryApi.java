@@ -14,7 +14,6 @@ import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
-import org.nervos.mercury.model.req.CollectAssetPayload;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.ToKeyAddress;
 import org.nervos.mercury.model.req.TransferItem;
@@ -119,15 +118,6 @@ public class DefaultMercuryApi implements MercuryApi {
         RpcMethods.REGISTER_ADDRESSES,
         Arrays.asList(normalAddresses),
         new TypeToken<List<String>>() {}.getType());
-  }
-
-  @Override
-  public TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
-      throws IOException {
-    return this.rpcService.post(
-        RpcMethods.BUILD_ASSET_COLLECTION_TRANSACTION,
-        Arrays.asList(payload),
-        TransactionCompletionResponse.class);
   }
 
   @Override
