@@ -5,6 +5,7 @@ import java.util.List;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
+import org.nervos.mercury.model.resp.info.MercuryInfo;
 
 public interface MercuryApi {
 
@@ -33,4 +34,6 @@ public interface MercuryApi {
   Integer getAccountNumber(String address) throws IOException;
 
   DBInfo getDbInfo() throws IOException;
+
+  MercuryInfo getMercuryInfo() throws IOException;
 }

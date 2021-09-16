@@ -24,6 +24,7 @@ import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
+import org.nervos.mercury.model.resp.info.MercuryInfo;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class DefaultCkbApi implements CkbApi {
@@ -325,5 +326,10 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public DBInfo getDbInfo() throws IOException {
     return this.mercuryApi.getDbInfo();
+  }
+
+  @Override
+  public MercuryInfo getMercuryInfo() throws IOException {
+    return this.mercuryApi.getMercuryInfo();
   }
 }
