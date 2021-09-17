@@ -1,4 +1,4 @@
-package org.nervos.indexer.model.resp;
+package org.nervos.indexer.resp;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -9,6 +9,6 @@ public class CellCapacityResponse {
   @SerializedName("block_number")
   public String blockNumber;
 
-  @SerializedName("")
+  @SerializedName("capacity")
   public String capacity;
 }

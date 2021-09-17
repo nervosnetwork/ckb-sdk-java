@@ -3,6 +3,7 @@ package org.nervos.mercury;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import com.google.common.primitives.Bytes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -14,6 +15,12 @@ import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.ckb.utils.AmountUtils;
+import org.nervos.ckb.utils.Numeric;
+import org.nervos.indexer.SearchKey;
+import org.nervos.indexer.resp.CellCapacityResponse;
+import org.nervos.indexer.resp.CellsResponse;
+import org.nervos.indexer.resp.TipResponse;
+import org.nervos.indexer.resp.TransactionResponse;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.req.*;
@@ -163,6 +170,50 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public MercuryInfo getMercuryInfo() throws IOException {
     return this.rpcService.post(RpcMethods.GET_MERCURY_INFO, Arrays.asList(), MercuryInfo.class);
+  }
+
+  @Override
+  public TipResponse getTip() throws IOException {
+    return this.rpcService.post(RpcMethods.GET_TIP, Arrays.asList(), TipResponse.class);
+  }
+
+  @Override
+  public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+      throws IOException {
+
+    CellsResponse.RpcCellsResponse resp =
+        this.rpcService.post(
+            RpcMethods.GET_CELLS,
+            Arrays.asList(searchKey, order, limit, afterCursor),
+            CellsResponse.RpcCellsResponse.class);
+
+    CellsResponse result = new CellsResponse();
+
+    result.lastCursor = Numeric.toHexString(Bytes.toArray(resp.lastCursor));
+    result.objects = resp.objects;
+    return result;
+  }
+
+  @Override
+  public TransactionResponse getTransactions(
+      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
+    TransactionResponse.RpcTransactionResponse resp =
+        this.rpcService.post(
+            RpcMethods.GET_TRANSACTIONS,
+            Arrays.asList(searchKey, order, limit, afterCursor),
+            TransactionResponse.RpcTransactionResponse.class);
+
+    TransactionResponse result = new TransactionResponse();
+    result.lastCursor = Numeric.toHexString(Bytes.toArray(resp.lastCursor));
+    result.objects = resp.objects;
+
+    return result;
+  }
+
+  @Override
+  public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
+    return this.rpcService.post(
+        RpcMethods.GET_CELLS_CAPACITY, Arrays.asList(searchKey), CellCapacityResponse.class);
   }
 
   private TransferPayload toTransferPayload(SmartTransferPayload payload) throws IOException {

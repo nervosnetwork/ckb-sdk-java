@@ -12,4 +12,8 @@ public interface RpcMethods {
   String GET_ACCOUNT_NUMBER = "get_account_number";
   String GET_DB_INFO = "get_db_info";
   String GET_MERCURY_INFO = "get_mercury_info";
+  String GET_TIP = "get_tip";
+  String GET_CELLS = "get_cells";
+  String GET_CELLS_CAPACITY = "get_cells_capacity";
+  String GET_TRANSACTIONS = "get_transactions";
 }

@@ -1,4 +1,4 @@
-package org.nervos.indexer.model.resp;
+package org.nervos.indexer.resp;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
@@ -8,4 +8,11 @@ public class CellsResponse {
   public String lastCursor;
 
   public List<CellResponse> objects;
+
+  public class RpcCellsResponse {
+    @SerializedName("last_cursor")
+    public List<Byte> lastCursor;
+
+    public List<CellResponse> objects;
+  }
 }

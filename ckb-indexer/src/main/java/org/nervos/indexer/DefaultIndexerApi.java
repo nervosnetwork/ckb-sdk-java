@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Arrays;
 import org.nervos.ckb.service.RpcService;
-import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
-import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.resp.CellCapacityResponse;
+import org.nervos.indexer.resp.CellsResponse;
+import org.nervos.indexer.resp.TipResponse;
+import org.nervos.indexer.resp.TransactionResponse;
 
 public class DefaultIndexerApi implements CkbIndexerApi {
 
