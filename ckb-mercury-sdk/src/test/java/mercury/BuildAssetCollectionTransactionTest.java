@@ -23,8 +23,9 @@ import org.nervos.ckb.utils.address.AddressParser;
 import org.nervos.mercury.model.CollectAssetPayloadBuilder;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
+import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.*;
-import org.nervos.mercury.model.resp.AssetInfo;
+import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
@@ -395,7 +396,7 @@ public class BuildAssetCollectionTransactionTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(AddressWithKeyHolder.cexAddress());
+      builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.cexPubKey()));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       GetBalanceResponse balance = MercuryApiFactory.getApi().getBalance(builder.build());
@@ -444,7 +445,7 @@ public class BuildAssetCollectionTransactionTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.address(AddressWithKeyHolder.cexAddress());
+      builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.cexPubKey()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       GetBalanceResponse balance = MercuryApiFactory.getApi().getBalance(builder.build());

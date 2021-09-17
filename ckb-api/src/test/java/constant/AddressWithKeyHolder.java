@@ -1,4 +1,4 @@
-package mercury.constant;
+package constant;
 
 import java.util.HashMap;
 import java.util.Map;

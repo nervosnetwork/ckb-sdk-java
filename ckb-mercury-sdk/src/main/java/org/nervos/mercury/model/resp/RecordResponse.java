@@ -3,6 +3,7 @@ package org.nervos.mercury.model.resp;
 import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import org.nervos.mercury.model.common.AssetInfo;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class RecordResponse
@@ -40,12 +41,11 @@ public class RecordResponse
       if (fieldExist(amount, "value")) {
         record.amount = amount.get("value").getAsBigInteger();
       }
-      record.assetInfo = new AssetInfo();
+
       if (fieldExist(amount, "udt_hash")) {
-        record.assetInfo.udtHash = amount.get("udt_hash").getAsString();
-        record.assetInfo.assetType = AssetInfo.AssetType.UDT;
+        record.assetInfo = AssetInfo.newUdtAsset(amount.get("udt_hash").getAsString());
       } else {
-        record.assetInfo.assetType = AssetInfo.AssetType.CKB;
+        record.assetInfo = AssetInfo.newCkbAsset();
       }
       if (fieldExist(amount, "status")) {
         JsonObject status = amount.get("status").getAsJsonObject();

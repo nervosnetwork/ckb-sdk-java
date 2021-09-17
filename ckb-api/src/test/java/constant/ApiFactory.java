@@ -1,4 +1,4 @@
-package org.nervos.api.constant;
+package constant;
 
 import org.nervos.api.CkbApi;
 import org.nervos.api.DefaultCkbApi;

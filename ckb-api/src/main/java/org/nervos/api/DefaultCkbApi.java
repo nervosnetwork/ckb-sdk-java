@@ -22,6 +22,7 @@ import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.req.*;
+import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
@@ -49,6 +50,7 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
       throws IOException {
+
     return this.ckbIndexerApi.getCells(searchKey, order, limit, afterCursor);
   }
 
@@ -285,11 +287,12 @@ public class DefaultCkbApi implements CkbApi {
     return this.mercuryApi.buildAdjustAccountTransaction(payload);
   }
 
-  @Override
-  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
-      throws IOException {
-    return this.mercuryApi.buildSmartTransferTransaction(payload);
-  }
+  //  @Override
+  //  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload
+  // payload)
+  //      throws IOException {
+  //    return this.mercuryApi.buildSmartTransferTransaction(payload);
+  //  }
 
   @Override
   public TransactionInfoWithStatusResponse getTransactionInfo(String txHash) throws IOException {
@@ -319,11 +322,6 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public Integer getAccountNumber(String address) throws IOException {
-    return this.mercuryApi.getAccountNumber(address);
-  }
-
-  @Override
   public DBInfo getDbInfo() throws IOException {
     return this.mercuryApi.getDbInfo();
   }
@@ -332,4 +330,9 @@ public class DefaultCkbApi implements CkbApi {
   public MercuryInfo getMercuryInfo() throws IOException {
     return this.mercuryApi.getMercuryInfo();
   }
+
+  //  @Override
+  //  public Integer getAccountNumber(String address) throws IOException {
+  //    return this.mercuryApi.getAccountNumber(address);
+  //  }
 }

@@ -1,9 +1,9 @@
 package org.nervos.api.mercury;
 
 import com.google.gson.Gson;
+import constant.ApiFactory;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
-import org.nervos.api.constant.ApiFactory;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 
