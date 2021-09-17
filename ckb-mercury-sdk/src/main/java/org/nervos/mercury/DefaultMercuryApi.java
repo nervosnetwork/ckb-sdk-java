@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
+import org.nervos.mercury.model.common.ExtraFilter;
+import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.resp.*;
@@ -22,6 +24,8 @@ public class DefaultMercuryApi implements MercuryApi {
   private Gson g =
       new GsonBuilder()
           .registerTypeAdapter(AddressOrLockHash.class, new AddressOrLockHash())
+          .registerTypeAdapter(RecordStatus.class, new RecordStatus())
+          .registerTypeAdapter(ExtraFilter.class, new ExtraFilter())
           .registerTypeAdapter(QueryAddress.class, new NormalAddress(""))
           .registerTypeAdapter(RecordResponse.class, new RecordResponse())
           .create();
@@ -83,11 +87,11 @@ public class DefaultMercuryApi implements MercuryApi {
   //  }
 
   @Override
-  public TransactionInfoWithStatusResponse getTransactionInfo(String txHash) throws IOException {
+  public GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException {
     return this.rpcService.post(
         RpcMethods.GET_TRANSACTION_INFO,
         Arrays.asList(txHash),
-        TransactionInfoWithStatusResponse.class,
+        GetTransactionInfoResponse.class,
         g);
   }
 

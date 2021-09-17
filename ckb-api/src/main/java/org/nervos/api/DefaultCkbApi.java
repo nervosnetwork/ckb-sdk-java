@@ -295,7 +295,7 @@ public class DefaultCkbApi implements CkbApi {
   //  }
 
   @Override
-  public TransactionInfoWithStatusResponse getTransactionInfo(String txHash) throws IOException {
+  public GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException {
     return this.mercuryApi.getTransactionInfo(txHash);
   }
 

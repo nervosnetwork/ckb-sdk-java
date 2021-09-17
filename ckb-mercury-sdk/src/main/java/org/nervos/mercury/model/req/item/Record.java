@@ -47,7 +47,6 @@ public class Record implements Item {
             intToByteArray(Numeric.toBigInt(this.outPoint.index).intValue()));
 
     if (Objects.nonNull(this.script)) {
-
       return Numeric.toHexString(
           Bytes.concat(
               record,

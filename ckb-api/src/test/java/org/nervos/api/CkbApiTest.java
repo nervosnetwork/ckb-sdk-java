@@ -18,9 +18,6 @@ import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
-import org.nervos.mercury.model.req.KeyAddress;
-import org.nervos.mercury.model.req.NormalAddress;
-import org.nervos.mercury.model.req.QueryAddress;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
@@ -28,11 +25,7 @@ import org.nervos.mercury.model.resp.GetBalanceResponse;
 public class CkbApiTest {
 
   private String rpcAddress = "http://127.0.0.1:8116";
-  Gson g =
-      new GsonBuilder()
-          .registerTypeAdapter(QueryAddress.class, new KeyAddress(""))
-          .registerTypeAdapter(QueryAddress.class, new NormalAddress(""))
-          .create();
+  Gson g = new GsonBuilder().create();
 
   @Test
   void testCkbIndexerApi() {
