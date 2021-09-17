@@ -12,8 +12,8 @@ public class BlockInfoResponse {
   @SerializedName("block_hash")
   public String blockHash;
 
-  @SerializedName("parent_block_hash")
-  public String parentBlockHash;
+  @SerializedName("parent_hash")
+  public String parentHash;
 
   public BigInteger timestamp;
 
