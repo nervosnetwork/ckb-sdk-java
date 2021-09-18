@@ -6,9 +6,9 @@ import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.indexer.ScriptType;
-import org.nervos.indexer.SearchKeyBuilder;
-import org.nervos.indexer.resp.CellsResponse;
+import org.nervos.indexer.model.ScriptType;
+import org.nervos.indexer.model.SearchKeyBuilder;
+import org.nervos.indexer.model.resp.CellsResponse;
 
 public class FilterTest {
 

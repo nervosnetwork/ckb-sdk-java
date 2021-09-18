@@ -1,4 +1,4 @@
-package org.nervos.indexer.resp;
+package org.nervos.indexer.model.resp;
 
 import org.nervos.ckb.type.Script;
 
