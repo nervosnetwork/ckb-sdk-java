@@ -1,9 +1,8 @@
 package org.nervos.mercury.model.common;
 
 import com.google.gson.annotations.SerializedName;
-import org.nervos.mercury.model.resp.AddressOrLockHash;
-
 import java.math.BigInteger;
+import org.nervos.mercury.model.resp.AddressOrLockHash;
 
 public class Record {
 

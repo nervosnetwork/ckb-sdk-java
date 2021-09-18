@@ -1,10 +1,31 @@
 package org.nervos.api;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Objects;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.service.RpcService;
-import org.nervos.ckb.type.*;
+import org.nervos.ckb.type.BannedAddress;
+import org.nervos.ckb.type.BannedResultAddress;
+import org.nervos.ckb.type.Block;
+import org.nervos.ckb.type.BlockEconomicState;
+import org.nervos.ckb.type.BlockchainInfo;
+import org.nervos.ckb.type.Consensus;
+import org.nervos.ckb.type.Cycles;
+import org.nervos.ckb.type.Epoch;
+import org.nervos.ckb.type.Header;
+import org.nervos.ckb.type.NodeInfo;
+import org.nervos.ckb.type.OutPoint;
+import org.nervos.ckb.type.PeerNodeInfo;
+import org.nervos.ckb.type.RawTxPool;
+import org.nervos.ckb.type.RawTxPoolVerbose;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.SyncState;
+import org.nervos.ckb.type.TransactionProof;
+import org.nervos.ckb.type.TxPoolInfo;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -18,19 +39,21 @@ import org.nervos.indexer.model.resp.TipResponse;
 import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
+import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
 import org.nervos.mercury.model.req.CollectAssetPayload;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.TransferPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
-import org.nervos.mercury.model.resp.*;
+import org.nervos.mercury.model.resp.BlockInfoResponse;
+import org.nervos.mercury.model.resp.GetBalanceResponse;
+import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
+import org.nervos.mercury.model.resp.TransactionInfo;
+import org.nervos.mercury.model.resp.TransactionView;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class DefaultCkbApi implements CkbApi {
@@ -40,11 +63,18 @@ public class DefaultCkbApi implements CkbApi {
 
   private CkbIndexerApi ckbIndexerApi;
 
-  public DefaultCkbApi(String mercuryUrl, boolean isDebug) {
-    RpcService rpcService = new RpcService(mercuryUrl, isDebug);
-    this.ckbApi = new Api(rpcService);
-    this.ckbIndexerApi = new DefaultIndexerApi(rpcService);
-    this.mercuryApi = new DefaultMercuryApi(rpcService);
+  public DefaultCkbApi(String ckbUrl, String mercuryUrl, String indexerUrl, boolean isDebug) {
+    if (Objects.nonNull(ckbUrl)) {
+      this.ckbApi = new Api(new RpcService(ckbUrl, isDebug));
+    }
+
+    if (Objects.nonNull(indexerUrl)) {
+      this.ckbIndexerApi = new DefaultIndexerApi(new RpcService(indexerUrl, isDebug));
+    }
+
+    if (Objects.nonNull(mercuryUrl)) {
+      this.mercuryApi = new DefaultMercuryApi(new RpcService(mercuryUrl, isDebug));
+    }
   }
 
   @Override
@@ -321,9 +351,15 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public QueryTransactionsResponse queryTransactions(QueryTransactionsPayload payload)
-      throws IOException {
-    return this.mercuryApi.queryTransactions(payload);
+  public PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
+      QueryTransactionsPayload payload) throws IOException {
+    return this.mercuryApi.queryTransactionsWithTransactionView(payload);
+  }
+
+  @Override
+  public PaginationResponse<TransactionInfo> queryTransactionsWithTransactionInfo(
+      QueryTransactionsPayload payload) throws IOException {
+    return this.mercuryApi.queryTransactionsWithTransactionInfo(payload);
   }
 
   @Override

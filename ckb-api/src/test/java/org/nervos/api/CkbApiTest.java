@@ -1,7 +1,10 @@
 package org.nervos.api;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.service.Api;
@@ -18,37 +21,38 @@ import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 /** @author zjh @Created Date: 2021/7/25 @Description: @Modify by: */
 public class CkbApiTest {
 
-  private String rpcAddress = "http://127.0.0.1:8116";
+  private static String MERCURY_URL = "http://127.0.0.1:8116";
+
+  private static String CKB_URL = "https://mercury-testnet.ckbapp.dev";
+
+  private static String Indexer_URL = "https://mercury-testnet.ckbapp.dev";
+
   Gson g = new GsonBuilder().create();
 
   @Test
   void testCkbIndexerApi() {
-    CkbIndexerApi api = new DefaultIndexerApi(rpcAddress, false);
+    CkbIndexerApi api = new DefaultIndexerApi(Indexer_URL, false);
     indexerApi(api);
   }
 
   @Test
   void testCkbApi() {
-    CkbRpcApi api = new Api(rpcAddress, false);
+    CkbRpcApi api = new Api(CKB_URL, false);
     ckbApi(api);
   }
 
   @Test
   void testMercuryApi() {
-    MercuryApi api = new DefaultMercuryApi(rpcAddress, false);
+    MercuryApi api = new DefaultMercuryApi(MERCURY_URL, false);
     mercuryApi(api);
   }
 
   @Test
   void testAll() {
-    CkbApi api = new DefaultCkbApi(rpcAddress, false);
+    CkbApi api = new DefaultCkbApi(CKB_URL, MERCURY_URL, Indexer_URL, false);
     ckbApi(api);
     indexerApi(api);
     mercuryApi(api);

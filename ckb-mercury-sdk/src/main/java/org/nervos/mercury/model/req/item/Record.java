@@ -2,12 +2,11 @@ package org.nervos.mercury.model.req.item;
 
 import com.google.common.primitives.Bytes;
 import com.google.gson.annotations.SerializedName;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 public class Record implements Item {
 

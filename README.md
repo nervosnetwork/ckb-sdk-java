@@ -7,12 +7,13 @@
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
-The ckb-sdk-java is still under development and **NOT** production ready. You should get familiar with CKB transaction
-structure and RPC before using it.
+The ckb-sdk-java is still under development and **NOT** production ready. You should get familiar
+with CKB transaction structure and RPC before using it.
 
-**Note: All RPC methods in the indexer module have been deprecated since CKB version `v0.36.0` and they have been
-removed in the CKB version of `v0.40.0`. We strongly recommend migrating to
-the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) as soon as possible. You can refer to
+**Note: All RPC methods in the indexer module have been deprecated since CKB version `v0.36.0` and
+they have been removed in the CKB version of `v0.40.0`. We strongly recommend migrating to
+the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) as soon as possible. You can refer
+to
 the [examples](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb)
 of the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) in this project.**
 
@@ -93,24 +94,25 @@ gradle shadowJar  // ./gradlew shadowJar
 
 ##### version <= 0.24.0
 
-A `console-{version}-all.jar` package will be generated in `console/build/libs`, which you can put into your project to
-develop with it.
+A `console-{version}-all.jar` package will be generated in `console/build/libs`, which you can put
+into your project to develop with it.
 
 ##### version >= 0.24.1
 
-A `ckb-sdk-{version}-all.jar` package will be generated in `ckb-sdk/build/libs`, which you can put into your project to
-develop with it.
+A `ckb-sdk-{version}-all.jar` package will be generated in `ckb-sdk/build/libs`, which you can put
+into your project to develop with it.
 
 If you don't want to generate the jar by yourself, you can download a build
 from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
 
 #### Import Jar to Project
 
-When you need to import `ckb-java-sdk` dependency to your project, you can add the `console-{version}-all.jar`
+When you need to import `ckb-java-sdk` dependency to your project, you can add
+the `console-{version}-all.jar`
 or `ckb-sdk-{version}-all.jar` to your project `libs` package.
 
-If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can import jar according to IDE option help
-documents.
+If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can import jar according to
+IDE option help documents.
 
 ## SDK RPC
 
@@ -131,7 +133,7 @@ TODO
 1. [`get_balance` example](./ckb-api/src/test/java/org/nervos/api/mercury/BalanceTest.java)
 2. [`get_block_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/BlockInfoTest.java)
 3. [`get_transaction_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/TransactionInfoTest.java)
-4. [`query_transactions` example](./ckb-mercury-sdk/src/test/java/mercury/QueryTransactionsPagesTest.java)
+4. [`query_transactions` example](./ckb-api/src/test/java/org/nervos/api/mercury/QueryTransactionsTest.java)
 5. [`register_addresses` example](./ckb-mercury-sdk/src/test/java/mercury/RegisterAddressesTest.java)
 6. [`build_transfer_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/TransferCompletionTest.java)
 7. [`build_transfer_transaction` by action example](./ckb-mercury-sdk/src/test/java/mercury/ActionTest.java)
@@ -204,10 +206,12 @@ You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 
 [SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SendToMultiSigAddressTxExample.java)
-provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig address.
+provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig
+address.
 
 [MultiSignTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiSignTransactionExample.java)
-provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig address.
+provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig
+address.
 
 #### SUDT Issue and Transfer
 
@@ -215,7 +219,8 @@ provides `sendCapacity` method which 2/3 format multi-sig address sends capacity
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 >
 [SUDTExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SUDTExample.java)
-provides `issue` and `transfer` methods to issue Simple UDT and transfer Simple UDT to other address.
+provides `issue` and `transfer` methods to issue Simple UDT and transfer Simple UDT to other
+address.
 
 #### ACP Create and Transfer
 
@@ -223,7 +228,8 @@ provides `issue` and `transfer` methods to issue Simple UDT and transfer Simple 
 > And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
 >
 [ACPTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/ACPTransactionExample.java)
-provides `create` and `transfer` methods to create an ACP cell with SUDT and transfer CKB and SUDT to the ACP address.
+provides `create` and `transfer` methods to create an ACP cell with SUDT and transfer CKB and SUDT
+to the ACP address.
 
 #### Address
 
@@ -248,7 +254,8 @@ String publicKey=
 
 ### Development
 
-We use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
+We
+use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
 and
 follow [Google Checkstyle](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)
 for development.
@@ -257,11 +264,13 @@ If `verifyGoogleJavaFormat FAILED` happens when you build this project, please f
 with [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
 or execute `./gradlew goJF` on macOS and Linux, or `gradlew goJF` on Windows.
 
-If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code automatically.
+If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code
+automatically.
 
 ## License
 
-The SDK is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The SDK is available as open source under the terms of
+the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Changelog
 

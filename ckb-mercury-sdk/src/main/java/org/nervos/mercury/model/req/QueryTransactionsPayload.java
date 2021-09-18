@@ -1,28 +1,32 @@
 package org.nervos.mercury.model.req;
 
 import com.google.gson.annotations.SerializedName;
-import java.math.BigInteger;
 import java.util.Set;
+import org.nervos.mercury.model.common.AssetInfo;
+import org.nervos.mercury.model.common.ExtraFilter;
+import org.nervos.mercury.model.common.PaginationRequest;
+import org.nervos.mercury.model.common.Range;
+import org.nervos.mercury.model.common.ViewType;
+import org.nervos.mercury.model.req.item.Item;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryTransactionsPayload {
 
-  public QueryAddress address;
+  public Item item;
 
-  @SerializedName("udt_hashes")
-  public Set<String> udtHashes;
+  @SerializedName("asset_infos")
+  public Set<AssetInfo> assetInfos;
 
-  @SerializedName("from_block")
-  public BigInteger fromBlock;
+  @SerializedName("extra")
+  public ExtraFilter extraFilter;
 
-  @SerializedName("to_block")
-  public BigInteger toBlock;
+  @SerializedName("block_range")
+  public Range blockRange;
 
-  public BigInteger limit;
+  public PaginationRequest pagination;
 
-  public BigInteger offset;
-
-  public String order;
+  @SerializedName("structure_type")
+  public ViewType viewType;
 
   protected QueryTransactionsPayload() {}
 }
