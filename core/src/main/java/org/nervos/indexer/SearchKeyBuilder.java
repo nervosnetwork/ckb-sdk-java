@@ -1,4 +1,4 @@
-package org.nervos.indexer.model;
+package org.nervos.indexer;
 
 import java.util.ArrayList;
 import org.nervos.ckb.type.Script;

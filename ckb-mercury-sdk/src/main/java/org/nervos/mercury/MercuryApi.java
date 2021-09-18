@@ -2,6 +2,11 @@ package org.nervos.mercury;
 
 import java.io.IOException;
 import java.util.List;
+import org.nervos.indexer.SearchKey;
+import org.nervos.indexer.resp.CellCapacityResponse;
+import org.nervos.indexer.resp.CellsResponse;
+import org.nervos.indexer.resp.TipResponse;
+import org.nervos.indexer.resp.TransactionResponse;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
@@ -36,4 +41,14 @@ public interface MercuryApi {
   DBInfo getDbInfo() throws IOException;
 
   MercuryInfo getMercuryInfo() throws IOException;
+
+  TipResponse getTip() throws IOException;
+
+  CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+      throws IOException;
+
+  TransactionResponse getTransactions(
+      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException;
+
+  CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
 }

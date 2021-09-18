@@ -1,4 +1,4 @@
-package org.nervos.indexer.model.resp;
+package org.nervos.indexer.resp;
 
 import com.google.gson.annotations.SerializedName;
 

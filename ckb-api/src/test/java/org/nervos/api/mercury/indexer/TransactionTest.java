@@ -1,8 +1,9 @@
-package indexer;
+package org.nervos.api.mercury.indexer;
 
 import com.google.gson.Gson;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
+import org.nervos.api.constant.ApiFactory;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.ScriptType;
@@ -25,8 +26,7 @@ public class TransactionTest {
 
     try {
       TransactionResponse txs =
-          CkbIndexerFactory.getApi()
-              .getTransactions(key.build(), "asc", Numeric.toHexString("10"), null);
+          ApiFactory.getApi().getTransactions(key.build(), "asc", Numeric.toHexString("10"), null);
       System.out.println(new Gson().toJson(txs));
     } catch (IOException e) {
       e.printStackTrace();

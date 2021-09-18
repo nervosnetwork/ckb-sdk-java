@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
-import org.nervos.indexer.model.ScriptType;
-import org.nervos.indexer.model.SearchKeyBuilder;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.ScriptType;
+import org.nervos.indexer.SearchKeyBuilder;
+import org.nervos.indexer.resp.CellCapacityResponse;
 
 public class CapacityTest {
 

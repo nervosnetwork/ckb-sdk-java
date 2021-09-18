@@ -1,4 +1,4 @@
-package org.nervos.indexer.model;
+package org.nervos.indexer;
 
 public enum ScriptType {
   lock,
