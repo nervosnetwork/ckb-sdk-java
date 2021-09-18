@@ -394,9 +394,4 @@ public class DefaultCkbApi implements CkbApi {
       throws IOException {
     return this.mercuryApi.buildWithdrawTransaction(payload);
   }
-
-  //  @Override
-  //  public Integer getAccountNumber(String address) throws IOException {
-  //    return this.mercuryApi.getAccountNumber(address);
-  //  }
 }
