@@ -21,7 +21,7 @@ public interface MercuryApi {
   //  TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
   //      throws IOException;
 
-  TransactionInfoWithStatusResponse getTransactionInfo(String txHash) throws IOException;
+  GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException;
 
   BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException;
 
