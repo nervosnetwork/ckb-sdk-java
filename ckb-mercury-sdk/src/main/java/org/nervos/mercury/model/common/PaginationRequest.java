@@ -10,7 +10,6 @@ public class PaginationRequest {
   public static final String ORDER_BY_ASC = "ASC";
 
   public List<Integer> cursor;
-
   public String order;
   public BigInteger limit;
   // TODO: 2021/8/26 zhengjianhui

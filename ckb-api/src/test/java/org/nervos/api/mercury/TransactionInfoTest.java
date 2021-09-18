@@ -1,8 +1,13 @@
+package org.nervos.api.mercury;
+
 import com.google.gson.Gson;
-import constant.ApiFactory;
-import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
+
+import java.io.IOException;
+
+import constant.ApiFactory;
 
 public class TransactionInfoTest {
 
