@@ -14,11 +14,11 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.indexer.CkbIndexerApi;
 import org.nervos.indexer.DefaultIndexerApi;
-import org.nervos.indexer.SearchKey;
-import org.nervos.indexer.resp.CellCapacityResponse;
-import org.nervos.indexer.resp.CellsResponse;
-import org.nervos.indexer.resp.TipResponse;
-import org.nervos.indexer.resp.TransactionResponse;
+import org.nervos.indexer.model.SearchKey;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.indexer.model.resp.TipResponse;
+import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.req.*;
@@ -43,24 +43,24 @@ public class DefaultCkbApi implements CkbApi {
 
   @Override
   public TipResponse getTip() throws IOException {
-    return this.mercuryApi.getTip();
+    return this.ckbIndexerApi.getTip();
   }
 
   @Override
   public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
       throws IOException {
-    return this.mercuryApi.getCells(searchKey, order, limit, afterCursor);
+    return this.ckbIndexerApi.getCells(searchKey, order, limit, afterCursor);
   }
 
   @Override
   public TransactionResponse getTransactions(
       SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
-    return this.mercuryApi.getTransactions(searchKey, order, limit, afterCursor);
+    return this.ckbIndexerApi.getTransactions(searchKey, order, limit, afterCursor);
   }
 
   @Override
   public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
-    return this.mercuryApi.getCellsCapacity(searchKey);
+    return this.ckbIndexerApi.getCellsCapacity(searchKey);
   }
 
   @Override
