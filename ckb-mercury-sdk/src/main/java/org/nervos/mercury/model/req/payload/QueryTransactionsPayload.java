@@ -1,4 +1,4 @@
-package org.nervos.mercury.model.req;
+package org.nervos.mercury.model.req.payload;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.Set;

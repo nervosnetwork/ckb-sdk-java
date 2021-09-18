@@ -9,8 +9,8 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationRequest;
 import org.nervos.mercury.model.common.Range;
-import org.nervos.mercury.model.req.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {

@@ -12,12 +12,14 @@ import org.nervos.mercury.model.common.AssetType;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.common.ViewType;
-import org.nervos.mercury.model.req.AdjustAccountPayload;
-import org.nervos.mercury.model.req.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.Source;
+import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
+import org.nervos.mercury.model.req.payload.DepositPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
+import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
+import org.nervos.mercury.model.req.payload.WithdrawPayload;
 import org.nervos.mercury.model.resp.AddressOrLockHash;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
@@ -141,6 +143,24 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public MercuryInfo getMercuryInfo() throws IOException {
     return this.rpcService.post(RpcMethods.GET_MERCURY_INFO, Arrays.asList(), MercuryInfo.class);
+  }
+
+  @Override
+  public TransactionCompletionResponse buildDepositTransaction(DepositPayload payload)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.BUILD_DEPOSIT_TRANSACTION,
+        Arrays.asList(payload),
+        TransactionCompletionResponse.class);
+  }
+
+  @Override
+  public TransactionCompletionResponse buildWithdrawTransaction(WithdrawPayload payload)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.BUILD_WITHDRAW_TRANSACTION,
+        Arrays.asList(payload),
+        TransactionCompletionResponse.class);
   }
 
   //  @Override
