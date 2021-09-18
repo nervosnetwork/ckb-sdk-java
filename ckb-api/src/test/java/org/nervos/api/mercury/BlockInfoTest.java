@@ -1,9 +1,9 @@
-package mercury;
+package org.nervos.api.mercury;
 
 import com.google.gson.Gson;
+import constant.ApiFactory;
 import java.io.IOException;
 import java.math.BigInteger;
-import mercury.constant.MercuryApiFactory;
 import org.junit.jupiter.api.Test;
 import org.nervos.mercury.model.GetBlockInfoPayloadBuilder;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
@@ -20,7 +20,7 @@ public class BlockInfoTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      BlockInfoResponse blockInfo = MercuryApiFactory.getApi().getBlockInfo(builder.build());
+      BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
 
       System.out.println(new Gson().toJson(blockInfo));
     } catch (IOException e) {
@@ -37,7 +37,7 @@ public class BlockInfoTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      BlockInfoResponse blockInfo = MercuryApiFactory.getApi().getBlockInfo(builder.build());
+      BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
 
       System.out.println(new Gson().toJson(blockInfo));
     } catch (IOException e) {
@@ -55,7 +55,7 @@ public class BlockInfoTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      BlockInfoResponse blockInfo = MercuryApiFactory.getApi().getBlockInfo(builder.build());
+      BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
 
       System.out.println(new Gson().toJson(blockInfo));
     } catch (IOException e) {
@@ -72,7 +72,7 @@ public class BlockInfoTest {
       // Request parameter is empty
       System.out.println(new Gson().toJson(builder.build()));
 
-      BlockInfoResponse blockInfo = MercuryApiFactory.getApi().getBlockInfo(builder.build());
+      BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
 
       System.out.println(new Gson().toJson(blockInfo));
     } catch (IOException e) {
@@ -90,7 +90,7 @@ public class BlockInfoTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      MercuryApiFactory.getApi().getBlockInfo(builder.build());
+      ApiFactory.getApi().getBlockInfo(builder.build());
 
     } catch (IOException e) {
       //      assertEquals("block number and hash mismatch", e.getMessage());
@@ -106,7 +106,7 @@ public class BlockInfoTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      MercuryApiFactory.getApi().getBlockInfo(builder.build());
+      ApiFactory.getApi().getBlockInfo(builder.build());
       // TODO: 2021/7/22 error handle
     } catch (IOException e) {
       //      Assert.assertTrue(
@@ -127,7 +127,7 @@ public class BlockInfoTest {
       System.out.println(new Gson().toJson(builder.build()));
 
       // error: invalid block number
-      MercuryApiFactory.getApi().getBlockInfo(builder.build());
+      ApiFactory.getApi().getBlockInfo(builder.build());
 
     } catch (IOException e) {
       //      assertEquals(

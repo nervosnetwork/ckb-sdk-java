@@ -14,6 +14,7 @@ import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
+import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
