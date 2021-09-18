@@ -6,8 +6,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.nervos.mercury.FeeConstant;
+import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
-import org.nervos.mercury.model.resp.AssetInfo;
 
 public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
 

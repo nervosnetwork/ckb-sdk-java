@@ -128,7 +128,7 @@ TODO
 
 #### example
 
-1. [`get_balance` example](./ckb-mercury-sdk/src/test/java/mercury/BalanceTest.java)
+1. [`get_balance` example](./ckb-api/src/test/java/org/nervos/api/mercury/BalanceTest.java)
 2. [`get_block_info` example](./ckb-mercury-sdk/src/test/java/mercury/BlockInfoTest.java)
 3. [`get_transaction_info` example](./ckb-mercury-sdk/src/test/java/mercury/TransactionInfoTest.java)
 4. [`query_transactions` example](./ckb-mercury-sdk/src/test/java/mercury/QueryTransactionsPagesTest.java)

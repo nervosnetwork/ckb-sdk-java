@@ -1,38 +1,31 @@
 package org.nervos.mercury.model;
 
-import static java.util.stream.Collectors.toSet;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import org.nervos.mercury.model.req.GetBalancePayload;
-import org.nervos.mercury.model.req.KeyAddress;
-import org.nervos.mercury.model.resp.AssetInfo;
+import java.math.BigInteger;
+import java.util.HashSet;
+import org.nervos.mercury.model.common.AssetInfo;
+import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.payload.GetBalancePayload;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
 public class GetBalancePayloadBuilder extends GetBalancePayload {
 
-  private List<AssetInfo> assetInfos;
-
   public GetBalancePayloadBuilder() {
-    this.assetInfos = new ArrayList<>(1);
+    this.assetInfos = new HashSet<>(2, 1);
   }
 
-  public void addAssetInfo(AssetInfo assetInfo) {
-    this.assetInfos.add(assetInfo);
+  public void item(Item item) {
+    this.item = item;
   }
 
-  public void address(String address) {
-    this.address = new KeyAddress(address);
+  public void addAssetInfo(AssetInfo info) {
+    this.assetInfos.add(info);
+  }
+
+  public void tipBlockNumber(BigInteger blockNum) {
+    this.tipBlockNumber = blockNum;
   }
 
   public GetBalancePayload build() {
-    if (this.assetInfos.size() == 0) {
-      this.udtHashes = Collections.EMPTY_SET;
-    }
-
-    this.udtHashes = this.assetInfos.stream().map(x -> x.udtHash).collect(toSet());
-
     return this;
   }
 }

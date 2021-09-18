@@ -9,7 +9,7 @@ import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
-import org.nervos.mercury.model.resp.AssetInfo;
+import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 public class BuildAdjustAccountTest {
