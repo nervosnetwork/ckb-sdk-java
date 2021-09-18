@@ -1,27 +1,27 @@
-package mercury;
+package org.nervos.api.mercury;
 
 import com.google.gson.Gson;
+import constant.AddressWithKeyHolder;
+import constant.ApiFactory;
+import constant.UdtHolder;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
-import mercury.constant.AddressWithKeyHolder;
-import mercury.constant.CkbNodeFactory;
-import mercury.constant.MercuryApiFactory;
-import mercury.constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.Action;
-import org.nervos.mercury.model.req.FromKeyAddresses;
+import org.nervos.mercury.model.req.From;
+import org.nervos.mercury.model.req.Mode;
 import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.ToKeyAddress;
+import org.nervos.mercury.model.req.To;
+import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
+import utils.SignUtils;
 
 public class SourceTest {
   private String senderAddress = AddressWithKeyHolder.testAddress1();
@@ -66,7 +66,7 @@ public class SourceTest {
       builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.getPubKeyByAddress(addr)));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
-      return MercuryApiFactory.getApi().getBalance(builder.build());
+      return ApiFactory.getApi().getBalance(builder.build());
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -77,20 +77,23 @@ public class SourceTest {
 
   private void issuingChequeCell() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.udtHash(udtHash);
+    builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
-        new FromKeyAddresses(new HashSet<>(Arrays.asList(senderAddress)), Source.unconstrained));
-    builder.addItem(
-        new ToKeyAddress(chequeCellReceiverAddress, Action.lend_by_from), new BigInteger("100"));
+        From.newFrom(Arrays.asList(Item.newIdentityItemByAddress(senderAddress)), Source.Free));
+
+    builder.to(
+        To.newTo(
+            Arrays.asList(new ToInfo(chequeCellReceiverAddress, new BigInteger("100"))),
+            Mode.HoldByFrom));
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
+          ApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
 
-      String hash = CkbNodeFactory.getApi().sendTransaction(tx);
+      String hash = ApiFactory.getApi().sendTransaction(tx);
 
-      while (CkbNodeFactory.getApi().getTransaction(hash).txStatus.status == "pending") {
+      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == "pending") {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }
@@ -107,20 +110,24 @@ public class SourceTest {
 
   private void claimChequeCell() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.udtHash(udtHash);
+    builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
-        new FromKeyAddresses(
-            new HashSet<>(Arrays.asList(chequeCellReceiverAddress)), Source.fleeting));
-    builder.addItem(new ToKeyAddress(receiverAddress, Action.pay_by_from), new BigInteger("100"));
+        From.newFrom(
+            Arrays.asList(Item.newIdentityItemByAddress(chequeCellReceiverAddress)),
+            Source.Claimable));
+
+    builder.to(
+        To.newTo(
+            Arrays.asList(new ToInfo(receiverAddress, new BigInteger("100"))), Mode.HoldByFrom));
 
     try {
       TransactionCompletionResponse s =
-          MercuryApiFactory.getApi().buildTransferTransaction(builder.build());
+          ApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
 
-      String hash = CkbNodeFactory.getApi().sendTransaction(tx);
+      String hash = ApiFactory.getApi().sendTransaction(tx);
 
-      while (CkbNodeFactory.getApi().getTransaction(hash).txStatus.status == "pending") {
+      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == "pending") {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }
