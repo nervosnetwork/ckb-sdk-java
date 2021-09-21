@@ -12,6 +12,10 @@ public interface Item {
     return new Identity(Identity.IDENTITY_FLAGS_CKB, pubKey);
   }
 
+  static Item newIdentityItemByAddress(String address) {
+    return Identity.toIdentityByAddress(address);
+  }
+
   /**
    * This method is used for tests and examples, if you need to use record, please use the record
    * returned by mercury

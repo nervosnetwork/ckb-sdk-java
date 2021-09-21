@@ -1,7 +1,5 @@
 package org.nervos.mercury;
 
-import static java.util.stream.Collectors.toList;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -10,16 +8,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
+import org.nervos.mercury.model.common.AssetType;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
-import org.nervos.mercury.model.req.ToKeyAddress;
-import org.nervos.mercury.model.req.TransferItem;
-import org.nervos.mercury.model.req.TransferPayload;
+import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
+import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.resp.AddressOrLockHash;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
@@ -62,17 +60,10 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException {
-    List<TransferItem> transferItems =
-        payload
-            .items
-            .stream()
-            .filter(x -> Objects.equals(x.to.getClass(), ToKeyAddress.class))
-            .collect(toList());
-    if (transferItems.size() > 0) {
-      if (payload.items.stream().anyMatch(item -> !item.to.isPayByFrom())
-          && (payload.udtHash == null || payload.udtHash == "")) {
-        throw new RuntimeException("The transaction does not support ckb");
-      }
+
+    if (Objects.equals(payload.assetInfo.assetType, AssetType.CKB)
+        && Objects.equals(payload.from.source, Source.Claimable)) {
+      throw new RuntimeException("The transaction does not support ckb");
     }
 
     return this.rpcService.post(
