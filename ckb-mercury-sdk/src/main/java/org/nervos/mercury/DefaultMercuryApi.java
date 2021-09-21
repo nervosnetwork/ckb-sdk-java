@@ -17,6 +17,7 @@ import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 import org.nervos.mercury.model.req.payload.DepositPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
+import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.payload.WithdrawPayload;
@@ -161,6 +162,20 @@ public class DefaultMercuryApi implements MercuryApi {
         RpcMethods.BUILD_WITHDRAW_TRANSACTION,
         Arrays.asList(payload),
         TransactionCompletionResponse.class);
+  }
+
+  @Override
+  public TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionView.class);
+  }
+
+  @Override
+  public TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class);
   }
 
   //  @Override

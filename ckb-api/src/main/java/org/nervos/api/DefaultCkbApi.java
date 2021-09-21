@@ -40,10 +40,12 @@ import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.common.PaginationResponse;
+import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 import org.nervos.mercury.model.req.payload.DepositPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
+import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.payload.WithdrawPayload;
@@ -365,6 +367,20 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public MercuryInfo getMercuryInfo() throws IOException {
     return this.mercuryApi.getMercuryInfo();
+  }
+
+  @Override
+  public TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)
+      throws IOException {
+    payload.structureType = ViewType.Native;
+    return this.mercuryApi.getSpentTransactionWithTransactionView(payload);
+  }
+
+  @Override
+  public TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
+      throws IOException {
+    payload.structureType = ViewType.DoubleEntry;
+    return this.mercuryApi.getSpentTransactionWithTransactionInfo(payload);
   }
 
   @Override
