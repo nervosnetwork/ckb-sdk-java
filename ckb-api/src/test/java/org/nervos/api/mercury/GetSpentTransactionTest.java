@@ -5,7 +5,7 @@ import constant.ApiFactory;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.OutPoint;
-import org.nervos.mercury.model.req.GetSpentTransactionPayloadBuilder;
+import org.nervos.mercury.model.GetSpentTransactionPayloadBuilder;
 import org.nervos.mercury.model.resp.TransactionInfo;
 import org.nervos.mercury.model.resp.TransactionView;
 

@@ -9,6 +9,7 @@ import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
+import org.nervos.mercury.model.req.payload.SmartTransferPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.payload.WithdrawPayload;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
@@ -30,8 +31,8 @@ public interface MercuryApi {
   TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException;
 
-  //  TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
-  //      throws IOException;
+  TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
+      throws IOException;
 
   GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException;
 
@@ -48,7 +49,6 @@ public interface MercuryApi {
   DBInfo getDbInfo() throws IOException;
 
   MercuryInfo getMercuryInfo() throws IOException;
-  //  Integer getAccountNumber(String address) throws IOException;
 
   TransactionCompletionResponse buildDepositTransaction(DepositPayload payload) throws IOException;
 

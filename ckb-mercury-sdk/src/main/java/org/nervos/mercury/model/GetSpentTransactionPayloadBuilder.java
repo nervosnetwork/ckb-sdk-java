@@ -1,4 +1,4 @@
-package org.nervos.mercury.model.req;
+package org.nervos.mercury.model;
 
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.mercury.model.common.ViewType;

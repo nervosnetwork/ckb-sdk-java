@@ -47,6 +47,7 @@ import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
+import org.nervos.mercury.model.req.payload.SmartTransferPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.payload.WithdrawPayload;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
@@ -325,12 +326,11 @@ public class DefaultCkbApi implements CkbApi {
     return this.mercuryApi.buildAdjustAccountTransaction(payload);
   }
 
-  //  @Override
-  //  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload
-  // payload)
-  //      throws IOException {
-  //    return this.mercuryApi.buildSmartTransferTransaction(payload);
-  //  }
+  @Override
+  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
+      throws IOException {
+    return this.mercuryApi.buildSmartTransferTransaction(payload);
+  }
 
   @Override
   public GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException {
