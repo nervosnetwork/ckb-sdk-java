@@ -136,13 +136,15 @@ TODO
 4. [`query_transactions` example](./ckb-api/src/test/java/org/nervos/api/mercury/QueryTransactionsTest.java)
 5. [`build_adjust_account_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/BuildAdjustAccountTest.java)
 6. [`build_transfer_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/TransferCompletionTest.java)
-7. [`build_transfer_transaction` by action example](./ckb-api/src/test/java/org/nervos/api/mercury/ModeTest.java)
+7. [`build_transfer_transaction` by mode example](./ckb-api/src/test/java/org/nervos/api/mercury/ModeTest.java)
 8. [`build_transfer_transaction` by source example](./ckb-api/src/test/java/org/nervos/api/mercury/SourceTest.java)
-9. [`register_addresses` example](./ckb-mercury-sdk/src/test/java/mercury/RegisterAddressesTest.java)
-10. [`fee_rate` example](./ckb-mercury-sdk/src/test/java/mercury/FeeRateTest.java)
-11. [`build_smart_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildSmartTransferTransactionTest.java)
-12. [`get_db_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
-13. [`get_mercury_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
+9. [`fee_rate` example](./ckb-api/src/test/java/org/nervos/api/mercury/FeeRateTest.java)
+10. [`DAO` example](./ckb-api/src/test/java/org/nervos/api/mercury/DaoTest.java)
+11. [`register_addresses` example](./ckb-mercury-sdk/src/test/java/mercury/RegisterAddressesTest.java)
+12. [`build_smart_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildSmartTransferTransactionTest.java)
+13. [`get_db_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
+14. [`get_mercury_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
+15. [`get_spent_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/GetSpentTransactionTest.java)
 
 ### 3. ckb-indexer RPC
 
