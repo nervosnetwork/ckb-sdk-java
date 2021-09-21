@@ -141,7 +141,7 @@ TODO
 9. [`fee_rate` example](./ckb-api/src/test/java/org/nervos/api/mercury/FeeRateTest.java)
 10. [`DAO` example](./ckb-api/src/test/java/org/nervos/api/mercury/DaoTest.java)
 11. [`register_addresses` example](./ckb-mercury-sdk/src/test/java/mercury/RegisterAddressesTest.java)
-12. [`build_smart_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildSmartTransferTransactionTest.java)
+12. [`build_smart_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/BuildSmartTransferTransactionTest.java)
 13. [`get_db_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
 14. [`get_mercury_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
 15. [`get_spent_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/GetSpentTransactionTest.java)

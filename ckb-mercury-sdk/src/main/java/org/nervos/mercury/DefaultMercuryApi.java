@@ -19,6 +19,7 @@ import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
+import org.nervos.mercury.model.req.payload.SmartTransferPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.payload.WithdrawPayload;
 import org.nervos.mercury.model.resp.AddressOrLockHash;
@@ -76,6 +77,15 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
+  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.BUILD_SMART_TRANSFER_TRANSACTION,
+        Arrays.asList(payload),
+        TransactionCompletionResponse.class);
+  }
+
+  @Override
   public TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException {
     return this.rpcService.post(
@@ -83,13 +93,6 @@ public class DefaultMercuryApi implements MercuryApi {
         Arrays.asList(payload),
         TransactionCompletionResponse.class);
   }
-
-  //  @Override
-  //  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload
-  // payload)
-  //      throws IOException {
-  //    return this.buildTransferTransaction(toTransferPayload(payload));
-  //  }
 
   @Override
   public GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException {
@@ -177,126 +180,4 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class);
   }
-
-  //  @Override
-  //  public Integer getAccountNumber(String address) throws IOException {
-  //    return this.rpcService.post(
-  //        RpcMethods.GET_ACCOUNT_NUMBER, Arrays.asList(address), Integer.class);
-  //  }
-
-  //  private TransferPayload toTransferPayload(SmartTransferPayload payload) throws IOException {
-  //
-  //    List<GetBalanceResponse> fromBalances = this.getBalance(payload.from, payload.assetInfo);
-  //    List<GetBalanceResponse> toBalance =
-  //        this.getBalance(
-  //            payload.to.stream().map(x -> x.address).collect(toList()), payload.assetInfo);
-  //
-  //    feePay(payload, fromBalances, toBalance);
-  //    Source source = getSource(payload.assetInfo, fromBalances, payload.to);
-  //
-  //    TransferPayloadBuilder builder = new TransferPayloadBuilder();
-  //    builder.from(new FromKeyAddresses(payload.from.stream().collect(toSet()), source));
-  //    for (SmartTo to : payload.to) {
-  //      if (Objects.equals(payload.assetInfo.assetType, AssetInfo.AssetType.UDT)
-  //          && this.getAccountNumber(to.address).compareTo(0) > 0) {
-  //        builder.addItem(new ToKeyAddress(to.address, Action.pay_by_to), to.amount);
-  //      } else {
-  //        builder.addItem(new ToKeyAddress(to.address, Action.pay_by_from), to.amount);
-  //      }
-  //    }
-  //
-  //    if (Objects.equals(payload.assetInfo.assetType, AssetInfo.AssetType.UDT)) {
-  //      builder.udtHash(payload.assetInfo.udtHash);
-  //    }
-  //
-  //    System.out.println(new Gson().toJson(builder.build()));
-  //    return builder.build();
-  //  }
-  //
-  //  private Source getSource(
-  //      AssetInfo assetInfo, List<GetBalanceResponse> fromBalances, List<SmartTo> to) {
-  //    BigInteger fromBalance = this.getBalance(fromBalances, assetInfo.assetType, "claimable");
-  //    BigInteger totalAmount =
-  //        to.stream().map(x -> x.amount).reduce(BigInteger.ZERO, (x, y) -> x.add(y));
-  //
-  //    if (fromBalance.compareTo(totalAmount) >= 0) {
-  //      return Source.fleeting;
-  //    } else {
-  //      return Source.unconstrained;
-  //    }
-  //  }
-  //
-  //  private void feePay(
-  //      SmartTransferPayload payload,
-  //      List<GetBalanceResponse> fromBalances,
-  //      List<GetBalanceResponse> toBalances) {
-  //    BigInteger from = this.getBalance(fromBalances, AssetInfo.AssetType.CKB, "free");
-  //    BigInteger to = this.getBalance(toBalances, AssetInfo.AssetType.CKB, "free");
-  //
-  //    BigInteger feeThreshold = AmountUtils.ckbToShannon(0.0001);
-  //    if (from.compareTo(feeThreshold) < 0 && to.compareTo(feeThreshold) < 0) {
-  //      throw new RuntimeException("CKB Insufficient balance to pay the fee");
-  //    }
-  //
-  //    if (from.compareTo(feeThreshold) < 0 && to.compareTo(feeThreshold) >= 0) {
-  //      payload.from.addAll(
-  //          toBalances.stream()
-  //              .flatMap(x -> x.balances.stream().map(y -> y.address))
-  //              .collect(toSet()));
-  //
-  //      return;
-  //    }
-  //
-  //    if (from.compareTo(feeThreshold) > 0) {
-  //      return;
-  //    }
-  //
-  //    throw new RuntimeException("CKB Insufficient balance to pay the fee");
-  //  }
-  //
-  //  private BigInteger getBalance(
-  //      List<GetBalanceResponse> fromBalances, AssetInfo.AssetType assetType, String balanceType)
-  // {
-  //    return fromBalances.stream()
-  //        .map(
-  //            x -> {
-  //              BalanceResponse balanceResponse =
-  //                  x.balances.stream()
-  //                      .filter(y -> Objects.equals(y.assetInfo.assetType, assetType))
-  //                      .findAny()
-  //                      .get();
-  //
-  //              if (Objects.equals(balanceType, "free")) {
-  //                return balanceResponse.free;
-  //              }
-  //
-  //              if (Objects.equals(balanceType, "claimable")) {
-  //                return balanceResponse.claimable;
-  //              }
-  //
-  //              if (Objects.equals(balanceType, "freezed")) {
-  //                return balanceResponse.freezed;
-  //              }
-  //              return BigInteger.ZERO;
-  //            })
-  //        .reduce(BigInteger.ZERO, (x, y) -> x.add(y));
-  //  }
-  //
-  //  private List<GetBalanceResponse> getBalance(List<String> addresses, AssetInfo udtAsset)
-  //      throws IOException {
-  //    List<GetBalanceResponse> result = new ArrayList<>(addresses.size());
-  //    for (String address : addresses) {
-  //      GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-  //      builder.addressItem(address);
-  //      builder.addAssetInfo(AssetInfo.newCkbAsset());
-  //      if (Objects.nonNull(udtAsset)) {
-  //        builder.addAssetInfo(udtAsset);
-  //      }
-  //
-  //      GetBalanceResponse balance = this.getBalance(builder.build());
-  //      result.add(balance);
-  //    }
-  //
-  //    return result;
-  //  }
 }
