@@ -40,11 +40,13 @@ import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.common.PaginationResponse;
-import org.nervos.mercury.model.req.AdjustAccountPayload;
-import org.nervos.mercury.model.req.QueryTransactionsPayload;
+import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
+import org.nervos.mercury.model.req.payload.DepositPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
+import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
+import org.nervos.mercury.model.req.payload.WithdrawPayload;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
@@ -363,6 +365,18 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public MercuryInfo getMercuryInfo() throws IOException {
     return this.mercuryApi.getMercuryInfo();
+  }
+
+  @Override
+  public TransactionCompletionResponse buildDepositTransaction(DepositPayload payload)
+      throws IOException {
+    return this.mercuryApi.buildDepositTransaction(payload);
+  }
+
+  @Override
+  public TransactionCompletionResponse buildWithdrawTransaction(WithdrawPayload payload)
+      throws IOException {
+    return this.mercuryApi.buildWithdrawTransaction(payload);
   }
 
   //  @Override
