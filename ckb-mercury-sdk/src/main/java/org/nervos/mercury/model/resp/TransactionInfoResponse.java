@@ -14,5 +14,5 @@ public class TransactionInfoResponse {
 
   public BigInteger fee;
 
-  public List<BurnInfo> brun;
+  public List<BurnInfo> burn;
 }

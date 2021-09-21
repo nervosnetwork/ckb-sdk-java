@@ -2,6 +2,7 @@ package org.nervos.mercury;
 
 import java.io.IOException;
 import java.util.List;
+import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
 import org.nervos.mercury.model.req.CollectAssetPayload;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
@@ -34,7 +35,11 @@ public interface MercuryApi {
   TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
       throws IOException;
 
-  QueryTransactionsResponse queryTransactions(QueryTransactionsPayload payload) throws IOException;
+  PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
+      QueryTransactionsPayload payload) throws IOException;
+
+  PaginationResponse<TransactionInfo> queryTransactionsWithTransactionInfo(
+      QueryTransactionsPayload payload) throws IOException;
 
   DBInfo getDbInfo() throws IOException;
 

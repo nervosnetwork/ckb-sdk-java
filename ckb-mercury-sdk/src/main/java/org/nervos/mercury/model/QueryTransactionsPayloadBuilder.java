@@ -1,60 +1,74 @@
 package org.nervos.mercury.model;
 
 import java.math.BigInteger;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashSet;
-import org.nervos.mercury.model.req.KeyAddress;
-import org.nervos.mercury.model.req.NormalAddress;
+import java.util.List;
+import java.util.Objects;
+import org.nervos.mercury.model.common.AssetInfo;
+import org.nervos.mercury.model.common.ExtraFilter;
+import org.nervos.mercury.model.common.PaginationRequest;
+import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
+import org.nervos.mercury.model.req.item.Item;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
 
   public QueryTransactionsPayloadBuilder() {
-    this.udtHashes = new HashSet<>(2, 1);
-    this.udtHashes.add(null);
+    this.assetInfos = new HashSet<>(2, 1);
+    this.pagination = new PaginationRequest();
+    this.pagination.limit = new BigInteger("50");
+    this.pagination.order = PaginationRequest.ORDER_BY_DESC;
+    this.pagination.returnCount = Boolean.FALSE;
   }
 
-  public void address(KeyAddress address) {
-    this.address = address;
+  public void item(Item item) {
+    this.item = item;
   }
 
-  public void address(NormalAddress address) {
-    this.address = address;
+  public void addAssetInfo(AssetInfo info) {
+    this.assetInfos.add(info);
   }
 
-  public void addUdtHash(String udtHash) {
-    if (this.udtHashes.contains(null)) {
-      this.udtHashes.remove(null);
-    }
-    this.udtHashes.add(udtHash);
-  }
-
-  public void allTransactionType() {
-    this.udtHashes = Collections.EMPTY_SET;
-  }
-
-  public void fromBlock(BigInteger fromBlock) {
-    this.fromBlock = fromBlock;
-  }
-
-  public void toBlock(BigInteger toBlock) {
-    this.toBlock = toBlock;
+  public void range(Range range) {
+    this.blockRange = range;
   }
 
   public void limit(BigInteger limit) {
-    this.limit = limit;
+    this.pagination.limit = limit;
   }
 
-  public void offset(BigInteger offset) {
-    this.offset = offset;
+  public void cursor(List<Integer> cursor) {
+    this.pagination.cursor = cursor;
   }
 
   public void order(String order) {
-    this.order = order;
+    this.pagination.order = order;
+  }
+
+  public void pageNumber(BigInteger skip) {
+    this.pagination.skip = skip;
+  }
+
+  public void returnCount(Boolean returnCount) {
+    this.pagination.returnCount = returnCount;
+  }
+
+  public void extraFilter(ExtraFilter extraFilter) {
+    this.extraFilter = extraFilter;
   }
 
   public QueryTransactionsPayload build() {
+    if (Objects.nonNull(this.pagination.skip)) {
+      this.pagination.skip =
+          this.pagination.limit.multiply(this.pagination.skip).subtract(this.pagination.limit);
+    }
+
+    if (Objects.isNull(this.pagination.cursor) && Objects.equals(this.pagination.order, "desc")) {
+      pagination.cursor = Arrays.asList(127, 255, 255, 255, 255, 255, 255, 254);
+    }
+
     return this;
   }
 }

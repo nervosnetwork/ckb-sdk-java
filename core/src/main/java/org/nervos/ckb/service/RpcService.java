@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -31,9 +32,19 @@ public class RpcService {
       HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
       logging.level(HttpLoggingInterceptor.Level.BODY);
       client =
-          new OkHttpClient.Builder().addInterceptor(logging).retryOnConnectionFailure(true).build();
+          new OkHttpClient.Builder()
+              .readTimeout(10, TimeUnit.MINUTES)
+              .addInterceptor(logging)
+              .retryOnConnectionFailure(true)
+              .build();
+
     } else {
-      client = new OkHttpClient.Builder().retryOnConnectionFailure(true).build();
+      client =
+          new OkHttpClient.Builder()
+              .connectTimeout(180, TimeUnit.SECONDS)
+              .readTimeout(180, TimeUnit.SECONDS)
+              .retryOnConnectionFailure(true)
+              .build();
     }
     gson = new Gson();
   }

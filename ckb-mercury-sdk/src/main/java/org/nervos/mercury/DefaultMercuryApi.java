@@ -10,12 +10,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
-import org.nervos.mercury.model.common.ExtraFilter;
+import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.RecordStatus;
-import org.nervos.mercury.model.req.*;
+import org.nervos.mercury.model.common.ViewType;
+import org.nervos.mercury.model.req.AdjustAccountPayload;
+import org.nervos.mercury.model.req.CollectAssetPayload;
+import org.nervos.mercury.model.req.QueryTransactionsPayload;
+import org.nervos.mercury.model.req.ToKeyAddress;
+import org.nervos.mercury.model.req.TransferItem;
+import org.nervos.mercury.model.req.TransferPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
-import org.nervos.mercury.model.resp.*;
+import org.nervos.mercury.model.resp.AddressOrLockHash;
+import org.nervos.mercury.model.resp.BlockInfoResponse;
+import org.nervos.mercury.model.resp.GetBalanceResponse;
+import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
+import org.nervos.mercury.model.resp.RecordResponse;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
+import org.nervos.mercury.model.resp.TransactionInfo;
+import org.nervos.mercury.model.resp.TransactionView;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 
@@ -26,8 +39,6 @@ public class DefaultMercuryApi implements MercuryApi {
       new GsonBuilder()
           .registerTypeAdapter(AddressOrLockHash.class, new AddressOrLockHash())
           .registerTypeAdapter(RecordStatus.class, new RecordStatus())
-          .registerTypeAdapter(ExtraFilter.class, new ExtraFilter())
-          .registerTypeAdapter(QueryAddress.class, new NormalAddress(""))
           .registerTypeAdapter(RecordResponse.class, new RecordResponse())
           .create();
 
@@ -120,10 +131,25 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public QueryTransactionsResponse queryTransactions(QueryTransactionsPayload payload)
-      throws IOException {
+  public PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
+      QueryTransactionsPayload payload) throws IOException {
+    payload.viewType = ViewType.Native;
     return this.rpcService.post(
-        RpcMethods.QUERY_TRANSACTIONS, Arrays.asList(payload), QueryTransactionsResponse.class);
+        RpcMethods.QUERY_TRANSACTIONS,
+        Arrays.asList(payload),
+        new TypeToken<PaginationResponse<TransactionView>>() {}.getType(),
+        this.g);
+  }
+
+  @Override
+  public PaginationResponse<TransactionInfo> queryTransactionsWithTransactionInfo(
+      QueryTransactionsPayload payload) throws IOException {
+    payload.viewType = ViewType.DoubleEntry;
+    return this.rpcService.post(
+        RpcMethods.QUERY_TRANSACTIONS,
+        Arrays.asList(payload),
+        new TypeToken<PaginationResponse<TransactionInfo>>() {}.getType(),
+        this.g);
   }
 
   @Override
