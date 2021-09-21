@@ -11,7 +11,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.nervos.ckb.utils.Numeric;
@@ -32,11 +38,7 @@ public class RpcService {
       HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
       logging.level(HttpLoggingInterceptor.Level.BODY);
       client =
-          new OkHttpClient.Builder()
-              .readTimeout(10, TimeUnit.MINUTES)
-              .addInterceptor(logging)
-              .retryOnConnectionFailure(true)
-              .build();
+          new OkHttpClient.Builder().addInterceptor(logging).retryOnConnectionFailure(true).build();
 
     } else {
       client =

@@ -1,29 +1,37 @@
 package org.nervos.mercury.model;
 
-import static java.util.stream.Collectors.toSet;
-
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
+import org.nervos.mercury.model.req.item.Item;
 
 public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
 
-  private List<AssetInfo> assetInfos;
-
   public AdjustAccountPayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
-    this.assetInfos = new ArrayList<>(1);
+    this.from = new HashSet<>(2, 1);
   }
 
-  public void address(String address) {
-    this.address = address;
+  public void item(Item item) {
+    this.item = item;
   }
 
-  public void addAssetInfo(AssetInfo assetInfo) {
-    this.assetInfos.add(assetInfo);
+  public void addFrom(Item from) {
+    this.from.add(from);
+  }
+
+  public void assetInfo(AssetInfo assetInfo) {
+    this.assetInfo = assetInfo;
+  }
+
+  public void accountNumber(BigInteger accountNumber) {
+    this.accountNumber = accountNumber;
+  }
+
+  public void extraCkb(BigInteger extraCkb) {
+    this.extraCkb = extraCkb;
   }
 
   public void feeRate(BigInteger feeRate) {
@@ -31,8 +39,6 @@ public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
   }
 
   public AdjustAccountPayload build() {
-    this.udtHashes = this.assetInfos.stream().map(x -> x.udtHash).collect(toSet());
-
     return this;
   }
 }

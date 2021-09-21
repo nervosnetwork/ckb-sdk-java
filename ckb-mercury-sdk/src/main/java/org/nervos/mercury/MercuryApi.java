@@ -9,7 +9,12 @@ import org.nervos.mercury.model.req.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.TransferPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
-import org.nervos.mercury.model.resp.*;
+import org.nervos.mercury.model.resp.BlockInfoResponse;
+import org.nervos.mercury.model.resp.GetBalanceResponse;
+import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
+import org.nervos.mercury.model.resp.TransactionCompletionResponse;
+import org.nervos.mercury.model.resp.TransactionInfo;
+import org.nervos.mercury.model.resp.TransactionView;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 
@@ -44,6 +49,4 @@ public interface MercuryApi {
   DBInfo getDbInfo() throws IOException;
 
   MercuryInfo getMercuryInfo() throws IOException;
-
-  //  Integer getAccountNumber(String address) throws IOException;
 }
