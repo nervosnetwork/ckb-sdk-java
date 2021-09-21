@@ -1,3 +1,5 @@
+package org.nervos.api.mercury;
+
 import com.google.gson.Gson;
 import constant.ApiFactory;
 import java.io.IOException;

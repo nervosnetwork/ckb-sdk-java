@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.AdjustAccountPayload;
-import org.nervos.mercury.model.req.CollectAssetPayload;
 import org.nervos.mercury.model.req.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.TransferPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
@@ -36,9 +35,6 @@ public interface MercuryApi {
   BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException;
 
   List<String> registerAddresses(List<String> normalAddresses) throws IOException;
-
-  TransactionCompletionResponse buildAssetCollectionTransaction(CollectAssetPayload payload)
-      throws IOException;
 
   PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException;

@@ -146,7 +146,7 @@ TODO
 14. [`fee_rate` example](./ckb-mercury-sdk/src/test/java/mercury/FeeRateTest.java)
 15. [`build_smart_transaction` example](./ckb-mercury-sdk/src/test/java/mercury/BuildSmartTransferTransactionTest.java)
 16. [`get_db_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
-16. [`get_mercury_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
+17. [`get_mercury_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
 
 ### 3. ckb-indexer RPC
 
