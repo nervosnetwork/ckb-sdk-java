@@ -1,19 +1,19 @@
-# [v0.43.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.1...v0.43.2) (2021-09-03)
+# [v0.43.3-beta.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.2...v0.43.3-beta.1) (2021-09-22)
 
 ### Features
 
-* Add `build_smart_transfer_transaction`
-  api ([539017a](https://github.com/zhengjianhui/ckb-sdk-java/commit/539017aef3806e0ffcdc87aae8af46258644132b) [1213bdd](https://github.com/nervosnetwork/ckb-sdk-java/pull/438/commits/1213bddc33a0cc0f142d18e848e5549b3180400d) [63f63bb](https://github.com/nervosnetwork/ckb-sdk-java/pull/439/commits/63f63bb25c4a9cf18b291feaedc06fecba0df4fd))
+* Add `get_spent_transaction` support ([bc744ab](https://github.com/nervosnetwork/ckb-sdk-java/commit/bc744abde786b09cffee0c440dbd405a8b6300ba))
+* Add `dao` support ([6eccbf0](https://github.com/nervosnetwork/ckb-sdk-java/commit/6eccbf0e438b19bd94a9af405c9ee2690782710d))
+- Add `get_mercury_info` api ([7346d3d](https://github.com/nervosnetwork/ckb-sdk-java/commit/7346d3dffeddde6d645aa1c1b4af689724c08e55))
+- Add `get_db_info` api ([28d3f20](https://github.com/nervosnetwork/ckb-sdk-java/commit/28d3f20d322f5af66ae998c0a212316b7b5f71a6))
 
-### BreakingChanges
+### Breaking Changes
 
-* The uniform unit is
-  shannon ([33f63bc](https://github.com/nervosnetwork/ckb-sdk-java/pull/431/commits/33f63bc203f208656b0444a05fe2248f17488518) [9f33b10](https://github.com/nervosnetwork/ckb-sdk-java/pull/435/commits/9f33b10a03f8924c7df6901e9fc6ce97c583820d))
-* Adjusting the `build_asset_account_creation_transaction`
-  interface ([2f74758](https://github.com/nervosnetwork/ckb-sdk-java/pull/433/commits/2f747586011632d5593741206178ef18d3bad9f6) [f660dbe](https://github.com/nervosnetwork/ckb-sdk-java/pull/433/commits/f660dbeb66c7bd6f7532107675e5085d473bb0f1))
-
-* Adjusting the `get_generic_transaction` and `get_generic_block`
-  interface ([acf3ec8](https://github.com/nervosnetwork/ckb-sdk-java/pull/430/commits/acf3ec8dbc3304bc4f29b7ce1009ec338ff333aa) [156876b](https://github.com/nervosnetwork/ckb-sdk-java/pull/430/commits/156876be5a69b7cff0b2806b968e410d487da161) [33a229b](https://github.com/nervosnetwork/ckb-sdk-java/pull/436/commits/33a229b3a00e392a392a3ffed101f88d8620b349))
-
-* Adjusting the `get_balance`
-  interface ([2f74758](https://github.com/zhengjianhui/ckb-sdk-java/commit/2f747586011632d5593741206178ef18d3bad9f6))
+* Adjusting `build_smart_transfer_transaction` ([4f2683d](https://github.com/nervosnetwork/ckb-sdk-java/commit/4f2683df83f98a685192cf988566803619f741b7))
+* Adjusting `query_transactions` interface ([9d15fed](https://github.com/nervosnetwork/ckb-sdk-java/commit/9d15fed6e1cf89ce522054014b9ee60b54117ccf))
+* Adjusting `build_transfer_transaction` interface ([0ce8890](https://github.com/nervosnetwork/ckb-sdk-java/commit/0ce88901bf770eeab2d209519a978fed9310177d))
+* Adjusting `build_adjust_account_transaction` interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8) [ca7efe5](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca7efe545e08f730b5ec0b9139d35e78f0393ef5))
+* Adjusting `get_block_info` interface（[09c3e38](https://github.com/nervosnetwork/ckb-sdk-java/commit/09c3e38990f5df2bd7ebaae4d1a876a05795dc2f))
+* Adjusting `get_transaction_info` interface ([ef6ece4](https://github.com/nervosnetwork/ckb-sdk-java/commit/ef6ece46530a172fb1fec444376cea11bb1872fc))
+* Adjusting `balance` interface ([ee1f367](https://github.com/nervosnetwork/ckb-sdk-java/commit/ee1f367eaace231c0ca04660615f3e6f89598b35))
+* remove `build_asset_collection_transaction` interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8)
