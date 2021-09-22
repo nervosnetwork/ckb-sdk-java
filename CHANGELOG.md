@@ -1,6 +1,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.43.3-beta.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.2...v0.43.3-beta.1) (2021-09-22)
+
+### Features
+
+* Add `get_spent_transaction` support ([bc744ab](https://github.com/nervosnetwork/ckb-sdk-java/commit/bc744abde786b09cffee0c440dbd405a8b6300ba))
+* Add `dao` support ([6eccbf0](https://github.com/nervosnetwork/ckb-sdk-java/commit/6eccbf0e438b19bd94a9af405c9ee2690782710d))
+
+### Breaking Changes
+
+* Adjusting `build_smart_transfer_transaction` ([4f2683d](https://github.com/nervosnetwork/ckb-sdk-java/commit/4f2683df83f98a685192cf988566803619f741b7))
+* Adjusting `query_transactions` interface ([9d15fed](https://github.com/nervosnetwork/ckb-sdk-java/commit/9d15fed6e1cf89ce522054014b9ee60b54117ccf))
+* Adjusting `build_transfer_transaction` interface ([0ce8890](https://github.com/nervosnetwork/ckb-sdk-java/commit/0ce88901bf770eeab2d209519a978fed9310177d))
+* Adjusting `build_adjust_account_transaction` interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8) [ca7efe5](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca7efe545e08f730b5ec0b9139d35e78f0393ef5))
+
 # [v0.43.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.1...v0.43.2) (2021-09-03)
 
 ### Features
@@ -69,7 +83,7 @@ interface `verify_transaction_proof` ([751f07b](https://github.com/nervosnetwork
 
 ### Feature
 
-* Remove indexer module rpc and disable get_cellbase_output_capacity_details
+* Remove indexer module rpc and disable getcellbase_output_capacity_details
   rpc([0872f27](https://github.com/nervosnetwork/ckb-sdk-java/commit/0872f279692aac96006474903fe088f9fbeda2b7))
 
 ### BreakingChanges
