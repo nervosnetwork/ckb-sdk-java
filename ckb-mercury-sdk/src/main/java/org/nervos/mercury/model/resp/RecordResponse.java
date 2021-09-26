@@ -1,6 +1,12 @@
 package org.nervos.mercury.model.resp;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import org.nervos.mercury.model.common.AssetInfo;
@@ -50,10 +56,10 @@ public class RecordResponse
       if (fieldExist(amount, "status")) {
         JsonObject status = amount.get("status").getAsJsonObject();
         if (fieldExist(status, "claimable")) {
-          record.status = AssetStatus.CLAIMABLE;
+          record.status = AssetStatus.Claimable;
           record.blockNumber = status.get("claimable").getAsBigInteger();
         } else if (fieldExist(status, "fixed")) {
-          record.status = AssetStatus.FIXED;
+          record.status = AssetStatus.Fixed;
           record.blockNumber = status.get("fixed").getAsBigInteger();
         }
       }

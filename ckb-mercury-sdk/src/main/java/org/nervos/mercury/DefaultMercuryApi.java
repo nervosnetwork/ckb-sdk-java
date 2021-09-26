@@ -178,6 +178,6 @@ public class DefaultMercuryApi implements MercuryApi {
   public TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
       throws IOException {
     return this.rpcService.post(
-        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class);
+        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class, this.g);
   }
 }
