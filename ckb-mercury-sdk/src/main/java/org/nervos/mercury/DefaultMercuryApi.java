@@ -180,6 +180,6 @@ public class DefaultMercuryApi implements MercuryApi {
       throws IOException {
     payload.structureType = ViewType.DoubleEntry;
     return this.rpcService.post(
-        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class);
+        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class, this.g);
   }
 }
