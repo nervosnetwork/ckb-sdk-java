@@ -40,7 +40,6 @@ import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.common.PaginationResponse;
-import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 import org.nervos.mercury.model.req.payload.DepositPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
@@ -343,8 +342,8 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
-    return this.mercuryApi.registerAddresses(normalAddresses);
+  public List<String> registerAddress(List<String> normalAddresses) throws IOException {
+    return this.mercuryApi.registerAddress(normalAddresses);
   }
 
   @Override
@@ -372,14 +371,12 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)
       throws IOException {
-    payload.structureType = ViewType.Native;
     return this.mercuryApi.getSpentTransactionWithTransactionView(payload);
   }
 
   @Override
   public TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
       throws IOException {
-    payload.structureType = ViewType.DoubleEntry;
     return this.mercuryApi.getSpentTransactionWithTransactionInfo(payload);
   }
 

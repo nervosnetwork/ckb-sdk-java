@@ -38,7 +38,7 @@ public interface MercuryApi {
 
   BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException;
 
-  List<String> registerAddresses(List<String> normalAddresses) throws IOException;
+  List<String> registerAddress(List<String> normalAddresses) throws IOException;
 
   PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException;

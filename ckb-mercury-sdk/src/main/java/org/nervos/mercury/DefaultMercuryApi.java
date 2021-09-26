@@ -110,9 +110,9 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
+  public List<String> registerAddress(List<String> normalAddresses) throws IOException {
     return this.rpcService.post(
-        RpcMethods.REGISTER_ADDRESSES,
+        RpcMethods.REGISTER_ADDRESS,
         Arrays.asList(normalAddresses),
         new TypeToken<List<String>>() {}.getType());
   }
@@ -170,6 +170,7 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)
       throws IOException {
+    payload.structureType = ViewType.Native;
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionView.class);
   }
@@ -177,7 +178,8 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
       throws IOException {
+    payload.structureType = ViewType.DoubleEntry;
     return this.rpcService.post(
-        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class, this.g);
+        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class);
   }
 }
