@@ -2,6 +2,7 @@ package org.nervos.mercury.model.common;
 
 import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
+import java.util.List;
 import org.nervos.mercury.model.resp.AddressOrLockHash;
 
 public class Record {
@@ -21,4 +22,10 @@ public class Record {
   public RecordStatus status;
 
   public ExtraFilter extra;
+
+  @SerializedName("block_number")
+  public BigInteger blockNumber;
+
+  @SerializedName("epoch_number")
+  public List<Byte> epochNumber;
 }
