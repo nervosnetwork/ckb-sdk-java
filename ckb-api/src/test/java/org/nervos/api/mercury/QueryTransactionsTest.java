@@ -12,7 +12,7 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.common.ExtraFilter;
+import org.nervos.mercury.model.common.ExtraFilterType;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.Item;
@@ -134,7 +134,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(Item.newAddressItem(minerAddress));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
-      builder.extraFilter(ExtraFilter.CellBase);
+      builder.extraFilter(ExtraFilterType.CellBase);
       builder.limit(BigInteger.valueOf(3));
 
       //      System.out.println(new Gson().toJson(builder.build()));
@@ -159,7 +159,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(Item.newAddressItem(daoAddress));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
-      builder.extraFilter(ExtraFilter.Dao);
+      builder.extraFilter(ExtraFilterType.Dao);
       builder.limit(BigInteger.valueOf(10));
 
       //      System.out.println(new Gson().toJson(builder.build()));

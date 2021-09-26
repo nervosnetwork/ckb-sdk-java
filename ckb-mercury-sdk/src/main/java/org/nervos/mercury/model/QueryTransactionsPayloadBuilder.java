@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.common.ExtraFilter;
+import org.nervos.mercury.model.common.ExtraFilterType;
 import org.nervos.mercury.model.common.PaginationRequest;
 import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.Item;
@@ -55,8 +55,8 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.pagination.returnCount = returnCount;
   }
 
-  public void extraFilter(ExtraFilter extraFilter) {
-    this.extraFilter = extraFilter;
+  public void extraFilter(ExtraFilterType extraFilterType) {
+    this.extraFilterType = extraFilterType;
   }
 
   public QueryTransactionsPayload build() {
