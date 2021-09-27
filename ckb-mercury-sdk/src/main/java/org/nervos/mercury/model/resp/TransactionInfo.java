@@ -2,7 +2,7 @@ package org.nervos.mercury.model.resp;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TransactionInfo implements TxView<TransactionInfoResponse> {
+public class TransactionInfo {
   @SerializedName("TransactionInfo")
   public TransactionInfoResponse transactionInfo;
 }

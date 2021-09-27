@@ -9,7 +9,7 @@ public interface RpcMethods {
   String BUILD_WITHDRAW_TRANSACTION = "build_withdraw_transaction";
   String GET_TRANSACTION_INFO = "get_transaction_info";
   String GET_BLOCK_INFO = "get_block_info";
-  String REGISTER_ADDRESSES = "register_addresses";
+  String REGISTER_ADDRESS = "register_address";
   String QUERY_TRANSACTIONS = "query_transactions";
   String GET_SPENT_TRANSACTION = "get_spent_transaction";
   String GET_DB_INFO = "get_db_info";

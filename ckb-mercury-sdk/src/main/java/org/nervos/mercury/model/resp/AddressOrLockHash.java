@@ -26,10 +26,10 @@ public class AddressOrLockHash implements JsonDeserializer<AddressOrLockHash> {
       throws JsonParseException {
     if (json.getAsJsonObject().has("Address")) {
       return new AddressOrLockHash(
-          json.getAsJsonObject().get("Address").getAsString(), AddressOrLockHashType.ADDRESS);
+          json.getAsJsonObject().get("Address").getAsString(), AddressOrLockHashType.Address);
     } else {
       return new AddressOrLockHash(
-          json.getAsJsonObject().get("LockHash").getAsString(), AddressOrLockHashType.LOCK_HASH);
+          json.getAsJsonObject().get("LockHash").getAsString(), AddressOrLockHashType.LockHash);
     }
   }
 }
