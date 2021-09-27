@@ -1,14 +1,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.2...v0.43.3-beta.3)) (2021-09-28)
+# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.2...v0.43.3-beta.3) (2021-09-28)
 
 ### Bugfix
 
 * Fix a serialization error
   in `ExtraFilter` ([#464](https://github.com/nervosnetwork/ckb-sdk-java/pull/464))
 
-# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.1...v0.43.3-beta.2)) (2021-09-27)
+# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.1...v0.43.3-beta.2) (2021-09-27)
 
 ### Refactor
 
