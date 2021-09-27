@@ -3,7 +3,7 @@ package org.nervos.mercury.model.req.payload;
 import com.google.gson.annotations.SerializedName;
 import java.util.Set;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.common.ExtraFilter;
+import org.nervos.mercury.model.common.ExtraFilterType;
 import org.nervos.mercury.model.common.PaginationRequest;
 import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.common.ViewType;
@@ -18,7 +18,7 @@ public class QueryTransactionsPayload {
   public Set<AssetInfo> assetInfos;
 
   @SerializedName("extra")
-  public ExtraFilter extraFilter;
+  public ExtraFilterType extraFilterType;
 
   @SerializedName("block_range")
   public Range blockRange;
