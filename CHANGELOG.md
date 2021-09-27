@@ -1,37 +1,62 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.1...v0.43.3-beta.2)) (2021-09-27)
-### Refactor
-
-* Refactor nameing field ([078c9e7](https://github.com/nervosnetwork/ckb-sdk-java/commit/078c9e7a2f49b29cef4f1a33d1af114cc91ae6c3))
+# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.2...v0.43.3-beta.3)) (2021-09-28)
 
 ### Bugfix
 
-* Fix `register_address` url error ([4eba9b2](https://github.com/nervosnetwork/ckb-sdk-java/commit/4eba9b284f9b4650733ad09839ab9b4cfaced252))
-* Fix serialization error in `get_spent_transaction`([ca4599a](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca4599aba283ac345c2eb541f8796b758aed7a3c))
-* Fix `ExtraFilter` structure definition problem ([f4cc990](https://github.com/nervosnetwork/ckb-sdk-java/commit/f4cc990180bb48f983465de2106d459e5e8a36ca))
-* Fix `Record` structure definition problem ([532d17](https://github.com/nervosnetwork/ckb-sdk-java/commit/5532d17e3741bad3525cb501d2fa4565e02fca17))
+* Fix a serialization error
+  in `ExtraFilter` ([#464](https://github.com/nervosnetwork/ckb-sdk-java/pull/464))
+
+# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.1...v0.43.3-beta.2)) (2021-09-27)
+
+### Refactor
+
+* Refactor nameing
+  field ([078c9e7](https://github.com/nervosnetwork/ckb-sdk-java/commit/078c9e7a2f49b29cef4f1a33d1af114cc91ae6c3))
+
+### Bugfix
+
+* Fix `register_address` url
+  error ([4eba9b2](https://github.com/nervosnetwork/ckb-sdk-java/commit/4eba9b284f9b4650733ad09839ab9b4cfaced252))
+* Fix serialization error
+  in `get_spent_transaction`([ca4599a](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca4599aba283ac345c2eb541f8796b758aed7a3c))
+* Fix `ExtraFilter` structure definition
+  problem ([f4cc990](https://github.com/nervosnetwork/ckb-sdk-java/commit/f4cc990180bb48f983465de2106d459e5e8a36ca))
+* Fix `Record` structure definition
+  problem ([532d17](https://github.com/nervosnetwork/ckb-sdk-java/commit/5532d17e3741bad3525cb501d2fa4565e02fca17))
 
 # [v0.43.3-beta.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.2...v0.43.3-beta.1) (2021-09-22)
 
 ### Features
 
-* Add `get_spent_transaction` support ([bc744ab](https://github.com/nervosnetwork/ckb-sdk-java/commit/bc744abde786b09cffee0c440dbd405a8b6300ba))
-* Add `dao` support ([6eccbf0](https://github.com/nervosnetwork/ckb-sdk-java/commit/6eccbf0e438b19bd94a9af405c9ee2690782710d))
-* Add `get_mercury_info` api ([7346d3d](https://github.com/nervosnetwork/ckb-sdk-java/commit/7346d3dffeddde6d645aa1c1b4af689724c08e55))
-* Add `get_db_info` api ([28d3f20](https://github.com/nervosnetwork/ckb-sdk-java/commit/28d3f20d322f5af66ae998c0a212316b7b5f71a6))
+* Add `get_spent_transaction`
+  support ([bc744ab](https://github.com/nervosnetwork/ckb-sdk-java/commit/bc744abde786b09cffee0c440dbd405a8b6300ba))
+* Add `dao`
+  support ([6eccbf0](https://github.com/nervosnetwork/ckb-sdk-java/commit/6eccbf0e438b19bd94a9af405c9ee2690782710d))
+* Add `get_mercury_info`
+  api ([7346d3d](https://github.com/nervosnetwork/ckb-sdk-java/commit/7346d3dffeddde6d645aa1c1b4af689724c08e55))
+* Add `get_db_info`
+  api ([28d3f20](https://github.com/nervosnetwork/ckb-sdk-java/commit/28d3f20d322f5af66ae998c0a212316b7b5f71a6))
 
 ### Breaking Changes
 
-* Adjusting `build_smart_transfer_transaction` ([4f2683d](https://github.com/nervosnetwork/ckb-sdk-java/commit/4f2683df83f98a685192cf988566803619f741b7))
-* Adjusting `query_transactions` interface ([9d15fed](https://github.com/nervosnetwork/ckb-sdk-java/commit/9d15fed6e1cf89ce522054014b9ee60b54117ccf))
-* Adjusting `build_transfer_transaction` interface ([0ce8890](https://github.com/nervosnetwork/ckb-sdk-java/commit/0ce88901bf770eeab2d209519a978fed9310177d))
-* Adjusting `build_adjust_account_transaction` interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8) [ca7efe5](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca7efe545e08f730b5ec0b9139d35e78f0393ef5))
-* Adjusting `get_block_info` interface（[09c3e38](https://github.com/nervosnetwork/ckb-sdk-java/commit/09c3e38990f5df2bd7ebaae4d1a876a05795dc2f))
-* Adjusting `get_transaction_info` interface ([ef6ece4](https://github.com/nervosnetwork/ckb-sdk-java/commit/ef6ece46530a172fb1fec444376cea11bb1872fc))
-* Adjusting `balance` interface ([ee1f367](https://github.com/nervosnetwork/ckb-sdk-java/commit/ee1f367eaace231c0ca04660615f3e6f89598b35))
-* remove `build_asset_collection_transaction` interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8)
+*
+Adjusting `build_smart_transfer_transaction` ([4f2683d](https://github.com/nervosnetwork/ckb-sdk-java/commit/4f2683df83f98a685192cf988566803619f741b7))
+* Adjusting `query_transactions`
+  interface ([9d15fed](https://github.com/nervosnetwork/ckb-sdk-java/commit/9d15fed6e1cf89ce522054014b9ee60b54117ccf))
+* Adjusting `build_transfer_transaction`
+  interface ([0ce8890](https://github.com/nervosnetwork/ckb-sdk-java/commit/0ce88901bf770eeab2d209519a978fed9310177d))
+* Adjusting `build_adjust_account_transaction`
+  interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8) [ca7efe5](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca7efe545e08f730b5ec0b9139d35e78f0393ef5))
+* Adjusting `get_block_info`
+  interface（[09c3e38](https://github.com/nervosnetwork/ckb-sdk-java/commit/09c3e38990f5df2bd7ebaae4d1a876a05795dc2f))
+* Adjusting `get_transaction_info`
+  interface ([ef6ece4](https://github.com/nervosnetwork/ckb-sdk-java/commit/ef6ece46530a172fb1fec444376cea11bb1872fc))
+* Adjusting `balance`
+  interface ([ee1f367](https://github.com/nervosnetwork/ckb-sdk-java/commit/ee1f367eaace231c0ca04660615f3e6f89598b35))
+* remove `build_asset_collection_transaction`
+  interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8)
 
 # [v0.43.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.1...v0.43.2) (2021-09-03)
 
@@ -42,13 +67,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BreakingChanges
 
-* The uniform unit is shannon ([33f63bc](https://github.com/nervosnetwork/ckb-sdk-java/pull/431/commits/33f63bc203f208656b0444a05fe2248f17488518) [9f33b10](https://github.com/nervosnetwork/ckb-sdk-java/pull/435/commits/9f33b10a03f8924c7df6901e9fc6ce97c583820d))
-* Adjusting the `build_asset_account_creation_transaction` interface ([2f74758](https://github.com/nervosnetwork/ckb-sdk-java/pull/433/commits/2f747586011632d5593741206178ef18d3bad9f6) [f660dbe](https://github.com/nervosnetwork/ckb-sdk-java/pull/433/commits/f660dbeb66c7bd6f7532107675e5085d473bb0f1))
+* The uniform unit is
+  shannon ([33f63bc](https://github.com/nervosnetwork/ckb-sdk-java/pull/431/commits/33f63bc203f208656b0444a05fe2248f17488518) [9f33b10](https://github.com/nervosnetwork/ckb-sdk-java/pull/435/commits/9f33b10a03f8924c7df6901e9fc6ce97c583820d))
+* Adjusting the `build_asset_account_creation_transaction`
+  interface ([2f74758](https://github.com/nervosnetwork/ckb-sdk-java/pull/433/commits/2f747586011632d5593741206178ef18d3bad9f6) [f660dbe](https://github.com/nervosnetwork/ckb-sdk-java/pull/433/commits/f660dbeb66c7bd6f7532107675e5085d473bb0f1))
 
 * Adjusting the `get_generic_transaction` and `get_generic_block`
   interface ([acf3ec8](https://github.com/nervosnetwork/ckb-sdk-java/pull/430/commits/acf3ec8dbc3304bc4f29b7ce1009ec338ff333aa) [156876b](https://github.com/nervosnetwork/ckb-sdk-java/pull/430/commits/156876be5a69b7cff0b2806b968e410d487da161) [33a229b](https://github.com/nervosnetwork/ckb-sdk-java/pull/436/commits/33a229b3a00e392a392a3ffed101f88d8620b349))
 
-* Adjusting the `get_balance` interface ([2f74758](https://github.com/zhengjianhui/ckb-sdk-java/commit/2f747586011632d5593741206178ef18d3bad9f6))
+* Adjusting the `get_balance`
+  interface ([2f74758](https://github.com/zhengjianhui/ckb-sdk-java/commit/2f747586011632d5593741206178ef18d3bad9f6))
 
 # [v0.43.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.0...v0.43.1) (2021-08-01)
 
@@ -308,9 +336,9 @@ Bump version to v0.28.0
 
 ### BreakingChanges
 
-Add outputsValidator as parameter to sendTransaction rpc which is used to validate the transaction outputs before
-entering the tx-pool, an optional string parameter (enum: default | passthrough ), null means using default validator,
-passthrough means skipping outputs validation
+Add outputsValidator as parameter to sendTransaction rpc which is used to validate the transaction
+outputs before entering the tx-pool, an optional string parameter (enum: default | passthrough ),
+null means using default validator, passthrough means skipping outputs validation
 
 # [v0.27.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.26.1...v0.27.0) (2020-1-10)
 
@@ -461,8 +489,8 @@ passthrough means skipping outputs validation
 
 ### Breaking Change
 
-Sending transaction with single sig address will be changed because of new witness data structure and new signature
-logic.
+Sending transaction with single sig address will be changed because of new witness data structure
+and new signature logic.
 
 # [v0.23.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.23.1...v0.23.2) (2019-10-22)
 
@@ -548,8 +576,8 @@ logic.
 
 # [v0.20.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.19.1...v0.20.0) (2019-09-07)
 
-**This version SDK supports computing script hash and transaction hash offline through script and transaction
-serialization.**
+**This version SDK supports computing script hash and transaction hash offline through script and
+transaction serialization.**
 
 ### Feature
 
@@ -798,21 +826,25 @@ serialization.**
 
 ### Refactor
 
-* rename PRC request localNodeInfo ([9ae422](https://github.com/nervosnetwork/ckb-sdk-java/commit/9ae422))
+* rename PRC request
+  localNodeInfo ([9ae422](https://github.com/nervosnetwork/ckb-sdk-java/commit/9ae422))
 * rename RPC response model CellInput and
   CellOutput ([080378](https://github.com/nervosnetwork/ckb-sdk-java/commit/080378))
 
 ### Features
 
-* support asw account and transfer ([46b1ca](https://github.com/nervosnetwork/ckb-sdk-java/commit/46b1ca))
+* support asw account and
+  transfer ([46b1ca](https://github.com/nervosnetwork/ckb-sdk-java/commit/46b1ca))
 
 # [v0.5.0](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.4.0...rc/v0.5.0) (2019-02-11)
 
 ### Refactor
 
-* update response model to ckb prefix ([316313e](https://github.com/nervosnetwork/ckb-sdk-java/commit/316313e))
+* update response model to ckb
+  prefix ([316313e](https://github.com/nervosnetwork/ckb-sdk-java/commit/316313e))
 
 ### Features
 
-* add script model and calculate type hash ([c3ddb81](https://github.com/nervosnetwork/ckb-sdk-java/commit/c3ddb81))
+* add script model and calculate type
+  hash ([c3ddb81](https://github.com/nervosnetwork/ckb-sdk-java/commit/c3ddb81))
 
