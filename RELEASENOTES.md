@@ -1,19 +1,12 @@
-# [v0.43.3-beta.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.2...v0.43.3-beta.1) (2021-09-22)
 
-### Features
+# [v0.43.3-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.1...v0.43.3-beta.2)) (2021-09-27)
+### Refactor
 
-* Add `get_spent_transaction` support ([bc744ab](https://github.com/nervosnetwork/ckb-sdk-java/commit/bc744abde786b09cffee0c440dbd405a8b6300ba))
-* Add `dao` support ([6eccbf0](https://github.com/nervosnetwork/ckb-sdk-java/commit/6eccbf0e438b19bd94a9af405c9ee2690782710d))
-- Add `get_mercury_info` api ([7346d3d](https://github.com/nervosnetwork/ckb-sdk-java/commit/7346d3dffeddde6d645aa1c1b4af689724c08e55))
-- Add `get_db_info` api ([28d3f20](https://github.com/nervosnetwork/ckb-sdk-java/commit/28d3f20d322f5af66ae998c0a212316b7b5f71a6))
+* Refactor nameing field ([078c9e7](https://github.com/nervosnetwork/ckb-sdk-java/commit/078c9e7a2f49b29cef4f1a33d1af114cc91ae6c3))
 
-### Breaking Changes
+### Bugfix
 
-* Adjusting `build_smart_transfer_transaction` ([4f2683d](https://github.com/nervosnetwork/ckb-sdk-java/commit/4f2683df83f98a685192cf988566803619f741b7))
-* Adjusting `query_transactions` interface ([9d15fed](https://github.com/nervosnetwork/ckb-sdk-java/commit/9d15fed6e1cf89ce522054014b9ee60b54117ccf))
-* Adjusting `build_transfer_transaction` interface ([0ce8890](https://github.com/nervosnetwork/ckb-sdk-java/commit/0ce88901bf770eeab2d209519a978fed9310177d))
-* Adjusting `build_adjust_account_transaction` interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8) [ca7efe5](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca7efe545e08f730b5ec0b9139d35e78f0393ef5))
-* Adjusting `get_block_info` interface（[09c3e38](https://github.com/nervosnetwork/ckb-sdk-java/commit/09c3e38990f5df2bd7ebaae4d1a876a05795dc2f))
-* Adjusting `get_transaction_info` interface ([ef6ece4](https://github.com/nervosnetwork/ckb-sdk-java/commit/ef6ece46530a172fb1fec444376cea11bb1872fc))
-* Adjusting `balance` interface ([ee1f367](https://github.com/nervosnetwork/ckb-sdk-java/commit/ee1f367eaace231c0ca04660615f3e6f89598b35))
-* remove `build_asset_collection_transaction` interface ([aa89d7a](https://github.com/nervosnetwork/ckb-sdk-java/commit/aa89d7a41adc216f5a1255f3dbf0066a88a5d8f8)
+* Fix `girester_address` url error ([4eba9b2](https://github.com/nervosnetwork/ckb-sdk-java/commit/4eba9b284f9b4650733ad09839ab9b4cfaced252))
+* Fix serialization error in `get_spent_transaction`([ca4599a](https://github.com/nervosnetwork/ckb-sdk-java/commit/ca4599aba283ac345c2eb541f8796b758aed7a3c))
+* Fix `ExtraFilter` structure definition problem ([f4cc990](https://github.com/nervosnetwork/ckb-sdk-java/commit/f4cc990180bb48f983465de2106d459e5e8a36ca))
+* Fix `Record` structure definition problem ([532d17](https://github.com/nervosnetwork/ckb-sdk-java/commit/5532d17e3741bad3525cb501d2fa4565e02fca17))
