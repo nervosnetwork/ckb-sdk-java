@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.mercury.model.common.AssetType;
+import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.common.ViewType;
@@ -41,6 +42,7 @@ public class DefaultMercuryApi implements MercuryApi {
           .registerTypeAdapter(AddressOrLockHash.class, new AddressOrLockHash())
           .registerTypeAdapter(RecordStatus.class, new RecordStatus())
           .registerTypeAdapter(RecordResponse.class, new RecordResponse())
+          .registerTypeAdapter(ExtraFilter.class, new ExtraFilter())
           .create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {
@@ -106,7 +108,7 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException {
     return this.rpcService.post(
-        RpcMethods.GET_BLOCK_INFO, Arrays.asList(payload), BlockInfoResponse.class, g);
+        RpcMethods.GET_BLOCK_INFO, Arrays.asList(payload), BlockInfoResponse.class, this.g);
   }
 
   @Override
