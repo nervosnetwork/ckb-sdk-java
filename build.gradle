@@ -8,7 +8,7 @@ buildscript {
     ext.slf4jVersion = '1.7.30'
     ext.guavaVersion = '30.1.1-jre'
 
-    ext.junitVersion = '5.7.1'
+    ext.junitVersion = '5.8.1'
 
     repositories {
         jcenter()
