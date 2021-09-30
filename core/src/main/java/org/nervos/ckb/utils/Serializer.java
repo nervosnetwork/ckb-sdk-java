@@ -36,7 +36,7 @@ public class Serializer {
   public static Table serializeScript(Script script) {
     return new Table(
         new Byte32(script.codeHash),
-        new Byte1(Script.DATA.equals(script.hashType) ? "00" : "01"),
+        new Byte1(serializeHashType(script.hashType)),
         new Bytes(script.args));
   }
 
@@ -142,5 +142,17 @@ public class Serializer {
     Table rawTransactionTable = serializeRawTransaction(transaction);
     Dynamic<Type> witnessesVec = Serializer.serializeWitnesses(transaction.witnesses);
     return new Table(rawTransactionTable, witnessesVec);
+  }
+
+  private static String serializeHashType(String hashType) {
+
+    if (Script.DATA.equals(hashType)) {
+      return "00";
+    } else if (Script.TYPE.equals(hashType)) {
+      return "01";
+    } else if (Script.DATA1.equals(hashType)) {
+      return "02";
+    }
+    throw new RuntimeException("Invalid script hash_type: ".concat(hashType));
   }
 }
