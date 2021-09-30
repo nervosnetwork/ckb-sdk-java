@@ -25,8 +25,8 @@ public class Header {
   @SerializedName("proposals_hash")
   public String proposalsHash;
 
-  @SerializedName("uncles_hash")
-  public String unclesHash;
+  @SerializedName("extra_hash")
+  public String extraHash;
 
   public String version;
 }

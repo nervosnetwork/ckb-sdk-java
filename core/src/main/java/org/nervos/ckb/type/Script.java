@@ -14,6 +14,7 @@ public class Script {
 
   public static final String DATA = "data";
   public static final String TYPE = "type";
+  public static final String DATA1 = "data1";
 
   @SerializedName("code_hash")
   public String codeHash;
