@@ -1,3 +1,5 @@
+package org.nervos.ckb.utils;
+
 /*
  * Copyright 2018 Coinomi Ltd
  *
@@ -14,9 +16,7 @@
  * limitations under the License.
  */
 
-package org.nervos.ckb.utils;
-
-import com.google.common.primitives.Bytes;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Locale;
 import org.nervos.ckb.exceptions.AddressFormatException;
@@ -39,9 +39,14 @@ import org.nervos.ckb.exceptions.AddressFormatException;
  * https://github.com/bitcoinj/bitcoinj/blob/master/core/src/main/java/org/bitcoinj/core/Bech32.java
  */
 
-public class Bech32 {
+public class Bech32m {
   /** The Bech32 character set for encoding. */
   private static final String CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
+
+  private static final int BECH32M_CONST = 0x2bc830a3;
+
+  private static final int[] GENERATOR =
+      new int[] {0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3};
 
   /** The Bech32 character set for decoding. */
   private static final byte[] CHARSET_REV = {
@@ -67,39 +72,58 @@ public class Bech32 {
 
   /** Find the polynomial with value coefficients mod the generator as 30-bit. */
   private static int polymod(final byte[] values) {
-    int c = 1;
+    int chk = 1;
     for (byte v_i : values) {
-      int c0 = (c >>> 25) & 0xff;
-      c = ((c & 0x1ffffff) << 5) ^ (v_i & 0xff);
-      if ((c0 & 1) != 0) c ^= 0x3b6a57b2;
-      if ((c0 & 2) != 0) c ^= 0x26508e6d;
-      if ((c0 & 4) != 0) c ^= 0x1ea119fa;
-      if ((c0 & 8) != 0) c ^= 0x3d4233dd;
-      if ((c0 & 16) != 0) c ^= 0x2a1462b3;
+      int top = (chk >> 25);
+      chk = (chk & 0x1ffffff) << 5 ^ v_i;
+      for (int i = 0; i < 6; i++) {
+        if (((top >> i) & 1) == 0 ? false : true) {
+          chk ^= GENERATOR[i];
+        } else {
+          chk ^= 0;
+        }
+      }
     }
-    return c;
+    return chk;
   }
 
   /** Expand a HRP for use in checksum computation. */
   private static byte[] expandHrp(final String hrp) {
-    int hrpLength = hrp.length();
-    byte ret[] = new byte[hrpLength * 2 + 1];
-    for (int i = 0; i < hrpLength; ++i) {
-      int c = hrp.charAt(i) & 0x7f; // Limit to standard 7-bit ASCII
-      ret[i] = (byte) ((c >>> 5) & 0x07);
-      ret[i + hrpLength + 1] = (byte) (c & 0x1f);
+    int hrpLength = hrp.length() * 2 + 1;
+    int index = 0;
+    byte[] ret = new byte[hrpLength];
+
+    for (char ch : hrp.toCharArray()) {
+      ret[index] = (byte) (ord(ch) >> 5);
+      index++;
     }
-    ret[hrpLength] = 0;
+
+    ret[index] = (byte) 0;
+    index++;
+
+    for (char ch : hrp.toCharArray()) {
+      ret[index] = (byte) (ord(ch) & 31);
+      index++;
+    }
+
     return ret;
   }
 
+  private static int ord(String s) {
+    return s.length() > 0 ? (s.getBytes(StandardCharsets.UTF_8)[0] & 0xff) : 0;
+  }
+
+  private static int ord(char c) {
+    return c < 0x80 ? c : ord(Character.toString(c));
+  }
+
   /** Verify a checksum. */
-  private static boolean verifyChecksum(final String hrp, final byte[] values) {
+  public static boolean verifyChecksum(final String hrp, final byte[] values) {
     byte[] hrpExpanded = expandHrp(hrp);
     byte[] combined = new byte[hrpExpanded.length + values.length];
     System.arraycopy(hrpExpanded, 0, combined, 0, hrpExpanded.length);
     System.arraycopy(values, 0, combined, hrpExpanded.length, values.length);
-    return polymod(combined) == 1;
+    return polymod(combined) == BECH32M_CONST;
   }
 
   /** Create a checksum. */
@@ -108,10 +132,11 @@ public class Bech32 {
     byte[] enc = new byte[hrpExpanded.length + values.length + 6];
     System.arraycopy(hrpExpanded, 0, enc, 0, hrpExpanded.length);
     System.arraycopy(values, 0, enc, hrpExpanded.length, values.length);
-    int mod = polymod(enc) ^ 1;
+
+    int polymod = polymod(enc) ^ BECH32M_CONST;
     byte[] ret = new byte[6];
     for (int i = 0; i < 6; ++i) {
-      ret[i] = (byte) ((mod >>> (5 * (5 - i))) & 31);
+      ret[i] = (byte) ((polymod >> 5 * (5 - i)) & 31);
     }
     return ret;
   }
@@ -122,19 +147,23 @@ public class Bech32 {
   }
 
   /** Encode a Bech32 string. */
-  public static String encode(String hrp, final byte[] values) {
+  public static String encode(String hrp, byte[] values) {
     if (hrp.length() < 1)
       throw new AddressFormatException.InvalidDataLength(
           "Human-readable part is too short: " + hrp.length());
     if (hrp.length() > 83)
       throw new AddressFormatException.InvalidDataLength(
           "Human-readable part is too long: " + hrp.length());
+
     hrp = hrp.toLowerCase(Locale.ROOT);
+
     byte[] checksum = createChecksum(hrp, values);
     byte[] combined = new byte[values.length + checksum.length];
+
     System.arraycopy(values, 0, combined, 0, values.length);
     System.arraycopy(checksum, 0, combined, values.length, checksum.length);
     StringBuilder sb = new StringBuilder(hrp.length() + 1 + combined.length);
+
     sb.append(hrp);
     sb.append('1');
     for (byte b : combined) {
@@ -172,12 +201,7 @@ public class Bech32 {
       values[i] = CHARSET_REV[c];
     }
     String hrp = str.substring(0, pos).toLowerCase(Locale.ROOT);
-    int polymod = polymod(Bytes.concat(expandHrp(hrp), values));
-    if (polymod == 1) {
-      if (!verifyChecksum(hrp, values)) throw new AddressFormatException.InvalidChecksum();
-    } else {
-      if (!Bech32m.verifyChecksum(hrp, values)) throw new AddressFormatException.InvalidChecksum();
-    }
+    if (!Bech32m.verifyChecksum(hrp, values)) throw new AddressFormatException.InvalidChecksum();
     return new Bech32Data(hrp, Arrays.copyOfRange(values, 0, values.length - 6));
   }
 }
