@@ -89,6 +89,20 @@ public class AddressGeneratorTest {
   }
 
   @Test
+  void testBech32mTypeFullTestnetAddressGenerate() {
+    Script fullScript =
+        new Script(
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+            "0xb39bbc0b3673c7d36450bc14cfcdad2d559c6c64",
+            Script.TYPE);
+    String address = AddressGenerator.generateBech32mFullAddress(Network.MAINNET, fullScript);
+
+    Assertions.assertEquals(
+        "ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdnnw7qkdnnclfkg59uzn8umtfd2kwxceqxwquc4",
+        address);
+  }
+
+  @Test
   void testTypeFullMainnetAddressGenerate() {
     Script typeFullScript =
         new Script(
