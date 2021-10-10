@@ -4,3 +4,4 @@
 
 * Fix the case that script type data1 is not taken into account during bech32m serialization and
   deserialization ([#473](https://github.com/nervosnetwork/ckb-sdk-java/pull/473))
+

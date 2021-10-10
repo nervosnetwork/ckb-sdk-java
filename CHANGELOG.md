@@ -20,6 +20,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * The field `uncles_hash` in header will be renamed to `extra_hash` for all JSON RPC methods
 
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [v0.43.3-beta.4](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.3...v0.43.3-beta.4) (2021-10-13)
 
 ### Bugfix
