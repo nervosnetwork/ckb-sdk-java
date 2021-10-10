@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.100.0-beta.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.3...v0.100.0-beta.1) (2021-10-10)
+
+### Features
+
+* The field hash_type has a new allowed value `data1` but it is only valid after hard fork
+  activation
+* Add support for Bech32m
+
+### Breaking Changes
+
+* The field `uncles_hash` in header will be renamed to `extra_hash` for all JSON RPC methods
+
 # [v0.43.3-beta.3](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.2...v0.43.3-beta.3) (2021-09-28)
 
 ### Bugfix
@@ -42,7 +54,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Breaking Changes
 
 *
+
 Adjusting `build_smart_transfer_transaction` ([4f2683d](https://github.com/nervosnetwork/ckb-sdk-java/commit/4f2683df83f98a685192cf988566803619f741b7))
+
 * Adjusting `query_transactions`
   interface ([9d15fed](https://github.com/nervosnetwork/ckb-sdk-java/commit/9d15fed6e1cf89ce522054014b9ee60b54117ccf))
 * Adjusting `build_transfer_transaction`
