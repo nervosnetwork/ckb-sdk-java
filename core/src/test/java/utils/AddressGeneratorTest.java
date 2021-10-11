@@ -89,7 +89,7 @@ public class AddressGeneratorTest {
   }
 
   @Test
-  void testTypeFullTestnetAddressGenerateWithBech32m() {
+  void testTypeFullMainnetAddressGenerateWithBech32m() {
     Script fullScript =
         new Script(
             "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
@@ -103,7 +103,7 @@ public class AddressGeneratorTest {
   }
 
   @Test
-  void testDataFullTestnetAddressGenerateWithBech32m() {
+  void testDataFullMainnetAddressGenerateWithBech32m() {
     Script fullScript =
         new Script(
             "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
@@ -117,7 +117,7 @@ public class AddressGeneratorTest {
   }
 
   @Test
-  void testData1FullTestnetAddressGenerateWithBech32m() {
+  void testData1FullMainnetAddressGenerateWithBech32m() {
     Script fullScript =
         new Script(
             "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
