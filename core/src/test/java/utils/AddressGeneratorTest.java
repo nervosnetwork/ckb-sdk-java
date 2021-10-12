@@ -89,7 +89,7 @@ public class AddressGeneratorTest {
   }
 
   @Test
-  void testBech32mTypeFullTestnetAddressGenerate() {
+  void testTypeFullMainnetAddressGenerateWithBech32m() {
     Script fullScript =
         new Script(
             "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
@@ -99,6 +99,34 @@ public class AddressGeneratorTest {
 
     Assertions.assertEquals(
         "ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdnnw7qkdnnclfkg59uzn8umtfd2kwxceqxwquc4",
+        address);
+  }
+
+  @Test
+  void testDataFullMainnetAddressGenerateWithBech32m() {
+    Script fullScript =
+        new Script(
+            "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
+            Script.DATA);
+    String address = AddressGenerator.generateBech32mFullAddress(Network.MAINNET, fullScript);
+
+    Assertions.assertEquals(
+        "ckb1qzn9dutjk669cfznq7httfar0gtk7qp0du3wjfvzck9l0w3k9eqhvqpkcv576ccddnn4quf2ga65xee2m26h7nqdcg257",
+        address);
+  }
+
+  @Test
+  void testData1FullMainnetAddressGenerateWithBech32m() {
+    Script fullScript =
+        new Script(
+            "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
+            Script.DATA1);
+    String address = AddressGenerator.generateBech32mFullAddress(Network.MAINNET, fullScript);
+
+    Assertions.assertEquals(
+        "ckb1qzn9dutjk669cfznq7httfar0gtk7qp0du3wjfvzck9l0w3k9eqhvq3kcv576ccddnn4quf2ga65xee2m26h7nqe5e7m2",
         address);
   }
 

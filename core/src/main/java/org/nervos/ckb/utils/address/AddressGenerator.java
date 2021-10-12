@@ -9,6 +9,7 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Bech32m;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressGenerator extends AddressBaseOperator {
@@ -70,15 +71,11 @@ public class AddressGenerator extends AddressBaseOperator {
         Numeric.hexStringToByteArray(
             TYPE_FULL_WITH_BECH32M
                 + Numeric.cleanHexPrefix(script.codeHash)
-                + getHashType(script.hashType)
+                + Serializer.serializeHashType(script.hashType)
                 + Numeric.cleanHexPrefix(script.args));
 
     byte[] data_part = convertBits(Bytes.asList(payload), 8, 5, true);
     return Bech32m.encode(prefix(network), data_part);
-  }
-
-  private static String getHashType(String hashType) {
-    return hashType == Script.TYPE ? "01" : "00";
   }
 
   private static String prefix(Network network) {
