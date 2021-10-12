@@ -144,7 +144,7 @@ public class Serializer {
     return new Table(rawTransactionTable, witnessesVec);
   }
 
-  private static String serializeHashType(String hashType) {
+  public static String serializeHashType(String hashType) {
 
     if (Script.DATA.equals(hashType)) {
       return "00";
@@ -152,6 +152,17 @@ public class Serializer {
       return "01";
     } else if (Script.DATA1.equals(hashType)) {
       return "02";
+    }
+    throw new RuntimeException("Invalid script hash_type: ".concat(hashType));
+  }
+
+  public static String deserializeHashType(String hashType) {
+    if ("00".equals(hashType)) {
+      return Script.DATA;
+    } else if ("01".equals(hashType)) {
+      return Script.TYPE;
+    } else if ("02".equals(hashType)) {
+      return Script.DATA1;
     }
     throw new RuntimeException("Invalid script hash_type: ".concat(hashType));
   }
