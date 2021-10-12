@@ -188,7 +188,7 @@ public class BalanceTest {
       GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());
       assertNotNull(balance, "Balance is not empty");
       System.out.println(g.toJson(balance));
-    } catch (IOException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
