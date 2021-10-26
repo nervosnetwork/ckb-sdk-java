@@ -196,7 +196,8 @@ public class Api implements CkbRpcApi {
   public String sendTransaction(Transaction transaction) throws IOException {
     return rpcService.post(
         "send_transaction",
-        Collections.singletonList(Convert.parseTransaction(transaction)),
+        Arrays.asList(
+            Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH.getValue()),
         String.class);
   }
 

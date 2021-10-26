@@ -348,7 +348,7 @@ public class ApiTest {
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList()),
-                OutputsValidator.DEFAULT);
+                OutputsValidator.WELL_KNOWN_SCRIPTS_ONLY);
           }
         },
         "Transaction Empty");
