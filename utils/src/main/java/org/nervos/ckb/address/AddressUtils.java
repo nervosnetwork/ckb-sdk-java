@@ -49,7 +49,7 @@ public class AddressUtils {
   }
 
   public String generateFromPublicKey(String publicKey) throws AddressFormatException {
-    if (!validatePublicKeyHex(publicKey, false )) {
+    if (!validatePublicKeyHex(publicKey, false)) {
       throw new IllegalArgumentException("Not a valid uncompressed public key in hex");
     }
     return generate(Hash.blake160(publicKey));
