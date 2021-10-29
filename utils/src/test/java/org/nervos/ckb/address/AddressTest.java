@@ -71,6 +71,8 @@ public class AddressTest {
 
   @Test
   public void testPublicKeyHashToAddressMainnet() {
+    System.out.println(
+        "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01".length());
     AddressUtils utils = new AddressUtils(Network.MAINNET);
     Assertions.assertEquals(
         "ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd",
