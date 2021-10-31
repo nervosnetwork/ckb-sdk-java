@@ -5,8 +5,9 @@ public interface RpcMethods {
   String BUILD_TRANSFER_TRANSACTION = "build_transfer_transaction";
   String BUILD_SMART_TRANSFER_TRANSACTION = "build_smart_transfer_transaction";
   String BUILD_ADJUST_ACCOUNT_TRANSACTION = "build_adjust_account_transaction";
-  String BUILD_DEPOSIT_TRANSACTION = "build_deposit_transaction";
-  String BUILD_WITHDRAW_TRANSACTION = "build_withdraw_transaction";
+  String BUILD_DAO_DEPOSIT_TRANSACTION = "build_dao_deposit_transaction";
+  String BUILD_DAO_WITHDRAW_TRANSACTION = "build_dao_withdraw_transaction";
+  String BUILD_DAO_CLAIM_TRANSACTION = "build_dao_claim_transaction";
   String GET_TRANSACTION_INFO = "get_transaction_info";
   String GET_BLOCK_INFO = "get_block_info";
   String REGISTER_ADDRESS = "register_address";

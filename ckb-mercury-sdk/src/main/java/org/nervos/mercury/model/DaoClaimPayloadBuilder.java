@@ -3,11 +3,11 @@ package org.nervos.mercury.model;
 import java.math.BigInteger;
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.req.item.Item;
-import org.nervos.mercury.model.req.payload.WithdrawPayload;
+import org.nervos.mercury.model.req.payload.DaoClaimPayload;
 
-public class WithdrawPayloadBuilder extends WithdrawPayload {
+public class DaoClaimPayloadBuilder extends DaoClaimPayload {
 
-  public WithdrawPayloadBuilder() {
+  public DaoClaimPayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
   }
 
@@ -15,15 +15,15 @@ public class WithdrawPayloadBuilder extends WithdrawPayload {
     this.from = item;
   }
 
-  public void payFee(String address) {
-    this.payFee = address;
+  public void to(String address) {
+    this.to = address;
   }
 
   public void feeRate(BigInteger address) {
     this.feeRate = address;
   }
 
-  public WithdrawPayload build() {
+  public DaoClaimPayload build() {
     return this;
   }
 }
