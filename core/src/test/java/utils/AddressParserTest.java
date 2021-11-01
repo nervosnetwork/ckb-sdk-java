@@ -167,6 +167,54 @@ public class AddressParserTest {
   }
 
   @Test
+  void testTypeFullMainnetAddressParseWithBech32m() {
+    String address =
+        "ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdnnw7qkdnnclfkg59uzn8umtfd2kwxceqxwquc4";
+    Script fullScript =
+        new Script(
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+            "0xb39bbc0b3673c7d36450bc14cfcdad2d559c6c64",
+            Script.TYPE);
+    AddressParseResult addressParseResult = AddressParser.parse(address);
+    Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
+    Assertions.assertEquals(fullScript.args, addressParseResult.script.args);
+    Assertions.assertEquals(fullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertEquals(fullScript.hashType, addressParseResult.script.hashType);
+  }
+
+  @Test
+  void testDataFullMainnetAddressParseWithBech32m() {
+    String address =
+        "ckb1qzn9dutjk669cfznq7httfar0gtk7qp0du3wjfvzck9l0w3k9eqhvqpkcv576ccddnn4quf2ga65xee2m26h7nqdcg257";
+    Script fullScript =
+        new Script(
+            "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
+            Script.DATA);
+    AddressParseResult addressParseResult = AddressParser.parse(address);
+    Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
+    Assertions.assertEquals(fullScript.args, addressParseResult.script.args);
+    Assertions.assertEquals(fullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertEquals(fullScript.hashType, addressParseResult.script.hashType);
+  }
+
+  @Test
+  void testData1FullMainnetAddressParseWithBech32m() {
+    String address =
+        "ckb1qzn9dutjk669cfznq7httfar0gtk7qp0du3wjfvzck9l0w3k9eqhvqpkcv576ccddnn4quf2ga65xee2m26h7nqdcg257";
+    Script fullScript =
+        new Script(
+            "0xa656f172b6b45c245307aeb5a7a37a176f002f6f22e92582c58bf7ba362e4176",
+            "0x36c329ed630d6ce750712a477543672adab57f4c",
+            Script.DATA);
+    AddressParseResult addressParseResult = AddressParser.parse(address);
+    Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
+    Assertions.assertEquals(fullScript.args, addressParseResult.script.args);
+    Assertions.assertEquals(fullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertEquals(fullScript.hashType, addressParseResult.script.hashType);
+  }
+
+  @Test
   void testParseAddressNetworkException() {
     String address = "ckn1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83";
     AddressFormatException exception =

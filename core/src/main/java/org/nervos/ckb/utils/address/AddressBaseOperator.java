@@ -10,6 +10,7 @@ class AddressBaseOperator {
   static final String TYPE_SHORT = "01"; // short version for locks with popular code_hash
   static final String TYPE_FULL_DATA = "02"; // full version with hash_type = "Data"
   static final String TYPE_FULL_TYPE = "04"; // full version with hash_type = "Type"
+  static final String TYPE_FULL_WITH_BECH32M = "00"; // full version with bech32m
 
   static final String CODE_HASH_IDX_BLAKE160 = "00";
   static final String CODE_HASH_IDX_MULTISIG = "01";

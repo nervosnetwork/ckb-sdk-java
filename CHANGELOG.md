@@ -1,6 +1,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.100.0-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.100.0-beta.1...v0.100.0-beta.2) (2021-10-13)
+
+### Bug Fixes
+
+* Fix the case that script type data1 is not taken into account during bech32m serialization and
+  deserialization ([#473](https://github.com/nervosnetwork/ckb-sdk-java/pull/473))
+
+# [v0.100.0-beta.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.3...v0.100.0-beta.1) (2021-10-10)
+
+### Features
+
+* The field hash_type has a new allowed value `data1` but it is only valid after hard fork
+  activation
+* Add support for Bech32m
+
+### Breaking Changes
+
+* The field `uncles_hash` in header will be renamed to `extra_hash` for all JSON RPC methods
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [v0.43.3-beta.4](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.3...v0.43.3-beta.4) (2021-10-13)
 
 ### Bugfix

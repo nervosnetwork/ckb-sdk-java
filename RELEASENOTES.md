@@ -1,6 +1,7 @@
-# [v0.43.3-beta.4](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.43.3-beta.3...v0.43.3-beta.4) (2021-10-13)
+# [v0.100.0-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.100.0-beta.1...v0.100.0-beta.2) (2021-10-13)
 
-### Bugfix
+### Bug Fixes
 
-* Fix a serialization error
-  in `GetTransactionInfoResponse` ([#474](https://github.com/nervosnetwork/ckb-sdk-java/pull/474))
+* Fix the case that script type data1 is not taken into account during bech32m serialization and
+  deserialization ([#473](https://github.com/nervosnetwork/ckb-sdk-java/pull/473))
+

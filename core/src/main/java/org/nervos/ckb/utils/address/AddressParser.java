@@ -5,6 +5,7 @@ import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressParser extends AddressBaseOperator {
@@ -58,15 +59,28 @@ public class AddressParser extends AddressBaseOperator {
     if (payload.length() < 66) {
       throw new AddressFormatException("Invalid full address payload length");
     }
-    String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
-    String args = Numeric.prependHexPrefix(payload.substring(66));
+
     if (TYPE_FULL_DATA.equals(type)) {
+      String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
+      String args = Numeric.prependHexPrefix(payload.substring(66));
       return new AddressParseResult(
           network, new Script(codeHash, args, Script.DATA), AddressParseResult.Type.FULL);
     } else if (TYPE_FULL_TYPE.equals(type)) {
+      String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
+      String args = Numeric.prependHexPrefix(payload.substring(66));
       return new AddressParseResult(
           network, new Script(codeHash, args, Script.TYPE), AddressParseResult.Type.FULL);
     }
+
+    if (TYPE_FULL_WITH_BECH32M.equals(type)) {
+      String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
+      String hashType = Serializer.deserializeHashType(payload.substring(66, 68));
+      String args = Numeric.prependHexPrefix(payload.substring(68));
+
+      return new AddressParseResult(
+          network, new Script(codeHash, args, hashType), AddressParseResult.Type.FULL);
+    }
+
     throw new AddressFormatException("Full address type must be 02 or 04");
   }
 
