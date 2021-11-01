@@ -3,10 +3,10 @@ package org.nervos.mercury.model;
 import java.math.BigInteger;
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.req.From;
-import org.nervos.mercury.model.req.payload.DepositPayload;
+import org.nervos.mercury.model.req.payload.DaoDepositPayload;
 
-public class DepositPayloadBuilder extends DepositPayload {
-  public DepositPayloadBuilder() {
+public class DaoDepositPayloadBuilder extends DaoDepositPayload {
+  public DaoDepositPayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
   }
 
@@ -26,7 +26,7 @@ public class DepositPayloadBuilder extends DepositPayload {
     this.feeRate = feeRate;
   }
 
-  public DepositPayload build() {
+  public DaoDepositPayload build() {
     return this;
   }
 }

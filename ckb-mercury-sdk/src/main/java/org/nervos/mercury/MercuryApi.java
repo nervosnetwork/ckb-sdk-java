@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.util.List;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
-import org.nervos.mercury.model.req.payload.DepositPayload;
+import org.nervos.mercury.model.req.payload.DaoClaimPayload;
+import org.nervos.mercury.model.req.payload.DaoDepositPayload;
+import org.nervos.mercury.model.req.payload.DaoWithdrawPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.SmartTransferPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
-import org.nervos.mercury.model.req.payload.WithdrawPayload;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
@@ -50,9 +51,13 @@ public interface MercuryApi {
 
   MercuryInfo getMercuryInfo() throws IOException;
 
-  TransactionCompletionResponse buildDepositTransaction(DepositPayload payload) throws IOException;
+  TransactionCompletionResponse buildDaoDepositTransaction(DaoDepositPayload payload)
+      throws IOException;
 
-  TransactionCompletionResponse buildWithdrawTransaction(WithdrawPayload payload)
+  TransactionCompletionResponse buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
+      throws IOException;
+
+  TransactionCompletionResponse buildDaoClaimTransaction(DaoClaimPayload payload)
       throws IOException;
 
   TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)

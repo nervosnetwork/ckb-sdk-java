@@ -41,14 +41,15 @@ import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
-import org.nervos.mercury.model.req.payload.DepositPayload;
+import org.nervos.mercury.model.req.payload.DaoClaimPayload;
+import org.nervos.mercury.model.req.payload.DaoDepositPayload;
+import org.nervos.mercury.model.req.payload.DaoWithdrawPayload;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.SmartTransferPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
-import org.nervos.mercury.model.req.payload.WithdrawPayload;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
@@ -381,14 +382,20 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildDepositTransaction(DepositPayload payload)
+  public TransactionCompletionResponse buildDaoDepositTransaction(DaoDepositPayload payload)
       throws IOException {
-    return this.mercuryApi.buildDepositTransaction(payload);
+    return this.mercuryApi.buildDaoDepositTransaction(payload);
   }
 
   @Override
-  public TransactionCompletionResponse buildWithdrawTransaction(WithdrawPayload payload)
+  public TransactionCompletionResponse buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
       throws IOException {
-    return this.mercuryApi.buildWithdrawTransaction(payload);
+    return this.mercuryApi.buildDaoWithdrawTransaction(payload);
+  }
+
+  @Override
+  public TransactionCompletionResponse buildDaoClaimTransaction(DaoClaimPayload payload)
+      throws IOException {
+    return this.mercuryApi.buildDaoClaimTransaction(payload);
   }
 }
