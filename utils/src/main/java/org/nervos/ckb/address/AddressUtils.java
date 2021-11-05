@@ -49,16 +49,16 @@ public class AddressUtils {
   }
 
   public String generateFromPublicKey(String publicKey) throws AddressFormatException {
-    //    if (!validatePublicKeyHex(publicKey, false)) {
-    //      throw new IllegalArgumentException("Not a valid uncompressed public key in hex");
-    //    }
+    if (!validatePublicKeyHex(publicKey, true)) {
+      throw new IllegalArgumentException("Not a valid uncompressed public key in hex");
+    }
     return generate(Hash.blake160(publicKey));
   }
 
   private boolean validatePublicKeyHex(String publicKey, boolean compressed) {
     publicKey = Numeric.cleanHexPrefix(publicKey);
     int len = publicKey.length();
-    if ((compressed && len != 66) || (!compressed && len != 128)) {
+    if ((compressed && len != 65) || (!compressed && len != 128)) {
       return false;
     }
     return publicKey.matches("^[0-9a-fA-F]+");
