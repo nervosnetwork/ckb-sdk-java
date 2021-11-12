@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.ToInfo;
-import org.nervos.mercury.model.req.payload.SmartTransferPayload;
+import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
-public class SmartTransferPayloadBuilder extends SmartTransferPayload {
-  public SmartTransferPayloadBuilder() {
+public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
+  public SimpleTransferPayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
     this.from = new ArrayList<>(1);
     this.to = new ArrayList<>(1);
@@ -43,7 +43,7 @@ public class SmartTransferPayloadBuilder extends SmartTransferPayload {
     this.payFee = address;
   }
 
-  public SmartTransferPayload build() {
+  public SimpleTransferPayload build() {
     return this;
   }
 }
