@@ -22,7 +22,9 @@ public class TransactionWithStatus {
   public enum Status {
     PENDING("pending"),
     PROPOSED("proposed"),
-    COMMITTED("committed");
+    COMMITTED("committed"),
+    UNKNOWN("unknown"),
+    REJECTED("rejected");
 
     private final String value;
 
