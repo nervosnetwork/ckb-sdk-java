@@ -22,7 +22,7 @@ import org.nervos.mercury.model.req.payload.GetBalancePayload;
 import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
-import org.nervos.mercury.model.req.payload.SmartTransferPayload;
+import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.resp.AddressOrLockHash;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
@@ -80,10 +80,10 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildSmartTransferTransaction(SmartTransferPayload payload)
+  public TransactionCompletionResponse buildSimpleTransferTransaction(SimpleTransferPayload payload)
       throws IOException {
     return this.rpcService.post(
-        RpcMethods.BUILD_SMART_TRANSFER_TRANSACTION,
+        RpcMethods.BUILD_SIMPLE_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
         TransactionCompletionResponse.class);
   }

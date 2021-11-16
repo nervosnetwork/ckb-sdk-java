@@ -7,7 +7,7 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
-public class SmartTransferPayload {
+public class SimpleTransferPayload {
 
   @SerializedName("asset_info")
   public AssetInfo assetInfo;
@@ -25,5 +25,5 @@ public class SmartTransferPayload {
 
   public SinceConfig since;
 
-  protected SmartTransferPayload() {}
+  protected SimpleTransferPayload() {}
 }
