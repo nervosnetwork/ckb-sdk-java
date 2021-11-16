@@ -15,4 +15,6 @@ public class TransactionInfoResponse {
   public BigInteger fee;
 
   public List<BurnInfo> burn;
+
+  public BigInteger timestamp;
 }
