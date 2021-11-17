@@ -68,16 +68,18 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
 
     public static ExtraFilter toExtraFilter(JsonElement json) {
       JsonObject filter = json.getAsJsonObject();
-      JsonObject dao = filter.getAsJsonObject("Dao");
+
+      JsonObject dao = filter.getAsJsonObject("value");
       JsonObject state = dao.getAsJsonObject("state");
 
       DaoInfo info = new DaoInfo();
-      if (state.has("Deposit")) {
+      String type = state.get("type").getAsString();
+      if (Objects.equals(type, "Deposit")) {
         info.state = DaoState.Deposit;
-        info.depositBlockNumber = state.get("Deposit").getAsBigInteger();
+        info.depositBlockNumber = state.get("value").getAsBigInteger();
       } else {
         info.state = DaoState.Withdraw;
-        JsonArray withdraw = state.get("Withdraw").getAsJsonArray();
+        JsonArray withdraw = state.get("value").getAsJsonArray();
         info.depositBlockNumber = withdraw.get(0).getAsBigInteger();
         info.withdrawBlockNumber = withdraw.get(0).getAsBigInteger();
       }

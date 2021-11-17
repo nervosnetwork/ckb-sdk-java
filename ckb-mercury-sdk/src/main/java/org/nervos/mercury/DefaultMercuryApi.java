@@ -129,8 +129,6 @@ public class DefaultMercuryApi implements MercuryApi {
       QueryTransactionsPayload payload) throws IOException {
     payload.viewType = ViewType.Native;
 
-    System.out.println(new Gson().toJson(payload));
-
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
