@@ -23,7 +23,10 @@ import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import org.nervos.mercury.model.resp.TransactionInfo;
+import org.nervos.mercury.model.resp.TransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionView;
+import org.nervos.mercury.model.resp.TransactionWithRichStatus;
+import org.nervos.mercury.model.resp.TxView;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 
@@ -65,11 +68,11 @@ public interface MercuryApi {
   TransactionCompletionResponse buildDaoClaimTransaction(DaoClaimPayload payload)
       throws IOException;
 
-  TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)
-      throws IOException;
+  TxView<TransactionWithRichStatus> getSpentTransactionWithTransactionView(
+      GetSpentTransactionPayload payload) throws IOException;
 
-  TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
-      throws IOException;
+  TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
+      GetSpentTransactionPayload payload) throws IOException;
 
   CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
       throws IOException;

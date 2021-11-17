@@ -3,7 +3,6 @@ package org.nervos.mercury.model.resp;
 import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
 public class TransactionWithRichStatus {
 
@@ -13,7 +12,7 @@ public class TransactionWithRichStatus {
   public TxRichStatus txStatus;
 
   public class TxRichStatus {
-    public TransactionWithStatus.Status status;
+    public String status;
 
     @SerializedName("block_hash")
     public String blockHash;
