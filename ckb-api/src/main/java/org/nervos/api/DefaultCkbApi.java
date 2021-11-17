@@ -83,25 +83,57 @@ public class DefaultCkbApi implements CkbApi {
 
   @Override
   public TipResponse getTip() throws IOException {
-    return this.ckbIndexerApi.getTip();
+    if (this.mercuryApi != null) {
+      return this.mercuryApi.getTip();
+    }
+
+    if (this.ckbIndexerApi != null) {
+      return this.ckbIndexerApi.getTip();
+    }
+
+    return null;
   }
 
   @Override
   public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
       throws IOException {
 
-    return this.ckbIndexerApi.getCells(searchKey, order, limit, afterCursor);
+    if (this.mercuryApi != null) {
+      return this.mercuryApi.getCells(searchKey, order, limit, afterCursor);
+    }
+
+    if (this.ckbIndexerApi != null) {
+      return this.ckbIndexerApi.getCells(searchKey, order, limit, afterCursor);
+    }
+
+    return null;
   }
 
   @Override
   public TransactionResponse getTransactions(
       SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
-    return this.ckbIndexerApi.getTransactions(searchKey, order, limit, afterCursor);
+
+    if (this.mercuryApi != null) {
+      return this.mercuryApi.getTransactions(searchKey, order, limit, afterCursor);
+    }
+
+    if (this.ckbIndexerApi != null) {
+      return this.ckbIndexerApi.getTransactions(searchKey, order, limit, afterCursor);
+    }
+    return null;
   }
 
   @Override
   public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
-    return this.ckbIndexerApi.getCellsCapacity(searchKey);
+
+    if (this.mercuryApi != null) {
+      return this.mercuryApi.getCellsCapacity(searchKey);
+    }
+    if (this.ckbIndexerApi != null) {
+      return this.ckbIndexerApi.getCellsCapacity(searchKey);
+    }
+
+    return null;
   }
 
   @Override
