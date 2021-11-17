@@ -55,7 +55,10 @@ import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import org.nervos.mercury.model.resp.TransactionInfo;
+import org.nervos.mercury.model.resp.TransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionView;
+import org.nervos.mercury.model.resp.TransactionWithRichStatus;
+import org.nervos.mercury.model.resp.TxView;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 
@@ -402,14 +405,14 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)
-      throws IOException {
+  public TxView<TransactionWithRichStatus> getSpentTransactionWithTransactionView(
+      GetSpentTransactionPayload payload) throws IOException {
     return this.mercuryApi.getSpentTransactionWithTransactionView(payload);
   }
 
   @Override
-  public TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
-      throws IOException {
+  public TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
+      GetSpentTransactionPayload payload) throws IOException {
     return this.mercuryApi.getSpentTransactionWithTransactionInfo(payload);
   }
 

@@ -34,7 +34,10 @@ import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import org.nervos.mercury.model.resp.TransactionInfo;
+import org.nervos.mercury.model.resp.TransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionView;
+import org.nervos.mercury.model.resp.TransactionWithRichStatus;
+import org.nervos.mercury.model.resp.TxView;
 import org.nervos.mercury.model.resp.indexer.MercuryCellsResponse;
 import org.nervos.mercury.model.resp.indexer.MercuryTransactionResponse;
 import org.nervos.mercury.model.resp.info.DBInfo;
@@ -123,6 +126,9 @@ public class DefaultMercuryApi implements MercuryApi {
   public PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException {
     payload.viewType = ViewType.Native;
+
+    System.out.println(new Gson().toJson(payload));
+
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
@@ -179,19 +185,25 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public TransactionView getSpentTransactionWithTransactionView(GetSpentTransactionPayload payload)
-      throws IOException {
+  public TxView<TransactionWithRichStatus> getSpentTransactionWithTransactionView(
+      GetSpentTransactionPayload payload) throws IOException {
     payload.structureType = ViewType.Native;
     return this.rpcService.post(
-        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionView.class);
+        RpcMethods.GET_SPENT_TRANSACTION,
+        Arrays.asList(payload),
+        new TypeToken<TxView<TransactionWithRichStatus>>() {}.getType());
   }
 
   @Override
-  public TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
-      throws IOException {
+  public TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
+      GetSpentTransactionPayload payload) throws IOException {
     payload.structureType = ViewType.DoubleEntry;
+
     return this.rpcService.post(
-        RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class, this.g);
+        RpcMethods.GET_SPENT_TRANSACTION,
+        Arrays.asList(payload),
+        new TypeToken<TxView<TransactionInfoResponse>>() {}.getType(),
+        this.g);
   }
 
   @Override
