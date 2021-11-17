@@ -58,6 +58,21 @@ public class AddressTools {
     return result;
   }
 
+  public static String convertPublicKeyToShortAddress(Network network, String publicKey) {
+    if (!AddressUtils.validatePublicKeyHex(publicKey, true)) {
+      throw new IllegalArgumentException("Not a valid compressed public key in hex");
+    }
+    String blake160 = Hash.blake160(publicKey);
+    AddressUtils utils = new AddressUtils(network, CodeHashType.BLAKE160);
+    return utils.generate(blake160);
+  }
+
+  public static String convertPublicKeyToFullAddress(Network network, String publicKey) {
+    String shortAddress = convertPublicKeyToShortAddress(network, publicKey);
+    Script script = AddressTools.parse(shortAddress).script;
+    return AddressGenerator.generateBech32mFullAddress(network, script);
+  }
+
   public static String generateAcpAddress(String secp256k1Address) {
     AddressParseResult parseScript = AddressParser.parse(secp256k1Address);
     Network network = AddressParser.parseNetwork(secp256k1Address);

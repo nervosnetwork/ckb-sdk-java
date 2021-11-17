@@ -42,6 +42,37 @@ public class AddressToolsTest {
   }
 
   @Test
+  void testConvertPublicKeyToAddress() {
+    try {
+      String shortAddress1 =
+          AddressTools.convertPublicKeyToShortAddress(
+              Network.TESTNET,
+              "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+      String shortAddress2 =
+          AddressTools.convertPublicKeyToShortAddress(
+              Network.TESTNET, "24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+      String fullAddress1 =
+          AddressTools.convertPublicKeyToFullAddress(
+              Network.TESTNET,
+              "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+      String fullAddress2 =
+          AddressTools.convertPublicKeyToFullAddress(
+              Network.TESTNET, "24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+      System.out.println(shortAddress1);
+      System.out.println(fullAddress1);
+      System.out.println(
+          "comparation result - short address: "
+              + (shortAddress1.equals(shortAddress2))
+              + ", full address: "
+              + (fullAddress1.equals(fullAddress2)));
+      AddressTools.parse(shortAddress1);
+      AddressTools.parse(fullAddress1);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
   void testGenerateAcpAddress() {
     String expected = "ckt1qypqtg06h75ymw098r3w0l3u4xklsj04tnsqkm65q6";
     String address = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";

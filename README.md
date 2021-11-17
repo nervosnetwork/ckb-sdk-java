@@ -232,6 +232,17 @@ import org.nervos.ckb.utils.address.AddressTools;
 AddressTools.AddressGenerateResult shortAddress = AddressTools.generateShortAddress(Network.TESTNET);
 ```
 
+### Convert public key to address
+
+If you already have an elliptic curve public key, you can convert it to a full or short address (`secp256k1_blake160`)
+```java
+// The public key sent is an elliptic curve public key of compressed format - a 65-length hex (no count hex prefix 0x).
+String shortAddress2 = AddressTools.convertPublicKeyToShortAddress(
+        Network.TESTNET, "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+String fullAddress1 = AddressTools.convertPublicKeyToFullAddress(
+        Network.TESTNET, "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+```
+
 ### Parse and validate address
 
 ```java
