@@ -29,6 +29,19 @@ public class AddressToolsTest {
   }
 
   @Test
+  void testGenerateFullAddress() {
+    try {
+      AddressTools.AddressGenerateResult address =
+          AddressTools.generateFullAddress(Network.TESTNET);
+      AddressTools.parse(address.address);
+      address = AddressTools.generateFullAddress(Network.MAINNET);
+      AddressTools.parse(address.address);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
   void testGenerateAcpAddress() {
     String expected = "ckt1qypqtg06h75ymw098r3w0l3u4xklsj04tnsqkm65q6";
     String address = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";

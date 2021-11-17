@@ -134,7 +134,7 @@ You can leverage this client to call any RPC APIs provided by CKB, CKB-indexer o
 Block block = ckbApi.getBlock("0x77fdd22f6ae8a717de9ae2b128834e9b2a1424378b5fc95606ba017aab5fed75");
 ```
 
-For more about RPC APIs, please check: 
+For more details about RPC APIs, please check: 
 - [CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 - [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
 - [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
@@ -212,28 +212,43 @@ ckbApi.sendTransaction(tx);;
 ```
 
 ### Generate a new address
-A lock script can be expressed in different formats - short address or full address. Refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md) for more.
+A lock script can be expressed in different formats - short address or full address. Short address can only 
+represent `secp256k1_blake160`, `secp256k1_multisig` or `anyone_can_pay` script, while full address is more flexible, which can represent any types of script including the former three ones. For more details please refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md).
 
-Generate short address (`secp256k1_blake160`)
-```java
-String shortAddress = AddressTools.generateShortAddress(network).address;
-```
+`secp256k1_blake160` is the most common used address in CKB network. Here we show the way to generate it.
 
 Generate full address (`secp256k1_blake160`)
 ```java
-String shortAddress = AddressTools.generateShortAddress(network).address;
-Script script = AddressTools.parse(shortAddress).script;
-String fullAddress = AddressGenerator.generateBech32mFullAddress(network, script);
+import org.nervos.ckb.utils.address.AddressTools;
+AddressTools.AddressGenerateResult fullAddress = AddressTools.generateFullAddress(Network.TESTNET);
+System.out.println("address info - address: " + fullAddress.address
+    + ", lockArgs: " + fullAddress.lockArgs
+    + ", private key: " + fullAddress.privateKey);
+```
+
+Generate short address (`secp256k1_blake160`)
+```java
+import org.nervos.ckb.utils.address.AddressTools;
+AddressTools.AddressGenerateResult shortAddress = AddressTools.generateShortAddress(Network.TESTNET);
 ```
 
 ### Parse and validate address
 
 ```java
-AddressParseResult parseResult = AddressParser.parse("ckt1qyqz9r9w9gkf5799a477jx07kltx6qqgxv8qn492h3");
+import org.nervos.ckb.utils.address.AddressParseResult;
+import org.nervos.ckb.utils.address.AddressTools;
+// validate full address
+AddressParseResult parseResult = AddressParser.parse("ckt1qg8mxsu48mncexvxkzgaa7mz2g25uza4zpz062relhjmyuc52ps3zn47dugwyk5e6mgxvlf5ukx7k3uyq9wlkkmegke");
 System.out.println("address info - network: " + parseResult.network + ", script: " + parseResult.script + ", type: " + parseResult.type);
+// validate short address
+AddressParseResult parseResult = AddressParser.parse("ckt1qyqz9r9w9gkf5799a477jx07kltx6qqgxv8qn492h3");
 
-// The code below will throw `AddressFormatException` since the input is not a valid address
-AddressParser.parse("ckt1qyqz9r9w9gkf5799a497jx07kltx6qqgxv8qn492h3");
+// `AddressFormatException` will be thrown if you are parsing invalid address
+try {
+    AddressParseResult parseResult = AddressParser.parse("ckt1qyqz9r9w9gkf5799a497jx07kltx6qqgxv8qn492h3");
+} catch (AddressFormatException e) {
+    System.out.println("invalid address");
+}
 ```
 
 ## Development
