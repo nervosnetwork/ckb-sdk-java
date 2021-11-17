@@ -2,14 +2,14 @@ package org.nervos.mercury.model.common;
 
 import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
-import org.nervos.mercury.model.resp.AddressOrLockHash;
+import org.nervos.mercury.model.resp.Ownership;
 
 public class Record {
 
   public String id;
 
-  @SerializedName("address_or_lock_hash")
-  public AddressOrLockHash addressOrLockHash;
+  @SerializedName("ownership")
+  public Ownership ownership;
 
   public BigInteger amount;
 

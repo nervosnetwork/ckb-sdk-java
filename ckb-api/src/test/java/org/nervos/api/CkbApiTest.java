@@ -3,7 +3,6 @@ package org.nervos.api;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.CkbRpcApi;
@@ -16,9 +15,10 @@ import org.nervos.indexer.model.ScriptType;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.mercury.DefaultMercuryApi;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 /** @author zjh @Created Date: 2021/7/25 @Description: @Modify by: */
@@ -30,7 +30,7 @@ public class CkbApiTest {
 
   private static String Indexer_URL = "https://mercury-testnet.ckbapp.dev";
 
-  Gson g = new GsonBuilder().create();
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testCkbIndexerApi() {
@@ -67,11 +67,11 @@ public class CkbApiTest {
             Script.TYPE));
     key.scriptType(ScriptType.lock);
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     try {
       CellCapacityResponse capacity = api.getCellsCapacity(key.build());
-      System.out.println(new Gson().toJson(capacity));
+      System.out.println(g.toJson(capacity));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -80,7 +80,7 @@ public class CkbApiTest {
   private void ckbApi(CkbRpcApi api) {
     try {
       Header tipHeader = api.getTipHeader();
-      System.out.println(new Gson().toJson(tipHeader));
+      System.out.println(g.toJson(tipHeader));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -90,7 +90,7 @@ public class CkbApiTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newAddressItem("ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0"));
+      builder.item(ItemFactory.newAddressItem("ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0"));
 
       System.out.println(g.toJson(builder.build()));
 

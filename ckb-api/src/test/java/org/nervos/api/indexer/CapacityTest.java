@@ -8,8 +8,10 @@ import org.nervos.ckb.type.Script;
 import org.nervos.indexer.model.ScriptType;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.mercury.GsonFactory;
 
 public class CapacityTest {
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testCapacity() {
@@ -21,11 +23,11 @@ public class CapacityTest {
             Script.TYPE));
     key.scriptType(ScriptType.lock);
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     try {
       CellCapacityResponse capacity = ApiFactory.getApi().getCellsCapacity(key.build());
-      System.out.println(new Gson().toJson(capacity));
+      System.out.println(g.toJson(capacity));
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -3,7 +3,6 @@ package org.nervos.api.mercury;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
@@ -18,21 +17,21 @@ import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 import org.nervos.indexer.model.resp.OutPointResponse;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 public class BalanceTest {
-
-  Gson g = new GsonBuilder().create();
+  Gson g = GsonFactory.newGson();
 
   @Test
   void getCkbBalance() {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+      builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -48,7 +47,7 @@ public class BalanceTest {
   @Test
   void getSudtBalance() {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
     builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     System.out.println(g.toJson(builder.build()));
@@ -66,7 +65,7 @@ public class BalanceTest {
   void getAllBalance() {
 
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
 
     System.out.println(g.toJson(builder.build()));
 
@@ -85,7 +84,7 @@ public class BalanceTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newAddressItem(AddressWithKeyHolder.testAddress4()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress4()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -103,7 +102,7 @@ public class BalanceTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+      builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       System.out.println(g.toJson(builder.build()));
@@ -129,7 +128,7 @@ public class BalanceTest {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          Item.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
+          ItemFactory.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -155,7 +154,7 @@ public class BalanceTest {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          Item.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
+          ItemFactory.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       System.out.println(g.toJson(builder.build()));
@@ -178,7 +177,7 @@ public class BalanceTest {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          Item.newRecordItemByAddress(
+          ItemFactory.newRecordItemByAddress(
               new OutPoint(cells.outPoint.txHash, cells.outPoint.index),
               AddressWithKeyHolder.testAddress4()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
@@ -199,7 +198,7 @@ public class BalanceTest {
     key.script(script);
     key.scriptType(ScriptType.lock);
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     CellsResponse cells =
         ApiFactory.getApi()

@@ -6,8 +6,8 @@ import org.nervos.mercury.model.common.AssetInfo;
 
 /** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
 public class BalanceResponse {
-  @SerializedName("address_or_lock_hash")
-  public AddressOrLockHash addressOrLockHash;
+  @SerializedName("ownership")
+  public Ownership ownership;
 
   @SerializedName("asset_info")
   public AssetInfo assetInfo;

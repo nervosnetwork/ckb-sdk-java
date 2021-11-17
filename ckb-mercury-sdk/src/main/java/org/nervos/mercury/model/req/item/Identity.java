@@ -1,23 +1,19 @@
 package org.nervos.mercury.model.req.item;
 
 import com.google.common.primitives.Bytes;
-import com.google.gson.annotations.SerializedName;
 import java.util.Objects;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressTools;
 
-public class Identity implements Item {
+public class Identity {
   public static final String IDENTITY_FLAGS_CKB = "0x00";
 
-  @SerializedName("Identity")
   public String identity;
 
   public transient String flag;
 
   public transient String pubKey;
-
-  public Identity() {}
 
   public Identity(String flag, String pubKey) {
     this.flag = flag;

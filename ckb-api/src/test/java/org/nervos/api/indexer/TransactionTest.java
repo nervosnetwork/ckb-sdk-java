@@ -9,8 +9,10 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.model.ScriptType;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.mercury.GsonFactory;
 
 public class TransactionTest {
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testTransanction() {
@@ -22,12 +24,12 @@ public class TransactionTest {
             Script.TYPE));
     key.scriptType(ScriptType.lock);
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     try {
       TransactionResponse txs =
           ApiFactory.getApi().getTransactions(key.build(), "asc", Numeric.toHexString("10"), null);
-      System.out.println(new Gson().toJson(txs));
+      System.out.println(g.toJson(txs));
     } catch (IOException e) {
       e.printStackTrace();
     }

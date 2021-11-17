@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.From;
@@ -20,13 +21,13 @@ import org.nervos.mercury.model.req.Mode;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.To;
 import org.nervos.mercury.model.req.ToInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class ModeTest {
 
-  Gson g = new Gson();
+  Gson g = GsonFactory.newGson();
 
   @Test
   void transferCompletionCkbWithFree() {
@@ -34,7 +35,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newAddressItem(AddressWithKeyHolder.testAddress0())), Source.Free));
+            Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress0())),
+            Source.Free));
 
     builder.to(
         To.newTo(
@@ -42,7 +44,7 @@ public class ModeTest {
                 new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100))),
             Mode.HoldByFrom)); // unit: CKB, 1 CKB = 10^8 Shannon
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
@@ -64,7 +66,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
     builder.to(
         To.newTo(
@@ -74,7 +77,7 @@ public class ModeTest {
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
-      System.out.println(new Gson().toJson(s));
+      System.out.println(g.toJson(s));
 
       Transaction tx = sign(s);
 
@@ -92,7 +95,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Claimable));
 
     builder.to(
@@ -121,7 +125,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
     builder.to(
         To.newTo(
