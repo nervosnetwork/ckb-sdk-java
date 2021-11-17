@@ -18,7 +18,7 @@ import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 /** @author zjh @Created Date: 2021/7/25 @Description: @Modify by: */
@@ -90,7 +90,7 @@ public class CkbApiTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newAddressItem("ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0"));
+      builder.item(ItemFactory.newAddressItem("ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0"));
 
       System.out.println(g.toJson(builder.build()));
 

@@ -18,7 +18,7 @@ import org.nervos.mercury.model.req.Mode;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.To;
 import org.nervos.mercury.model.req.ToInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
@@ -63,7 +63,7 @@ public class SourceTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.getPubKeyByAddress(addr)));
+      builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.getPubKeyByAddress(addr)));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       return ApiFactory.getApi().getBalance(builder.build());
@@ -79,7 +79,8 @@ public class SourceTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
-        From.newFrom(Arrays.asList(Item.newIdentityItemByAddress(senderAddress)), Source.Free));
+        From.newFrom(
+            Arrays.asList(ItemFactory.newIdentityItemByAddress(senderAddress)), Source.Free));
 
     builder.to(
         To.newTo(
@@ -113,7 +114,7 @@ public class SourceTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(chequeCellReceiverAddress)),
+            Arrays.asList(ItemFactory.newIdentityItemByAddress(chequeCellReceiverAddress)),
             Source.Claimable));
 
     builder.to(

@@ -20,7 +20,7 @@ import org.nervos.mercury.model.req.Mode;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.To;
 import org.nervos.mercury.model.req.ToInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
@@ -34,7 +34,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newAddressItem(AddressWithKeyHolder.testAddress0())), Source.Free));
+            Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress0())),
+            Source.Free));
 
     builder.to(
         To.newTo(
@@ -64,7 +65,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
     builder.to(
         To.newTo(
@@ -92,7 +94,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Claimable));
 
     builder.to(
@@ -121,7 +124,8 @@ public class ModeTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
     builder.to(
         To.newTo(

@@ -17,7 +17,7 @@ import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
@@ -35,9 +35,9 @@ public class BuildAdjustAccountTest {
     AddressWithKeyHolder.put(newAddress.address, newAddress.privateKey);
 
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(newAddress.lockArgs));
+    builder.item(ItemFactory.newIdentityItemByCkb(newAddress.lockArgs));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
-    builder.addFrom(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3()));
+    builder.addFrom(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3()));
     builder.accountNumber(BigInteger.ONE);
 
     System.out.println(new Gson().toJson(builder.build()));
@@ -64,7 +64,7 @@ public class BuildAdjustAccountTest {
   @Test
   void testAdjustAssetAccountWithUdt() {
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.ONE);
 
@@ -94,8 +94,8 @@ public class BuildAdjustAccountTest {
   @Test
   void testAdjustAssetPayFrom() {
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
-    builder.addFrom(Item.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.addFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.valueOf(1));
 
@@ -125,7 +125,7 @@ public class BuildAdjustAccountTest {
   @Test
   void testAdjustAssetExtraCkb() {
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey2()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey2()));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.extraCkb(AmountUtils.ckbToShannon(200));
     builder.accountNumber(BigInteger.ONE);

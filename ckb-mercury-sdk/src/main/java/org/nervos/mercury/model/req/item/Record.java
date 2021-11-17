@@ -1,20 +1,18 @@
 package org.nervos.mercury.model.req.item;
 
 import com.google.common.primitives.Bytes;
-import com.google.gson.annotations.SerializedName;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 
-public class Record implements Item {
+public class Record {
 
   public static final String SCRIPT_TYPE = "0x01";
 
   public static final String Address_TYPE = "0x00";
 
-  @SerializedName("Record")
   public String record;
 
   public transient OutPoint outPoint;
@@ -22,8 +20,6 @@ public class Record implements Item {
   public transient Script script;
 
   public transient String address;
-
-  public Record() {}
 
   public Record(OutPoint outPoint, Script script) {
     this(outPoint, script, null);

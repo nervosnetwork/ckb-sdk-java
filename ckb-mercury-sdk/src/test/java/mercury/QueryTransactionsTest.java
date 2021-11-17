@@ -12,7 +12,7 @@ import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.Range;
-import org.nervos.mercury.model.req.item.Address;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionView;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
@@ -25,7 +25,7 @@ public class QueryTransactionsTest {
 
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(new Gson().toJson(builder.build()));
@@ -45,7 +45,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithUdt() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       PaginationResponse<TransactionView> resp =
@@ -64,7 +64,7 @@ public class QueryTransactionsTest {
 
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
 
       System.out.println(new Gson().toJson(builder.build()));
 
@@ -83,7 +83,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithChequeAddress() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(getChequeAddress()));
+      builder.item(ItemFactory.newAddressItem(getChequeAddress()));
 
       PaginationResponse<TransactionView> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -100,7 +100,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithAcpAddress() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(getAcpAddress()));
+      builder.item(ItemFactory.newAddressItem(getAcpAddress()));
 
       PaginationResponse<TransactionView> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -117,7 +117,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithFromBlock() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.range(new Range(new BigInteger("2224987"), null));
 
       PaginationResponse<TransactionView> resp =
@@ -135,7 +135,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithToBlock() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.range(new Range(null, new BigInteger("2224987")));
 
       PaginationResponse<TransactionView> resp =
@@ -153,7 +153,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithFromBlockAndToBlock() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.range(new Range(new BigInteger("2224993"), new BigInteger("2225023")));
 
       System.out.println(new Gson().toJson(builder.build()));
@@ -173,7 +173,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithLimit() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       // default limit 50
       builder.limit(new BigInteger("2"));
 
@@ -192,7 +192,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithOrder() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       // default order desc
       builder.order("asc");
 
@@ -211,7 +211,7 @@ public class QueryTransactionsTest {
   void testQueryGenericTransactionsWithOffset() {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-      builder.item(new Address(AddressWithKeyHolder.queryTransactionAddress()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.limit(new BigInteger("1"));
 
       PaginationResponse<TransactionView> resp =

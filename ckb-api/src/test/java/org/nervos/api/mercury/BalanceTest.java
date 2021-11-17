@@ -20,7 +20,7 @@ import org.nervos.indexer.model.resp.CellsResponse;
 import org.nervos.indexer.model.resp.OutPointResponse;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 public class BalanceTest {
@@ -32,7 +32,7 @@ public class BalanceTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+      builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -48,7 +48,7 @@ public class BalanceTest {
   @Test
   void getSudtBalance() {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
     builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     System.out.println(g.toJson(builder.build()));
@@ -66,7 +66,7 @@ public class BalanceTest {
   void getAllBalance() {
 
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
 
     System.out.println(g.toJson(builder.build()));
 
@@ -85,7 +85,7 @@ public class BalanceTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newAddressItem(AddressWithKeyHolder.testAddress4()));
+      builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress4()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -103,7 +103,7 @@ public class BalanceTest {
 
     try {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+      builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       System.out.println(g.toJson(builder.build()));
@@ -129,7 +129,7 @@ public class BalanceTest {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          Item.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
+          ItemFactory.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -155,7 +155,7 @@ public class BalanceTest {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          Item.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
+          ItemFactory.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       System.out.println(g.toJson(builder.build()));
@@ -178,7 +178,7 @@ public class BalanceTest {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          Item.newRecordItemByAddress(
+          ItemFactory.newRecordItemByAddress(
               new OutPoint(cells.outPoint.txHash, cells.outPoint.index),
               AddressWithKeyHolder.testAddress4()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());

@@ -15,7 +15,7 @@ import org.nervos.mercury.model.req.Mode;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.To;
 import org.nervos.mercury.model.req.ToInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
@@ -29,7 +29,8 @@ public class TransferCompletionTest {
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
     builder.to(
         To.newTo(
@@ -50,7 +51,8 @@ public class TransferCompletionTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
 
     builder.to(
@@ -73,8 +75,8 @@ public class TransferCompletionTest {
     builder.from(
         From.newFrom(
             Arrays.asList(
-                Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1()),
-                Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress2())),
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1()),
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress2())),
             Source.Free));
 
     builder.to(
@@ -99,7 +101,8 @@ public class TransferCompletionTest {
 
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
 
     builder.to(
@@ -126,7 +129,8 @@ public class TransferCompletionTest {
 
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
             Source.Free));
 
     builder.to(

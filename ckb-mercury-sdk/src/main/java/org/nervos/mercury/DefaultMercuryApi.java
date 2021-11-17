@@ -22,6 +22,7 @@ import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.Source;
+import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 import org.nervos.mercury.model.req.payload.DaoClaimPayload;
 import org.nervos.mercury.model.req.payload.DaoDepositPayload;
@@ -54,6 +55,7 @@ public class DefaultMercuryApi implements MercuryApi {
           .registerTypeAdapter(RecordStatus.class, new RecordStatus())
           .registerTypeAdapter(RecordResponse.class, new RecordResponse())
           .registerTypeAdapter(ExtraFilter.class, new ExtraFilter())
+          .registerTypeAdapter(Item.class, new Item.Serializer())
           .create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {

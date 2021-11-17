@@ -13,7 +13,7 @@ import org.nervos.mercury.model.DaoDepositPayloadBuilder;
 import org.nervos.mercury.model.DaoWithdrawPayloadBuilder;
 import org.nervos.mercury.model.req.From;
 import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
@@ -24,7 +24,8 @@ public class DaoTest {
     DaoDepositPayloadBuilder builder = new DaoDepositPayloadBuilder();
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newAddressItem(AddressWithKeyHolder.testAddress3())), Source.Free));
+            Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3())),
+            Source.Free));
     builder.amount(AmountUtils.ckbToShannon(300));
 
     System.out.println(new Gson().toJson(builder));
@@ -51,7 +52,7 @@ public class DaoTest {
     DaoDepositPayloadBuilder builder = new DaoDepositPayloadBuilder();
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3())),
+            Arrays.asList(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3())),
             Source.Free));
     builder.amount(AmountUtils.ckbToShannon(300));
 
@@ -75,7 +76,7 @@ public class DaoTest {
   @Test
   public void testWithdraw() {
     DaoWithdrawPayloadBuilder builder = new DaoWithdrawPayloadBuilder();
-    builder.from(Item.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     builder.payFee(AddressWithKeyHolder.testAddress1());
 
     System.out.println(new Gson().toJson(builder));
@@ -99,7 +100,7 @@ public class DaoTest {
   @Test
   public void testClaim() {
     DaoClaimPayloadBuilder builder = new DaoClaimPayloadBuilder();
-    builder.from(Item.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
 
     System.out.println(new Gson().toJson(builder));
 

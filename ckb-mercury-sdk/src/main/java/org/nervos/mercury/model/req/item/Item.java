@@ -1,42 +1,48 @@
 package org.nervos.mercury.model.req.item;
 
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
+import com.google.gson.*;
+import com.google.gson.annotations.SerializedName;
 
-public interface Item {
-  static Item newAddressItem(String address) {
-    return new Address(address);
+public class Item {
+  Type type;
+  Object value;
+
+  protected Item(Type type, Object value) {
+    this.type = type;
+    this.value = value;
   }
 
-  static Item newIdentityItemByCkb(String pubKey) {
-    return new Identity(Identity.IDENTITY_FLAGS_CKB, pubKey);
+  enum Type {
+    @SerializedName("Identity")
+    IDENTITY,
+    @SerializedName("Address")
+    ADDRESS,
+    @SerializedName("Record")
+    RECORD
   }
 
-  static Item newIdentityItemByAddress(String address) {
-    return Identity.toIdentityByAddress(address);
-  }
-
-  /**
-   * This method is used for tests and examples, if you need to use record, please use the record
-   * returned by mercury
-   *
-   * @param point
-   * @param script
-   * @return
-   */
-  static Item newRecordItemByScript(OutPoint point, Script script) {
-    return new Record(point, script);
-  }
-
-  /**
-   * This method is used for tests and examples, if you need to use record, please use the record
-   * returned by mercury
-   *
-   * @param point
-   * @param address
-   * @return
-   */
-  static Item newRecordItemByAddress(OutPoint point, String address) {
-    return new Record(point, address);
+  public static class Serializer implements JsonSerializer<Item> {
+    @Override
+    public JsonElement serialize(
+        Item src, java.lang.reflect.Type typeOfSrc, JsonSerializationContext context) {
+      JsonObject obj = new JsonObject();
+      obj.add("type", context.serialize(src.type, src.type.getClass()));
+      Object valueObj = null;
+      switch (src.type) {
+        case IDENTITY:
+          valueObj = ((Identity) src.value).identity;
+          break;
+        case ADDRESS:
+          valueObj = ((Address) src.value).address;
+          break;
+        case RECORD:
+          valueObj = ((Record) src.value).record;
+          break;
+        default:
+          throw new IllegalStateException("Unknown type");
+      }
+      obj.add("value", context.serialize(valueObj, String.class));
+      return obj;
+    }
   }
 }

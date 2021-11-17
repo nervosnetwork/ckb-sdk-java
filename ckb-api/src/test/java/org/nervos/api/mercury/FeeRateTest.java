@@ -16,7 +16,7 @@ import org.nervos.mercury.model.req.Mode;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.To;
 import org.nervos.mercury.model.req.ToInfo;
-import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
@@ -30,7 +30,8 @@ public class FeeRateTest {
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress0())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress0())),
             Source.Free));
     builder.to(
         To.newTo(
@@ -61,7 +62,8 @@ public class FeeRateTest {
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
         From.newFrom(
-            Arrays.asList(Item.newIdentityItemByAddress(AddressWithKeyHolder.testAddress0())),
+            Arrays.asList(
+                ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress0())),
             Source.Free));
     builder.to(
         To.newTo(
