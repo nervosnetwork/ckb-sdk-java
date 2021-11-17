@@ -3,7 +3,6 @@ package org.nervos.api.mercury;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
@@ -18,14 +17,14 @@ import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 import org.nervos.indexer.model.resp.OutPointResponse;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 
 public class BalanceTest {
-
-  Gson g = new GsonBuilder().create();
+  Gson g = GsonFactory.newGson();
 
   @Test
   void getCkbBalance() {
@@ -199,7 +198,7 @@ public class BalanceTest {
     key.script(script);
     key.scriptType(ScriptType.lock);
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     CellsResponse cells =
         ApiFactory.getApi()

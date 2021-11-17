@@ -10,6 +10,7 @@ import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.SimpleTransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.ToInfo;
@@ -17,6 +18,7 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class BuildSimpleTransferTransactionTest {
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testCkbInsufficientBalanceToPayTheFee1() {
@@ -63,14 +65,14 @@ public class BuildSimpleTransferTransactionTest {
     builder.addTo(new ToInfo(AddressWithKeyHolder.testAddress4(), new BigInteger("20")));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
 
       TransactionCompletionResponse transactionCompletionResponse =
           ApiFactory.getApi().buildSimpleTransferTransaction(builder.build());
 
-      System.out.println(new Gson().toJson(transactionCompletionResponse));
+      System.out.println(g.toJson(transactionCompletionResponse));
 
       Transaction tx = SignUtils.sign(transactionCompletionResponse);
 
@@ -92,7 +94,7 @@ public class BuildSimpleTransferTransactionTest {
       builder.addTo(new ToInfo(to.address, new BigInteger("20")));
       builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
-      System.out.println(new Gson().toJson(builder.build()));
+      System.out.println(g.toJson(builder.build()));
 
       TransactionCompletionResponse transactionCompletionResponse =
           ApiFactory.getApi().buildSimpleTransferTransaction(builder.build());
@@ -114,7 +116,7 @@ public class BuildSimpleTransferTransactionTest {
     builder.addTo(new ToInfo(AddressWithKeyHolder.testAddress1(), new BigInteger("20")));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse transactionCompletionResponse =
@@ -140,7 +142,7 @@ public class BuildSimpleTransferTransactionTest {
             new BigInteger("20")));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse transactionCompletionResponse =

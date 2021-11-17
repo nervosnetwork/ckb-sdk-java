@@ -15,6 +15,7 @@ import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
@@ -22,8 +23,7 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class BuildAdjustAccountTest {
-
-  Gson g = new Gson();
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testCreateAsset()
@@ -40,7 +40,7 @@ public class BuildAdjustAccountTest {
     builder.addFrom(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3()));
     builder.accountNumber(BigInteger.ONE);
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
@@ -68,7 +68,7 @@ public class BuildAdjustAccountTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.ONE);
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
@@ -78,7 +78,7 @@ public class BuildAdjustAccountTest {
         return;
       }
 
-      System.out.println(new Gson().toJson(s));
+      System.out.println(g.toJson(s));
 
       Transaction tx = SignUtils.sign(s);
 
@@ -99,7 +99,7 @@ public class BuildAdjustAccountTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.valueOf(1));
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
@@ -109,7 +109,7 @@ public class BuildAdjustAccountTest {
         return;
       }
 
-      System.out.println(new Gson().toJson(s));
+      System.out.println(g.toJson(s));
 
       Transaction tx = SignUtils.sign(s);
 
@@ -130,7 +130,7 @@ public class BuildAdjustAccountTest {
     builder.extraCkb(AmountUtils.ckbToShannon(200));
     builder.accountNumber(BigInteger.ONE);
 
-    System.out.println(new Gson().toJson(builder.build()));
+    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
@@ -140,7 +140,7 @@ public class BuildAdjustAccountTest {
         return;
       }
 
-      System.out.println(new Gson().toJson(s));
+      System.out.println(g.toJson(s));
 
       Transaction tx = SignUtils.sign(s);
 

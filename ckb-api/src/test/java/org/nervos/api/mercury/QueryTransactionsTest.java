@@ -10,6 +10,7 @@ import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressTools;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.common.ExtraFilterType;
@@ -22,7 +23,7 @@ import org.nervos.mercury.model.resp.TransactionView;
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryTransactionsTest {
 
-  Gson g = new Gson();
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testQueryTransactionsWithCkb() {
@@ -32,7 +33,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -70,7 +71,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -91,7 +92,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -112,7 +113,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionInfo> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionInfo(builder.build());
@@ -137,7 +138,7 @@ public class QueryTransactionsTest {
       builder.extraFilter(ExtraFilterType.CellBase);
       builder.limit(BigInteger.valueOf(3));
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -162,7 +163,7 @@ public class QueryTransactionsTest {
       builder.extraFilter(ExtraFilterType.Dao);
       builder.limit(BigInteger.valueOf(10));
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -186,7 +187,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.range(new Range(new BigInteger("2778110"), new BigInteger("2778201")));
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -206,7 +207,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.limit(new BigInteger("2"));
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -249,7 +250,7 @@ public class QueryTransactionsTest {
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       System.out.println(resp.response.size());
       System.out.println(g.toJson(resp));
@@ -267,12 +268,12 @@ public class QueryTransactionsTest {
       builder.limit(new BigInteger("1"));
       builder.returnCount(true);
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
-      System.out.println(new Gson().toJson(resp));
+      System.out.println(g.toJson(resp));
 
       if (Objects.isNull(resp.nextCursor)) {
         return;
@@ -287,10 +288,10 @@ public class QueryTransactionsTest {
         System.out.println(resp.nextCursor);
         builder2.cursor(resp.nextCursor);
 
-        System.out.println(new Gson().toJson(builder2.build()));
+        System.out.println(g.toJson(builder2.build()));
         resp = ApiFactory.getApi().queryTransactionsWithTransactionView(builder2.build());
 
-        System.out.println(new Gson().toJson(resp));
+        System.out.println(g.toJson(resp));
       }
 
     } catch (IOException e) {
@@ -308,12 +309,12 @@ public class QueryTransactionsTest {
       builder.pageNumber(BigInteger.valueOf(3));
       builder.returnCount(true);
 
-      //      System.out.println(new Gson().toJson(builder.build()));
+      //      System.out.println(g.toJson(builder.build()));
 
       PaginationResponse<TransactionView> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
-      System.out.println(new Gson().toJson(resp));
+      System.out.println(g.toJson(resp));
 
       if (Objects.isNull(resp.nextCursor)) {
         return;

@@ -10,8 +10,10 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.model.ScriptType;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.mercury.GsonFactory;
 
 public class FilterTest {
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testFilterScript() {
@@ -29,7 +31,7 @@ public class FilterTest {
             "0x7c7f0ee1d582c385342367792946cff3767fe02f26fd7f07dba23ae3c65b28bc",
             Script.TYPE));
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     try {
       CellsResponse cells =
@@ -37,7 +39,7 @@ public class FilterTest {
               .getCells(key.build(), "asc", "0x" + new BigInteger("10").toString(16), null);
 
       System.out.println(cells.objects.size());
-      System.out.println(new Gson().toJson(cells));
+      System.out.println(g.toJson(cells));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -56,7 +58,7 @@ public class FilterTest {
     key.filterOutputCapacityRange(
         Numeric.toHexString("0"), Numeric.toHexString("1000000000000000000"));
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     try {
 
@@ -65,7 +67,7 @@ public class FilterTest {
               .getCells(key.build(), "asc", "0x" + new BigInteger("10").toString(16), null);
 
       System.out.println(cells.objects.size());
-      System.out.println(new Gson().toJson(cells));
+      System.out.println(g.toJson(cells));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -83,14 +85,14 @@ public class FilterTest {
 
     key.filterOutputDataLenRange(Numeric.toHexString("0"), Numeric.toHexString("32"));
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     try {
       CellsResponse cells =
           ApiFactory.getApi()
               .getCells(key.build(), "asc", "0x" + new BigInteger("10").toString(16), null);
       System.out.println(cells.objects.size());
-      System.out.println(new Gson().toJson(cells));
+      System.out.println(g.toJson(cells));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -108,7 +110,7 @@ public class FilterTest {
 
     key.filterBlockRange(Numeric.toHexString("2003365"), Numeric.toHexString("2103365"));
 
-    System.out.println(new Gson().toJson(key.build()));
+    System.out.println(g.toJson(key.build()));
 
     try {
 
@@ -117,7 +119,7 @@ public class FilterTest {
               .getCells(key.build(), "asc", "0x" + new BigInteger("10").toString(16), null);
 
       System.out.println(cells.objects.size());
-      System.out.println(new Gson().toJson(cells));
+      System.out.println(g.toJson(cells));
     } catch (IOException e) {
       e.printStackTrace();
     }

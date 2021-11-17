@@ -3,7 +3,6 @@ package org.nervos.mercury;
 import static java.util.stream.Collectors.toList;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,12 +16,9 @@ import org.nervos.indexer.model.resp.CellsResponse;
 import org.nervos.indexer.model.resp.TipResponse;
 import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.model.common.AssetType;
-import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationResponse;
-import org.nervos.mercury.model.common.RecordStatus;
 import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 import org.nervos.mercury.model.req.payload.DaoClaimPayload;
 import org.nervos.mercury.model.req.payload.DaoDepositPayload;
@@ -33,11 +29,9 @@ import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
-import org.nervos.mercury.model.resp.AddressOrLockHash;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
-import org.nervos.mercury.model.resp.RecordResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import org.nervos.mercury.model.resp.TransactionInfo;
 import org.nervos.mercury.model.resp.TransactionView;
@@ -49,14 +43,7 @@ import org.nervos.mercury.model.resp.info.MercuryInfo;
 public class DefaultMercuryApi implements MercuryApi {
 
   private RpcService rpcService;
-  private Gson g =
-      new GsonBuilder()
-          .registerTypeAdapter(AddressOrLockHash.class, new AddressOrLockHash())
-          .registerTypeAdapter(RecordStatus.class, new RecordStatus())
-          .registerTypeAdapter(RecordResponse.class, new RecordResponse())
-          .registerTypeAdapter(ExtraFilter.class, new ExtraFilter())
-          .registerTypeAdapter(Item.class, new Item.Serializer())
-          .create();
+  private Gson g = GsonFactory.newGson();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {
     this.rpcService = new RpcService(mercuryUrl, isDebug);

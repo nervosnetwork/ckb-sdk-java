@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.From;
@@ -20,8 +21,7 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class TransferCompletionTest {
-
-  Gson g = new Gson();
+  Gson g = GsonFactory.newGson();
 
   @Test
   void testSingleFromSingleTo() {

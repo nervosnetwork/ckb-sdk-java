@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
@@ -28,7 +29,7 @@ public class SourceTest {
   private String chequeCellReceiverAddress = AddressWithKeyHolder.testAddress2();
   private String receiverAddress = AddressWithKeyHolder.testAddress3();
   private String udtHash = "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd";
-  private Gson g = new Gson();
+  private Gson g = GsonFactory.newGson();
 
   @Test
   void test() {
