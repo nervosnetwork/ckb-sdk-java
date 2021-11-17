@@ -43,6 +43,21 @@ public class AddressTools {
     return result;
   }
 
+  public static AddressGenerateResult generateFullAddress(Network network)
+      throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
+
+    AddressGenerateResult a = generateShortAddress(network);
+    Script script = AddressTools.parse(a.address).script;
+    String fullAddress = AddressGenerator.generateBech32mFullAddress(network, script);
+
+    AddressGenerateResult result = new AddressGenerateResult();
+    result.address = fullAddress;
+    result.lockArgs = a.lockArgs;
+    result.privateKey = a.privateKey;
+
+    return result;
+  }
+
   public static String generateAcpAddress(String secp256k1Address) {
     AddressParseResult parseScript = AddressParser.parse(secp256k1Address);
     Network network = AddressParser.parseNetwork(secp256k1Address);
