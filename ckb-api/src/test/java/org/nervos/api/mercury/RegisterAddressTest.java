@@ -16,7 +16,7 @@ public class RegisterAddressTest {
     try {
       List<String> scriptHashes =
           ApiFactory.getApi()
-              .registerAddress(
+              .registerAddresses(
                   Arrays.asList(
                       AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress0())));
       System.out.println(scriptHashes);
