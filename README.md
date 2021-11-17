@@ -139,6 +139,11 @@ For more about RPC APIs, please check:
 - [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
 - [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
 
+### Mercury
+[Mercury](https://github.com/nervosnetwork/mercury) is a development service in CKB ecosystem, providing many useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like querying transaction or getting udt asset information. You need to deploy your own mercury and sync data with the network before using it.
+
+ckb-java-sdk also integrate with Mercury. For usage guide, please check the [examples](./ckb-api/src/test/java/org/nervos/api/mercury).
+
 ### Build transaction
 
 In order to build transaction, you have to collect the live cells that you want to spend at first. In the example below we use CKB indexer to get live cells. You also can get them by manual (e.g. check on [CKB explorer](https://explorer.nervos.org/)) or by your own database.
@@ -175,6 +180,8 @@ for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
 Transaction rawTx = txBuilder.buildTx();
 ```
 
+A more recommended way is to directly call RPC API `build_simple_transfer_transaction` provided by Mercury, which could help you do almost everything above in building transaction.
+
 ### Sign and send transaction
 To send transaction you build to CKB network, you need to
 1. sign transaction with your private key.
@@ -205,7 +212,7 @@ ckbApi.sendTransaction(tx);;
 ```
 
 ### Generate a new address
-CKB address support short and full address for the same lock script, but the short address is about to be deprecated and full address is recommended. For more please refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md).
+A lock script can be expressed in different formats - short address or full address. Refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md) for more.
 
 Generate short address (`secp256k1_blake160`)
 ```java
@@ -225,14 +232,9 @@ String fullAddress = AddressGenerator.generateBech32mFullAddress(network, script
 AddressParseResult parseResult = AddressParser.parse("ckt1qyqz9r9w9gkf5799a477jx07kltx6qqgxv8qn492h3");
 System.out.println("address info - network: " + parseResult.network + ", script: " + parseResult.script + ", type: " + parseResult.type);
 
-// Blow will throw `AddressFormatException` since the input is not a valid address
+// The code below will throw `AddressFormatException` since the input is not a valid address
 AddressParser.parse("ckt1qyqz9r9w9gkf5799a497jx07kltx6qqgxv8qn492h3");
 ```
-
-### Mercury
-[Mercury](https://github.com/nervosnetwork/mercury) is a development service in CKB ecosystem, providing many useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like querying transaction or getting udt asset information. You need to deploy your own mercury and sync data with the network before using it.
-
-ckb-java-sdk also integrate with Mercury. For usage guide, please check the [examples](./ckb-api/src/test/java/org/nervos/api/mercury).
 
 ## Development
 
