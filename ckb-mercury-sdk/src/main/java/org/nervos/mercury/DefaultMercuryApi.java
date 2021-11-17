@@ -33,9 +33,7 @@ import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
-import org.nervos.mercury.model.resp.TransactionInfo;
 import org.nervos.mercury.model.resp.TransactionInfoResponse;
-import org.nervos.mercury.model.resp.TransactionView;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
 import org.nervos.mercury.model.resp.indexer.MercuryCellsResponse;
@@ -61,7 +59,7 @@ public class DefaultMercuryApi implements MercuryApi {
 
     GetBalanceResponse resp =
         this.rpcService.post(
-            RpcMethods.GET_BALANCE, Arrays.asList(payload), GetBalanceResponse.class, g);
+            RpcMethods.GET_BALANCE, Arrays.asList(payload), GetBalanceResponse.class, this.g);
 
     return resp;
   }
@@ -78,7 +76,8 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.BUILD_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class);
+        TransactionCompletionResponse.class,
+        this.g);
   }
 
   @Override
@@ -87,7 +86,8 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.BUILD_SIMPLE_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class);
+        TransactionCompletionResponse.class,
+        this.g);
   }
 
   @Override
@@ -96,7 +96,8 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.BUILD_ADJUST_ACCOUNT_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class);
+        TransactionCompletionResponse.class,
+        this.g);
   }
 
   @Override
@@ -105,7 +106,7 @@ public class DefaultMercuryApi implements MercuryApi {
         RpcMethods.GET_TRANSACTION_INFO,
         Arrays.asList(txHash),
         GetTransactionInfoResponse.class,
-        g);
+        this.g);
   }
 
   @Override
@@ -119,11 +120,12 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.REGISTER_ADDRESS,
         Arrays.asList(normalAddresses),
-        new TypeToken<List<String>>() {}.getType());
+        new TypeToken<List<String>>() {}.getType(),
+        this.g);
   }
 
   @Override
-  public PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
+  public PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException {
     payload.viewType = ViewType.Native;
 
@@ -132,18 +134,18 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
-        new TypeToken<PaginationResponse<TransactionView>>() {}.getType(),
+        new TypeToken<PaginationResponse<TxView<TransactionWithRichStatus>>>() {}.getType(),
         this.g);
   }
 
   @Override
-  public PaginationResponse<TransactionInfo> queryTransactionsWithTransactionInfo(
+  public PaginationResponse<TxView<TransactionInfoResponse>> queryTransactionsWithTransactionInfo(
       QueryTransactionsPayload payload) throws IOException {
     payload.viewType = ViewType.DoubleEntry;
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
-        new TypeToken<PaginationResponse<TransactionInfo>>() {}.getType(),
+        new TypeToken<PaginationResponse<TxView<TransactionInfoResponse>>>() {}.getType(),
         this.g);
   }
 
@@ -163,7 +165,8 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.BUILD_DAO_DEPOSIT_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class);
+        TransactionCompletionResponse.class,
+        this.g);
   }
 
   @Override
@@ -172,7 +175,8 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.BUILD_DAO_WITHDRAW_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class);
+        TransactionCompletionResponse.class,
+        this.g);
   }
 
   @Override
@@ -181,7 +185,8 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.BUILD_DAO_CLAIM_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class);
+        TransactionCompletionResponse.class,
+        this.g);
   }
 
   @Override
@@ -191,7 +196,8 @@ public class DefaultMercuryApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION,
         Arrays.asList(payload),
-        new TypeToken<TxView<TransactionWithRichStatus>>() {}.getType());
+        new TypeToken<TxView<TransactionWithRichStatus>>() {}.getType(),
+        this.g);
   }
 
   @Override

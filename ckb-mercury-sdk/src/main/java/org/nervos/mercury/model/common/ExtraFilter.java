@@ -22,9 +22,8 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
   @Override
   public ExtraFilter deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
-
-    if (json.isJsonPrimitive()
-        && Objects.equals(json.getAsString(), ExtraFilterType.CellBase.toString())) {
+    String type = json.getAsJsonObject().get("type").getAsString();
+    if (Objects.equals(type, ExtraFilterType.CellBase.toString())) {
       ExtraFilter extraFilter = new ExtraFilter();
       extraFilter.type = ExtraFilterType.CellBase;
       return extraFilter;
