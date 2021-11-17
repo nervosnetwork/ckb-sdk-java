@@ -13,7 +13,8 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.ItemFactory;
-import org.nervos.mercury.model.resp.TransactionView;
+import org.nervos.mercury.model.resp.TransactionWithRichStatus;
+import org.nervos.mercury.model.resp.TxView;
 
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryTransactionsTest {
@@ -30,7 +31,7 @@ public class QueryTransactionsTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -48,7 +49,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -68,7 +69,7 @@ public class QueryTransactionsTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -85,7 +86,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(getChequeAddress()));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -102,7 +103,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(getAcpAddress()));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -120,7 +121,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.range(new Range(new BigInteger("2224987"), null));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -138,7 +139,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.range(new Range(null, new BigInteger("2224987")));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -158,7 +159,7 @@ public class QueryTransactionsTest {
 
       System.out.println(new Gson().toJson(builder.build()));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -177,7 +178,7 @@ public class QueryTransactionsTest {
       // default limit 50
       builder.limit(new BigInteger("2"));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -196,7 +197,7 @@ public class QueryTransactionsTest {
       // default order desc
       builder.order("asc");
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
@@ -214,7 +215,7 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       builder.limit(new BigInteger("1"));
 
-      PaginationResponse<TransactionView> resp =
+      PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());

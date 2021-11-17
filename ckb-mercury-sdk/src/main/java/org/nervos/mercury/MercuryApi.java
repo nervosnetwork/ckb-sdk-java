@@ -22,9 +22,7 @@ import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
-import org.nervos.mercury.model.resp.TransactionInfo;
 import org.nervos.mercury.model.resp.TransactionInfoResponse;
-import org.nervos.mercury.model.resp.TransactionView;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
 import org.nervos.mercury.model.resp.info.DBInfo;
@@ -49,10 +47,10 @@ public interface MercuryApi {
 
   List<String> registerAddress(List<String> normalAddresses) throws IOException;
 
-  PaginationResponse<TransactionView> queryTransactionsWithTransactionView(
+  PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException;
 
-  PaginationResponse<TransactionInfo> queryTransactionsWithTransactionInfo(
+  PaginationResponse<TxView<TransactionInfoResponse>> queryTransactionsWithTransactionInfo(
       QueryTransactionsPayload payload) throws IOException;
 
   DBInfo getDbInfo() throws IOException;
