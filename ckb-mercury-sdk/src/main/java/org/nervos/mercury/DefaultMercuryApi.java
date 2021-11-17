@@ -1,5 +1,7 @@
 package org.nervos.mercury;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -8,6 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
+import org.nervos.indexer.CkbIndexerRpcMethods;
+import org.nervos.indexer.model.SearchKey;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.indexer.model.resp.TipResponse;
+import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.model.common.AssetType;
 import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationResponse;
@@ -32,6 +40,8 @@ import org.nervos.mercury.model.resp.RecordResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import org.nervos.mercury.model.resp.TransactionInfo;
 import org.nervos.mercury.model.resp.TransactionView;
+import org.nervos.mercury.model.resp.indexer.MercuryCellsResponse;
+import org.nervos.mercury.model.resp.indexer.MercuryTransactionResponse;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 
@@ -193,5 +203,54 @@ public class DefaultMercuryApi implements MercuryApi {
     payload.structureType = ViewType.DoubleEntry;
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION, Arrays.asList(payload), TransactionInfo.class, this.g);
+  }
+
+  @Override
+  public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+      throws IOException {
+
+    List<Integer> mercuryCursor =
+        (afterCursor == null || afterCursor == "")
+            ? null
+            : Arrays.stream(afterCursor.split(",")).map(x -> Integer.valueOf(x)).collect(toList());
+
+    MercuryCellsResponse response =
+        this.rpcService.post(
+            CkbIndexerRpcMethods.GET_CELLS,
+            Arrays.asList(searchKey, order, limit, mercuryCursor),
+            MercuryCellsResponse.class);
+
+    return response.toCellsResponse();
+  }
+
+  @Override
+  public TransactionResponse getTransactions(
+      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
+
+    List<Integer> mercuryCursor =
+        (afterCursor == null || afterCursor == "")
+            ? null
+            : Arrays.stream(afterCursor.split(",")).map(x -> Integer.valueOf(x)).collect(toList());
+
+    MercuryTransactionResponse response =
+        this.rpcService.post(
+            CkbIndexerRpcMethods.GET_TRANSACTIONS,
+            Arrays.asList(searchKey, order, limit, mercuryCursor),
+            MercuryTransactionResponse.class);
+
+    return response.toTransactionResponse();
+  }
+
+  @Override
+  public TipResponse getTip() throws IOException {
+    return this.rpcService.post(CkbIndexerRpcMethods.GET_TIP, Arrays.asList(), TipResponse.class);
+  }
+
+  @Override
+  public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
+    return this.rpcService.post(
+        CkbIndexerRpcMethods.GET_CELLS_CAPACITY,
+        Arrays.asList(searchKey),
+        CellCapacityResponse.class);
   }
 }

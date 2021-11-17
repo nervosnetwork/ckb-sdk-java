@@ -2,6 +2,11 @@ package org.nervos.mercury;
 
 import java.io.IOException;
 import java.util.List;
+import org.nervos.indexer.model.SearchKey;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.indexer.model.resp.TipResponse;
+import org.nervos.indexer.model.resp.TransactionResponse;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 import org.nervos.mercury.model.req.payload.DaoClaimPayload;
@@ -65,4 +70,14 @@ public interface MercuryApi {
 
   TransactionInfo getSpentTransactionWithTransactionInfo(GetSpentTransactionPayload payload)
       throws IOException;
+
+  CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+      throws IOException;
+
+  TransactionResponse getTransactions(
+      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException;
+
+  TipResponse getTip() throws IOException;
+
+  CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
 }

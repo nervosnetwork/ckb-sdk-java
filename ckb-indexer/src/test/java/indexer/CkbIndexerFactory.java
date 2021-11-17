@@ -5,7 +5,7 @@ import org.nervos.indexer.DefaultIndexerApi;
 
 public class CkbIndexerFactory {
 
-  private static final String NODE_URL = "http://127.0.0.1:8116";
+  private static final String NODE_URL = "https://mercury-testnet.ckbapp.dev/indexer";
 
   private static CkbIndexerApi API = new DefaultIndexerApi(NODE_URL, false);
 
