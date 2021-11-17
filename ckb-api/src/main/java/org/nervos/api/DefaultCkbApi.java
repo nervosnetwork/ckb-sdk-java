@@ -376,8 +376,8 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public List<String> registerAddress(List<String> normalAddresses) throws IOException {
-    return this.mercuryApi.registerAddress(normalAddresses);
+  public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
+    return this.mercuryApi.registerAddresses(normalAddresses);
   }
 
   @Override

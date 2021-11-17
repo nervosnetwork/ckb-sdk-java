@@ -116,7 +116,7 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public List<String> registerAddress(List<String> normalAddresses) throws IOException {
+  public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
     return this.rpcService.post(
         RpcMethods.REGISTER_ADDRESS,
         Arrays.asList(normalAddresses),
