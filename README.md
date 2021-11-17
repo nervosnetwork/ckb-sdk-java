@@ -114,143 +114,129 @@ or `ckb-sdk-{version}-all.jar` to your project `libs` package.
 If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can import jar according to
 IDE option help documents.
 
-## SDK RPC
+## Quick start
 
-### 1. CKB RPC
+Here we will give some most frequently used operations, to bring you enlightenment about how to use ckb-sdk-java to operate your asset in CKB chain.
 
-[CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
+### Setup
+ckb-java-sdk provides a convenient client to help you easily interact with [CKB](https://github.com/nervosnetwork/ckb), [CKB-indexer](https://github.com/nervosnetwork/ckb-indexer) or [Mercury](https://github.com/nervosnetwork/mercury) node.
 
-#### example
-
-TODO
-
-### 2. Mercury RPC
-
-[Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md)
-
-#### example
-
-1. [`get_balance` example](./ckb-api/src/test/java/org/nervos/api/mercury/BalanceTest.java)
-2. [`get_block_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/BlockInfoTest.java)
-3. [`get_transaction_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/TransactionInfoTest.java)
-4. [`query_transactions` example](./ckb-api/src/test/java/org/nervos/api/mercury/QueryTransactionsTest.java)
-5. [`build_adjust_account_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/BuildAdjustAccountTest.java)
-6. [`build_transfer_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/TransferCompletionTest.java)
-7. [`build_transfer_transaction` by mode example](./ckb-api/src/test/java/org/nervos/api/mercury/ModeTest.java)
-8. [`build_transfer_transaction` by source example](./ckb-api/src/test/java/org/nervos/api/mercury/SourceTest.java)
-9. [`fee_rate` example](./ckb-api/src/test/java/org/nervos/api/mercury/FeeRateTest.java)
-10. [`DAO` example](./ckb-api/src/test/java/org/nervos/api/mercury/DaoTest.java)
-11. [`register_address` example](./ckb-api/src/test/java/org/nervos/api/mercury/RegisterAddressTest.java)
-12. [`build_simple_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/BuildSimpleTransferTransactionTest.java)
-13. [`get_db_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
-14. [`get_mercury_info` example](./ckb-api/src/test/java/org/nervos/api/mercury/InfoTest.java)
-15. [`get_spent_transaction` example](./ckb-api/src/test/java/org/nervos/api/mercury/GetSpentTransactionTest.java)
-
-### 3. ckb-indexer RPC
-
-[ckb-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
-
-#### example
-
-1. [get_tip example](./ckb-indexer/src/test/java/indexer/TipTest.java)
-2. [get_cells example](./ckb-indexer/src/test/java/indexer/CellsTest.java)
-3. [get_cells_capacity example](./ckb-indexer/src/test/java/indexer/CapacityTest.java)
-4. [get_transactions example](./ckb-indexer/src/test/java/indexer/TransactionTest.java)
-5. [filter example](./ckb-indexer/src/test/java/indexer/FilterTest.java)
-
-#### Single-sig Transfer
-
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
-> And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
-
-[SingleSigWithCkbIndexerTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SingleSigWithCkbIndexerTxExample.java)
-provides `sendCapacity` method with any amount inputs which belong to a private key.
-
-[MultiKeySingleSigTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiKeySingleSigTxExample.java)
-provides `sendCapacity` method with any amount inputs which belong to any amount private keys.
-
-You can reference detail example in `example/MultiKeySingleSigTxExample.java`.
-
-```Java
-  Api api=new Api("your-ckb-node-url");
-
-        List<CellInput> inputs=Arrays.asList(
-        new CellInput(inputs1), // Input from address 'cktxxx', capacity 100 CKB
-        new CellInput(inputs2), // Input from address 'cktxxx', capacity 200 CKB
-        new CellInput(inputs3), // Input from address 'cktxxx', capacity 300 CKB
-        );
-
-        List<CellOutput> outputs=Arrays.asList(
-        output1, // Output to address 'cktxxx', capacity 200
-        output2, // Output to address 'cktxxx', capacity 300
-        output3, // Output to address 'cktxxx' as change, capacity 100
-        );
-
-        TransactionBuilder txBuilder=new TransactionBuilder(api);
-
-        SignatureBuilder signBuilder=new SignatureBuilder(txBuilder.buildTx());
-
-        // A script group is defined as scripts that share the same hash.
-        for(ScriptGroup scriptGroup:scriptGroups){
-        signBuilder.sign(scriptGroup);
-        }
-
-        String hash=api.sendTransaction(signBuilder.buildTx());
+```java
+// Set up client. If you do not use ones of these node, just set them to null;
+String ckbUrl = "http://127.0.0.1:8114";
+String indexerUrl = "http://127.0.0.1:8114";
+String mercuryUrl = "http://127.0.0.1:8116";
+DefaultCkbApi ckbApi = new DefaultCkbApi(ckbUrl, mercuryUrl, indexerUrl, false);
 ```
 
-#### Multi-sig Transfer
-
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
-> And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
-
-[SendToMultiSigAddressTxExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SendToMultiSigAddressTxExample.java)
-provides `sendCapacity` method which single-sig address sends capacity to 2/3 format multi-sig
-address.
-
-[MultiSignTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/MultiSignTransactionExample.java)
-provides `sendCapacity` method which 2/3 format multi-sig address sends capacity to single-sig
-address.
-
-#### SUDT Issue and Transfer
-
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
-> And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
->
-[SUDTExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/SUDTExample.java)
-provides `issue` and `transfer` methods to issue Simple UDT and transfer Simple UDT to other
-address.
-
-#### ACP Create and Transfer
-
-> Note: If you want to run transfer example, you should update example private key of sender whose balance is not zero.
-> And if you want to use example default private key to run, you should make the example sender's balance is not zero or set the blake160 of default sender's public key to CKB dev chain node configuration file to be a miner.
->
-[ACPTransactionExample](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb/ACPTransactionExample.java)
-provides `create` and `transfer` methods to create an ACP cell with SUDT and transfer CKB and SUDT
-to the ACP address.
-
-#### Address
-
-You can generate ckb address through this SDK as below:
-
-```Java
-// Generate mainnet address with SECP256K1 and public blake160 hash
-String publicKey=
-        Sign.publicKeyFromPrivate(
-        Numeric.toBigInt(
-        "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3"),
-        true)
-        .toString(16);
-        Script script=
-        new Script(
-        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-        Hash.blake160(publicKey),
-        Script.TYPE);
-        String address=AddressGenerator.generate(Network.MAINNET,script);
-
+You can leverage this client to call any RPC APIs provided by CKB, CKB-indexer or Mercury in Java code.
+```java
+Block block = ckbApi.getBlock("0x77fdd22f6ae8a717de9ae2b128834e9b2a1424378b5fc95606ba017aab5fed75");
 ```
 
-### Development
+For more about RPC APIs, please check: 
+- [CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
+- [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
+- [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
+
+### Mercury
+[Mercury](https://github.com/nervosnetwork/mercury) is a development service in CKB ecosystem, providing many useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like querying transaction or getting udt asset information. You need to deploy your own mercury and sync data with the network before using it.
+
+ckb-java-sdk also integrate with Mercury. For usage guide, please check the [examples](./ckb-api/src/test/java/org/nervos/api/mercury).
+
+### Build transaction
+
+In order to build transaction, you have to collect the live cells that you want to spend at first. In the example below we use CKB indexer to get live cells. You also can get them by manual (e.g. check on [CKB explorer](https://explorer.nervos.org/)) or by your own database.
+
+```java
+// Prepare client and utils class
+Api ckbApi = new Api("http://127.0.0.1:8114", false);
+CkbIndexerApi ckbIndexerApi = new CkbIndexerApi("http://127.0.0.1:8114", false);
+TransactionBuilder txBuilder = new TransactionBuilder(ckbApi);
+IndexerCollector txUtils = new IndexerCollector(ckbApi, ckbIndexerApi);
+
+// Find live cells and calculate capacity balance with the help of CKB indexer.
+BigInteger feeRate = BigInteger.valueOf(1024);
+List<String> SendAddresses = Arrays.asList("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
+CollectResult collectResult = txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
+
+// Generate cell outputs - the target address.
+List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
+txBuilder.addOutputs(cellOutputs);
+// Charge back (if inputs capacity - fee > outputs capacity)
+if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    txBuilder.setOutputs(cellOutputs);
+}
+
+// Add witnesses placeholder for latter signature
+for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
+    txBuilder.addInputs(cellsWithAddress.inputs);
+    for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
+        txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
+    }
+}
+// Build the unsiged transaction
+Transaction rawTx = txBuilder.buildTx();
+```
+
+A more recommended way is to directly call RPC API `build_simple_transfer_transaction` provided by Mercury, which could help you do almost everything above in building transaction.
+
+### Sign and send transaction
+To send transaction you build to CKB network, you need to
+1. sign transaction with your private key.
+2. send signed transaction to CKB node, and wait it to be confirmed.
+
+```java
+// Assume that you already have an unsigned transaction named `rawTx`
+Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(rawTx);
+
+// Prepare private key to sign
+List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
+scriptGroupWithPrivateKeysList.add(
+    new ScriptGroupWithPrivateKeys(
+        new ScriptGroup(Arrays.asList(0, 1, 2)),  // indices of input cells that are to be unlocked by this private key
+        Arrays.asList("e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3")  // your private key
+    )
+);
+
+// Sign transaction with private key
+for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
+    signBuilder.sign(scriptGroupWithPrivateKeys.scriptGroup, 
+        scriptGroupWithPrivateKeys.privateKeys.get(0));
+}
+
+// Send transaction
+Transaction tx = signBuilder.buildTx();
+ckbApi.sendTransaction(tx);;
+```
+
+### Generate a new address
+A lock script can be expressed in different formats - short address or full address. Refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md) for more.
+
+Generate short address (`secp256k1_blake160`)
+```java
+String shortAddress = AddressTools.generateShortAddress(network).address;
+```
+
+Generate full address (`secp256k1_blake160`)
+```java
+String shortAddress = AddressTools.generateShortAddress(network).address;
+Script script = AddressTools.parse(shortAddress).script;
+String fullAddress = AddressGenerator.generateBech32mFullAddress(network, script);
+```
+
+### Parse and validate address
+
+```java
+AddressParseResult parseResult = AddressParser.parse("ckt1qyqz9r9w9gkf5799a477jx07kltx6qqgxv8qn492h3");
+System.out.println("address info - network: " + parseResult.network + ", script: " + parseResult.script + ", type: " + parseResult.type);
+
+// The code below will throw `AddressFormatException` since the input is not a valid address
+AddressParser.parse("ckt1qyqz9r9w9gkf5799a497jx07kltx6qqgxv8qn492h3");
+```
+
+## Development
 
 We
 use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
