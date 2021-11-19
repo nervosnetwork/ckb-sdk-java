@@ -28,6 +28,7 @@ import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
+import org.nervos.mercury.model.req.payload.SudtIssuePayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
@@ -257,5 +258,15 @@ public class DefaultMercuryApi implements MercuryApi {
         CkbIndexerRpcMethods.GET_CELLS_CAPACITY,
         Arrays.asList(searchKey),
         CellCapacityResponse.class);
+  }
+
+  @Override
+  public TransactionCompletionResponse buildSudtIssueTransaction(SudtIssuePayload payload)
+      throws IOException {
+    return this.rpcService.post(
+        RpcMethods.BUILD_SUDT_ISSUE_TRANSACTION,
+        Arrays.asList(payload),
+        TransactionCompletionResponse.class,
+        this.g);
   }
 }
