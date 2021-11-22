@@ -17,6 +17,7 @@ import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
+import org.nervos.mercury.model.req.payload.SudtIssuePayload;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
@@ -81,4 +82,7 @@ public interface MercuryApi {
   TipResponse getTip() throws IOException;
 
   CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
+
+  TransactionCompletionResponse buildSudtIssueTransaction(SudtIssuePayload payload)
+      throws IOException;
 }

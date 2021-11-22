@@ -15,4 +15,5 @@ public interface RpcMethods {
   String GET_SPENT_TRANSACTION = "get_spent_transaction";
   String GET_DB_INFO = "get_db_info";
   String GET_MERCURY_INFO = "get_mercury_info";
+  String BUILD_SUDT_ISSUE_TRANSACTION = "build_sudt_issue_transaction";
 }
