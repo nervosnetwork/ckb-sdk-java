@@ -262,20 +262,9 @@ try {
 }
 ```
 
-## Development
+## Contributing
 
-We
-use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
-and
-follow [Google Checkstyle](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)
-for development.
-
-If `verifyGoogleJavaFormat FAILED` happens when you build this project, please format your code
-with [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
-or execute `./gradlew goJF` on macOS and Linux, or `gradlew goJF` on Windows.
-
-If you use IntelliJ IDEA to develop, you can install `google-java-format` plugin to format code
-automatically.
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
