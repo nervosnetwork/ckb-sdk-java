@@ -12,15 +12,6 @@ jobs:
 #        uses: seferov/pr-lint-action@master
 #        with:
 #          title-regex: "^(build|chore|ci|docs|feat|fix|perf|refactor|test)(\\(.+\\))?(\\!)?:\\s.+"
-  add_pr_label:
-    runs-on: ubuntu-latest
-    steps:
-      - name: add PR label based on branch name
-        uses: TimonVS/pr-labeler-action@v3
-        with:
-          configuration-path: .github/pr-labeler.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build:
     runs-on: ubuntu-latest
     steps:
