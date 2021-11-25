@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # run the tests with the gradle wrapper
-./gradlew clean build
+./gradlew clean build -x test -x javadoc
 
 # store the last exit code in a variable
 RESULT=$?
