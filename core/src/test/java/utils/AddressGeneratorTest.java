@@ -17,7 +17,9 @@ public class AddressGeneratorTest {
             "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.TESTNET, singleSigShortScript);
-    Assertions.assertEquals("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83", address);
+    Assertions.assertEquals(
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqfkcv576ccddnn4quf2ga65xee2m26h7nq4sds0r",
+        address);
   }
 
   @Test
@@ -28,7 +30,9 @@ public class AddressGeneratorTest {
             "0x36c329ed630d6ce750712a477543672adab57f4c",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.MAINNET, singleSigShortScript);
-    Assertions.assertEquals("ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd", address);
+    Assertions.assertEquals(
+        "ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqfkcv576ccddnn4quf2ga65xee2m26h7nqmzxl9m",
+        address);
   }
 
   @Test
@@ -39,7 +43,9 @@ public class AddressGeneratorTest {
             "0xf04cec84bc37f683613bed2f242c9aa1b678e9fe",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.TESTNET, multiSigShortScript);
-    Assertions.assertEquals("ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq", address);
+    Assertions.assertEquals(
+        "ckt1qpw9q60tppt7l3j7r09qcp7lxnp3vcanvgha8pmvsa3jplykxn32sq0sfnkgf0ph76pkzwld9ujzex4pkeuwnlsdc5tqu",
+        address);
   }
 
   @Test
@@ -50,7 +56,9 @@ public class AddressGeneratorTest {
             "0xf04cec84bc37f683613bed2f242c9aa1b678e9fe",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.MAINNET, multiSigShortScript);
-    Assertions.assertEquals("ckb1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lq2sg8su", address);
+    Assertions.assertEquals(
+        "ckb1qpw9q60tppt7l3j7r09qcp7lxnp3vcanvgha8pmvsa3jplykxn32sq0sfnkgf0ph76pkzwld9ujzex4pkeuwnlsr2ly2y",
+        address);
   }
 
   @Test
@@ -61,7 +69,9 @@ public class AddressGeneratorTest {
             "0x81312ae06eeb0504b737e6bcfa5397be35a928de",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.TESTNET, acpShortScript);
-    Assertions.assertEquals("ckt1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qnzefn9", address);
+    Assertions.assertEquals(
+        "ckt1qq6pngwqn6e9vlm92th84rk0l4jp2h8lurchjmnwv8kq3rt5psf4vqvpxy4wqmhtq5ztwdlxhna989a7xk5j3hsezjt38",
+        address);
   }
 
   @Test
@@ -72,7 +82,9 @@ public class AddressGeneratorTest {
             "0x81312ae06eeb0504b737e6bcfa5397be35a928de",
             Script.TYPE);
     String address = AddressGenerator.generate(Network.MAINNET, acpShortScript);
-    Assertions.assertEquals("ckb1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qw88kle", address);
+    Assertions.assertEquals(
+        "ckb1qrfkjktl73ljn77q637judm4xux3y59c29qvvu8ywx90wy5c8g34gqvpxy4wqmhtq5ztwdlxhna989a7xk5j3hs5vltdv",
+        address);
   }
 
   @Test
