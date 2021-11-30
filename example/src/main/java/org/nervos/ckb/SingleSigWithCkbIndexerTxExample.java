@@ -38,8 +38,8 @@ public class SingleSigWithCkbIndexerTxExample {
     SendAddresses = Arrays.asList("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
     ReceiveAddresses =
         Arrays.asList(
-            "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37",
-            "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqde3gn5m4jekd35ku7f3mk4s4zeh5w5tqc5t5mm8",
             "ckt1qg8mxsu48mncexvxkzgaa7mz2g25uza4zpz062relhjmyuc52ps3zn47dugwyk5e6mgxvlf5ukx7k3uyq9wlkkmegke");
   }
 

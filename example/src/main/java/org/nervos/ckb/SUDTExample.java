@@ -35,9 +35,11 @@ public class SUDTExample {
   private static final List<String> SendPrivateKeys =
       Collections.singletonList("08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2");
   private static final List<String> SendAddresses =
-      Collections.singletonList("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
+      Collections.singletonList(
+          "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6");
   private static final List<String> ReceiveAddresses =
-      Collections.singletonList("ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
+      Collections.singletonList(
+          "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga");
   public static Script sudtType;
 
   static {

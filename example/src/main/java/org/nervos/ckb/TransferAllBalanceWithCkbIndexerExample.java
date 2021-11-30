@@ -35,8 +35,12 @@ public class TransferAllBalanceWithCkbIndexerExample {
     SendPrivateKeys =
         Collections.singletonList(
             "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
-    SendAddresses = Collections.singletonList("ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
-    ReceiveAddresses = Collections.singletonList("ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4");
+    SendAddresses =
+        Collections.singletonList(
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga");
+    ReceiveAddresses =
+        Collections.singletonList(
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtxfjvw09k4jwvefcaaufl6j8ja7rprugc6v4690");
   }
 
   public static void main(String[] args) throws Exception {
