@@ -24,6 +24,12 @@ public class AddressTools {
   public static final String TESTNET_CHEQUE_CODE_HASH =
       "0x60d5f39efce409c587cb9ea359cefdead650ca128f0bd9cb3855348f98c70d5b";
 
+  public static AddressGenerateResult generateAddress(Network network)
+      throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
+    return generateBech32mFullAddress(network);
+  }
+
+  @Deprecated
   public static AddressGenerateResult generateShortAddress(Network network)
       throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
     ECKeyPair ecKeyPair = Keys.createEcKeyPair();
@@ -43,7 +49,23 @@ public class AddressTools {
     return result;
   }
 
+  @Deprecated
   public static AddressGenerateResult generateFullAddress(Network network)
+      throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
+
+    AddressGenerateResult a = generateShortAddress(network);
+    Script script = AddressTools.parse(a.address).script;
+    String fullAddress = AddressGenerator.generateFullAddress(network, script);
+
+    AddressGenerateResult result = new AddressGenerateResult();
+    result.address = fullAddress;
+    result.lockArgs = a.lockArgs;
+    result.privateKey = a.privateKey;
+
+    return result;
+  }
+
+  public static AddressGenerateResult generateBech32mFullAddress(Network network)
       throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
 
     AddressGenerateResult a = generateShortAddress(network);
@@ -58,6 +80,11 @@ public class AddressTools {
     return result;
   }
 
+  public static String convertPublicKeyToAddress(Network network, String publicKey) {
+    return convertPublicKeyToBech32mFullAddress(network, publicKey);
+  }
+
+  @Deprecated
   public static String convertPublicKeyToShortAddress(Network network, String publicKey) {
     if (!AddressUtils.validatePublicKeyHex(publicKey, true)) {
       throw new IllegalArgumentException("Not a valid compressed public key in hex");
@@ -67,12 +94,20 @@ public class AddressTools {
     return utils.generate(blake160);
   }
 
+  @Deprecated
   public static String convertPublicKeyToFullAddress(Network network, String publicKey) {
+    String shortAddress = convertPublicKeyToShortAddress(network, publicKey);
+    Script script = AddressTools.parse(shortAddress).script;
+    return AddressGenerator.generateFullAddress(network, script);
+  }
+
+  public static String convertPublicKeyToBech32mFullAddress(Network network, String publicKey) {
     String shortAddress = convertPublicKeyToShortAddress(network, publicKey);
     Script script = AddressTools.parse(shortAddress).script;
     return AddressGenerator.generateBech32mFullAddress(network, script);
   }
 
+  @Deprecated
   public static String generateAcpAddress(String secp256k1Address) {
     AddressParseResult parseScript = AddressParser.parse(secp256k1Address);
     Network network = AddressParser.parseNetwork(secp256k1Address);
