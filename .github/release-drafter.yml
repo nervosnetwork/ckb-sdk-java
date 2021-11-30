@@ -19,15 +19,16 @@ autolabeler:
       - '/(bug|bugfix|fix|hotfix)\/.*/'
     title:
       - '^(bug|bugfix|fix|hotfix).*'
-  - label: 'enhancement'
+  - label: 'feature'
     branch:
       - '/(feat|feature)\/.*/'
-      - '/enhancement\/.*/'
     title:
       - '^(feat|feature).*'
+  - label: 'enhancement'
+    branch:
+      - '/enhancement\/.*/'
+    title:
       - '^enhancement.*'
-    body:
-      - '/JIRA-[0-9]{1,4}/'
   - label: 'refactor'
     branch:
       - '/refactor\/.*/'
@@ -43,19 +44,17 @@ categories:
   - title: '🚀 Features'
     labels:
       - 'feature'
-      - 'feat'
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
       - 'bug'
-      - 'fix'
   - title: '🧰 Maintenance'
     labels:
       - 'refactor'
       - 'chore'
   - title: '📝 Document'
     labels:
-      - 'docs'
+      - 'documentation'
 
 change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 
