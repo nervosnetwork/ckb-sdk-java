@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag: ${{ steps.get_tag.outputs.tag }}
-    outpus:
+    outputs:
       tag: ${{ steps.get_tag.outputs.tag }}
       id: ${{ steps.release_drafter.outputs.id }}
       upload_url: ${{ steps.release_drafter.outputs.upload_url }}
