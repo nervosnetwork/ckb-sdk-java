@@ -55,6 +55,15 @@ public class AddressToolsTest {
   }
 
   @Test
+  void testConvertToBech32mFullAddress() {
+    String legacyShortAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
+    String address = AddressTools.convertDeprecatedAddressToBech32mFullAddress(legacyShortAddress);
+    Assertions.assertEquals(
+        address,
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6");
+  }
+
+  @Test
   void testConvertPublicKeyToAddress() {
     try {
       String shortAddress1 =

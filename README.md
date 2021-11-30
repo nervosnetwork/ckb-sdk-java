@@ -235,6 +235,13 @@ String address = AddressTools.convertPublicKeyToAddress(
     Network.TESTNET, "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
 ```
 
+### Convert short/bech32 address to bech32m address
+Short address and bech32 address are deprecated. The standard address format is bech32m-encoded long address, which can be got from the short address or bech32 address as the following snippet code.
+
+```java
+String address = AddressTools.convertToBech32mFullAddress("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
+```
+
 ### Parse and validate address
 
 ```java

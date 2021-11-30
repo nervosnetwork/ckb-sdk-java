@@ -80,6 +80,11 @@ public class AddressTools {
     return result;
   }
 
+  public static String convertDeprecatedAddressToBech32mFullAddress(String address) {
+    AddressParseResult a = AddressTools.parse(address);
+    return AddressGenerator.generateBech32mFullAddress(a.network, a.script);
+  }
+
   public static String convertPublicKeyToAddress(Network network, String publicKey) {
     return convertPublicKeyToBech32mFullAddress(network, publicKey);
   }
