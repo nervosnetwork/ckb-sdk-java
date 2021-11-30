@@ -16,6 +16,7 @@ import org.nervos.ckb.utils.Numeric;
  * and [Common Address Format](https://github.com/nervosnetwork/ckb/wiki/Common-Address-Format).
  * Currently we implement the predefined format for type 0x01 and code hash index 0x00.
  */
+@Deprecated
 public class AddressUtils {
   private static final String TYPE = "01"; // short address format
   private static final String CODE_HASH_IDX_BLAKE160 = "00";
