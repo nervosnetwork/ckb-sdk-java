@@ -1,3 +1,39 @@
+autolabeler:
+  - label: 'chore'
+    branch:
+      - '/chores{0,1}\/.*/'
+    title:
+      - '^chore.*'
+    files:
+      - '.github/**'
+  - label: 'documentation'
+    files:
+      - 'README.md'
+    branch:
+      - '/docs{0,1}\/.*/'
+    title:
+      - '^doc.*'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+      - '/(bug|bugfix|fix|hotfix)\/.*/'
+    title:
+      - '^(bug|bugfix|fix|hotfix).*'
+  - label: 'enhancement'
+    branch:
+      - '/(feat|feature)\/.*/'
+      - '/enhancement\/.*/'
+    title:
+      - '^(feat|feature).*'
+      - '^enhancement.*'
+    body:
+      - '/JIRA-[0-9]{1,4}/'
+  - label: 'refactor'
+    branch:
+      - '/refactor\/.*/'
+    title:
+      - '^refactor/*'
+
 name-template: '$RESOLVED_VERSION'
 
 template: |
