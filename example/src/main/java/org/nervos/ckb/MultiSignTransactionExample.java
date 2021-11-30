@@ -56,7 +56,8 @@ public class MultiSignTransactionExample {
     configuration = new Configuration(0, 2, publicKeys);
 
     String multiSigAddress = configuration.address();
-    String targetAddress = "ckt1qyqrlj6znd3uhvuln5z83epv54xu8pmphzgse5uylq";
+    String targetAddress =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqfledpfkc7tkw0e6prcusk22nwrsasm3yg40rpyj";
     System.out.println(
         "Before transferring, multi-sig "
             + multiSigAddress

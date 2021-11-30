@@ -42,6 +42,28 @@ public class AddressToolsTest {
   }
 
   @Test
+  void testGenerateBech32FullAddress() {
+    try {
+      AddressTools.AddressGenerateResult address =
+          AddressTools.generateBech32mFullAddress(Network.TESTNET);
+      AddressTools.parse(address.address);
+      address = AddressTools.generateBech32mFullAddress(Network.MAINNET);
+      AddressTools.parse(address.address);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  void testConvertToBech32mFullAddress() {
+    String legacyShortAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
+    String address = AddressTools.convertDeprecatedAddressToBech32mFullAddress(legacyShortAddress);
+    Assertions.assertEquals(
+        address,
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6");
+  }
+
+  @Test
   void testConvertPublicKeyToAddress() {
     try {
       String shortAddress1 =
@@ -85,7 +107,7 @@ public class AddressToolsTest {
   @Test
   void testGenerateChequeAddress() {
     String expected =
-        "ckt1q3sdtuu7lnjqn3v8ew02xkwwlh4dv5x2z28shkwt8p2nfruccux4k5kw5xmckqjq7gwpe990sn88xssv96try4l46hu6nnudr2huau238a4prwus9pqts3uptms";
+        "ckt1qpsdtuu7lnjqn3v8ew02xkwwlh4dv5x2z28shkwt8p2nfruccux4kq2je6sm0zczgrepc8y547zvuu6zpshfvvjh7h2ln2w035d2lnh32ylk5ydmjq5ypwq24ftzt";
     String senderAddress = "ckt1qyq27z6pccncqlaamnh8ttapwn260egnt67ss2cwvz";
     String receiverAddress = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
 

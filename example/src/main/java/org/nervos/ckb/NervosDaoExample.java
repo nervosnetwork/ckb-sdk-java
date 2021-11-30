@@ -39,7 +39,8 @@ public class NervosDaoExample {
   private static CkbIndexerApi ckbIndexerApi;
   private static String DaoTestPrivateKey =
       "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2";
-  private static String DaoTestAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
+  private static String DaoTestAddress =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6";
 
   private static final String DEPOSIT = "deposit";
   private static final String WITHDRAW_PHASE1 = "withdraw";

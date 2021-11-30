@@ -212,35 +212,34 @@ ckbApi.sendTransaction(tx);;
 ```
 
 ### Generate a new address
-A lock script can be expressed in different formats - short address or full address. Short address can only 
-represent `secp256k1_blake160`, `secp256k1_multisig` or `anyone_can_pay` script, while full address is more flexible, which can represent any types of script including the former three ones. For more details please refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md).
+In CKB world, a lock script can be represented as an address. `secp256k1_blake160` is the most common used address and here we show how to generate it.
 
-`secp256k1_blake160` is the most common used address in CKB network. Here we show the way to generate it.
-
-Generate full address (`secp256k1_blake160`)
 ```java
 import org.nervos.ckb.utils.address.AddressTools;
-AddressTools.AddressGenerateResult fullAddress = AddressTools.generateFullAddress(Network.TESTNET);
-System.out.println("address info - address: " + fullAddress.address
-    + ", lockArgs: " + fullAddress.lockArgs
-    + ", private key: " + fullAddress.privateKey);
+
+// Generate a new address randomly
+AddressTools.AddressGenerateResult address = AddressTools.generateAddress(Network.TESTNET);
+System.out.println("address info - address: " + address.address
+    + ", lockArgs: " + address.lockArgs
+    + ", private key: " + address.privateKey);
 ```
 
-Generate short address (`secp256k1_blake160`)
-```java
-import org.nervos.ckb.utils.address.AddressTools;
-AddressTools.AddressGenerateResult shortAddress = AddressTools.generateShortAddress(Network.TESTNET);
-```
+For more details please about CKB address refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md).
 
 ### Convert public key to address
 
-If you already have an elliptic curve public key, you can convert it to a full or short address (`secp256k1_blake160`)
+Convert elliptic curve public key to an address (`secp256k1_blake160`)
 ```java
-// The public key sent is an elliptic curve public key of compressed format - a 65-length hex (no count hex prefix 0x).
-String shortAddress2 = AddressTools.convertPublicKeyToShortAddress(
-        Network.TESTNET, "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
-String fullAddress1 = AddressTools.convertPublicKeyToFullAddress(
-        Network.TESTNET, "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+// The public key sent is an elliptic curve public key of compressed format - a 65-length hex (not counting hex prefix 0x).
+String address = AddressTools.convertPublicKeyToAddress(
+    Network.TESTNET, "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+```
+
+### Convert short/bech32 address to bech32m address
+Short address and bech32 address are deprecated. The standard address format is bech32m-encoded long address, which can be got from the short address or bech32 address as the following snippet code.
+
+```java
+String address = AddressTools.convertToBech32mFullAddress("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
 ```
 
 ### Parse and validate address
@@ -248,11 +247,10 @@ String fullAddress1 = AddressTools.convertPublicKeyToFullAddress(
 ```java
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressTools;
-// validate full address
+
+// validate address
 AddressParseResult parseResult = AddressParser.parse("ckt1qg8mxsu48mncexvxkzgaa7mz2g25uza4zpz062relhjmyuc52ps3zn47dugwyk5e6mgxvlf5ukx7k3uyq9wlkkmegke");
 System.out.println("address info - network: " + parseResult.network + ", script: " + parseResult.script + ", type: " + parseResult.type);
-// validate short address
-AddressParseResult parseResult = AddressParser.parse("ckt1qyqz9r9w9gkf5799a477jx07kltx6qqgxv8qn492h3");
 
 // `AddressFormatException` will be thrown if you are parsing invalid address
 try {

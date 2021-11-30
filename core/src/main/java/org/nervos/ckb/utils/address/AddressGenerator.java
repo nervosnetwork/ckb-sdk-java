@@ -21,19 +21,24 @@ public class AddressGenerator extends AddressBaseOperator {
           ACP_TESTNET_CODE_HASH);
 
   public static String generate(Network network, Script script) {
-    String codeHash = Numeric.cleanHexPrefix(script.codeHash);
-    String args = Numeric.cleanHexPrefix(script.args);
-    if (Script.TYPE.equals(script.hashType)
-        && args.length() >= 40
-        && args.length() <= 44
-        && codeHashes.contains(codeHash)) {
-      return generateShortAddress(network, codeHash, args);
-    }
-    return generateFullAddress(network, script);
+    return generateBech32mFullAddress(network, script);
   }
 
-  private static String generateShortAddress(Network network, String codeHash, String args) {
+  @Deprecated
+  public static String generateShortAddress(Network network, Script script) {
     // Payload: type(01) | code hash index(00, P2PH / 01, multi-sig / 02, anyone_can_pay) | args
+    String codeHash = Numeric.cleanHexPrefix(script.codeHash);
+    String args = Numeric.cleanHexPrefix(script.args);
+
+    // Throw exception if short address can be converted from the given script
+    if (!(Script.TYPE.equals(script.hashType)
+        && args.length() >= 40
+        && args.length() <= 44
+        && codeHashes.contains(codeHash))) {
+      throw new UnsupportedOperationException(
+          "The given script can not be converted into short address. Unsupported.");
+    }
+
     String codeHashIndex = "";
     if (ACP_MAINNET_CODE_HASH.equals(codeHash) || ACP_TESTNET_CODE_HASH.equals(codeHash)) {
       codeHashIndex = CODE_HASH_IDX_ANYONE_CAN_PAY;
@@ -54,6 +59,7 @@ public class AddressGenerator extends AddressBaseOperator {
         prefix(network), convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));
   }
 
+  @Deprecated
   public static String generateFullAddress(Network network, Script script) {
     String type = Script.TYPE.equals(script.hashType) ? TYPE_FULL_TYPE : TYPE_FULL_DATA;
     // Payload: type(02/04) | code hash | args

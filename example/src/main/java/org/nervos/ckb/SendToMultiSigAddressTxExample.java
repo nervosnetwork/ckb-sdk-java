@@ -23,7 +23,8 @@ public class SendToMultiSigAddressTxExample {
   private static String MultiSigAddress = "ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq";
   private static String TestPrivateKey =
       "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc";
-  private static String TestAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
+  private static String TestAddress =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga";
 
   static {
     api = new Api(NODE_URL, false);
@@ -33,7 +34,8 @@ public class SendToMultiSigAddressTxExample {
   public static void main(String[] args) throws Exception {
     List<Receiver> receivers =
         Collections.singletonList(new Receiver(MultiSigAddress, Utils.ckbToShannon(20000)));
-    String changeAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
+    String changeAddress =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga";
 
     System.out.println("Before transferring, sender's balance: " + getBalance() + " CKB");
 

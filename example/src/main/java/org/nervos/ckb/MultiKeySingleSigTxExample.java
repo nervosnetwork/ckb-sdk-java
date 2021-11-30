@@ -20,7 +20,8 @@ import org.nervos.ckb.utils.Utils;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class MultiKeySingleSigTxExample {
 
-  private static final String TestAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
+  private static final String TestAddress =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga";
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
   private static List<String> PrivateKeys;
@@ -29,6 +30,7 @@ public class MultiKeySingleSigTxExample {
   static {
     api = new Api(NODE_URL, false);
     ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
+
     PrivateKeys =
         Arrays.asList(
             "08730a367dfabcadb805d69e0e613558d5160eb8bab9d6e326980c2c46a05db2",
@@ -40,13 +42,13 @@ public class MultiKeySingleSigTxExample {
             "d00c06bfd800d27397002dca6fb0993d5ba6399b4238b2f29ee9deb97593d2bc");
     Addresses =
         Arrays.asList(
-            "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g",
-            "ckt1qyqtnz38fht9nvmrfdeunrhdtp29n0gagkps4duhek",
-            "ckt1qyqxvnycu7tdtyuejn3mmcnl4y09muxz8c3s2ewjd4",
-            "ckt1qyq8n3400g4lw7xs4denyjprpyzaa6z2z5wsl7e2gs",
-            "ckt1qyqd4lgpt5auunu6s3wskkwxmdx548wksvcqyq44en",
-            "ckt1qyqrlj6znd3uhvuln5z83epv54xu8pmphzgse5uylq",
-            "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37");
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqde3gn5m4jekd35ku7f3mk4s4zeh5w5tqc5t5mm8",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtxfjvw09k4jwvefcaaufl6j8ja7rprugc6v4690",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtec6hh52lh0rg2kuejfq3sjpw7ap9p28g6369ws",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqw6l5q46w7wf7dgghgtt8rdkn22nhtgxvqxmu5j8",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqfledpfkc7tkw0e6prcusk22nwrsasm3yg40rpyj",
+            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga");
   }
 
   public static void main(String[] args) throws Exception {
@@ -56,7 +58,8 @@ public class MultiKeySingleSigTxExample {
             new Receiver(Addresses.get(1), Utils.ckbToShannon(900)),
             new Receiver(Addresses.get(2), Utils.ckbToShannon(1000)));
 
-    String changeAddress = "ckt1qyqvsv5240xeh85wvnau2eky8pwrhh4jr8ts8vyj37";
+    String changeAddress =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqwgx292hnvmn68xf779vmzrshpmm6epn4c0cgwga";
 
     System.out.println(
         "Before transferring, sender's balance: " + getBalance(TestAddress) + " CKB");
