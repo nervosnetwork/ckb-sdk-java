@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [v0.101.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.101.1...v0.101.0-beta.1) (2021-12-01)
+### Feature
+
+- Support `build_sudt_issue_transaction` ([#501](https://github.com/nervosnetwork/ckb-sdk-java/pull/501))
+- Add enum Freeze for extra ([#508](https://github.com/nervosnetwork/ckb-sdk-java/pull/508))
+- Adopt full address by default ([#501](https://github.com/nervosnetwork/ckb-sdk-java/pull/501), [#511](https://github.com/nervosnetwork/ckb-sdk-java/pull/511))
+
+### Chore
+
+- Label PR based on title ([#508](https://github.com/nervosnetwork/ckb-sdk-java/pull/508))
+
 # [v0.101.0-beta.2](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.101.0-beta.1...v0.101.0-beta.2) (2021-11-17)
 
 ### Feature
