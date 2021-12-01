@@ -38,7 +38,7 @@ jobs:
      - name: Build and upload artifact to Nexus
        run: |
          ./gradlew shadowJar
-         ./gradlew uploadArchives -PossrhUsername=${{ secrets.NEXUS_OSSRH_USERNAME }} -PossrhPassword=${{ secrets.NEXUS_OSSRH_PASSWORD }} -Psigning.keyId=${{ secrets.NEXUS_SIGNING_KEYID }} -Psigning.password=${{ secrets.NEXUS_SIGNING_PASSWORD } -Psigning.secretKeyRingFile=./secret_key.gpg
+         ./gradlew uploadArchives -PossrhUsername=${{ secrets.NEXUS_OSSRH_USERNAME }} -PossrhPassword=${{ secrets.NEXUS_OSSRH_PASSWORD }} -Psigning.keyId=${{ secrets.NEXUS_SIGNING_KEYID }} -Psigning.password=${{ secrets.NEXUS_SIGNING_PASSWORD }} -Psigning.secretKeyRingFile=./secret_key.gpg
 #       - name: upload artifact ckb.jar to GitHub release page
 #         uses: actions/upload-release-asset@v1
 #         env:
