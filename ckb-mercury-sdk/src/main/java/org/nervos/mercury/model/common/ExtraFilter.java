@@ -16,31 +16,44 @@ import java.util.List;
 import java.util.Objects;
 
 public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserializer<ExtraFilter> {
-  public ExtraFilterType type;
+  public FilterType type;
   public DaoInfo daoInfo;
 
   @Override
   public ExtraFilter deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
     String type = json.getAsJsonObject().get("type").getAsString();
-    if (Objects.equals(type, ExtraFilterType.CellBase.toString())) {
-      ExtraFilter extraFilter = new ExtraFilter();
-      extraFilter.type = ExtraFilterType.CellBase;
-      return extraFilter;
-    } else {
-
+    if (Objects.equals(type, FilterType.Dao.toString())) {
       return RpcExtraFilter.toExtraFilter(json);
     }
+
+    ExtraFilter extraFilter = new ExtraFilter();
+    if (Objects.equals(type, FilterType.CellBase.toString())) {
+      extraFilter.type = FilterType.CellBase;
+    } else if (Objects.equals(type, FilterType.Freeze.toString())) {
+      extraFilter.type = FilterType.Freeze;
+    } else {
+      throw new JsonParseException("Unknown extra filter type " + type);
+    }
+    return extraFilter;
   }
 
   @Override
   public JsonElement serialize(ExtraFilter src, Type typeOfSrc, JsonSerializationContext context) {
 
-    if (Objects.equals(src.type, ExtraFilterType.CellBase)) {
-      return new JsonPrimitive(ExtraFilterType.CellBase.toString());
+    if (Objects.equals(src.type, FilterType.CellBase)) {
+      return new JsonPrimitive(FilterType.CellBase.toString());
+    } else if (Objects.equals(src.type, FilterType.Freeze)) {
+      return new JsonPrimitive(FilterType.Freeze.toString());
     } else {
       return context.serialize(RpcExtraFilter.build(src));
     }
+  }
+
+  enum FilterType {
+    Dao,
+    CellBase,
+    Freeze,
   }
 
   static class RpcExtraFilter {
@@ -87,7 +100,7 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
       info.reward = dao.get("reward").getAsBigInteger();
 
       ExtraFilter e = new ExtraFilter();
-      e.type = ExtraFilterType.Dao;
+      e.type = FilterType.Dao;
       e.daoInfo = info;
 
       return e;
