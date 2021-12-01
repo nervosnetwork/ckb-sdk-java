@@ -24,6 +24,11 @@ public class AddressGenerator extends AddressBaseOperator {
     return generateBech32mFullAddress(network, script);
   }
 
+  /**
+   * Short address format is deprecated because it is limited (only supports secp256k1_blake160, secp256k1_multisig, anyone_can_pay)
+   * and a flaw has been found in its encoding method bech32, which could enable attackers to generate valid but unexpected addresses.
+   * For more please check https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
+   */
   @Deprecated
   public static String generateShortAddress(Network network, Script script) {
     // Payload: type(01) | code hash index(00, P2PH / 01, multi-sig / 02, anyone_can_pay) | args
@@ -59,6 +64,11 @@ public class AddressGenerator extends AddressBaseOperator {
         prefix(network), convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));
   }
 
+  /**
+   * Old full address format is deprecated because a flaw has been found in its encoding method bech32, which could enable
+   * attackers to generate valid but unexpected addresses.
+   * For more please check https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
+   */
   @Deprecated
   public static String generateFullAddress(Network network, Script script) {
     String type = Script.TYPE.equals(script.hashType) ? TYPE_FULL_TYPE : TYPE_FULL_DATA;
@@ -69,6 +79,7 @@ public class AddressGenerator extends AddressBaseOperator {
     return Bech32.encode(
         prefix(network), convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));
   }
+
 
   public static String generateBech32mFullAddress(Network network, Script script) {
     // Payload: type(00) | code hash | hash type | args
