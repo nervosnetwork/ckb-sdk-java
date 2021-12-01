@@ -29,6 +29,11 @@ public class AddressTools {
     return generateBech32mFullAddress(network);
   }
 
+  /**
+   * Short address format is deprecated because it is limited (only support secp256k1_blake160, secp256k1_multisig, anyone_can_pay)
+   * and a flaw has been found in its encoding method bech32, which could enable attackers to generate valid but unexpected addresses.
+   * For more please check https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
+   */
   @Deprecated
   public static AddressGenerateResult generateShortAddress(Network network)
       throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
@@ -49,6 +54,11 @@ public class AddressTools {
     return result;
   }
 
+  /**
+   * Old full address format is deprecated because a flaw has been found in its encoding method bech32, which could enable
+   * attackers to generate valid but unexpected addresses.
+   * For more please check https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
+   */
   @Deprecated
   public static AddressGenerateResult generateFullAddress(Network network)
       throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
@@ -89,6 +99,11 @@ public class AddressTools {
     return convertPublicKeyToBech32mFullAddress(network, publicKey);
   }
 
+  /**
+   * Short address format deprecated because it is limited (only support secp256k1_blake160, secp256k1_multisig, anyone_can_pay)
+   * and a flaw has been found in its encoding method bech32, which could enable attackers to generate valid but unexpected addresses.
+   * For more please check https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
+   */
   @Deprecated
   public static String convertPublicKeyToShortAddress(Network network, String publicKey) {
     if (!AddressUtils.validatePublicKeyHex(publicKey, true)) {
@@ -99,6 +114,11 @@ public class AddressTools {
     return utils.generate(blake160);
   }
 
+  /**
+   * Old full address format deprecated because a flaw has been found in its encoding method bech32, which could enable
+   * attackers to generate valid but unexpected addresses.
+   * For more please check https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
+   */
   @Deprecated
   public static String convertPublicKeyToFullAddress(Network network, String publicKey) {
     String shortAddress = convertPublicKeyToShortAddress(network, publicKey);
