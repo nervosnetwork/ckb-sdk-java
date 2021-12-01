@@ -1,3 +1,40 @@
+autolabeler:
+  - label: 'chore'
+    branch:
+      - '/chores{0,1}\/.*/'
+    title:
+      - '^chore.*'
+    files:
+      - '.github/**'
+  - label: 'documentation'
+    files:
+      - 'README.md'
+    branch:
+      - '/docs{0,1}\/.*/'
+    title:
+      - '^doc.*'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+      - '/(bug|bugfix|fix|hotfix)\/.*/'
+    title:
+      - '^(bug|bugfix|fix|hotfix).*'
+  - label: 'feature'
+    branch:
+      - '/(feat|feature)\/.*/'
+    title:
+      - '^(feat|feature).*'
+  - label: 'enhancement'
+    branch:
+      - '/enhancement\/.*/'
+    title:
+      - '^enhancement.*'
+  - label: 'refactor'
+    branch:
+      - '/refactor\/.*/'
+    title:
+      - '^refactor/*'
+
 name-template: '$RESOLVED_VERSION'
 
 template: |
@@ -7,19 +44,17 @@ categories:
   - title: '🚀 Features'
     labels:
       - 'feature'
-      - 'feat'
       - 'enhancement'
   - title: '🐛 Bug Fixes'
     labels:
       - 'bug'
-      - 'fix'
   - title: '🧰 Maintenance'
     labels:
       - 'refactor'
       - 'chore'
   - title: '📝 Document'
     labels:
-      - 'docs'
+      - 'documentation'
 
 change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 
