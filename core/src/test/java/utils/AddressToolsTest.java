@@ -97,7 +97,8 @@ public class AddressToolsTest {
   @Test
   void testGenerateAcpAddress() {
     String expected = "ckt1qypqtg06h75ymw098r3w0l3u4xklsj04tnsqkm65q6";
-    String address = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+    String address =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf";
 
     String actual = AddressTools.generateAcpAddress(address);
 
@@ -108,8 +109,10 @@ public class AddressToolsTest {
   void testGenerateChequeAddress() {
     String expected =
         "ckt1qpsdtuu7lnjqn3v8ew02xkwwlh4dv5x2z28shkwt8p2nfruccux4kq2je6sm0zczgrepc8y547zvuu6zpshfvvjh7h2ln2w035d2lnh32ylk5ydmjq5ypwq24ftzt";
-    String senderAddress = "ckt1qyq27z6pccncqlaamnh8ttapwn260egnt67ss2cwvz";
-    String receiverAddress = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+    String senderAddress =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqd0pdquvfuq077aemn447shf4d8u5f4a0glzz2g4";
+    String receiverAddress =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf";
 
     String actual = AddressTools.generateChequeAddress(senderAddress, receiverAddress);
 
@@ -118,14 +121,16 @@ public class AddressToolsTest {
 
   @Test
   void testParseAddress() {
-    String address = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+    String address =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf";
     AddressParseResult script = AddressTools.parse(address);
     System.out.println(new Gson().toJson(script));
   }
 
   @Test
   void testParseNetwork() {
-    String address = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+    String address =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf";
     Assertions.assertEquals(Network.TESTNET, AddressTools.parseNetwork(address));
   }
 }

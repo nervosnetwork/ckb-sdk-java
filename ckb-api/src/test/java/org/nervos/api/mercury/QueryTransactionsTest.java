@@ -132,7 +132,8 @@ public class QueryTransactionsTest {
 
     try {
 
-      String minerAddress = "ckt1qyqd5eyygtdmwdr7ge736zw6z0ju6wsw7rssu8fcve";
+      String minerAddress =
+          "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqw6vjzy9kahx3lyvlgap8dp8ewd8g80pcgcexzrj";
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(minerAddress));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
