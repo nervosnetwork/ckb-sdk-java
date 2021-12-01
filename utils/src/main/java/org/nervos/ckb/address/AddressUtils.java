@@ -16,10 +16,10 @@ import org.nervos.ckb.utils.Numeric;
  * and [Common Address Format](https://github.com/nervosnetwork/ckb/wiki/Common-Address-Format).
  * Currently we implement the predefined format for type 0x01 and code hash index 0x00.
  *
- * Deprecated:
- * Short address and old full address format are deprecated because a flaw has been found in its encoding method bech32, which could enable
- * attackers to generate valid but unexpected addresses.
- * For more please check https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
+ * <p>Deprecated: Short address and old full address format are deprecated because a flaw has been
+ * found in its encoding method bech32, which could enable attackers to generate valid but
+ * unexpected addresses. For more information please check
+ * https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md
  */
 @Deprecated
 public class AddressUtils {

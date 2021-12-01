@@ -10,30 +10,36 @@ public class AddressWithKeyHolder {
   private static Map<String, String> addressWithPubKey = new HashMap<>(8);
 
   //// 0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b
-  private static String TEST_ADDRESS0 = "ckt1qyq28wze3cw48ek9az0g4jmtfs6d8td38u4s6hp2s0";
+  private static String TEST_ADDRESS0 =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdrhpvcu82numz73852ed45cdxn4kcn72cr4338a";
   private static String TEST_PUBKEY0 = "0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b";
 
   //// 0xaf0b41c627807fbddcee75afa174d5a7e5135ebd
-  private static String TEST_ADDRESS1 = "ckt1qyq27z6pccncqlaamnh8ttapwn260egnt67ss2cwvz";
+  private static String TEST_ADDRESS1 =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqd0pdquvfuq077aemn447shf4d8u5f4a0glzz2g4";
   private static String TEST_PUBKEY1 = "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd";
 
   //// 0x05a1fabfa84db9e538e2e7fe3ca9adf849f55ce0
-  private static String TEST_ADDRESS2 = "ckt1qyqqtg06h75ymw098r3w0l3u4xklsj04tnsqctqrmc";
+  private static String TEST_ADDRESS2 =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf";
   private static String TEST_PUBKEY2 = "0x05a1fabfa84db9e538e2e7fe3ca9adf849f55ce0";
 
   //// 0x202647fecc5b9d8cbdb4ae7167e40f5ab1e4baaf
-  private static String TEST_ADDRESS3 = "ckt1qyqzqfj8lmx9h8vvhk62uut8us844v0yh2hsnqvvgc";
+  private static String TEST_ADDRESS3 =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqfqyerlanzmnkxtmd9ww9n7gr66k8jt4tclm9jnk";
   private static String TEST_PUBKEY3 = "0x202647fecc5b9d8cbdb4ae7167e40f5ab1e4baaf";
 
   //// 0x839f1806e85b40c13d3c73866045476cc9a8c214
-  private static String TEST_ADDRESS4 = "ckt1qyqg88ccqm59ksxp85788pnqg4rkejdgcg2qxcu2qf";
+  private static String TEST_ADDRESS4 =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqvrnuvqd6zmgrqn60rnsesy23mvex5vy9q0g8hfd";
   private static String TEST_PUBKEY4 = "0x839f1806e85b40c13d3c73866045476cc9a8c214";
 
-  private static String CEX_ADDRESS = "ckt1qyqz50qxup4cw2dvg0exg8y9m5e90dykuh6q72rj0h";
+  private static String CEX_ADDRESS =
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqf28srwq6u89xky8unyrjza6vjhkjtwtaqm5z887";
   private static String CEX_PUBKEY = "0x2a3c06e06b8729ac43f2641c85dd3257b496e5f4";
 
   private static String QUERY_TRANSACTION_ADDRESS =
-      "ckt1qyqp5nlkxkvwgwhee4pryj4mwetl4pyut0psq2h92t";
+      "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg6flmrtx8y8tuu6s3jf2ahv4l6sjw9hsc3t4tqv";
   private static String QUERY_TRANSACTION_PUBKEY = "0x1a4ff63598e43af9cd42324abb7657fa849c5bc3";
 
   static {
