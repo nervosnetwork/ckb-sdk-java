@@ -35,9 +35,12 @@ jobs:
          java-version: 1.8
      - name: Prepare signing secret key ring file
        run: echo "${{ secrets.NEXUS_SIGNING_SECRET_KEY_BASE64 }}" | base64 --decode > ./secret_key.gpg
-     - name: Build and upload artifact to Nexus
+     - name: Build project
        run: |
+         chmod +x ./gradlew
          ./gradlew shadowJar
+     - name: Upload artifact to Nexus
+       run: |
          ./gradlew uploadArchives -PossrhUsername=${{ secrets.NEXUS_OSSRH_USERNAME }} -PossrhPassword=${{ secrets.NEXUS_OSSRH_PASSWORD }} -Psigning.keyId=${{ secrets.NEXUS_SIGNING_KEYID }} -Psigning.password=${{ secrets.NEXUS_SIGNING_PASSWORD }} -Psigning.secretKeyRingFile=./secret_key.gpg
 #       - name: upload artifact ckb.jar to GitHub release page
 #         uses: actions/upload-release-asset@v1
