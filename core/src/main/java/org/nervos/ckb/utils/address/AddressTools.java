@@ -92,9 +92,19 @@ public class AddressTools {
     return result;
   }
 
-  public static String convertDeprecatedAddressToBech32mFullAddress(String address) {
+  public static String convertToBech32mFullAddress(String address) {
     AddressParseResult a = AddressTools.parse(address);
     return AddressGenerator.generateBech32mFullAddress(a.network, a.script);
+  }
+
+  public static String convertToBech32FullAddress(String address) {
+    AddressParseResult a = AddressTools.parse(address);
+    return AddressGenerator.generateFullAddress(a.network, a.script);
+  }
+
+  public static String convertToShortAddress(String address) {
+    AddressParseResult a = AddressTools.parse(address);
+    return AddressGenerator.generateShortAddress(a.network, a.script);
   }
 
   public static String convertPublicKeyToAddress(Network network, String publicKey) {
