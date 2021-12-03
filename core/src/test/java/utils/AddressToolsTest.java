@@ -56,11 +56,47 @@ public class AddressToolsTest {
 
   @Test
   void testConvertToBech32mFullAddress() {
-    String legacyShortAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
-    String address = AddressTools.convertDeprecatedAddressToBech32mFullAddress(legacyShortAddress);
+    String shortAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
+    String address = AddressTools.convertToBech32mFullAddress(shortAddress);
     Assertions.assertEquals(
-        address,
-        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6");
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6",
+        address);
+
+    String bech32Address =
+        "ckt1qjda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwseq8cthehktw3c22cnx3tkrqaye3sqshy0qkcmf";
+    address = AddressTools.convertToBech32mFullAddress(bech32Address);
+    Assertions.assertEquals(
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6",
+        address);
+  }
+
+  @Test
+  void testConvertToShortAddress() {
+    String bech32mAddress =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6";
+    String address = AddressTools.convertToShortAddress(bech32mAddress);
+    Assertions.assertEquals("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g", address);
+
+    String bech32Address =
+        "ckt1qjda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwseq8cthehktw3c22cnx3tkrqaye3sqshy0qkcmf";
+    address = AddressTools.convertToShortAddress(bech32Address);
+    Assertions.assertEquals("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g", address);
+  }
+
+  @Test
+  void testConvertToBech32FullAddress() {
+    String shortAddress = "ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g";
+    String address = AddressTools.convertToBech32FullAddress(shortAddress);
+    Assertions.assertEquals(
+        "ckt1qjda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwseq8cthehktw3c22cnx3tkrqaye3sqshy0qkcmf",
+        address);
+
+    String bech32mAddress =
+        "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqtyqlpwlx7ed68pftzv69wcvr5nxxqzzus2zxwa6";
+    address = AddressTools.convertToBech32FullAddress(bech32mAddress);
+    Assertions.assertEquals(
+        "ckt1qjda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwseq8cthehktw3c22cnx3tkrqaye3sqshy0qkcmf",
+        address);
   }
 
   @Test
