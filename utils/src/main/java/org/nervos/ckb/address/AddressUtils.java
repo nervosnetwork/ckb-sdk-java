@@ -63,11 +63,27 @@ public class AddressUtils {
 
   public static boolean validatePublicKeyHex(String publicKey, boolean compressed) {
     publicKey = Numeric.cleanHexPrefix(publicKey);
-    int len = publicKey.length();
-    if ((compressed && len != 65) || (!compressed && len != 128)) {
+    if (publicKey.matches("^[0-9a-fA-F]+") == false) {
       return false;
     }
-    return publicKey.matches("^[0-9a-fA-F]+");
+
+    int len = publicKey.length();
+    // uncompressed format: x||y, x and y is 32-byte length
+    if (!compressed) {
+      return len == 128;
+    } else {
+      char firstHex = publicKey.charAt(0);
+      char secondHex = publicKey.charAt(1);
+      // compressed format: 02||x OR 03||x
+      if (len == 66) {
+        return (firstHex == '0' && (secondHex == '2' || secondHex == '3'));
+      // compressed format when 0 prefix is omit, e.g. 2||x OR 3||x
+      // This expression is not recommended, but we still regard it as a valid format.
+      } else if (len == 65) {
+        return (firstHex == '2' || firstHex == '3');
+      }
+      return false;
+    }
   }
 
   public String generate(String args) throws AddressFormatException {

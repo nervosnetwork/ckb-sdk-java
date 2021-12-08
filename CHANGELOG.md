@@ -1,5 +1,24 @@
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+## 0.101.1 (2021-12-01)
+
+## 🚀 Features
+
+- feat: adopt full address by default (#506) @fjchen7
+- feat: add enum Freeze in extraFilter (#508) @fjchen7
+- feat(mercury): support `build_sudt_issue_transaction` (#501) @handsome0hell
+- feat(mercury): add build\_sudt\_issue\_transaction test (#502) @rev-chaos
+
+## 🐛 Bug Fixes
+
+- fix: replace short address with bech32m full address in test (#511) @fjchen7
+
+## 🧰 Maintenance
+
+- chore: label PR based on title (#507) @fjchen7
+- chore: add CICD github actions (#505) @fjchen7
+
+## 📝 Document
+
+- docs: update README for default address (#510) @fjchen7
 
 # [v0.101.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.101.1...v0.101.0-beta.1) (2021-12-01)
 ### Feature

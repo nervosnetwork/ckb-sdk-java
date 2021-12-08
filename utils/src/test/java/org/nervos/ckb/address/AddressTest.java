@@ -66,7 +66,7 @@ public class AddressTest {
     Assertions.assertEquals(
         "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83",
         utils.generateFromPublicKey(
-            "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
+            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
 
   @Test
@@ -77,7 +77,7 @@ public class AddressTest {
     Assertions.assertEquals(
         "ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd",
         utils.generateFromPublicKey(
-            "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
+            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
 
   @Test
