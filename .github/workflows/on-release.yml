@@ -1,0 +1,23 @@
+name: Update CHANGELOG.md on new release
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+      - name: Append CHANGELOG.md
+        run: |
+          echo -e "${{ github.event.release.body }}\n$(cat CHANGELOG.md)" > CHANGELOG.md
+          echo -e "# ${{ github.event.release.name }} ($(date +'%Y-%m-%d'))\n\n$(cat CHANGELOG.md)" > CHANGELOG.md
+      - name: Commit and create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: 'chore: update CHANGELOG.md for release ${{ github.event.release.tag_name }}'
+          branch: chore/update-CHANGELOG-for-release-${{ github.event.release.tag_name }}
+          base: develop
+          title: 'Update CHANGELOG for release ${{ github.event.release.tag_name }}'
