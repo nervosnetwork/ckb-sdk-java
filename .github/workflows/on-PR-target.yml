@@ -1,0 +1,24 @@
+name: On PR target
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited]
+
+jobs:
+  #  lint_pr_title:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Lint PR title
+  #        uses: seferov/pr-lint-action@master
+  #        with:
+  #          title-regex: "^(build|chore|ci|docs|feat|fix|perf|refactor|test)(\\(.+\\))?(\\!)?:\\s.+"
+  add_label_on_PR:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add label on PR
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          disable-releaser: true
+          disable-autolabeler: false
