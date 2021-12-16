@@ -1,3 +1,18 @@
+# 0.101.2 (2021-12-16)
+
+## 🚀 Features
+
+- feat: add method for legacy address conversion (#514) @fjchen7
+
+## 🐛 Bug Fixes
+
+- fix: improve address validation (#515) @fjchen7
+- fix: fix PR labler not permission (#516) @fjchen7
+
+## 🧰 Maintenance
+
+- chore: fix release github action (#513) @fjchen7
+
 ## 0.101.1 (2021-12-01)
 
 ## 🚀 Features
@@ -932,4 +947,3 @@ transaction serialization.**
 
 * add script model and calculate type
   hash ([c3ddb81](https://github.com/nervosnetwork/ckb-sdk-java/commit/c3ddb81))
-
