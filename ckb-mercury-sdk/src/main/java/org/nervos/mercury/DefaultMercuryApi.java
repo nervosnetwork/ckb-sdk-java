@@ -161,7 +161,7 @@ public class DefaultMercuryApi implements MercuryApi {
 
   @Override
   public MercurySyncState getSyncState() throws IOException {
-    return this.rpcService.post(RpcMethods.GET_SYNC_STATE, Arrays.asList(), MercuryInfo.class);
+    return this.rpcService.post(RpcMethods.GET_SYNC_STATE, Arrays.asList(), MercurySyncState.class);
   }
 
   @Override
