@@ -77,8 +77,8 @@ public class AddressUtils {
       // compressed format: 02||x OR 03||x
       if (len == 66) {
         return (firstHex == '0' && (secondHex == '2' || secondHex == '3'));
-      // compressed format when 0 prefix is omit, e.g. 2||x OR 3||x
-      // This expression is not recommended, but we still regard it as a valid format.
+        // compressed format when 0 prefix is omit, e.g. 2||x OR 3||x
+        // This expression is not recommended, but we still regard it as a valid format.
       } else if (len == 65) {
         return (firstHex == '2' || firstHex == '3');
       }

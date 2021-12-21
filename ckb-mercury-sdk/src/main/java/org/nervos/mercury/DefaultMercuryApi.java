@@ -41,6 +41,7 @@ import org.nervos.mercury.model.resp.indexer.MercuryCellsResponse;
 import org.nervos.mercury.model.resp.indexer.MercuryTransactionResponse;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
+import org.nervos.mercury.model.resp.info.MercurySyncState;
 
 public class DefaultMercuryApi implements MercuryApi {
 
@@ -156,6 +157,11 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public MercuryInfo getMercuryInfo() throws IOException {
     return this.rpcService.post(RpcMethods.GET_MERCURY_INFO, Arrays.asList(), MercuryInfo.class);
+  }
+
+  @Override
+  public MercurySyncState getSyncState() throws IOException {
+    return this.rpcService.post(RpcMethods.GET_SYNC_STATE, Arrays.asList(), MercurySyncState.class);
   }
 
   @Override

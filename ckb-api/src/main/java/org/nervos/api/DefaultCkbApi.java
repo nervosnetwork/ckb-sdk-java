@@ -60,6 +60,7 @@ import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
+import org.nervos.mercury.model.resp.info.MercurySyncState;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class DefaultCkbApi implements CkbApi {
@@ -401,6 +402,11 @@ public class DefaultCkbApi implements CkbApi {
   @Override
   public MercuryInfo getMercuryInfo() throws IOException {
     return this.mercuryApi.getMercuryInfo();
+  }
+
+  @Override
+  public MercurySyncState getSyncState() throws IOException {
+    return this.mercuryApi.getSyncState();
   }
 
   @Override
