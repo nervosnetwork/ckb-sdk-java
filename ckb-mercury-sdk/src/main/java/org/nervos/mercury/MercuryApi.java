@@ -28,6 +28,7 @@ import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
+import org.nervos.mercury.model.resp.info.MercurySyncState;
 
 public interface MercuryApi {
 
@@ -57,6 +58,8 @@ public interface MercuryApi {
   DBInfo getDbInfo() throws IOException;
 
   MercuryInfo getMercuryInfo() throws IOException;
+
+  MercurySyncState getSyncState() throws IOException;
 
   TransactionCompletionResponse buildDaoDepositTransaction(DaoDepositPayload payload)
       throws IOException;
