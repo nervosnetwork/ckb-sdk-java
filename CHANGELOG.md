@@ -1,3 +1,9 @@
+# 0.101.3 (2022-01-21)
+
+## 🚀 Features
+
+- feat: support pw lock signature (#525)
+- feat: support mercury get\_sync\_state RPC API (#522)
 # 0.101.2 (2021-12-16)
 
 ## 🚀 Features
