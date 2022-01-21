@@ -50,6 +50,38 @@ public class DaoTest {
   }
 
   @Test
+  public void testDepositWithPWLockAddress() {
+    DaoDepositPayloadBuilder builder = new DaoDepositPayloadBuilder();
+
+    builder.from(
+        From.newFrom(
+            Arrays.asList(
+                ItemFactory.newAddressItem(
+                    "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv")),
+            Source.Free));
+
+    builder.amount(AmountUtils.ckbToShannon(200));
+
+    System.out.println(g.toJson(builder));
+
+    TransactionCompletionResponse transactionCompletionResponse = null;
+    try {
+      transactionCompletionResponse =
+          ApiFactory.getApi().buildDaoDepositTransaction(builder.build());
+      System.out.println(g.toJson(transactionCompletionResponse));
+
+      Transaction signTx = SignUtils.sign(transactionCompletionResponse);
+
+      String txHash = ApiFactory.getApi().sendTransaction(signTx);
+
+      System.out.println(txHash);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
   public void testDepositWithIdentity() {
     DaoDepositPayloadBuilder builder = new DaoDepositPayloadBuilder();
     builder.from(

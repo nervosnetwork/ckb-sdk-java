@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -151,9 +152,65 @@ public class TransferCompletionTest {
     }
   }
 
+  @Test
+  void testPWlock() {
+    TransferPayloadBuilder builder = new TransferPayloadBuilder();
+    builder.from(
+        From.newFrom(
+            Arrays.asList(
+                ItemFactory.newAddressItem(
+                    "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv")),
+            Source.Free));
+
+    builder.to(
+        To.newTo(
+            Arrays.asList(
+                new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(1))),
+            Mode.HoldByTo));
+
+    builder.change(AddressWithKeyHolder.testAddress4());
+    System.out.println(g.toJson(builder.build()));
+
+    try {
+      sendTx(builder);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  void testPWlockUDT() {
+    TransferPayloadBuilder builder = new TransferPayloadBuilder();
+    builder.assetInfo(
+        AssetInfo.newUdtAsset(
+            "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd"));
+    builder.from(
+        From.newFrom(
+            Arrays.asList(
+                ItemFactory.newAddressItem(
+                    "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv")),
+            Source.Free));
+
+    builder.to(
+        To.newTo(
+            Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), new BigInteger("1"))),
+            Mode.HoldByTo));
+
+    builder.change(AddressWithKeyHolder.testAddress4());
+    System.out.println(g.toJson(builder.build()));
+
+    try {
+      sendTx(builder);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   private void sendTx(TransferPayloadBuilder builder) throws IOException {
     TransactionCompletionResponse s = ApiFactory.getApi().buildTransferTransaction(builder.build());
-
+    System.out.println(g.toJson(s));
     Transaction tx = SignUtils.sign(s);
 
     System.out.println(g.toJson(tx));
