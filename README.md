@@ -7,7 +7,7 @@
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
-The ckb-sdk-java is still under development and **NOT** production ready. You should get familiar
+The ckb-sdk-java is still under development and considered to be a work in progress. You should get familiar
 with CKB transaction structure and RPC before using it.
 
 **Note: All RPC methods in the indexer module have been deprecated since CKB version `v0.36.0` and
