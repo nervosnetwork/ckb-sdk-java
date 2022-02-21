@@ -2,7 +2,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.signature.ScriptGroup;
 import org.nervos.ckb.signature.ScriptSignerManager;
-import org.nervos.ckb.signature.TransactionTemplate;
+import org.nervos.ckb.signature.TransactionWithScriptGroups;
 import org.nervos.ckb.signature.scriptSigner.Secp256k1Blake160ScriptSigner;
 
 public class ScriptSignerTest {
@@ -10,7 +10,7 @@ public class ScriptSignerTest {
   @Test
   void example() {
 
-    TransactionTemplate txTemplate = new TransactionTemplate();
+    TransactionWithScriptGroups txTemplate = new TransactionWithScriptGroups();
     ScriptSignerManager scriptSignerManager = new ScriptSignerManager();
     List<ScriptGroup> scriptGroups = txTemplate.getScriptGroups();
 

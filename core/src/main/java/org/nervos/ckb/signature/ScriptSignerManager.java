@@ -21,7 +21,7 @@ public class ScriptSignerManager {
     return this;
   }
 
-  public void signTx(TransactionTemplate transactionTemplate) {
+  public void signTx(TransactionWithScriptGroups transactionTemplate) {
     Transaction tx = transactionTemplate.getTxView();
     List<ScriptGroup> scriptGroups = transactionTemplate.getScriptGroups();
     for (ScriptGroup group : scriptGroups) {

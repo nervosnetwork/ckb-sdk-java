@@ -3,7 +3,7 @@ package org.nervos.ckb.signature;
 import java.util.List;
 import org.nervos.ckb.type.transaction.Transaction;
 
-public class TransactionTemplate {
+public class TransactionWithScriptGroups {
   private Transaction txView;
   private List<ScriptGroup> scriptGroups;
 
