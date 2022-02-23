@@ -2,6 +2,7 @@ package org.nervos.ckb.signature.scriptSigner;
 
 import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
+import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.signature.ScriptGroup;
@@ -11,22 +12,26 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 public class Secp256k1Blake160ScriptSigner implements ScriptSigner {
-  private String privateKey;
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
+  @Override
   // TODO: need more verification for private key
-  public Secp256k1Blake160ScriptSigner(String privateKey) {
-    this.privateKey = privateKey;
+  public boolean canSign(String scriptArgs, Object context) {
+    if (scriptArgs == null || isPrivateKey(context) == false) {
+      return false;
+    }
+    return scriptArgs.equals(Hash.blake160((String)context));
   }
 
   @Override
-  public void signTx(Transaction transaction, ScriptGroup scriptGroup) {
+  public void signTx(Transaction transaction, ScriptGroup scriptGroup, Object context) {
     if (scriptGroup == null
         || scriptGroup.getInputIndices() == null
         || scriptGroup.getOutputIndices().size() == 0) {
       return;
     }
+    String privateKey = (String) context;
 
     String txHash = transaction.computeHash();
     List<String> witnesses = transaction.witnesses;
@@ -56,5 +61,13 @@ public class Secp256k1Blake160ScriptSigner implements ScriptSigner {
             + witness.substring(2 + WITNESS_OFFSET_IN_BYTE * 2 + SIGNATURE_LENGTH_IN_BYTE * 2);
 
     witnesses.set(0, witness);
+  }
+
+  // TODO: need more verification
+  private boolean isPrivateKey(Object key) {
+    if (key instanceof String) {
+      return true;
+    }
+    return false;
   }
 }
