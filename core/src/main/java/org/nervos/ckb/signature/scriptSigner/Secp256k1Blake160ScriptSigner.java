@@ -18,10 +18,10 @@ public class Secp256k1Blake160ScriptSigner implements ScriptSigner {
   @Override
   // TODO: need more verification for private key
   public boolean canSign(String scriptArgs, Object context) {
-    if (scriptArgs == null || isPrivateKey(context) == false) {
+    if (scriptArgs == null || !(context instanceof String)) {
       return false;
     }
-    return scriptArgs.equals(Hash.blake160((String)context));
+    return scriptArgs.equals(Hash.blake160((String) context));
   }
 
   @Override
@@ -61,13 +61,5 @@ public class Secp256k1Blake160ScriptSigner implements ScriptSigner {
             + witness.substring(2 + WITNESS_OFFSET_IN_BYTE * 2 + SIGNATURE_LENGTH_IN_BYTE * 2);
 
     witnesses.set(0, witness);
-  }
-
-  // TODO: need more verification
-  private boolean isPrivateKey(Object key) {
-    if (key instanceof String) {
-      return true;
-    }
-    return false;
   }
 }

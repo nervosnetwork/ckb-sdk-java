@@ -1,38 +1,51 @@
 package org.nervos.ckb.signature;
 
 import java.util.*;
-
+import org.nervos.ckb.signature.scriptSigner.Secp256k1Blake160ScriptSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
 
-public class ScriptSignerManager {
+public class TransactionSigner {
   private Map<Key, ScriptSigner> scriptSignerMap;
+  public static TransactionSigner TESTNET_TRANSACTION_SIGNER;
+  public static TransactionSigner MAINNET_TRANSACTION_SIGNER;
 
   static {
-
+    Map<Key, ScriptSigner> testnetScriptSignerMap = new HashMap<>();
+    testnetScriptSignerMap.put(
+        new Key("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8", "type"),
+        new Secp256k1Blake160ScriptSigner());
+    // We can register more ScriptSigner for builtin script
+    TESTNET_TRANSACTION_SIGNER =
+        new TransactionSigner(Collections.unmodifiableMap(testnetScriptSignerMap));
   }
 
-  public ScriptSignerManager() {
+  public TransactionSigner() {
     this(new HashMap<>());
   }
 
-  public ScriptSignerManager(Map<Key, ScriptSigner> scriptSignerMap) {
+  public TransactionSigner(Map<Key, ScriptSigner> scriptSignerMap) {
     this.scriptSignerMap = scriptSignerMap;
   }
 
-  // TODO: implement Script' equals() and hashCode()
-  // TODO: clone script to void object being modified
-  public ScriptSignerManager register(String codeHash, String hashType , ScriptSigner scriptSigner) {
+  public TransactionSigner(TransactionSigner s) {
+    scriptSignerMap = new HashMap<>();
+    for (Map.Entry<Key, ScriptSigner> entry : s.scriptSignerMap.entrySet()) {
+      scriptSignerMap.put(entry.getKey(), entry.getValue());
+    }
+  }
+
+  public TransactionSigner register(String codeHash, String hashType, ScriptSigner scriptSigner) {
     scriptSignerMap.put(new Key(codeHash, hashType), scriptSigner);
     return this;
   }
 
-  public void signTx(TransactionWithScriptGroups transactionTemplate, Set context) {
-    if (context == null) {
+  public void signTx(TransactionWithScriptGroups transaction, Set contexts) {
+    if (contexts == null) {
       throw new RuntimeException("context can't be null");
     }
-    Transaction tx = transactionTemplate.getTxView();
-    List<ScriptGroup> scriptGroups = transactionTemplate.getScriptGroups();
+    Transaction tx = transaction.getTxView();
+    List<ScriptGroup> scriptGroups = transaction.getScriptGroups();
     for (ScriptGroup group : scriptGroups) {
       Script script = group.getScript();
       ScriptSigner signer = scriptSignerMap.get(new Key(script.codeHash, script.hashType));
@@ -40,7 +53,7 @@ public class ScriptSignerManager {
         throw new RuntimeException("Cannot find ScriptSigner for script " + script);
       }
       boolean isSigned = false;
-      for (Object c: context) {
+      for (Object c : contexts) {
         if (signer.canSign(script.args, c)) {
           signer.signTx(tx, group, c);
           isSigned = true;
@@ -53,7 +66,13 @@ public class ScriptSignerManager {
     }
   }
 
-  class Key {
+  public void signTx(TransactionWithScriptGroups transaction, String... privateKey) {
+    Set contexts = new HashSet();
+    contexts.add(privateKey);
+    signTx(transaction, contexts);
+  }
+
+  static class Key {
     private String codeHash;
     private String hashType;
 
