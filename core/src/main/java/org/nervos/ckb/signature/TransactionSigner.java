@@ -40,7 +40,8 @@ public class TransactionSigner {
     return this;
   }
 
-  public void signTx(TransactionWithScriptGroups transaction, Set contexts) {
+  public void signTx(
+      TransactionWithScriptGroups transaction, Set<Context> contexts) {
     if (contexts == null) {
       throw new RuntimeException("context can't be null");
     }
@@ -53,9 +54,9 @@ public class TransactionSigner {
         throw new RuntimeException("Cannot find ScriptSigner for script " + script);
       }
       boolean isSigned = false;
-      for (Object c : contexts) {
-        if (signer.canSign(script.args, c)) {
-          signer.signTx(tx, group, c);
+      for (Context context : contexts) {
+        if (signer.canSign(script.args, context)) {
+          signer.signTx(tx, group, context);
           isSigned = true;
           break;
         }
@@ -66,9 +67,9 @@ public class TransactionSigner {
     }
   }
 
-  public void signTx(TransactionWithScriptGroups transaction, String... privateKey) {
-    Set contexts = new HashSet();
-    contexts.add(privateKey);
+  public void signTx(TransactionWithScriptGroups transaction, String... privateKeys) {
+    Contexts contexts = new Contexts();
+    contexts.addPrivateKeys(privateKeys);
     signTx(transaction, contexts);
   }
 

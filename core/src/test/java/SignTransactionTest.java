@@ -3,10 +3,7 @@ import static org.nervos.ckb.signature.TransactionSigner.TESTNET_TRANSACTION_SIG
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.signature.ScriptGroup;
-import org.nervos.ckb.signature.ScriptSigner;
-import org.nervos.ckb.signature.TransactionSigner;
-import org.nervos.ckb.signature.TransactionWithScriptGroups;
+import org.nervos.ckb.signature.*;
 import org.nervos.ckb.type.transaction.Transaction;
 
 public class SignTransactionTest {
@@ -34,7 +31,7 @@ public class SignTransactionTest {
         "type",
         new ScriptSigner() {
           @Override
-          public boolean canSign(String scriptArgs, Object context) {
+          public boolean canSign(String scriptArgs, Context context) {
             return false;
           }
 
