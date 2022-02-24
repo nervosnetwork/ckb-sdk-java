@@ -31,12 +31,9 @@ public class SignTransactionTest {
         "type",
         new ScriptSigner() {
           @Override
-          public boolean canSign(String scriptArgs, Context context) {
-            return false;
+          public boolean signTx(Transaction transaction, ScriptGroup scriptGroup, Context context) {
+            return true;
           }
-
-          @Override
-          public void signTx(Transaction transaction, ScriptGroup scriptGroup, Object context) {}
         });
     transactionSigner.signTx(transaction);
     // you can reuse transactionSigner

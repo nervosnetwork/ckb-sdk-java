@@ -40,8 +40,7 @@ public class TransactionSigner {
     return this;
   }
 
-  public void signTx(
-      TransactionWithScriptGroups transaction, Set<Context> contexts) {
+  public void signTx(TransactionWithScriptGroups transaction, Set<Context> contexts) {
     if (contexts == null) {
       throw new RuntimeException("context can't be null");
     }
@@ -55,8 +54,7 @@ public class TransactionSigner {
       }
       boolean isSigned = false;
       for (Context context : contexts) {
-        if (signer.canSign(script.args, context)) {
-          signer.signTx(tx, group, context);
+        if (signer.signTx(tx, group, context)) {
           isSigned = true;
           break;
         }

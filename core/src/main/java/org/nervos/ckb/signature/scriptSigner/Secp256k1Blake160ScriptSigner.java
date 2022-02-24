@@ -5,6 +5,8 @@ import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.signature.Context;
+import org.nervos.ckb.signature.Contexts;
 import org.nervos.ckb.signature.ScriptGroup;
 import org.nervos.ckb.signature.ScriptSigner;
 import org.nervos.ckb.type.fixed.UInt64;
@@ -15,23 +17,24 @@ public class Secp256k1Blake160ScriptSigner implements ScriptSigner {
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
-  @Override
-  // TODO: need more verification for private key
-  public boolean canSign(String scriptArgs, Object context) {
-    if (scriptArgs == null || !(context instanceof String)) {
-      return false;
-    }
-    return scriptArgs.equals(Hash.blake160((String) context));
-  }
+//  @Override
+//  // TODO: need more verification for private key
+//  public boolean canSign(String scriptArgs, Context context) {
+//    if (scriptArgs == null || context == null) {
+//      return false;
+//    }
+//    return scriptArgs.equals(Hash.blake160(context.getPrivateKey()));
+//  }
 
   @Override
-  public void signTx(Transaction transaction, ScriptGroup scriptGroup, Object context) {
+  public boolean signTx(Transaction transaction, ScriptGroup scriptGroup, Context context) {
     if (scriptGroup == null
         || scriptGroup.getInputIndices() == null
         || scriptGroup.getOutputIndices().size() == 0) {
-      return;
+      return false;
     }
-    String privateKey = (String) context;
+
+    String privateKey = context.getPrivateKey();
 
     String txHash = transaction.computeHash();
     List<String> witnesses = transaction.witnesses;
@@ -61,5 +64,6 @@ public class Secp256k1Blake160ScriptSigner implements ScriptSigner {
             + witness.substring(2 + WITNESS_OFFSET_IN_BYTE * 2 + SIGNATURE_LENGTH_IN_BYTE * 2);
 
     witnesses.set(0, witness);
+    return true;
   }
 }
