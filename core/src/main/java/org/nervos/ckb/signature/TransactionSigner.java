@@ -14,9 +14,11 @@ public class TransactionSigner {
   static {
     TESTNET_TRANSACTION_SIGNER = new TransactionSigner();
     // We can register more ScriptSigner for builtin script
-    TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            new Secp256k1Blake160ScriptSigner());
-    TESTNET_TRANSACTION_SIGNER.scriptSignerMap = Collections.unmodifiableMap(TESTNET_TRANSACTION_SIGNER.scriptSignerMap);
+    TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
+        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+        new Secp256k1Blake160ScriptSigner());
+    TESTNET_TRANSACTION_SIGNER.scriptSignerMap =
+        Collections.unmodifiableMap(TESTNET_TRANSACTION_SIGNER.scriptSignerMap);
   }
 
   public TransactionSigner() {
@@ -34,7 +36,8 @@ public class TransactionSigner {
     }
   }
 
-  private TransactionSigner register(String codeHash, String hashType, ScriptType scriptType, ScriptSigner scriptSigner) {
+  private TransactionSigner register(
+      String codeHash, String hashType, ScriptType scriptType, ScriptSigner scriptSigner) {
     scriptSignerMap.put(new Key(codeHash, hashType, scriptType), scriptSigner);
     return this;
   }
@@ -47,29 +50,29 @@ public class TransactionSigner {
     return register(codeHash, "type", ScriptType.LOCK, scriptSigner);
   }
 
-  public void signTx(TransactionWithScriptGroups transaction, Set<Context> contexts) {
+  public Set<Integer> signTx(TransactionWithScriptGroups transaction, Set<Context> contexts) {
+    Set<Integer> signedGroupsIndices = new HashSet<>();
     if (contexts == null) {
-      throw new RuntimeException("context can't be null");
+      return signedGroupsIndices;
     }
     Transaction tx = transaction.getTxView();
     List<ScriptGroup> scriptGroups = transaction.getScriptGroups();
-    for (ScriptGroup group : scriptGroups) {
+    for (int i = 0; i < scriptGroups.size(); i++) {
+      ScriptGroup group = scriptGroups.get(i);
       Script script = group.getScript();
-      ScriptSigner signer = scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getScriptType()));
+      ScriptSigner signer =
+          scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getScriptType()));
       if (signer == null) {
-        throw new RuntimeException("Cannot find ScriptSigner for script " + script);
+        continue;
       }
-      boolean isSigned = false;
       for (Context context : contexts) {
         if (signer.signTx(tx, group, context)) {
-          isSigned = true;
+          signedGroupsIndices.add(i);
           break;
         }
       }
-      if (isSigned == false) {
-        throw new RuntimeException("Cannot find signing secrect for script " + script);
-      }
     }
+    return signedGroupsIndices;
   }
 
   public void signTx(TransactionWithScriptGroups transaction, String... privateKeys) {
@@ -94,7 +97,9 @@ public class TransactionSigner {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
       Key key = (Key) o;
-      return codeHash.equals(key.codeHash) && hashType.equals(key.hashType) && scriptType == key.scriptType;
+      return codeHash.equals(key.codeHash)
+          && hashType.equals(key.hashType)
+          && scriptType == key.scriptType;
     }
 
     @Override
