@@ -26,9 +26,8 @@ public class SignTransactionTest {
 
     // #4 register your own ScriptSigner
     TransactionSigner transactionSigner = new TransactionSigner(TESTNET_TRANSACTION_SIGNER);
-    transactionSigner.register(
+    transactionSigner.registerLockScriptSigner(
         "0x00000000000000",
-        "type",
         new ScriptSigner() {
           @Override
           public boolean signTx(Transaction transaction, ScriptGroup scriptGroup, Context context) {
