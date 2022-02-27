@@ -1,51 +1,13 @@
 import static org.nervos.ckb.signature.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.signature.*;
 import org.nervos.ckb.type.transaction.Transaction;
 
 public class SignTransactionTest {
-
-  @Test
-  void simpleExample() {
-    TransactionWithScriptGroups transaction = getTransactionWithScriptGroupsFromMercury();
-
-    // #1 one private key to sign tx
-    TESTNET_TRANSACTION_SIGNER.signTx(transaction, "0x1234");
-
-    // #2 need different private key to sign tx
-    TESTNET_TRANSACTION_SIGNER.signTx(transaction, "0x12345", "0x67890");
-
-    // #3 complex structure for secret to sign tx
-    Set contexts = new HashSet();
-    contexts.add("0x1234");
-    contexts.add(1234);
-    TESTNET_TRANSACTION_SIGNER.signTx(transaction, contexts);
-
-    // #4 register your own ScriptSigner
-    TransactionSigner transactionSigner = new TransactionSigner(TESTNET_TRANSACTION_SIGNER);
-    transactionSigner.registerLockScriptSigner(
-        "0x00000000000000",
-        new ScriptSigner() {
-          @Override
-          public boolean signTx(Transaction transaction, ScriptGroup scriptGroup, Context context) {
-            return true;
-          }
-        });
-    transactionSigner.signTx(transaction);
-    // you can reuse transactionSigner
-    TransactionWithScriptGroups transaction2 = getTransactionWithScriptGroupsFromMercury();
-    transactionSigner.signTx(transaction2);
-  }
-
-  private TransactionWithScriptGroups getTransactionWithScriptGroupsFromMercury() {
-    return new TransactionWithScriptGroups();
-  }
 
   @Test
   void testSingleSecp256k1Blake160Script() {
