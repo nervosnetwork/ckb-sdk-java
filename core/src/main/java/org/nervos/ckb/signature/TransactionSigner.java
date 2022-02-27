@@ -75,10 +75,10 @@ public class TransactionSigner {
     return signedGroupsIndices;
   }
 
-  public void signTx(TransactionWithScriptGroups transaction, String... privateKeys) {
+  public Set<Integer> signTx(TransactionWithScriptGroups transaction, String... privateKeys) {
     Contexts contexts = new Contexts();
     contexts.addPrivateKeys(privateKeys);
-    signTx(transaction, contexts);
+    return signTx(transaction, contexts);
   }
 
   static class Key {

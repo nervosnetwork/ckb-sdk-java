@@ -182,14 +182,16 @@ public class Transaction {
       return this;
     }
 
-    public Builder addCellDep(String txHash, String index, String depType) {
+    public Builder addCellDep(String txHash, int index, String depType) {
+      String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
+
       CellDep cellDep = new CellDep();
-      cellDep.outPoint = new OutPoint(txHash, index);
+      cellDep.outPoint = new OutPoint(txHash, indexInString);
       cellDep.depType = depType;
       return this.addCellDep(cellDep);
     }
 
-    public Builder addCellDep(String txHash, String index) {
+    public Builder addCellDep(String txHash, int index) {
       return this.addCellDep(txHash, index, "dep_group");
     }
 
@@ -213,8 +215,9 @@ public class Transaction {
       return this;
     }
 
-    public Builder addInput(String txHash, String index) {
-      return this.addInput(txHash, index, "0x0");
+    public Builder addInput(String txHash, int index) {
+      String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
+      return this.addInput(txHash, indexInString, "0x0");
     }
 
     public Builder addInput(String txHash, String index, String since) {
@@ -236,10 +239,10 @@ public class Transaction {
 
     public Builder addOutput(
         String capacity,
-        String lockScriptArgs,
         String lockScriptCodeHash,
-        String typeScriptArgs,
-        String typeScriptCodeHash) {
+        String lockScriptArgs,
+        String typeScriptCodeHash,
+        String typeScriptArgs) {
       Script lockScript = new Script(lockScriptCodeHash, lockScriptArgs, "type");
       Script typeScript = new Script(typeScriptCodeHash, typeScriptArgs, "type");
 
@@ -251,7 +254,7 @@ public class Transaction {
       return addOutput(output);
     }
 
-    public Builder addOutput(String capacity, String lockScriptArgs, String lockScriptCodeHash) {
+    public Builder addOutput(String capacity, String lockScriptCodeHash, String lockScriptArgs) {
       Script lockScript = new Script();
       lockScript.args = lockScriptArgs;
       lockScript.codeHash = lockScriptCodeHash;

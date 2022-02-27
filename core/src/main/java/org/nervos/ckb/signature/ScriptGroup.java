@@ -86,8 +86,10 @@ public class ScriptGroup {
       return this;
     }
 
-    public Builder addInputIndex(int index) {
-      this.inputIndices.add(index);
+    public Builder addInputIndices(int... indices) {
+      for (int index : indices) {
+        this.inputIndices.add(index);
+      }
       return this;
     }
 
@@ -96,8 +98,10 @@ public class ScriptGroup {
       return this;
     }
 
-    public Builder addOutputIndex(int index) {
-      this.outputIndices.add(index);
+    public Builder addOutputIndices(int... indices) {
+      for (int index : indices) {
+        this.outputIndices.add(index);
+      }
       return this;
     }
 
