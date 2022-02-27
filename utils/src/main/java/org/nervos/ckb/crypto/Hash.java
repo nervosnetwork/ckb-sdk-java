@@ -1,6 +1,7 @@
 package org.nervos.ckb.crypto;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import org.bouncycastle.crypto.digests.Blake2bDigest;
 import org.nervos.ckb.utils.Numeric;
 
@@ -60,5 +61,10 @@ public class Hash {
 
   public static String blake160(String hexInput) {
     return Numeric.cleanHexPrefix(Hash.blake2b(hexInput)).substring(0, 40);
+  }
+
+  public static byte[] blake160(byte[] input) {
+    byte[] hash = blake2b(input);
+    return Arrays.copyOfRange(hash, 0, 20);
   }
 }
