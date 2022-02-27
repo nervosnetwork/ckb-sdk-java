@@ -146,4 +146,77 @@ public class SignTransactionTest {
     Assertions.assertEquals("0x10000000100000001000000010000000", witnesses.get(1));
   }
 
+  @Test
+  void testTwoSecp256k1Blake160Scripts() {
+    // This test transaction is from
+    // https://explorer.nervos.org/aggron/transaction/0x91ea0744a38483842c288d18f2e59f5d90d479d32acc2deae4350a96de15a76a
+    Transaction tx =
+        Transaction.builder()
+            .addCellDep("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37", "0x0")
+            .addInput("0x42dc1a2cba2a12303f4b901a78fa029b742a56f1e46b9026302d384dafdc1200", "0x1")
+            .addInput("0x000b0db9fdca54cc2f9426e3868117c727d9274eb800ed54c054247f4d3ef9d2", "0x4")
+            .addInput("0xb312eb6c372c6a35d18fd178bee5a4826ad08d3685b66edffd5cdd8e1542055a", "0x1")
+            .addWitness(
+                "55000000100000005500000055000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
+            .addWitness(
+                "55000000100000005500000055000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
+            .addWitness("0x10000000100000001000000010000000")
+            .addOutput(
+                "0x3c5985ef6",
+                "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd",
+                "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8")
+            .addOutput(
+                "0x34e62d2f0",
+                "0xc5f94bc585ba8ddb71cfbc94c79d64d728affc0b",
+                "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8")
+            .addOutput(
+                "0x2b369ea81",
+                "0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b",
+                "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8")
+            .addOutputData("0x")
+            .addOutputData("0x")
+            .addOutputData("0x")
+            .build();
+
+    List<ScriptGroup> scriptGroups = new ArrayList<>();
+    ScriptGroup scriptGroup =
+        ScriptGroup.builder()
+            .setScript(
+                "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+                "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd")
+            .setScriptType(ScriptType.LOCK)
+            .addInputIndex(0)
+            .build();
+    scriptGroups.add(scriptGroup);
+
+    scriptGroup =
+        ScriptGroup.builder()
+            .setScript(
+                "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+                "0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b")
+            .setScriptType(ScriptType.LOCK)
+            .addInputIndex(1)
+            .addInputIndex(2)
+            .build();
+    scriptGroups.add(scriptGroup);
+
+    TransactionWithScriptGroups txWithScriptGroup = new TransactionWithScriptGroups();
+    txWithScriptGroup.setTxView(tx);
+    txWithScriptGroup.setScriptGroups(scriptGroups);
+
+    TESTNET_TRANSACTION_SIGNER.signTx(
+        txWithScriptGroup,
+        "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe",
+        "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f");
+
+    List<String> witnesses = txWithScriptGroup.getTxView().witnesses;
+    Assertions.assertEquals(3, witnesses.size());
+    Assertions.assertEquals(
+        "0x5500000010000000550000005500000041000000860e2e7a830991dae28c2207263b22e6d66a41572bd315b41528bcaf6e26056a76d8c0e43157feed32741a4b038a665461ba93a91f6ce72d43034cc4fe8b9d3b00",
+        witnesses.get(0));
+    Assertions.assertEquals(
+        "0x550000001000000055000000550000004100000022c333e42676e6749a806f952ca12079c2e7e634af2a5737288d2973645edae61db81fe84410c8fd20a5d0743d60429335aeb0a486c6c804fbc5424add690ec901",
+        witnesses.get(1));
+    Assertions.assertEquals("0x10000000100000001000000010000000", witnesses.get(2));
+  }
 }
