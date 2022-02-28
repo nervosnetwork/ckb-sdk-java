@@ -3,7 +3,7 @@ package org.nervos.ckb.unlocker;
 import java.util.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.unlocker.script.Secp256K1Blake160ScriptUnlocker;
+import org.nervos.ckb.unlocker.script.Secp256K1Blake160Unlocker;
 import org.nervos.ckb.utils.Numeric;
 
 public class TransactionUnlocker {
@@ -16,7 +16,7 @@ public class TransactionUnlocker {
     // We can register more ScriptSigner for builtin script
     TESTNET_TRANSACTION_UNLOCKER.registerLockScriptSigner(
         "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-        new Secp256K1Blake160ScriptUnlocker());
+        new Secp256K1Blake160Unlocker());
     TESTNET_TRANSACTION_UNLOCKER.scriptSignerMap =
         Collections.unmodifiableMap(TESTNET_TRANSACTION_UNLOCKER.scriptSignerMap);
   }

@@ -13,7 +13,7 @@ import org.nervos.ckb.unlocker.ScriptGroup;
 import org.nervos.ckb.unlocker.ScriptUnlocker;
 import org.nervos.ckb.utils.Numeric;
 
-public class Secp256K1Blake160ScriptUnlocker implements ScriptUnlocker {
+public class Secp256K1Blake160Unlocker implements ScriptUnlocker {
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
