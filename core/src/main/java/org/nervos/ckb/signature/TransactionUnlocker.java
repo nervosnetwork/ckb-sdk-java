@@ -1,56 +1,59 @@
 package org.nervos.ckb.signature;
 
 import java.util.*;
-import org.nervos.ckb.signature.scriptSigner.Secp256k1Blake160ScriptSigner;
+import org.nervos.ckb.signature.scriptSigner.Secp256K1Blake160ScriptUnlocker;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
-public class TransactionSigner {
-  private Map<Key, ScriptSigner> scriptSignerMap;
-  public static TransactionSigner TESTNET_TRANSACTION_SIGNER;
-  public static TransactionSigner MAINNET_TRANSACTION_SIGNER;
+public class TransactionUnlocker {
+  private Map<Key, ScriptUnlocker> scriptSignerMap;
+  public static TransactionUnlocker TESTNET_TRANSACTION_UNLOCKER;
+  public static TransactionUnlocker MAINNET_TRANSACTION_UNLOCKER;
 
   static {
-    TESTNET_TRANSACTION_SIGNER = new TransactionSigner();
+    TESTNET_TRANSACTION_UNLOCKER = new TransactionUnlocker();
     // We can register more ScriptSigner for builtin script
-    TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
+    TESTNET_TRANSACTION_UNLOCKER.registerLockScriptSigner(
         "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-        new Secp256k1Blake160ScriptSigner());
-    TESTNET_TRANSACTION_SIGNER.scriptSignerMap =
-        Collections.unmodifiableMap(TESTNET_TRANSACTION_SIGNER.scriptSignerMap);
+        new Secp256K1Blake160ScriptUnlocker());
+    TESTNET_TRANSACTION_UNLOCKER.scriptSignerMap =
+        Collections.unmodifiableMap(TESTNET_TRANSACTION_UNLOCKER.scriptSignerMap);
   }
 
-  public TransactionSigner() {
+  public TransactionUnlocker() {
     this(new HashMap<>());
   }
 
-  public TransactionSigner(Map<Key, ScriptSigner> scriptSignerMap) {
+  public TransactionUnlocker(Map<Key, ScriptUnlocker> scriptSignerMap) {
     this.scriptSignerMap = scriptSignerMap;
   }
 
-  public TransactionSigner(TransactionSigner s) {
+  public TransactionUnlocker(TransactionUnlocker s) {
     scriptSignerMap = new HashMap<>();
-    for (Map.Entry<Key, ScriptSigner> entry : s.scriptSignerMap.entrySet()) {
+    for (Map.Entry<Key, ScriptUnlocker> entry : s.scriptSignerMap.entrySet()) {
       scriptSignerMap.put(entry.getKey(), entry.getValue());
     }
   }
 
-  private TransactionSigner register(
-      String codeHash, String hashType, ScriptType scriptType, ScriptSigner scriptSigner) {
-    scriptSignerMap.put(new Key(codeHash, hashType, scriptType), scriptSigner);
+  private TransactionUnlocker register(
+      String codeHash, String hashType, ScriptType scriptType, ScriptUnlocker scriptUnlocker) {
+    scriptSignerMap.put(new Key(codeHash, hashType, scriptType), scriptUnlocker);
     return this;
   }
 
-  public TransactionSigner registerTypeScriptSigner(String codeHash, ScriptSigner scriptSigner) {
-    return register(codeHash, "type", ScriptType.TYPE, scriptSigner);
+  public TransactionUnlocker registerTypeScriptSigner(
+      String codeHash, ScriptUnlocker scriptUnlocker) {
+    return register(codeHash, "type", ScriptType.TYPE, scriptUnlocker);
   }
 
-  public TransactionSigner registerLockScriptSigner(String codeHash, ScriptSigner scriptSigner) {
-    return register(codeHash, "type", ScriptType.LOCK, scriptSigner);
+  public TransactionUnlocker registerLockScriptSigner(
+      String codeHash, ScriptUnlocker scriptUnlocker) {
+    return register(codeHash, "type", ScriptType.LOCK, scriptUnlocker);
   }
 
-  public Set<Integer> signTx(TransactionWithScriptGroups transaction, Set<Context> contexts) {
+  public Set<Integer> unlockTransaction(
+      TransactionWithScriptGroups transaction, Set<Context> contexts) {
     Set<Integer> signedGroupsIndices = new HashSet<>();
     if (contexts == null) {
       return signedGroupsIndices;
@@ -60,13 +63,13 @@ public class TransactionSigner {
     for (int i = 0; i < scriptGroups.size(); i++) {
       ScriptGroup group = scriptGroups.get(i);
       Script script = group.getScript();
-      ScriptSigner signer =
+      ScriptUnlocker signer =
           scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getScriptType()));
       if (signer == null) {
         continue;
       }
       for (Context context : contexts) {
-        if (signer.signTx(tx, group, context)) {
+        if (signer.unlockScript(tx, group, context)) {
           signedGroupsIndices.add(i);
           break;
         }
@@ -75,13 +78,14 @@ public class TransactionSigner {
     return signedGroupsIndices;
   }
 
-  public Set<Integer> signTx(TransactionWithScriptGroups transaction, String... privateKeys) {
+  public Set<Integer> unlockTransaction(
+      TransactionWithScriptGroups transaction, String... privateKeys) {
     Contexts contexts = new Contexts();
     contexts.addPrivateKeys(privateKeys);
-    return signTx(transaction, contexts);
+    return unlockTransaction(transaction, contexts);
   }
 
-  static class Key {
+  private static class Key {
     private String codeHash;
     private String hashType;
     private ScriptType scriptType;

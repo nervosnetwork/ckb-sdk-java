@@ -1,4 +1,4 @@
-import static org.nervos.ckb.signature.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
+import static org.nervos.ckb.signature.TransactionUnlocker.TESTNET_TRANSACTION_UNLOCKER;
 
 import java.util.List;
 import java.util.Set;
@@ -42,7 +42,7 @@ public class SignTransactionTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_SIGNER.signTx(
+        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
             txWithScriptGroup, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
     Assertions.assertEquals(1, signedGroupsIndices.size());
@@ -90,7 +90,7 @@ public class SignTransactionTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_SIGNER.signTx(
+        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
             txWithScriptGroup, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
     Assertions.assertEquals(1, signedGroupsIndices.size());
@@ -151,7 +151,7 @@ public class SignTransactionTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_SIGNER.signTx(
+        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
             txWithScriptGroup,
             "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe",
             "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f");

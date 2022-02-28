@@ -7,18 +7,18 @@ import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.signature.Context;
 import org.nervos.ckb.signature.ScriptGroup;
-import org.nervos.ckb.signature.ScriptSigner;
+import org.nervos.ckb.signature.ScriptUnlocker;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
-public class Secp256k1Blake160ScriptSigner implements ScriptSigner {
+public class Secp256K1Blake160ScriptUnlocker implements ScriptUnlocker {
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
   @Override
-  public boolean signTx(Transaction transaction, ScriptGroup scriptGroup, Context context) {
+  public boolean unlockScript(Transaction transaction, ScriptGroup scriptGroup, Context context) {
     if (scriptGroup == null
         || scriptGroup.getInputIndices() == null
         || scriptGroup.getInputIndices().isEmpty()) {
