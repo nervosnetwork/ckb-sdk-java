@@ -1,16 +1,16 @@
-package org.nervos.ckb.signature.scriptSigner;
+package org.nervos.ckb.unlocker.script;
 
 import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
-import org.nervos.ckb.signature.Context;
-import org.nervos.ckb.signature.ScriptGroup;
-import org.nervos.ckb.signature.ScriptUnlocker;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.unlocker.Context;
+import org.nervos.ckb.unlocker.ScriptGroup;
+import org.nervos.ckb.unlocker.ScriptUnlocker;
 import org.nervos.ckb.utils.Numeric;
 
 public class Secp256K1Blake160ScriptUnlocker implements ScriptUnlocker {

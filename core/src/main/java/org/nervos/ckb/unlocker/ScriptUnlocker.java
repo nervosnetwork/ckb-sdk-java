@@ -1,4 +1,4 @@
-package org.nervos.ckb.signature;
+package org.nervos.ckb.unlocker;
 
 import org.nervos.ckb.type.transaction.Transaction;
 

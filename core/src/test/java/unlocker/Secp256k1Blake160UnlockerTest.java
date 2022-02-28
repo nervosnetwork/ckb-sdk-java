@@ -1,13 +1,15 @@
-import static org.nervos.ckb.signature.TransactionUnlocker.TESTNET_TRANSACTION_UNLOCKER;
+package unlocker;
+
+import static org.nervos.ckb.unlocker.TransactionUnlocker.TESTNET_TRANSACTION_UNLOCKER;
 
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.signature.*;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.unlocker.*;
 
-public class SignTransactionTest {
+public class Secp256k1Blake160UnlockerTest {
 
   @Test
   void testSingleSecp256k1Blake160Script() {

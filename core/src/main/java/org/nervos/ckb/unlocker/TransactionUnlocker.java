@@ -1,9 +1,9 @@
-package org.nervos.ckb.signature;
+package org.nervos.ckb.unlocker;
 
 import java.util.*;
-import org.nervos.ckb.signature.scriptSigner.Secp256K1Blake160ScriptUnlocker;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.unlocker.script.Secp256K1Blake160ScriptUnlocker;
 import org.nervos.ckb.utils.Numeric;
 
 public class TransactionUnlocker {
