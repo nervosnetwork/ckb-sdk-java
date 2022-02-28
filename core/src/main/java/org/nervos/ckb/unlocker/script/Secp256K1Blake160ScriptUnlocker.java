@@ -19,12 +19,6 @@ public class Secp256K1Blake160ScriptUnlocker implements ScriptUnlocker {
 
   @Override
   public boolean unlockScript(Transaction transaction, ScriptGroup scriptGroup, Context context) {
-    if (scriptGroup == null
-        || scriptGroup.getInputIndices() == null
-        || scriptGroup.getInputIndices().isEmpty()) {
-      return false;
-    }
-
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
     if (isMatched(privateKey, script.args) == false) {

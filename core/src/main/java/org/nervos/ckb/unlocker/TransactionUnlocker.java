@@ -62,16 +62,19 @@ public class TransactionUnlocker {
     List<ScriptGroup> scriptGroups = transaction.getScriptGroups();
     for (int i = 0; i < scriptGroups.size(); i++) {
       ScriptGroup group = scriptGroups.get(i);
+      if (isValidScriptGroup(group) == false) {
+        continue;
+      }
+
       Script script = group.getScript();
       ScriptUnlocker signer =
           scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getScriptType()));
-      if (signer == null) {
-        continue;
-      }
-      for (Context context : contexts) {
-        if (signer.unlockScript(tx, group, context)) {
-          signedGroupsIndices.add(i);
-          break;
+      if (signer != null) {
+        for (Context context : contexts) {
+          if (signer.unlockScript(tx, group, context)) {
+            signedGroupsIndices.add(i);
+            break;
+          }
         }
       }
     }
@@ -83,6 +86,28 @@ public class TransactionUnlocker {
     Contexts contexts = new Contexts();
     contexts.addPrivateKeys(privateKeys);
     return unlockTransaction(transaction, contexts);
+  }
+
+  private boolean isValidScriptGroup(ScriptGroup scriptGroup) {
+    if (scriptGroup == null
+        || scriptGroup.getScript() == null
+        || scriptGroup.getScriptType() == null) {
+      return false;
+    }
+
+    boolean isEmptyInputIndices =
+        (scriptGroup.getInputIndices() == null || scriptGroup.getInputIndices().isEmpty());
+    boolean isEmptyOutputIndices =
+        (scriptGroup.getOutputIndices() == null || scriptGroup.getOutputIndices().isEmpty());
+
+    ScriptType scriptType = scriptGroup.getScriptType();
+    if (scriptType == ScriptType.LOCK) {
+      return !isEmptyInputIndices;
+    } else if (scriptType == ScriptType.TYPE) {
+      return (!isEmptyInputIndices || isEmptyOutputIndices);
+    }
+
+    return false;
   }
 
   private static class Key {
