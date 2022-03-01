@@ -34,10 +34,11 @@ public class PwSigner implements ScriptSigner {
       Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
-    if (!isMatched(privateKey, script.args)) {
+    if (isMatched(privateKey, script.args)) {
+      return unlockEthereum(transaction, scriptGroup, privateKey);
+    } else {
       return false;
     }
-    return unlockEthereum(transaction, scriptGroup, privateKey);
   }
 
   private boolean unlockEthereum(

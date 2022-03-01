@@ -1,7 +1,7 @@
 package org.nervos.ckb.sign;
 
 public class Context {
-  private String ecPrivateKey;
+  private String privateKey;
   private Object payload;
 
   public Context(String privateKey) {
@@ -9,16 +9,16 @@ public class Context {
   }
 
   public Context(String privateKey, Object payload) {
-    this.ecPrivateKey = privateKey;
+    this.privateKey = privateKey;
     this.payload = payload;
   }
 
   public String getPrivateKey() {
-    return ecPrivateKey;
+    return privateKey;
   }
 
   public void setPrivateKey(String ecPrivateKey) {
-    this.ecPrivateKey = ecPrivateKey;
+    this.privateKey = ecPrivateKey;
   }
 
   public Object getPayload() {

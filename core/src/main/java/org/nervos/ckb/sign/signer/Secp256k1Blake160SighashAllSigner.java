@@ -34,10 +34,11 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
       Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
-    if (!isMatched(privateKey, script.args)) {
+    if (isMatched(privateKey, script.args)) {
+      return unlockScript(transaction, scriptGroup, privateKey);
+    } else {
       return false;
     }
-    return unlockScript(transaction, scriptGroup, privateKey);
   }
 
   public boolean unlockScript(Transaction transaction, ScriptGroup scriptGroup, String privateKey) {

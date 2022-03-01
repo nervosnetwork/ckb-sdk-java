@@ -26,10 +26,11 @@ public class AcpSigner implements ScriptSigner {
       Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
-    if (!isMatched(privateKey, script.args)) {
+    if (isMatched(privateKey, script.args)) {
+      return secp256K1Blake160SighashAllSigner.unlockScript(transaction, scriptGroup, privateKey);
+    } else {
       return false;
     }
-    return secp256K1Blake160SighashAllSigner.unlockScript(transaction, scriptGroup, privateKey);
   }
 
   public boolean isMatched(String privateKey, String scriptArgs) {
