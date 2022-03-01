@@ -1,5 +1,6 @@
 package org.nervos.ckb.sign.signer;
 
+import java.util.Arrays;
 import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.Hash;
@@ -79,8 +80,8 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
       return false;
     }
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, true);
-    String publicKeyHash =
-        Numeric.toHexStringNoPrefix(Hash.blake160(ecKeyPair.getPublicKey().toByteArray()));
-    return Numeric.cleanHexPrefix(scriptArgs).equals(publicKeyHash);
+    byte[] publicKeyHash = Hash.blake160(ecKeyPair.getPublicKeyBytes());
+    byte[] scriptArgsBytes = Numeric.hexStringToByteArray(scriptArgs);
+    return Arrays.equals(scriptArgsBytes, publicKeyHash);
   }
 }

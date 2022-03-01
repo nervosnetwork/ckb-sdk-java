@@ -1,15 +1,33 @@
 package sign;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.sign.*;
+import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
 import org.nervos.ckb.type.transaction.Transaction;
 
 public class Secp256k1Blake160SighashAllSignerTest {
+
+  @Test
+  void testIsMatched() {
+    Secp256k1Blake160SighashAllSigner signer = Secp256k1Blake160SighashAllSigner.getINSTANCE();
+
+    assertTrue(
+        signer.isMatched(
+            "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f",
+            "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd"));
+    assertFalse(
+        signer.isMatched(
+            "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f",
+            "0x0450340178ae277261a838c89f9ccb76a190ed4b"));
+    assertFalse(signer.isMatched(null, "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd"));
+    assertFalse(
+        signer.isMatched("9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f", null));
+  }
 
   @Test
   void testSingleSecp256k1Blake160Script() {
@@ -47,12 +65,12 @@ public class Secp256k1Blake160SighashAllSignerTest {
         TESTNET_TRANSACTION_SIGNER.signTransaction(
             txWithScriptGroup, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
-    Assertions.assertEquals(1, signedGroupsIndices.size());
-    Assertions.assertEquals(true, signedGroupsIndices.contains(0));
+    assertEquals(1, signedGroupsIndices.size());
+    assertEquals(true, signedGroupsIndices.contains(0));
 
     List<String> witnesses = txWithScriptGroup.getTxView().witnesses;
-    Assertions.assertEquals(1, witnesses.size());
-    Assertions.assertEquals(
+    assertEquals(1, witnesses.size());
+    assertEquals(
         "0x550000001000000055000000550000004100000090b18cc17b8c67e20075ffcffe82d079e0b6a78cb3184157d78962bdd5a648d82c9bc8e1bbe87e7b8b0661440c1060f939be85d26742148e08dc58743a900df401",
         witnesses.get(0));
   }
@@ -95,15 +113,15 @@ public class Secp256k1Blake160SighashAllSignerTest {
         TESTNET_TRANSACTION_SIGNER.signTransaction(
             txWithScriptGroup, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
-    Assertions.assertEquals(1, signedGroupsIndices.size());
-    Assertions.assertEquals(true, signedGroupsIndices.contains(0));
+    assertEquals(1, signedGroupsIndices.size());
+    assertEquals(true, signedGroupsIndices.contains(0));
 
     List<String> witnesses = txWithScriptGroup.getTxView().witnesses;
-    Assertions.assertEquals(2, witnesses.size());
-    Assertions.assertEquals(
+    assertEquals(2, witnesses.size());
+    assertEquals(
         "0x5500000010000000550000005500000041000000ed0c2ec9523029ed21be22fce92ff158d4da25da0aebd050cdd4b04a9c980ccf5f76afc8d33fa890fcb231bde3eba46b2932d4aaecd4df559ecc3d268d90ef8c01",
         witnesses.get(0));
-    Assertions.assertEquals("0x10000000100000001000000010000000", witnesses.get(1));
+    assertEquals("0x10000000100000001000000010000000", witnesses.get(1));
   }
 
   @Test
@@ -158,18 +176,18 @@ public class Secp256k1Blake160SighashAllSignerTest {
             "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe",
             "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f");
 
-    Assertions.assertEquals(2, signedGroupsIndices.size());
-    Assertions.assertEquals(true, signedGroupsIndices.contains(0));
-    Assertions.assertEquals(true, signedGroupsIndices.contains(1));
+    assertEquals(2, signedGroupsIndices.size());
+    assertEquals(true, signedGroupsIndices.contains(0));
+    assertEquals(true, signedGroupsIndices.contains(1));
 
     List<String> witnesses = txWithScriptGroup.getTxView().witnesses;
-    Assertions.assertEquals(3, witnesses.size());
-    Assertions.assertEquals(
+    assertEquals(3, witnesses.size());
+    assertEquals(
         "0x5500000010000000550000005500000041000000860e2e7a830991dae28c2207263b22e6d66a41572bd315b41528bcaf6e26056a76d8c0e43157feed32741a4b038a665461ba93a91f6ce72d43034cc4fe8b9d3b00",
         witnesses.get(0));
-    Assertions.assertEquals(
+    assertEquals(
         "0x550000001000000055000000550000004100000022c333e42676e6749a806f952ca12079c2e7e634af2a5737288d2973645edae61db81fe84410c8fd20a5d0743d60429335aeb0a486c6c804fbc5424add690ec901",
         witnesses.get(1));
-    Assertions.assertEquals("0x10000000100000001000000010000000", witnesses.get(2));
+    assertEquals("0x10000000100000001000000010000000", witnesses.get(2));
   }
 }
