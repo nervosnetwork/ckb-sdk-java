@@ -65,12 +65,12 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
     byte[] signature = Sign.signMessage(message, ecKeyPair).getSignature();
 
     int index = scriptGroup.getInputIndices().get(0);
-    String witness = Numeric.cleanHexPrefix(witnesses.get(index));
+    // TODO: need parsing from witnessArgs but not replace in place
+    String witness = witnesses.get(index);
     witness =
-        "0x"
-            + witness.substring(0, WITNESS_OFFSET_IN_BYTE * 2)
+        witness.substring(0, 2 + WITNESS_OFFSET_IN_BYTE * 2)
             + Numeric.toHexStringNoPrefix(signature)
-            + witness.substring(WITNESS_OFFSET_IN_BYTE * 2 + SIGNATURE_LENGTH_IN_BYTE * 2);
+            + witness.substring(2 + WITNESS_OFFSET_IN_BYTE * 2 + SIGNATURE_LENGTH_IN_BYTE * 2);
 
     witnesses.set(index, witness);
     return true;

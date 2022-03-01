@@ -5,7 +5,6 @@ import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
 
 public class AcpSigner implements ScriptSigner {
   private Secp256k1Blake160SighashAllSigner secp256K1Blake160SighashAllSigner =
@@ -35,7 +34,6 @@ public class AcpSigner implements ScriptSigner {
   }
 
   public boolean isMatched(String privateKey, String scriptArgs) {
-    return secp256K1Blake160SighashAllSigner.isMatched(
-        privateKey, Numeric.cleanHexPrefix(scriptArgs).substring(0, 40));
+    return secp256K1Blake160SighashAllSigner.isMatched(privateKey, scriptArgs.substring(0, 42));
   }
 }

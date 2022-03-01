@@ -35,13 +35,13 @@ public class PwSigner implements ScriptSigner {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
     if (isMatched(privateKey, script.args)) {
-      return unlockEthereum(transaction, scriptGroup, privateKey);
+      return signScriptGroup(transaction, scriptGroup, privateKey);
     } else {
       return false;
     }
   }
 
-  private boolean unlockEthereum(
+  private boolean signScriptGroup(
       Transaction transaction, ScriptGroup scriptGroup, String privateKey) {
     Keccak256 keccak256 = new Keccak256();
     String txHash = transaction.computeHash();
@@ -60,6 +60,7 @@ public class PwSigner implements ScriptSigner {
     byte[] signature = ethereumPersonalSign(digest, ecKeyPair);
 
     int index = scriptGroup.getInputIndices().get(0);
+    // TODO: need parsing from witnessArgs but not replace in place
     String witness = Numeric.cleanHexPrefix(witnesses.get(index));
     witness =
         "0x"

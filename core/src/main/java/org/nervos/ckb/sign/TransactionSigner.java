@@ -6,7 +6,6 @@ import org.nervos.ckb.sign.signer.PwSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
 
 public class TransactionSigner {
   private Map<Key, ScriptSigner> scriptSignerMap;
@@ -122,7 +121,7 @@ public class TransactionSigner {
     private ScriptType scriptType;
 
     public Key(String codeHash, String hashType, ScriptType scriptType) {
-      this.codeHash = Numeric.cleanHexPrefix(codeHash);
+      this.codeHash = codeHash;
       this.hashType = hashType;
       this.scriptType = scriptType;
     }
