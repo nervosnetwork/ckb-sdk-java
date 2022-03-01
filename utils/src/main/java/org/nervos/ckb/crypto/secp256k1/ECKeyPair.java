@@ -110,6 +110,17 @@ public class ECKeyPair {
     return new FixedPointCombMultiplier().multiply(CURVE.getG(), privateKey);
   }
 
+  // See: https://stackoverflow.com/questions/4407779/biginteger-to-byte
+  public byte[] getPublicKeyBytes() {
+    byte[] array = publicKey.toByteArray();
+    if (array[0] == 0) {
+      byte[] tmp = new byte[array.length - 1];
+      System.arraycopy(array, 1, tmp, 0, tmp.length);
+      array = tmp;
+    }
+    return array;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

@@ -1,5 +1,6 @@
 package unlocker;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.nervos.ckb.unlocker.TransactionUnlocker.TESTNET_TRANSACTION_UNLOCKER;
 
 import java.util.List;
@@ -8,8 +9,24 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.unlocker.TransactionWithScriptGroups;
+import org.nervos.ckb.unlocker.script.PwUnlocker;
 
 public class PwUnLockTest {
+
+  @Test
+  void testIsMatched() {
+    PwUnlocker unlocker = PwUnlocker.getInstance();
+
+    Assertions.assertTrue(
+        unlocker.isMatched(
+            "f8f8a2f43c8376ccb0871305060d7b27b0554d2cc72bccf41b2705608452f315",
+            "001d3f1ef827552ae1114027bd3ecf1f086ba0f9"));
+    Assertions.assertTrue(
+        unlocker.isMatched(
+            "e0ccb2548af279947b452efda4535dd4bcadf756d919701fcd4c382833277f85",
+            "adabffb9c27cb4af100ce7bca6903315220e87a2"));
+  }
+
   @Test
   void testUnlockEthereum() {
     // This test transaction is from
@@ -51,12 +68,12 @@ public class PwUnLockTest {
         TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
             txWithScriptGroup, "e0ccb2548af279947b452efda4535dd4bcadf756d919701fcd4c382833277f85");
 
-    Assertions.assertEquals(1, signedGroupsIndices.size());
-    Assertions.assertEquals(true, signedGroupsIndices.contains(0));
+    assertEquals(1, signedGroupsIndices.size());
+    assertEquals(true, signedGroupsIndices.contains(0));
 
     List<String> witnesses = txWithScriptGroup.getTxView().witnesses;
-    Assertions.assertEquals(2, witnesses.size());
-    Assertions.assertEquals(
+    assertEquals(2, witnesses.size());
+    assertEquals(
         "0x5500000010000000550000005500000041000000fed79d78a964af9ba4151f43e8e513c003fa78a2086c89ec1157714225b85c0a360b9ba06c1acc0c1cb2fced6009b7bf3838daede1c4d6101bdc82b2080fcc0201",
         witnesses.get(0));
   }
