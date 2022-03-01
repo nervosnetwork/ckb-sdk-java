@@ -22,7 +22,7 @@ public class PwSigner implements ScriptSigner {
 
   private PwSigner() {}
 
-  public static PwSigner getINSTANCE() {
+  public static PwSigner getInstance() {
     if (INSTANCE == null) {
       INSTANCE = new PwSigner();
     }

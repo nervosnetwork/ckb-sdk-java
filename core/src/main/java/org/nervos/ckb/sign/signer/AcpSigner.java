@@ -9,12 +9,12 @@ import org.nervos.ckb.utils.Numeric;
 
 public class AcpSigner implements ScriptSigner {
   private Secp256k1Blake160SighashAllSigner secp256K1Blake160SighashAllSigner =
-      Secp256k1Blake160SighashAllSigner.getINSTANCE();
+      Secp256k1Blake160SighashAllSigner.getInstance();
   private static AcpSigner INSTANCE;
 
   private AcpSigner() {}
 
-  public static AcpSigner getINSTANCE() {
+  public static AcpSigner getInstance() {
     if (INSTANCE == null) {
       INSTANCE = new AcpSigner();
     }

@@ -22,7 +22,7 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
 
   private Secp256k1Blake160SighashAllSigner() {}
 
-  public static Secp256k1Blake160SighashAllSigner getINSTANCE() {
+  public static Secp256k1Blake160SighashAllSigner getInstance() {
     if (INSTANCE == null) {
       INSTANCE = new Secp256k1Blake160SighashAllSigner();
     }

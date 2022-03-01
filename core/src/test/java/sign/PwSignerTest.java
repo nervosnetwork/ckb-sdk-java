@@ -15,7 +15,7 @@ public class PwSignerTest {
 
   @Test
   void testIsMatched() {
-    PwSigner signer = PwSigner.getINSTANCE();
+    PwSigner signer = PwSigner.getInstance();
 
     Assertions.assertTrue(
         signer.isMatched(
