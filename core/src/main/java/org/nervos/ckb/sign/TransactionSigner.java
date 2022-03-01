@@ -110,7 +110,7 @@ public class TransactionSigner {
     if (scriptType == ScriptType.LOCK) {
       return !isEmptyInputIndices;
     } else if (scriptType == ScriptType.TYPE) {
-      return (!isEmptyInputIndices || isEmptyOutputIndices);
+      return (!isEmptyInputIndices || !isEmptyOutputIndices);
     }
 
     return false;
