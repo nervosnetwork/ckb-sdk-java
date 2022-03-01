@@ -3,22 +3,26 @@ package org.nervos.ckb.unlocker;
 import java.util.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.unlocker.script.AcpUnlocker;
 import org.nervos.ckb.unlocker.script.Secp256K1Blake160Unlocker;
 import org.nervos.ckb.utils.Numeric;
 
 public class TransactionUnlocker {
-  private Map<Key, ScriptUnlocker> scriptSignerMap;
+  private Map<Key, ScriptUnlocker> scriptUnlockerMap;
   public static TransactionUnlocker TESTNET_TRANSACTION_UNLOCKER;
   public static TransactionUnlocker MAINNET_TRANSACTION_UNLOCKER;
 
   static {
     TESTNET_TRANSACTION_UNLOCKER = new TransactionUnlocker();
     // We can register more ScriptSigner for builtin script
-    TESTNET_TRANSACTION_UNLOCKER.registerLockScriptSigner(
+    TESTNET_TRANSACTION_UNLOCKER.registerLockScriptUnlocker(
         "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-        new Secp256K1Blake160Unlocker());
-    TESTNET_TRANSACTION_UNLOCKER.scriptSignerMap =
-        Collections.unmodifiableMap(TESTNET_TRANSACTION_UNLOCKER.scriptSignerMap);
+        Secp256K1Blake160Unlocker.getInstance());
+    TESTNET_TRANSACTION_UNLOCKER.registerLockScriptUnlocker(
+        "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356",
+        AcpUnlocker.getInstance());
+    TESTNET_TRANSACTION_UNLOCKER.scriptUnlockerMap =
+        Collections.unmodifiableMap(TESTNET_TRANSACTION_UNLOCKER.scriptUnlockerMap);
   }
 
   public TransactionUnlocker() {
@@ -26,28 +30,28 @@ public class TransactionUnlocker {
   }
 
   public TransactionUnlocker(Map<Key, ScriptUnlocker> scriptSignerMap) {
-    this.scriptSignerMap = scriptSignerMap;
+    this.scriptUnlockerMap = scriptSignerMap;
   }
 
   public TransactionUnlocker(TransactionUnlocker s) {
-    scriptSignerMap = new HashMap<>();
-    for (Map.Entry<Key, ScriptUnlocker> entry : s.scriptSignerMap.entrySet()) {
-      scriptSignerMap.put(entry.getKey(), entry.getValue());
+    scriptUnlockerMap = new HashMap<>();
+    for (Map.Entry<Key, ScriptUnlocker> entry : s.scriptUnlockerMap.entrySet()) {
+      scriptUnlockerMap.put(entry.getKey(), entry.getValue());
     }
   }
 
   private TransactionUnlocker register(
       String codeHash, String hashType, ScriptType scriptType, ScriptUnlocker scriptUnlocker) {
-    scriptSignerMap.put(new Key(codeHash, hashType, scriptType), scriptUnlocker);
+    scriptUnlockerMap.put(new Key(codeHash, hashType, scriptType), scriptUnlocker);
     return this;
   }
 
-  public TransactionUnlocker registerTypeScriptSigner(
+  public TransactionUnlocker registerTypeScriptUnlocker(
       String codeHash, ScriptUnlocker scriptUnlocker) {
     return register(codeHash, "type", ScriptType.TYPE, scriptUnlocker);
   }
 
-  public TransactionUnlocker registerLockScriptSigner(
+  public TransactionUnlocker registerLockScriptUnlocker(
       String codeHash, ScriptUnlocker scriptUnlocker) {
     return register(codeHash, "type", ScriptType.LOCK, scriptUnlocker);
   }
@@ -67,11 +71,11 @@ public class TransactionUnlocker {
       }
 
       Script script = group.getScript();
-      ScriptUnlocker signer =
-          scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getScriptType()));
-      if (signer != null) {
+      ScriptUnlocker unlocker =
+          scriptUnlockerMap.get(new Key(script.codeHash, script.hashType, group.getScriptType()));
+      if (unlocker != null) {
         for (Context context : contexts) {
-          if (signer.unlockScript(tx, group, context)) {
+          if (unlocker.unlockScript(tx, group, context)) {
             signedGroupsIndices.add(i);
             break;
           }
