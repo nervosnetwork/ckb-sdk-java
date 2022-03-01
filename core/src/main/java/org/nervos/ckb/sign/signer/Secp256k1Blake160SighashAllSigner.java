@@ -1,35 +1,36 @@
-package org.nervos.ckb.unlocker.script;
+package org.nervos.ckb.sign.signer;
 
 import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.sign.Context;
+import org.nervos.ckb.sign.ScriptGroup;
+import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.unlocker.Context;
-import org.nervos.ckb.unlocker.ScriptGroup;
-import org.nervos.ckb.unlocker.ScriptUnlocker;
 import org.nervos.ckb.utils.Numeric;
 
-public class Secp256K1Blake160Unlocker implements ScriptUnlocker {
+public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
-  private static Secp256K1Blake160Unlocker instance;
+  private static Secp256k1Blake160SighashAllSigner INSTANCE;
 
-  private Secp256K1Blake160Unlocker() {}
+  private Secp256k1Blake160SighashAllSigner() {}
 
-  public static Secp256K1Blake160Unlocker getInstance() {
-    if (instance == null) {
-      instance = new Secp256K1Blake160Unlocker();
+  public static Secp256k1Blake160SighashAllSigner getINSTANCE() {
+    if (INSTANCE == null) {
+      INSTANCE = new Secp256k1Blake160SighashAllSigner();
     }
-    return instance;
+    return INSTANCE;
   }
 
   @Override
-  public boolean unlockScript(Transaction transaction, ScriptGroup scriptGroup, Context context) {
+  public boolean signTransaction(
+      Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
     if (isMatched(privateKey, script.args) == false) {

@@ -1,15 +1,15 @@
-package unlocker;
+package sign;
 
-import static org.nervos.ckb.unlocker.TransactionUnlocker.TESTNET_TRANSACTION_UNLOCKER;
+import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.sign.*;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.unlocker.*;
 
-public class Secp256k1Blake160UnlockerTest {
+public class Secp256k1Blake160SighashAllSignerTest {
 
   @Test
   void testSingleSecp256k1Blake160Script() {
@@ -44,7 +44,7 @@ public class Secp256k1Blake160UnlockerTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
+        TESTNET_TRANSACTION_SIGNER.signTransaction(
             txWithScriptGroup, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
     Assertions.assertEquals(1, signedGroupsIndices.size());
@@ -92,7 +92,7 @@ public class Secp256k1Blake160UnlockerTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
+        TESTNET_TRANSACTION_SIGNER.signTransaction(
             txWithScriptGroup, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
     Assertions.assertEquals(1, signedGroupsIndices.size());
@@ -153,7 +153,7 @@ public class Secp256k1Blake160UnlockerTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
+        TESTNET_TRANSACTION_SIGNER.signTransaction(
             txWithScriptGroup,
             "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe",
             "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f");

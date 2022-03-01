@@ -1,17 +1,17 @@
-package unlocker;
+package sign;
 
-import static org.nervos.ckb.unlocker.TransactionUnlocker.TESTNET_TRANSACTION_UNLOCKER;
+import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.unlocker.TransactionWithScriptGroups;
 
-public class AcpUnlockerTest {
+public class AcpSignerTest {
   @Test
-  void testACPUnlocker() {
+  void testACP() {
     // This test transaction is from
     // https://explorer.nervos.org/aggron/transaction/0x5be4c85879bbe5c9eceb799c0ef09e9c839a14ec4f3ae9b107bf7b5c5c3f24ce
     Transaction tx =
@@ -49,7 +49,7 @@ public class AcpUnlockerTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
+        TESTNET_TRANSACTION_SIGNER.signTransaction(
             txWithScriptGroup, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
     Assertions.assertEquals(1, signedGroupsIndices.size());

@@ -1,4 +1,4 @@
-package org.nervos.ckb.unlocker;
+package org.nervos.ckb.sign;
 
 // Todo: there is another org.nervos.indexer.model.ScriptType. To avoid circular dependency I create
 // a new one. Need refactor.

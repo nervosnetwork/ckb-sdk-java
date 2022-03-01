@@ -1,34 +1,34 @@
-package unlocker;
+package sign;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.nervos.ckb.unlocker.TransactionUnlocker.TESTNET_TRANSACTION_UNLOCKER;
+import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
+import org.nervos.ckb.sign.signer.PwSigner;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.unlocker.TransactionWithScriptGroups;
-import org.nervos.ckb.unlocker.script.PwUnlocker;
 
-public class PwUnLockTest {
+public class PwSignerTest {
 
   @Test
   void testIsMatched() {
-    PwUnlocker unlocker = PwUnlocker.getInstance();
+    PwSigner signer = PwSigner.getINSTANCE();
 
     Assertions.assertTrue(
-        unlocker.isMatched(
+        signer.isMatched(
             "f8f8a2f43c8376ccb0871305060d7b27b0554d2cc72bccf41b2705608452f315",
             "001d3f1ef827552ae1114027bd3ecf1f086ba0f9"));
     Assertions.assertTrue(
-        unlocker.isMatched(
+        signer.isMatched(
             "e0ccb2548af279947b452efda4535dd4bcadf756d919701fcd4c382833277f85",
             "adabffb9c27cb4af100ce7bca6903315220e87a2"));
   }
 
   @Test
-  void testUnlockEthereum() {
+  void testSignPwEthereum() {
     // This test transaction is from
     // https://explorer.nervos.org/aggron/transaction/0x8bc55b093c6dfd1b6178683e249841eafb2299cc616468f1d93e22f748aec691
 
@@ -65,7 +65,7 @@ public class PwUnLockTest {
             .build();
 
     Set<Integer> signedGroupsIndices =
-        TESTNET_TRANSACTION_UNLOCKER.unlockTransaction(
+        TESTNET_TRANSACTION_SIGNER.signTransaction(
             txWithScriptGroup, "e0ccb2548af279947b452efda4535dd4bcadf756d919701fcd4c382833277f85");
 
     assertEquals(1, signedGroupsIndices.size());

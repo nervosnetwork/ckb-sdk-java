@@ -1,4 +1,4 @@
-package org.nervos.ckb.unlocker.script;
+package org.nervos.ckb.sign.signer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -6,31 +6,32 @@ import java.util.List;
 import org.nervos.ckb.crypto.Keccak256;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
+import org.nervos.ckb.sign.Context;
+import org.nervos.ckb.sign.ScriptGroup;
+import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.unlocker.Context;
-import org.nervos.ckb.unlocker.ScriptGroup;
-import org.nervos.ckb.unlocker.ScriptUnlocker;
 import org.nervos.ckb.utils.Numeric;
 
-public class PwUnlocker implements ScriptUnlocker {
+public class PwSigner implements ScriptSigner {
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
-  private static PwUnlocker instance;
+  private static PwSigner INSTANCE;
 
-  private PwUnlocker() {}
+  private PwSigner() {}
 
-  public static PwUnlocker getInstance() {
-    if (instance == null) {
-      instance = new PwUnlocker();
+  public static PwSigner getINSTANCE() {
+    if (INSTANCE == null) {
+      INSTANCE = new PwSigner();
     }
-    return instance;
+    return INSTANCE;
   }
 
   @Override
-  public boolean unlockScript(Transaction transaction, ScriptGroup scriptGroup, Context context) {
+  public boolean signTransaction(
+      Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
     if (isMatched(privateKey, script.args) == false) {
