@@ -34,7 +34,7 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
       Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
-    if (isMatched(privateKey, script.args) == false) {
+    if (!isMatched(privateKey, script.args)) {
       return false;
     }
     return unlockScript(transaction, scriptGroup, privateKey);
@@ -63,7 +63,7 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
     byte[] signature = Sign.signMessage(message, ecKeyPair).getSignature();
 
     int index = scriptGroup.getInputIndices().get(0);
-    String witness = witnesses.get(index);
+    String witness = Numeric.cleanHexPrefix(witnesses.get(index));
     witness =
         "0x"
             + witness.substring(0, WITNESS_OFFSET_IN_BYTE * 2)

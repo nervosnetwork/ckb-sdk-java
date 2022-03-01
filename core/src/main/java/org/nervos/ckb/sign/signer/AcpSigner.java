@@ -26,7 +26,7 @@ public class AcpSigner implements ScriptSigner {
       Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
-    if (isMatched(privateKey, script.args) == false) {
+    if (!isMatched(privateKey, script.args)) {
       return false;
     }
     return secp256K1Blake160SighashAllSigner.unlockScript(transaction, scriptGroup, privateKey);

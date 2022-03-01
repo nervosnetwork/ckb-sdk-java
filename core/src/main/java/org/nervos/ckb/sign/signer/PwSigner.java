@@ -34,7 +34,7 @@ public class PwSigner implements ScriptSigner {
       Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     String privateKey = context.getPrivateKey();
-    if (isMatched(privateKey, script.args) == false) {
+    if (!isMatched(privateKey, script.args)) {
       return false;
     }
     return unlockEthereum(transaction, scriptGroup, privateKey);
@@ -59,7 +59,7 @@ public class PwSigner implements ScriptSigner {
     byte[] signature = ethereumPersonalSign(digest, ecKeyPair);
 
     int index = scriptGroup.getInputIndices().get(0);
-    String witness = witnesses.get(index);
+    String witness = Numeric.cleanHexPrefix(witnesses.get(index));
     witness =
         "0x"
             + witness.substring(0, WITNESS_OFFSET_IN_BYTE * 2)

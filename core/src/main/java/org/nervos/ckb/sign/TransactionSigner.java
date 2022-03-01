@@ -68,7 +68,7 @@ public class TransactionSigner {
     List<ScriptGroup> scriptGroups = transaction.getScriptGroups();
     for (int i = 0; i < scriptGroups.size(); i++) {
       ScriptGroup group = scriptGroups.get(i);
-      if (isValidScriptGroup(group) == false) {
+      if (!isValidScriptGroup(group)) {
         continue;
       }
 
