@@ -4,6 +4,7 @@ import java.util.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.unlocker.script.AcpUnlocker;
+import org.nervos.ckb.unlocker.script.PwUnlocker;
 import org.nervos.ckb.unlocker.script.Secp256K1Blake160Unlocker;
 import org.nervos.ckb.utils.Numeric;
 
@@ -21,6 +22,9 @@ public class TransactionUnlocker {
     TESTNET_TRANSACTION_UNLOCKER.registerLockScriptUnlocker(
         "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356",
         AcpUnlocker.getInstance());
+    TESTNET_TRANSACTION_UNLOCKER.registerLockScriptUnlocker(
+        "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63",
+        PwUnlocker.getInstance());
     TESTNET_TRANSACTION_UNLOCKER.scriptUnlockerMap =
         Collections.unmodifiableMap(TESTNET_TRANSACTION_UNLOCKER.scriptUnlockerMap);
   }
