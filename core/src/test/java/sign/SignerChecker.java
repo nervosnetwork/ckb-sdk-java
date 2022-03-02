@@ -27,13 +27,8 @@ public class SignerChecker {
 
   private SignerChecker() {}
 
-  private static Reader readTransactionFile(String fileName) throws IOException {
-    String filePath = "src/test/resources/transaction/" + fileName + ".json";
-    return Files.newBufferedReader(Paths.get(filePath));
-  }
-
-  public static SignerChecker fromFile(String fileName) {
-    try (Reader reader = readTransactionFile(fileName)) {
+  private static SignerChecker fromFile(String fileName) {
+    try (Reader reader = readTransactionJsonFile(fileName)) {
       Gson gson = new Gson();
       return gson.fromJson(reader, SignerChecker.class);
     } catch (IOException ex) {
@@ -42,18 +37,28 @@ public class SignerChecker {
     return null;
   }
 
-  private Set<Integer> signTransaction(TransactionSigner transactionSigner) {
-    String[] privateKeysArray = this.privateKeys.toArray(new String[this.privateKeys.size()]);
-    return transactionSigner.signTransaction(transaction, privateKeysArray);
+  private static Reader readTransactionJsonFile(String fileName) throws IOException {
+    String filePath = "src/test/resources/transaction/" + fileName + ".json";
+    return Files.newBufferedReader(Paths.get(filePath));
   }
 
-  public void signAndCheck() {
+  public static void signAndCheck(String fileName) {
+    SignerChecker checker = SignerChecker.fromFile(fileName);
+    checker.signAndCheck();
+  }
+
+  private void signAndCheck() {
     Set<Integer> signedGroupsIndices = signTransaction(TESTNET_TRANSACTION_SIGNER);
     assertEquals(this.transaction.getScriptGroups().size(), signedGroupsIndices.size());
     for (int i = 0; i < this.transaction.getScriptGroups().size(); i++) {
       assertEquals(true, signedGroupsIndices.contains(i));
     }
     check();
+  }
+
+  private Set<Integer> signTransaction(TransactionSigner transactionSigner) {
+    String[] privateKeysArray = this.privateKeys.toArray(new String[this.privateKeys.size()]);
+    return transactionSigner.signTransaction(transaction, privateKeysArray);
   }
 
   private void check() {

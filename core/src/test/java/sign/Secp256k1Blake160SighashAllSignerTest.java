@@ -31,8 +31,7 @@ public class Secp256k1Blake160SighashAllSignerTest {
 
   @Test
   void testSingleSecp256k1Blake160Script() {
-    SignerChecker checker = SignerChecker.fromFile("secp256k1_blake16_sighash_all_one_input");
-    checker.signAndCheck();
+    SignerChecker.signAndCheck("secp256k1_blake16_sighash_all_one_input");
   }
 
   @Test
