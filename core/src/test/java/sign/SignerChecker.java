@@ -13,14 +13,13 @@ import java.nio.file.Paths;
 import java.util.*;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.type.transaction.Transaction;
 
 public class SignerChecker {
   @SerializedName("raw_transaction")
   private TransactionWithScriptGroups transaction;
 
-  @SerializedName("expected_transaction")
-  private Transaction expectedTransaction;
+  @SerializedName("expected_witnesses")
+  private List<String> expectedWitnesses;
 
   @SerializedName("private_keys")
   private List<String> privateKeys;
@@ -62,7 +61,6 @@ public class SignerChecker {
   }
 
   private void check() {
-    List<String> expectedWitnesses = expectedTransaction.witnesses;
     List<String> witnesses = transaction.getTxView().witnesses;
     assertNotEquals(0, witnesses.size());
     assertEquals(expectedWitnesses.size(), witnesses.size());

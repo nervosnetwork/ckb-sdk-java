@@ -85,69 +85,8 @@
       }
     ]
   },
-  "expected_transaction": {
-    "cell_deps": [
-      {
-        "dep_type": "dep_group",
-        "out_point": {
-          "index": "0x0",
-          "tx_hash": "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"
-        }
-      },
-      {
-        "dep_type": "dep_group",
-        "out_point": {
-          "index": "0x0",
-          "tx_hash": "0xec26b0f85ed839ece5f11c4c4e837ec359f5adc4420410f6453b1f6b60fb96a6"
-        }
-      },
-      {
-        "dep_type": "code",
-        "out_point": {
-          "index": "0x0",
-          "tx_hash": "0xe12877ebd2c3c364dc46c5c992bcfaf4fee33fa13eebdf82c591fc9825aab769"
-        }
-      }
-    ],
-    "header_deps": [],
-    "inputs": [
-      {
-        "previous_output": {
-          "index": "0x0",
-          "tx_hash": "0xc43c8198c4ead3dce957cc3a3ab2ca6c8f4c23ad9d74cb083daefd5d2e4fba4e"
-        },
-        "since": "0x0"
-      },
-      {
-        "previous_output": {
-          "index": "0x0",
-          "tx_hash": "0x469100c2149317341756e80f369c94ed2a84b58349ff41985819d49413377ae8"
-        },
-        "since": "0x0"
-      }
-    ],
-    "outputs": [
-      {
-        "capacity": "0xea46318821",
-        "lock": {
-          "args": "0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b",
-          "code_hash": "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356",
-          "hash_type": "type"
-        },
-        "type": {
-          "args": "0xc772f4d885ca6285d87d82b8edc1643df9f3ce63c40d0f81f2a38c147328d430",
-          "code_hash": "0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4",
-          "hash_type": "type"
-        }
-      }
-    ],
-    "outputs_data": [
-      "0x00000000000000000000000000000000"
-    ],
-    "version": "0x0",
-    "witnesses": [
-      "0x5500000010000000550000005500000041000000ed0c2ec9523029ed21be22fce92ff158d4da25da0aebd050cdd4b04a9c980ccf5f76afc8d33fa890fcb231bde3eba46b2932d4aaecd4df559ecc3d268d90ef8c01",
-      "0x10000000100000001000000010000000"
-    ]
-  }
+  "expected_witnesses": [
+    "0x5500000010000000550000005500000041000000ed0c2ec9523029ed21be22fce92ff158d4da25da0aebd050cdd4b04a9c980ccf5f76afc8d33fa890fcb231bde3eba46b2932d4aaecd4df559ecc3d268d90ef8c01",
+    "0x10000000100000001000000010000000"
+  ]
 }
