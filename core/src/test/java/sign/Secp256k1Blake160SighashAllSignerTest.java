@@ -38,4 +38,9 @@ public class Secp256k1Blake160SighashAllSignerTest {
   void testSecp256k1Blake160TwoGroups() {
     SignerChecker.signAndCheck("secp256k1_blake16_sighash_all_two_groups");
   }
+
+  @Test
+  void testSecp256k1Blake160ExtraWitness() {
+    SignerChecker.signAndCheck("secp256k1_blake16_sighash_all_extra_witness");
+  }
 }
