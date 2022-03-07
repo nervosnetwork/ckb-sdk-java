@@ -1,7 +1,12 @@
 package org.nervos.ckb.sign;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Context {
+  @SerializedName("private_key")
   private String privateKey;
+
+  @SerializedName("payload")
   private Object payload;
 
   public Context(String privateKey) {

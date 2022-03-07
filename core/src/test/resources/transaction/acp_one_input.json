@@ -1,7 +1,8 @@
 {
-  "tx_hash": "0x5be4c85879bbe5c9eceb799c0ef09e9c839a14ec4f3ae9b107bf7b5c5c3f24ce",
-  "private_keys": [
-    "0x6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe"
+  "contexts": [
+    {
+      "private_key": "0x6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe"
+    }
   ],
   "raw_transaction": {
     "tx_view": {

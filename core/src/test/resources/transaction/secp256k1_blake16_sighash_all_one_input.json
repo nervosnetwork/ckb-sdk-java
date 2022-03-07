@@ -1,7 +1,8 @@
 {
-  "tx_hash": "0x7be5f1df2c5eb2f33bcf20603774e485c78ab7616e059908715b4a8200e8949f",
-  "private_keys": [
-    "0x6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe"
+  "contexts": [
+    {
+      "private_key": "0x6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe"
+    }
   ],
   "raw_transaction": {
     "tx_view": {
@@ -21,6 +22,7 @@
           }
         }
       ],
+      "hash": "0x7be5f1df2c5eb2f33bcf20603774e485c78ab7616e059908715b4a8200e8949f",
       "header_deps": [],
       "inputs": [
         {

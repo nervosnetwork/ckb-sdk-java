@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 
@@ -21,8 +22,8 @@ public class SignerChecker {
   @SerializedName("expected_witnesses")
   private List<String> expectedWitnesses;
 
-  @SerializedName("private_keys")
-  private List<String> privateKeys;
+  @SerializedName("contexts")
+  private Set<Context> contexts;
 
   private SignerChecker() {}
 
@@ -56,8 +57,7 @@ public class SignerChecker {
   }
 
   private Set<Integer> signTransaction(TransactionSigner transactionSigner) {
-    String[] privateKeysArray = this.privateKeys.toArray(new String[this.privateKeys.size()]);
-    return transactionSigner.signTransaction(transaction, privateKeysArray);
+    return transactionSigner.signTransaction(transaction, contexts);
   }
 
   private void check() {
