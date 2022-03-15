@@ -1,7 +1,6 @@
 package org.nervos.mercury.model.req.item;
 
 import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
 
 public class ItemFactory {
 
@@ -17,11 +16,11 @@ public class ItemFactory {
     return new Item(Item.Type.IDENTITY, Identity.toIdentityByAddress(address));
   }
 
-  public static Item newRecordItemByScript(OutPoint point, Script script) {
-    return new Item(Item.Type.RECORD, new Record(point, script));
+  public static Item newOutPointItem(String txHash, String index) {
+    return newOutPointItem(new OutPoint(txHash, index));
   }
 
-  public static Item newRecordItemByAddress(OutPoint point, String address) {
-    return new Item(Item.Type.RECORD, new Record(point, address));
+  public static Item newOutPointItem(OutPoint outPoint) {
+    return new Item(Item.Type.OUT_POINT, outPoint);
   }
 }

@@ -2,6 +2,7 @@ package org.nervos.mercury.model.req.item;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
+import org.nervos.ckb.type.OutPoint;
 
 public class Item {
   Type type;
@@ -17,8 +18,8 @@ public class Item {
     IDENTITY,
     @SerializedName("Address")
     ADDRESS,
-    @SerializedName("Record")
-    RECORD
+    @SerializedName("OutPoint")
+    OUT_POINT
   }
 
   public static class Serializer implements JsonSerializer<Item> {
@@ -27,21 +28,21 @@ public class Item {
         Item src, java.lang.reflect.Type typeOfSrc, JsonSerializationContext context) {
       JsonObject obj = new JsonObject();
       obj.add("type", context.serialize(src.type, src.type.getClass()));
-      Object valueObj = null;
+      JsonElement value;
       switch (src.type) {
         case IDENTITY:
-          valueObj = ((Identity) src.value).identity;
+          value = context.serialize(((Identity) src.value).identity, String.class);
           break;
         case ADDRESS:
-          valueObj = ((Address) src.value).address;
+          value = context.serialize(((Address) src.value).address, String.class);
           break;
-        case RECORD:
-          valueObj = ((Record) src.value).record;
+        case OUT_POINT:
+          value = context.serialize(src.value, OutPoint.class);
           break;
         default:
           throw new IllegalStateException("Unknown type");
       }
-      obj.add("value", context.serialize(valueObj, String.class));
+      obj.add("value", value);
       return obj;
     }
   }

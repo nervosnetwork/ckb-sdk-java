@@ -9,14 +9,12 @@ import constant.UdtHolder;
 import java.io.IOException;
 import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.indexer.model.ScriptType;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.OutPointResponse;
 import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
@@ -120,15 +118,10 @@ public class BalanceTest {
 
     try {
 
-      Script script = AddressTools.parse(AddressWithKeyHolder.testAddress1()).script;
-
-      OutPointResponse outPoint = new OutPointResponse();
-      outPoint.txHash = "0xecfea4bdf6bf8290d8f8186ed9f4da9b0f8fbba217600b47632f5a72ff677d4d";
-      outPoint.index = "0x0";
-
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          ItemFactory.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
+          ItemFactory.newOutPointItem(
+              "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0", "0x0"));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -145,16 +138,10 @@ public class BalanceTest {
   void getBalanceByRecordByScriptChequeCellReceiver() {
 
     try {
-
-      Script script = AddressTools.parse(AddressWithKeyHolder.testAddress2()).script;
-
-      OutPointResponse outPoint = new OutPointResponse();
-      outPoint.txHash = "0xecfea4bdf6bf8290d8f8186ed9f4da9b0f8fbba217600b47632f5a72ff677d4d";
-      outPoint.index = "0x0";
-
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
-          ItemFactory.newRecordItemByScript(new OutPoint(outPoint.txHash, outPoint.index), script));
+          ItemFactory.newOutPointItem(
+              "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0", "0x0"));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       System.out.println(g.toJson(builder.build()));
@@ -171,15 +158,11 @@ public class BalanceTest {
   void getBalanceByRecordByAddress() {
 
     try {
-
       Script script = AddressTools.parse(AddressWithKeyHolder.testAddress4()).script;
       CellResponse cells = getCells(script);
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(
-          ItemFactory.newRecordItemByAddress(
-              new OutPoint(cells.outPoint.txHash, cells.outPoint.index),
-              AddressWithKeyHolder.testAddress4()));
+      builder.item(ItemFactory.newOutPointItem(cells.outPoint.txHash, cells.outPoint.index));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
