@@ -18,5 +18,5 @@ public class BalanceResponse {
 
   public BigInteger claimable;
 
-  public BigInteger freezed;
+  public BigInteger frozen;
 }
