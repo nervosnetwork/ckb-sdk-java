@@ -157,9 +157,7 @@ public class TransferCompletionTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.from(
         From.newFrom(
-            Arrays.asList(
-                ItemFactory.newAddressItem(
-                    "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv")),
+            Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.PW_LOCK_ADDRESS)),
             Source.Free));
 
     builder.to(
@@ -187,9 +185,7 @@ public class TransferCompletionTest {
             "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd"));
     builder.from(
         From.newFrom(
-            Arrays.asList(
-                ItemFactory.newAddressItem(
-                    "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv")),
+            Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.PW_LOCK_ADDRESS)),
             Source.Free));
 
     builder.to(
