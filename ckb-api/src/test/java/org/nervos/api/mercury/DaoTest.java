@@ -55,9 +55,7 @@ public class DaoTest {
 
     builder.from(
         From.newFrom(
-            Arrays.asList(
-                ItemFactory.newAddressItem(
-                    "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv")),
+            Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.PW_LOCK_ADDRESS)),
             Source.Free));
 
     builder.amount(AmountUtils.ckbToShannon(200));

@@ -9,9 +9,7 @@ import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -20,7 +18,6 @@ import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
@@ -152,43 +149,6 @@ public class BuildAdjustAccountTest {
       System.out.println(txHash);
 
     } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @Test
-  void testPwlock() {
-    AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.item(
-        ItemFactory.newAddressItem(
-            "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv"));
-
-    Set<Item> from = new HashSet();
-    from.add(
-        ItemFactory.newAddressItem(
-            "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqthh5pum5pzqpssk47zk67hnd6lm28rnqs4cnj0w"));
-    builder.from = from;
-
-    builder.assetInfo(
-        AssetInfo.newUdtAsset(
-            "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd"));
-    builder.accountNumber(new BigInteger("5"));
-
-    try {
-      TransactionCompletionResponse s =
-          ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
-
-      if (Objects.isNull(s)) {
-        return;
-      }
-      System.out.println(g.toJson(s));
-      Transaction tx = SignUtils.sign(s);
-
-      System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
-      System.out.println(txHash);
-
-    } catch (Exception e) {
       e.printStackTrace();
     }
   }

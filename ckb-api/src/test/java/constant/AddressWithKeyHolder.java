@@ -42,8 +42,8 @@ public class AddressWithKeyHolder {
       "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg6flmrtx8y8tuu6s3jf2ahv4l6sjw9hsc3t4tqv";
   private static String QUERY_TRANSACTION_PUBKEY = "0x1a4ff63598e43af9cd42324abb7657fa849c5bc3";
 
-  private static String PW_LOCK_ADDRESS =
-      "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdd40lmnsnukjh3qr88hjnfqvc4yg8g0gskp8ffv";
+  public static String PW_LOCK_ADDRESS =
+      "ckt1qpvvtay34wndv9nckl8hah6fzzcltcqwcrx79apwp2a5lkd07fdxxqdw7kz8werhspahtu3jjvhwvqvu8p77xusrx03nw";
 
   static {
     addressWithKey.put(
@@ -62,7 +62,7 @@ public class AddressWithKeyHolder {
         QUERY_TRANSACTION_ADDRESS,
         "385b57e3fedf89e5b553a3274e7039f7be742040a5af98303de29aff61b05c2c");
     addressWithKey.put(
-        PW_LOCK_ADDRESS, "e0ccb2548af279947b452efda4535dd4bcadf756d919701fcd4c382833277f85");
+        PW_LOCK_ADDRESS, "6fc935dad260867c749cf1ba6602d5f5ed7fb1131f1beb65be2d342e912eaafe");
 
     addressWithPubKey.put(TEST_ADDRESS0, TEST_PUBKEY0);
     addressWithPubKey.put(TEST_ADDRESS1, TEST_PUBKEY1);
