@@ -1,3 +1,9 @@
+# 1.0.0 (2022-03-17)
+
+## Breaking Changes
+
+- feat: Replace Record with Outpoint
+
 # 0.101.3 (2022-01-21)
 
 ## 🚀 Features
