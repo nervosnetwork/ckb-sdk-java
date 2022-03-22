@@ -2,11 +2,13 @@ package org.nervos.mercury.model.common;
 
 import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
+import org.nervos.ckb.type.OutPoint;
 import org.nervos.mercury.model.resp.Ownership;
 
 public class Record {
 
-  public String id;
+  @SerializedName("out_point")
+  public OutPoint outPoint;
 
   @SerializedName("ownership")
   public Ownership ownership;
