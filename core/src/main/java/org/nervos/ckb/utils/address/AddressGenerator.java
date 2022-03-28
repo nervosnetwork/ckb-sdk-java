@@ -33,11 +33,11 @@ public class AddressGenerator extends AddressBaseOperator {
   @Deprecated
   public static String generateShortAddress(Network network, Script script) {
     // Payload: type(01) | code hash index(00, P2PH / 01, multi-sig / 02, anyone_can_pay) | args
-    String codeHash = Numeric.cleanHexPrefix(script.codeHash);
-    String args = Numeric.cleanHexPrefix(script.args);
+    String codeHash = Numeric.toHexStringNoPrefix(script.codeHash);
+    String args = Numeric.toHexStringNoPrefix(script.args);
 
     // Throw exception if short address can be converted from the given script
-    if (!(Script.TYPE.equals(script.hashType)
+    if (!(Script.HashType.TYPE.equals(script.hashType)
         && args.length() >= 40
         && args.length() <= 44
         && codeHashes.contains(codeHash))) {
@@ -73,10 +73,10 @@ public class AddressGenerator extends AddressBaseOperator {
    */
   @Deprecated
   public static String generateFullAddress(Network network, Script script) {
-    String type = Script.TYPE.equals(script.hashType) ? TYPE_FULL_TYPE : TYPE_FULL_DATA;
+    String type = Script.HashType.TYPE.equals(script.hashType) ? TYPE_FULL_TYPE : TYPE_FULL_DATA;
     // Payload: type(02/04) | code hash | args
     String payload =
-        type + Numeric.cleanHexPrefix(script.codeHash) + Numeric.cleanHexPrefix(script.args);
+        type + Numeric.toHexStringNoPrefix(script.codeHash) + Numeric.toHexStringNoPrefix(script.args);
     byte[] data = Numeric.hexStringToByteArray(payload);
     return Bech32.encode(
         prefix(network), convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));
@@ -88,9 +88,9 @@ public class AddressGenerator extends AddressBaseOperator {
     byte[] payload =
         Numeric.hexStringToByteArray(
             TYPE_FULL_WITH_BECH32M
-                + Numeric.cleanHexPrefix(script.codeHash)
+                + Numeric.toHexStringNoPrefix(script.codeHash)
                 + Serializer.serializeHashType(script.hashType)
-                + Numeric.cleanHexPrefix(script.args));
+                + Numeric.toHexStringNoPrefix(script.args));
 
     byte[] data_part = convertBits(Bytes.asList(payload), 8, 5, true);
     return Bech32m.encode(prefix(network), data_part);

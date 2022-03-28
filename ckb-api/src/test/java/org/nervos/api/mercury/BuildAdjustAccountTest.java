@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
@@ -35,7 +36,7 @@ public class BuildAdjustAccountTest {
     AddressWithKeyHolder.put(newAddress.address, newAddress.privateKey);
 
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.item(ItemFactory.newIdentityItemByCkb(newAddress.lockArgs));
+    builder.item(ItemFactory.newIdentityItemByCkb(Numeric.toHexString(newAddress.lockArgs)));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.addFrom(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3()));
     builder.accountNumber(BigInteger.ONE);

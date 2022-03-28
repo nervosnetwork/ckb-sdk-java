@@ -73,13 +73,13 @@ public class ScriptGroup {
       return this;
     }
 
-    public Builder setScript(String codeHash, String args, String type) {
+    public Builder setScript(byte[] codeHash, byte[] args, Script.HashType type) {
       Script script = new Script(codeHash, args, type);
       return setScript(script);
     }
 
-    public Builder setScript(String codeHash, String args) {
-      Script script = new Script(codeHash, args, "type");
+    public Builder setScript(byte[] codeHash, byte[] args) {
+      Script script = new Script(codeHash, args, Script.HashType.TYPE);
       return setScript(script);
     }
 

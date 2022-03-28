@@ -6,6 +6,7 @@ import org.nervos.ckb.sign.signer.PwSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.Numeric;
 
 public class TransactionSigner {
   private Map<Key, ScriptSigner> scriptSignerMap;
@@ -44,17 +45,25 @@ public class TransactionSigner {
   }
 
   private TransactionSigner register(
-      String codeHash, String hashType, ScriptType scriptType, ScriptSigner scriptSigner) {
+      byte[] codeHash, Script.HashType hashType, ScriptType scriptType, ScriptSigner scriptSigner) {
     scriptSignerMap.put(new Key(codeHash, hashType, scriptType), scriptSigner);
     return this;
   }
 
+  public TransactionSigner registerTypeScriptSigner(byte[] codeHash, ScriptSigner scriptSigner) {
+    return register(codeHash, Script.HashType.TYPE, ScriptType.TYPE, scriptSigner);
+  }
+
   public TransactionSigner registerTypeScriptSigner(String codeHash, ScriptSigner scriptSigner) {
-    return register(codeHash, "type", ScriptType.TYPE, scriptSigner);
+    return registerTypeScriptSigner(Numeric.hexStringToByteArray(codeHash), scriptSigner);
+  }
+
+  public TransactionSigner registerLockScriptSigner(byte[] codeHash, ScriptSigner scriptSigner) {
+    return register(codeHash, Script.HashType.TYPE, ScriptType.LOCK, scriptSigner);
   }
 
   public TransactionSigner registerLockScriptSigner(String codeHash, ScriptSigner scriptSigner) {
-    return register(codeHash, "type", ScriptType.LOCK, scriptSigner);
+    return registerLockScriptSigner(Numeric.hexStringToByteArray(codeHash), scriptSigner);
   }
 
   public Set<Integer> signTransaction(
@@ -116,11 +125,11 @@ public class TransactionSigner {
   }
 
   private static class Key {
-    private String codeHash;
-    private String hashType;
+    private byte[] codeHash;
+    private Script.HashType hashType;
     private ScriptType scriptType;
 
-    public Key(String codeHash, String hashType, ScriptType scriptType) {
+    public Key(byte[] codeHash, Script.HashType hashType, ScriptType scriptType) {
       this.codeHash = codeHash;
       this.hashType = hashType;
       this.scriptType = scriptType;

@@ -239,12 +239,12 @@ public class Transaction {
 
     public Builder addOutput(
         String capacity,
-        String lockScriptCodeHash,
-        String lockScriptArgs,
-        String typeScriptCodeHash,
-        String typeScriptArgs) {
-      Script lockScript = new Script(lockScriptCodeHash, lockScriptArgs, "type");
-      Script typeScript = new Script(typeScriptCodeHash, typeScriptArgs, "type");
+        byte[] lockScriptCodeHash,
+        byte[] lockScriptArgs,
+        byte[] typeScriptCodeHash,
+        byte[] typeScriptArgs) {
+      Script lockScript = new Script(lockScriptCodeHash, lockScriptArgs, Script.HashType.TYPE);
+      Script typeScript = new Script(typeScriptCodeHash, typeScriptArgs, Script.HashType.TYPE);
 
       CellOutput output = new CellOutput();
       output.capacity = capacity;
@@ -254,11 +254,11 @@ public class Transaction {
       return addOutput(output);
     }
 
-    public Builder addOutput(String capacity, String lockScriptCodeHash, String lockScriptArgs) {
+    public Builder addOutput(String capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
       Script lockScript = new Script();
       lockScript.args = lockScriptArgs;
       lockScript.codeHash = lockScriptCodeHash;
-      lockScript.hashType = "type";
+      lockScript.hashType = Script.HashType.TYPE;
 
       CellOutput output = new CellOutput();
       output.capacity = capacity;

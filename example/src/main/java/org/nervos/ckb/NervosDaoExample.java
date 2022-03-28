@@ -92,7 +92,7 @@ public class NervosDaoExample {
 
   private static Transaction generateDepositingToDaoTx(BigInteger capacity) throws IOException {
     Script type =
-        new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, "0x", Script.TYPE);
+        new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, new byte[]{}, Script.HashType.TYPE);
 
     IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 

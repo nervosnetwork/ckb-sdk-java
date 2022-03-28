@@ -56,13 +56,13 @@ public class ACPTransactionExample {
     ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
 
     Script receiverScript = AddressParser.parse(ReceiveAddresses.get(0)).script;
-    receiverScript.codeHash = ACP_CODE_HASH;
-    receiverScript.args = receiverScript.args + ACP_CKB_MINIMUM + ACP_SUDT_MINIMUM;
+    receiverScript.codeHash = Numeric.hexStringToByteArray(ACP_CODE_HASH);
+    receiverScript.args = Numeric.hexStringToByteArray(receiverScript.args + ACP_CKB_MINIMUM + ACP_SUDT_MINIMUM);
     receiverAcpAddress = AddressGenerator.generate(Network.TESTNET, receiverScript);
 
     Script senderScript = AddressParser.parse(SendAddresses.get(0)).script;
-    String sendLockHash = senderScript.computeHash();
-    sudtType = new Script(SUDT_CODE_HASH, sendLockHash, Script.TYPE);
+    byte[] sendLockHash = senderScript.computeHash();
+    sudtType = new Script(SUDT_CODE_HASH, sendLockHash, Script.HashType.TYPE);
   }
 
   public static void main(String[] args) throws Exception {

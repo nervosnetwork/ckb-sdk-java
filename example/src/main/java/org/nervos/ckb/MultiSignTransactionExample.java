@@ -164,8 +164,8 @@ public class MultiSignTransactionExample {
   public static Script generateLock() {
     return new Script(
         systemMultiSigCell.cellHash,
-        Numeric.prependHexPrefix(configuration.blake160()),
-        Script.TYPE);
+        Numeric.hexStringToByteArray(Numeric.prependHexPrefix(configuration.blake160())),
+        Script.HashType.TYPE);
   }
 
   static class Configuration {
@@ -208,7 +208,7 @@ public class MultiSignTransactionExample {
 
     public String address() throws IOException {
       Script script =
-          new Script(SystemContract.getSystemMultiSigCell(api).cellHash, blake160(), Script.TYPE);
+          new Script(SystemContract.getSystemMultiSigCell(api).cellHash, Numeric.hexStringToByteArray(blake160()), Script.HashType.TYPE);
       return AddressGenerator.generate(Network.TESTNET, script);
     }
   }

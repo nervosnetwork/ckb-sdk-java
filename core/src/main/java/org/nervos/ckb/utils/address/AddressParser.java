@@ -29,28 +29,28 @@ public class AddressParser extends AddressBaseOperator {
     Network network = parseNetwork(address);
     if (TYPE_SHORT.equals(type)) {
       String codeHashIndex = payload.substring(2, 4);
-      String args = Numeric.prependHexPrefix(payload.substring(4));
+      byte[] args = Numeric.hexStringToByteArray(payload.substring(4));
       if (!codeHashIndex.equals(CODE_HASH_IDX_ANYONE_CAN_PAY)
-          && Numeric.cleanHexPrefix(args).length() / 2 != 20) {
+          && args.length != 20) {
         throw new AddressFormatException("Short address args byte length must be equal to 20");
       }
       switch (codeHashIndex) {
         case CODE_HASH_IDX_BLAKE160:
           return new AddressParseResult(
               network,
-              new Script(Numeric.prependHexPrefix(SECP_BLAKE160_CODE_HASH), args, Script.TYPE),
+              new Script(Numeric.hexStringToByteArray(SECP_BLAKE160_CODE_HASH), args, Script.HashType.TYPE),
               AddressParseResult.Type.SHORT);
         case CODE_HASH_IDX_MULTISIG:
           return new AddressParseResult(
               network,
-              new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
+              new Script(Numeric.hexStringToByteArray(MULTISIG_CODE_HASH), args, Script.HashType.TYPE),
               AddressParseResult.Type.SHORT);
         case CODE_HASH_IDX_ANYONE_CAN_PAY:
-          String codeHash =
-              Numeric.prependHexPrefix(
+          byte[] codeHash =
+              Numeric.hexStringToByteArray(
                   network == Network.MAINNET ? ACP_MAINNET_CODE_HASH : ACP_TESTNET_CODE_HASH);
           return new AddressParseResult(
-              network, new Script(codeHash, args, Script.TYPE), AddressParseResult.Type.SHORT);
+              network, new Script(codeHash, args, Script.HashType.TYPE), AddressParseResult.Type.SHORT);
         default:
           throw new AddressFormatException("Short address code hash index must be 00, 01 or 02");
       }
@@ -61,21 +61,21 @@ public class AddressParser extends AddressBaseOperator {
     }
 
     if (TYPE_FULL_DATA.equals(type)) {
-      String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
-      String args = Numeric.prependHexPrefix(payload.substring(66));
+      byte[] codeHash = Numeric.hexStringToByteArray(payload.substring(2, 66));
+      byte[] args = Numeric.hexStringToByteArray(payload.substring(66));
       return new AddressParseResult(
-          network, new Script(codeHash, args, Script.DATA), AddressParseResult.Type.FULL);
+          network, new Script(codeHash, args, Script.HashType.DATA), AddressParseResult.Type.FULL);
     } else if (TYPE_FULL_TYPE.equals(type)) {
-      String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
-      String args = Numeric.prependHexPrefix(payload.substring(66));
+      byte[] codeHash = Numeric.hexStringToByteArray(payload.substring(2, 66));
+      byte[] args = Numeric.hexStringToByteArray(payload.substring(66));
       return new AddressParseResult(
-          network, new Script(codeHash, args, Script.TYPE), AddressParseResult.Type.FULL);
+          network, new Script(codeHash, args, Script.HashType.TYPE), AddressParseResult.Type.FULL);
     }
 
     if (TYPE_FULL_WITH_BECH32M.equals(type)) {
-      String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
-      String hashType = Serializer.deserializeHashType(payload.substring(66, 68));
-      String args = Numeric.prependHexPrefix(payload.substring(68));
+      byte[] codeHash = Numeric.hexStringToByteArray(payload.substring(2, 66));
+      Script.HashType hashType = Serializer.deserializeHashType(payload.substring(66, 68));
+      byte[] args = Numeric.hexStringToByteArray(payload.substring(68));
 
       return new AddressParseResult(
           network, new Script(codeHash, args, hashType), AddressParseResult.Type.FULL);

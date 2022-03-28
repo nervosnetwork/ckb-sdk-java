@@ -32,6 +32,6 @@ public class Identity {
 
   public static Identity toIdentityByAddress(String address) {
     Script script = AddressTools.parse(address).script;
-    return new Identity(Identity.IDENTITY_FLAGS_CKB, script.args);
+    return new Identity(Identity.IDENTITY_FLAGS_CKB, Numeric.toHexString(script.args));
   }
 }

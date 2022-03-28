@@ -144,26 +144,29 @@ public class Serializer {
     return new Table(rawTransactionTable, witnessesVec);
   }
 
-  public static String serializeHashType(String hashType) {
-
-    if (Script.DATA.equals(hashType)) {
-      return "00";
-    } else if (Script.TYPE.equals(hashType)) {
-      return "01";
-    } else if (Script.DATA1.equals(hashType)) {
-      return "02";
+  public static String serializeHashType(Script.HashType hashType) {
+    switch (hashType) {
+      case DATA:
+        return "00";
+      case TYPE:
+        return "01";
+      case DATA1:
+        return "02";
+      default:
+        throw new RuntimeException("Unsupported hashType: " + hashType);
     }
-    throw new RuntimeException("Invalid script hash_type: ".concat(hashType));
   }
 
-  public static String deserializeHashType(String hashType) {
-    if ("00".equals(hashType)) {
-      return Script.DATA;
-    } else if ("01".equals(hashType)) {
-      return Script.TYPE;
-    } else if ("02".equals(hashType)) {
-      return Script.DATA1;
+  public static Script.HashType deserializeHashType(String hashType) {
+    switch (hashType) {
+      case "00":
+        return Script.HashType.DATA;
+      case "01":
+        return Script.HashType.TYPE;
+      case "02":
+        return Script.HashType.DATA1;
+      default:
+        throw new RuntimeException("Unsupported hashType: " + hashType);
     }
-    throw new RuntimeException("Invalid script hash_type: ".concat(hashType));
   }
 }

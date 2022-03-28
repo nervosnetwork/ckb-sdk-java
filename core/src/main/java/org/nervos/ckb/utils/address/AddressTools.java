@@ -4,6 +4,7 @@ import com.google.common.primitives.Bytes;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Arrays;
 import java.util.Objects;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.CodeHashType;
@@ -42,7 +43,7 @@ public class AddressTools {
 
     String privateKey = Numeric.toHexStringNoPrefix(ecKeyPair.getPrivateKey());
     String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey);
-    String blake160 = Hash.blake160(publicKey);
+    byte[] blake160 = Numeric.hexStringToByteArray(Hash.blake160(publicKey));
 
     AddressUtils utils = new AddressUtils(network, CodeHashType.BLAKE160);
     String addresss = utils.generate(blake160);
@@ -122,7 +123,7 @@ public class AddressTools {
     if (!AddressUtils.validatePublicKeyHex(publicKey, true)) {
       throw new IllegalArgumentException("Not a valid compressed public key in hex");
     }
-    String blake160 = Hash.blake160(publicKey);
+    byte[] blake160 = Numeric.hexStringToByteArray(Hash.blake160(publicKey));
     AddressUtils utils = new AddressUtils(network, CodeHashType.BLAKE160);
     return utils.generate(blake160);
   }
@@ -160,22 +161,16 @@ public class AddressTools {
     System.out.println(AddressTools.getChequeCodeHash(AddressTools.parseNetwork(senderAddress)));
 
     byte[] bytes =
-        Bytes.concat(
-            Numeric.hexStringToByteArray(
-                Numeric.cleanHexPrefix(receiverAddressScript.script.computeHash())
-                    .substring(0, 40)),
-            Numeric.hexStringToByteArray(
-                Numeric.cleanHexPrefix(senderAddressScript.script.computeHash()).substring(0, 40)));
-
-    String pubKey = Numeric.toHexStringNoPrefix(bytes);
+            Bytes.concat(Arrays.copyOfRange(receiverAddressScript.script.computeHash(), 0, 20),
+                    Arrays.copyOfRange(senderAddressScript.script.computeHash(), 0, 20));
 
     String fullAddress =
         AddressGenerator.generate(
             Network.TESTNET,
             new Script(
                 AddressTools.getChequeCodeHash(AddressTools.parseNetwork(senderAddress)),
-                pubKey,
-                Script.TYPE));
+                    bytes,
+                Script.HashType.TYPE));
 
     return fullAddress;
   }
@@ -188,11 +183,14 @@ public class AddressTools {
     return AddressParser.parseNetwork(address);
   }
 
-  private static String getChequeCodeHash(Network network) {
-    if (Objects.equals(network, Network.MAINNET)) {
-      return AddressTools.MAINNET_CHEQUE_CODE_HASH;
-    } else {
-      return AddressTools.TESTNET_CHEQUE_CODE_HASH;
+  private static byte[] getChequeCodeHash(Network network) {
+    switch (network) {
+      case MAINNET:
+        return Numeric.hexStringToByteArray(AddressTools.MAINNET_CHEQUE_CODE_HASH);
+      case TESTNET:
+        return Numeric.hexStringToByteArray(AddressTools.TESTNET_CHEQUE_CODE_HASH);
+      default:
+        throw new RuntimeException("unsupported network: " + network);
     }
   }
 
@@ -200,7 +198,7 @@ public class AddressTools {
 
     public String address;
 
-    public String lockArgs;
+    public byte[] lockArgs;
 
     public String privateKey;
 

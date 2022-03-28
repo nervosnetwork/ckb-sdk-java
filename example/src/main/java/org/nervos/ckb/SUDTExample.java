@@ -47,8 +47,8 @@ public class SUDTExample {
     ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, true);
 
     Script senderScript = AddressParser.parse(SendAddresses.get(0)).script;
-    String sendLockHash = senderScript.computeHash();
-    sudtType = new Script(SUDT_CODE_HASH, sendLockHash, Script.TYPE);
+    byte[] sendLockHash = senderScript.computeHash();
+    sudtType = new Script(SUDT_CODE_HASH, sendLockHash, Script.HashType.TYPE);
   }
 
   public static void main(String[] args) throws Exception {

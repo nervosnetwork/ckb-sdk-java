@@ -16,6 +16,8 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Convert;
 
+import static utils.TestUtils.createScript;
+
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CovertTest {
@@ -28,13 +30,13 @@ public class CovertTest {
     cellOutputs.add(
         new CellOutput(
             "100000000000",
-            new Script(
+                createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
             "4900000000000",
-            new Script(
+            createScript(
                 "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 

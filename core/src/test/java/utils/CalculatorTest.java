@@ -15,6 +15,8 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 
+import static utils.TestUtils.createScript;
+
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CalculatorTest {
@@ -45,20 +47,20 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE),
-                    new Script(
+                        Script.HashType.TYPE),
+                    createScript(
                         "0xece45e0979030e2f8909f76258631c42333b1e906fd9701ec3600a464a90b8f6",
                         "0x",
-                        Script.DATA)),
+                        Script.HashType.DATA)),
                 new CellOutput(
                     "0x59e1416a5000",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
+                        Script.HashType.TYPE))),
             Arrays.asList("0x1234", "0x"),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
@@ -91,20 +93,20 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE),
-                    new Script(
+                        Script.HashType.TYPE),
+                    createScript(
                         "0xece45e0979030e2f8909f76258631c42333b1e906fd9701ec3600a464a90b8f6",
                         "0x",
-                        Script.DATA)),
+                        Script.HashType.DATA)),
                 new CellOutput(
                     "0x59e1416a5000",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
+                        Script.HashType.TYPE))),
             Arrays.asList("0x1234", "0x"),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
@@ -133,10 +135,10 @@ public class CalculatorTest {
             Collections.singletonList(
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
+                        Script.HashType.TYPE))),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new Witness(
@@ -165,16 +167,16 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE)),
+                        Script.HashType.TYPE)),
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
+                        Script.HashType.TYPE))),
             Arrays.asList("0x", "0x"),
             Collections.singletonList(
                 new Witness(
@@ -208,10 +210,10 @@ public class CalculatorTest {
             Collections.singletonList(
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
+                        Script.HashType.TYPE))),
             Collections.singletonList("0x"),
             Arrays.asList(
                 new Witness(
@@ -246,16 +248,16 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE)),
+                        Script.HashType.TYPE)),
                 new CellOutput(
                     "0x174876e800",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
+                        Script.HashType.TYPE))),
             Arrays.asList("0x", "0x"),
             Arrays.asList(
                 new Witness(

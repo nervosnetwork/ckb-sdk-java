@@ -58,7 +58,7 @@ public class AddressUtils {
     if (!validatePublicKeyHex(publicKey, true)) {
       throw new IllegalArgumentException("Not a valid compressed public key in hex");
     }
-    return generate(Hash.blake160(publicKey));
+    return generate(Numeric.hexStringToByteArray(Hash.blake160(publicKey)));
   }
 
   public static boolean validatePublicKeyHex(String publicKey, boolean compressed) {
@@ -86,9 +86,9 @@ public class AddressUtils {
     }
   }
 
-  public String generate(String args) throws AddressFormatException {
+  public String generate(byte[] args) throws AddressFormatException {
     // Payload: type(01) | code hash index(00, P2PH /01, multi sig /02, ACP) | args
-    String payload = TYPE + getCodeHashIdx() + Numeric.cleanHexPrefix(args);
+    String payload = TYPE + getCodeHashIdx() + Numeric.toHexStringNoPrefix(args);
     byte[] data = Numeric.hexStringToByteArray(payload);
     return Bech32.encode(prefix(), convertBits(Bytes.asList(data), 8, 5, true));
   }

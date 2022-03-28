@@ -17,16 +17,16 @@ public class FilterTest {
     SearchKeyBuilder key = new SearchKeyBuilder();
     key.script(
         new Script(
-            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            "0x0c24d18f16e3c43272695e5db006a22cb9ddde51",
-            Script.TYPE));
+                Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
+                        Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
+            Script.HashType.TYPE));
     key.scriptType(ScriptType.lock);
 
     key.filterScript(
         new Script(
-            "0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4",
-            "0x7c7f0ee1d582c385342367792946cff3767fe02f26fd7f07dba23ae3c65b28bc",
-            Script.TYPE));
+                Numeric.hexStringToByteArray("0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4"),
+                Numeric.hexStringToByteArray("0x7c7f0ee1d582c385342367792946cff3767fe02f26fd7f07dba23ae3c65b28bc"),
+            Script.HashType.TYPE));
 
     System.out.println(new Gson().toJson(key.build()));
 
@@ -47,9 +47,9 @@ public class FilterTest {
     SearchKeyBuilder key = new SearchKeyBuilder();
     key.script(
         new Script(
-            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            "0x0c24d18f16e3c43272695e5db006a22cb9ddde51",
-            Script.TYPE));
+                Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
+                        Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
+            Script.HashType.TYPE));
     key.scriptType(ScriptType.lock);
 
     key.filterOutputCapacityRange(
@@ -75,9 +75,9 @@ public class FilterTest {
     SearchKeyBuilder key = new SearchKeyBuilder();
     key.script(
         new Script(
-            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            "0x0c24d18f16e3c43272695e5db006a22cb9ddde51",
-            Script.TYPE));
+                Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
+                        Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
+                Script.HashType.TYPE));
     key.scriptType(ScriptType.lock);
 
     key.filterOutputDataLenRange(Numeric.toHexString("0"), Numeric.toHexString("32"));
@@ -100,9 +100,9 @@ public class FilterTest {
     SearchKeyBuilder key = new SearchKeyBuilder();
     key.script(
         new Script(
-            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-            "0x0c24d18f16e3c43272695e5db006a22cb9ddde51",
-            Script.TYPE));
+                Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
+                        Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
+            Script.HashType.TYPE));
     key.scriptType(ScriptType.lock);
 
     key.filterBlockRange(Numeric.toHexString("2003365"), Numeric.toHexString("2103365"));

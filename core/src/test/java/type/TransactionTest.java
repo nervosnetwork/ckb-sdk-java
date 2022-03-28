@@ -16,6 +16,8 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
+import static utils.TestUtils.createScript;
+
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 class TransactionTest {
 
@@ -25,13 +27,13 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "100000000000",
-            new Script(
+                createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
             "4900000000000",
-            new Script(
+                createScript(
                 "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
@@ -78,7 +80,7 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "10000009045634",
-            new Script(
+                createScript(
                 "0xf1951123466e4479842387a66fabfd6b65fc87fd84ae8e6cd3053edb27fff2fd",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
@@ -118,13 +120,13 @@ class TransactionTest {
     cellOutputs.add(
         new CellOutput(
             "100000000000",
-            new Script(
+                createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
             "4900000000000",
-            new Script(
+                createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
@@ -174,20 +176,20 @@ class TransactionTest {
             Arrays.asList(
                 new CellOutput(
                     "100000000000",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE),
-                    new Script(
+                        Script.HashType.TYPE),
+                    createScript(
                         "0xece45e0979030e2f8909f76258631c42333b1e906fd9701ec3600a464a90b8f6",
                         "0x",
-                        Script.DATA)),
+                        Script.HashType.DATA)),
                 new CellOutput(
                     "98824000000000",
-                    new Script(
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
+                        Script.HashType.TYPE))),
             Arrays.asList("0x", "0x"),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));

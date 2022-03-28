@@ -2,6 +2,7 @@ package org.nervos.mercury.model.req.item;
 
 import com.google.common.primitives.Bytes;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Objects;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
@@ -47,9 +48,7 @@ public class Record {
           Bytes.concat(
               record,
               Numeric.hexStringToByteArray(Record.SCRIPT_TYPE),
-              Numeric.cleanHexPrefix(this.script.computeHash())
-                  .substring(0, 40)
-                  .getBytes(StandardCharsets.UTF_8)));
+                  Arrays.copyOfRange(this.script.computeHash(), 0, 20)));
     } else {
       return Numeric.toHexString(
           Bytes.concat(

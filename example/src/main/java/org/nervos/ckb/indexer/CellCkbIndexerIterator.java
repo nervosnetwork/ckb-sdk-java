@@ -70,10 +70,10 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
         if (type != null) {
           String address = addresses.get(addressIndex);
           Script lock = AddressParser.parse(address).script;
-          String lockHash = lock.computeHash();
+          byte[] lockHash = lock.computeHash();
           transactionInputs =
               fetchTransactionInputsByType(
-                  lockHash, new SearchKey(lock, "lock", new SearchKey.Filter(type)));
+                  Numeric.toHexString(lockHash), new SearchKey(lock, "lock", new SearchKey.Filter(type)));
         } else {
           transactionInputs =
               fetchTransactionInputsByLock(
@@ -114,7 +114,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
       CellInput cellInput = new CellInput(liveCell.outPoint, "0x0");
       BigInteger capacity = Numeric.toBigInt(liveCell.output.capacity);
       transactionInputs.add(
-          new TransactionInput(cellInput, capacity, searchKey.script.computeHash()));
+          new TransactionInput(cellInput, capacity, Numeric.toHexString(searchKey.script.computeHash())));
     }
     if (liveCells.size() == 0) {
       transactionInputs.clear();
