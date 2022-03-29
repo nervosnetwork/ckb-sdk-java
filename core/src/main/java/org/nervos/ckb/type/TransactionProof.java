@@ -8,22 +8,22 @@ public class TransactionProof {
   public Proof proof;
 
   @SerializedName("block_hash")
-  public String blockHash;
+  public byte[] blockHash;
 
   @SerializedName("witnesses_root")
-  public String witnessesRoot;
+  public byte[] witnessesRoot;
 
-  public TransactionProof(Proof proof, String blockHash, String witnessesRoot) {
+  public TransactionProof(Proof proof, byte[] blockHash, byte[] witnessesRoot) {
     this.proof = proof;
     this.blockHash = blockHash;
     this.witnessesRoot = witnessesRoot;
   }
 
   public static class Proof {
-    public List<String> indices;
-    public List<String> lemmas;
+    public List<Integer> indices;
+    public List<byte[]> lemmas;
 
-    public Proof(List<String> indices, List<String> lemmas) {
+    public Proof(List<Integer> indices, List<byte[]> lemmas) {
       this.indices = indices;
       this.lemmas = lemmas;
     }

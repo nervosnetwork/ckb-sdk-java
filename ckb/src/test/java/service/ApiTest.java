@@ -152,11 +152,11 @@ public class ApiTest {
     TransactionProof transactionProof =
         new TransactionProof(
             new TransactionProof.Proof(
-                Collections.singletonList(Numeric.toHexString("2")),
+                Collections.singletonList(2),
                 Arrays.asList(
-                    "0x705d0774a1f870c1e92571e9db806bd85c0ac7f26015f3d6c7b822f7616c1fb4")),
-            "0x36038509b555c8acf360175b9bc4f67bd68be02b152f4a9d1131a424fffd8d23",
-            "0x56431856ad780db4cc1181c44b3fddf596380f1e21fb1c0b31db6deca2892c75");
+                        Numeric.hexStringToByteArray("0x705d0774a1f870c1e92571e9db806bd85c0ac7f26015f3d6c7b822f7616c1fb4"))),
+                Numeric.hexStringToByteArray("0x36038509b555c8acf360175b9bc4f67bd68be02b152f4a9d1131a424fffd8d23"),
+            Numeric.hexStringToByteArray("0x56431856ad780db4cc1181c44b3fddf596380f1e21fb1c0b31db6deca2892c75"));
     List<String> result = api.verifyTransactionProof(transactionProof);
     Assertions.assertEquals(
         result,
