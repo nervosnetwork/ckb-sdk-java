@@ -48,13 +48,13 @@ public class SerializerTest {
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
+                        Numeric.hexStringToByteArray("0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"), 1),
                     CellDep.DEP_GROUP)),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
+                        Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0),
                     "0")),
             cellOutputs,
             Arrays.asList("0x", "0x"),

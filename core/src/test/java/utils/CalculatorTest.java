@@ -14,6 +14,7 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
+import org.nervos.ckb.utils.Numeric;
 
 import static utils.TestUtils.createScript;
 
@@ -29,20 +30,20 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b",
-                        "0x0"),
+                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        0),
                     CellDep.DEP_GROUP),
                 new CellDep(
                     new OutPoint(
-                        "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60",
-                        "0x2"),
+                        Numeric.hexStringToByteArray("0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"),
+                        2),
                     CellDep.CODE)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
                     "0x0")),
             Arrays.asList(
                 new CellOutput(
@@ -75,20 +76,20 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b",
-                        "0x0"),
+                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        0),
                     CellDep.DEP_GROUP),
                 new CellDep(
                     new OutPoint(
-                        "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60",
-                        "0x2"),
+                        Numeric.hexStringToByteArray("0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"),
+                        2),
                     CellDep.CODE)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
                     "0x0")),
             Arrays.asList(
                 new CellOutput(
@@ -122,16 +123,16 @@ public class CalculatorTest {
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b",
-                        "0x0"),
+                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        0),
                     CellDep.DEP_GROUP)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
-                    "0x0")),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
+                        "0x0")),
             Collections.singletonList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),
@@ -154,16 +155,16 @@ public class CalculatorTest {
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b",
-                        "0x0"),
+                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        0),
                     CellDep.DEP_GROUP)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
-                    "0x0")),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
+                        "0x0")),
             Arrays.asList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),
@@ -188,24 +189,24 @@ public class CalculatorTest {
   void testCalculateTransactionSize2V1() {
     Transaction tx =
         new Transaction(
-            "0x0",
+                "0x0",
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b",
-                        "0x0"),
+                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        0),
                     CellDep.DEP_GROUP)),
             Collections.emptyList(),
             Arrays.asList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
-                    "0x0"),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
+                        "0x0"),
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
                     "0x0")),
             Collections.singletonList(
                 new CellOutput(
@@ -230,20 +231,20 @@ public class CalculatorTest {
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b",
-                        "0x0"),
+                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        0),
                     CellDep.DEP_GROUP)),
             Collections.emptyList(),
             Arrays.asList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
                     "0x0"),
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65",
-                        "0x1"),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1),
                     "0x0")),
             Arrays.asList(
                 new CellOutput(

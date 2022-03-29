@@ -83,7 +83,7 @@ public class SUDTExample {
 
     txBuilder.setOutputsData(
         Arrays.asList(Numeric.toHexString(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes()), "0x"));
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, "0x0"), CellDep.CODE));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
@@ -138,7 +138,7 @@ public class SUDTExample {
     cellOutputs.get(0).type = sudtType;
     txBuilder.addOutputs(cellOutputs);
 
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, "0x0"), CellDep.CODE));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1500);

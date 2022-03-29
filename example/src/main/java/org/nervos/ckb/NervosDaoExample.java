@@ -51,7 +51,7 @@ public class NervosDaoExample {
     ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(byte[][] args) throws Exception {
     if (args.length > 0) {
       if (DEPOSIT.equals(args[0])) {
         System.out.println("Before depositing, balance: " + getBalance(DaoTestAddress) + " CKB");
@@ -62,17 +62,17 @@ public class NervosDaoExample {
         System.out.println("After depositing, balance: " + getBalance(DaoTestAddress) + " CKB");
       } else if (WITHDRAW_PHASE1.equals(args[0])) {
         // Nervos DAO withdraw phase1 must be after 4 epoch of depositing transaction
-        String depositTxHash = args[1];
-        OutPoint depositOutPoint = new OutPoint(depositTxHash, "0x0");
+        byte[] depositTxHash = args[1];
+        OutPoint depositOutPoint = new OutPoint(depositTxHash, 0);
         Transaction transaction = generateWithdrawingFromDaoTx(depositOutPoint);
         String txHash = api.sendTransaction(transaction);
         System.out.println("Nervos DAO withdraw phase1 tx hash: " + txHash);
       } else if (WITHDRAW_PHASE2.equals(args[0])) {
         // Nervos DAO withdraw phase2 must be after 180 epoch of depositing transaction
-        String withdrawTxHash = args[1];
-        TransactionWithStatus withdrawTx = api.getTransaction(withdrawTxHash);
+        byte[] withdrawTxHash = args[1];
+        TransactionWithStatus withdrawTx = api.getTransaction(Numeric.toHexString(withdrawTxHash));
         OutPoint depositOutPoint = withdrawTx.transaction.inputs.get(0).previousOutput;
-        OutPoint withdrawOutPoint = new OutPoint(withdrawTxHash, "0x0");
+        OutPoint withdrawOutPoint = new OutPoint(withdrawTxHash, 0);
         Transaction transaction =
             generateClaimingFromDaoTx(depositOutPoint, withdrawOutPoint, Utils.ckbToShannon(0.01));
         String txHash = api.sendTransaction(transaction);
@@ -152,7 +152,7 @@ public class NervosDaoExample {
     if (!CellWithStatus.Status.LIVE.getValue().equals(cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
-    TransactionWithStatus transactionWithStatus = api.getTransaction(depositOutPoint.txHash);
+    TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexStringNoPrefix(depositOutPoint.txHash));
     if (!TransactionWithStatus.Status.COMMITTED
         .getValue()
         .equals(transactionWithStatus.txStatus.status)) {
@@ -224,7 +224,7 @@ public class NervosDaoExample {
     if (!CellWithStatus.Status.LIVE.getValue().equals(cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
-    TransactionWithStatus transactionWithStatus = api.getTransaction(withdrawingOutPoint.txHash);
+    TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexString(withdrawingOutPoint.txHash));
     if (!TransactionWithStatus.Status.COMMITTED
         .getValue()
         .equals(transactionWithStatus.txStatus.status)) {

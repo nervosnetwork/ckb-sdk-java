@@ -12,7 +12,7 @@ import org.nervos.ckb.type.transaction.Transaction;
 public class Convert {
 
   public static OutPoint parseOutPoint(OutPoint outPoint) {
-    return new OutPoint(outPoint.txHash, Numeric.toHexString(outPoint.index));
+    return new OutPoint(outPoint.txHash, outPoint.index);
   }
 
   public static Transaction parseTransaction(Transaction transaction) {
@@ -20,7 +20,7 @@ public class Convert {
     for (CellDep cellDep : transaction.cellDeps) {
       cellDeps.add(
           new CellDep(
-              new OutPoint(cellDep.outPoint.txHash, Numeric.toHexString(cellDep.outPoint.index)),
+              new OutPoint(cellDep.outPoint.txHash, cellDep.outPoint.index),
               cellDep.depType));
     }
 
@@ -30,7 +30,7 @@ public class Convert {
           new CellInput(
               new OutPoint(
                   cellInput.previousOutput.txHash,
-                  Numeric.toHexString(cellInput.previousOutput.index)),
+                  cellInput.previousOutput.index),
               Numeric.toHexString(cellInput.since)));
     }
 

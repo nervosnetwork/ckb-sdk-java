@@ -16,7 +16,7 @@ public class ItemFactory {
     return new Item(Item.Type.IDENTITY, Identity.toIdentityByAddress(address));
   }
 
-  public static Item newOutPointItem(String txHash, String index) {
+  public static Item newOutPointItem(byte[] txHash, int index) {
     return newOutPointItem(new OutPoint(txHash, index));
   }
 

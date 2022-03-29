@@ -40,8 +40,8 @@ public class Record {
   public String toRecordItem() {
     byte[] record =
         Bytes.concat(
-            Numeric.hexStringToByteArray(this.outPoint.txHash),
-            intToByteArray(Numeric.toBigInt(this.outPoint.index).intValue()));
+            this.outPoint.txHash,
+            intToByteArray(this.outPoint.index));
 
     if (Objects.nonNull(this.script)) {
       return Numeric.toHexString(

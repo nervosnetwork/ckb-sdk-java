@@ -56,7 +56,7 @@ public class ACPTransactionExample {
     ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, false);
 
     Script receiverScript = AddressParser.parse(ReceiveAddresses.get(0)).script;
-    receiverScript.codeHash = Numeric.hexStringToByteArray(ACP_CODE_HASH);
+    receiverScript.codeHash = ACP_CODE_HASH;
     receiverScript.args = Numeric.hexStringToByteArray(receiverScript.args + ACP_CKB_MINIMUM + ACP_SUDT_MINIMUM);
     receiverAcpAddress = AddressGenerator.generate(Network.TESTNET, receiverScript);
 
@@ -71,21 +71,21 @@ public class ACPTransactionExample {
             + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
-    String acpHash = createACPCell();
+    byte[] acpHash = createACPCell();
     System.out.println("Create acp cell tx hash: " + acpHash);
 
     // waiting transaction into block, sometimes you should wait more seconds
     Thread.sleep(30000);
     System.out.println(
         "Transfer acp tx hash: "
-            + transfer(new OutPoint(acpHash, "0x0"), BigInteger.valueOf(1000L)));
+            + transfer(new OutPoint(acpHash, 0), BigInteger.valueOf(1000L)));
   }
 
   private static BigInteger getBalance(String address) throws IOException {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
-  private static String createACPCell() throws IOException {
+  private static byte[] createACPCell() throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -101,8 +101,8 @@ public class ACPTransactionExample {
     outputsData.add(Numeric.toHexString(new UInt128(0L).toBytes()));
     txBuilder.setOutputsData(outputsData);
 
-    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, "0x0"), CellDep.DEP_GROUP));
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, "0x0"), CellDep.CODE));
+    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DEP_GROUP));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
@@ -145,7 +145,7 @@ public class ACPTransactionExample {
           scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
     Transaction tx = signBuilder.buildTx();
-    return api.sendTransaction(tx);
+    return Numeric.hexStringToByteArray(api.sendTransaction(tx));
   }
 
   private static String transfer(OutPoint acpOutPoint, BigInteger sudtAmount) throws IOException {
@@ -172,8 +172,8 @@ public class ACPTransactionExample {
     outputsData.add(Numeric.toHexString(new UInt128(acpOutputSUDTAmount).toBytes()));
     txBuilder.setOutputsData(outputsData);
 
-    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, "0x0"), CellDep.DEP_GROUP));
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, "0x0"), CellDep.CODE));
+    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DEP_GROUP));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1500);

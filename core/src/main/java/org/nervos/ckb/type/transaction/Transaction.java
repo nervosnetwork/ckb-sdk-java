@@ -182,16 +182,14 @@ public class Transaction {
       return this;
     }
 
-    public Builder addCellDep(String txHash, int index, String depType) {
-      String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-
+    public Builder addCellDep(byte[] txHash, int index, String depType) {
       CellDep cellDep = new CellDep();
-      cellDep.outPoint = new OutPoint(txHash, indexInString);
+      cellDep.outPoint = new OutPoint(txHash, index);
       cellDep.depType = depType;
       return this.addCellDep(cellDep);
     }
 
-    public Builder addCellDep(String txHash, int index) {
+    public Builder addCellDep(byte[] txHash, int index) {
       return this.addCellDep(txHash, index, "dep_group");
     }
 
@@ -215,12 +213,12 @@ public class Transaction {
       return this;
     }
 
-    public Builder addInput(String txHash, int index) {
+    public Builder addInput(byte[] txHash, int index) {
       String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-      return this.addInput(txHash, indexInString, "0x0");
+      return this.addInput(txHash, index, "0x0");
     }
 
-    public Builder addInput(String txHash, String index, String since) {
+    public Builder addInput(byte[] txHash, int index, String since) {
       CellInput input = new CellInput();
       input.previousOutput = new OutPoint(txHash, index);
       input.since = since;

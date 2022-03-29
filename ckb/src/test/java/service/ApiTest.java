@@ -288,7 +288,7 @@ public class ApiTest {
   public void testGetLiveCell() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+            new OutPoint(Numeric.hexStringToByteArray("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d"), 0),
             true);
     Assertions.assertNotNull(cellWithStatus);
   }
@@ -297,7 +297,7 @@ public class ApiTest {
   public void testGetLiveCellWithData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+            new OutPoint(Numeric.hexStringToByteArray("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d"), 0),
             true);
     Assertions.assertNotNull(cellWithStatus.cell.data);
   }
@@ -306,7 +306,7 @@ public class ApiTest {
   public void testGetLiveCellWithoutData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+            new OutPoint(Numeric.hexStringToByteArray("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d"), 0),
             false);
     Assertions.assertNull(cellWithStatus.cell.data);
   }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.indexer.model.ScriptType;
 import org.nervos.indexer.model.SearchKeyBuilder;
@@ -121,7 +122,7 @@ public class BalanceTest {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
           ItemFactory.newOutPointItem(
-              "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0", "0x0"));
+                  Numeric.hexStringToByteArray("0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"), 0));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
       System.out.println(g.toJson(builder.build()));
@@ -141,7 +142,7 @@ public class BalanceTest {
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
       builder.item(
           ItemFactory.newOutPointItem(
-              "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0", "0x0"));
+                  Numeric.hexStringToByteArray("0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"), 0));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       System.out.println(g.toJson(builder.build()));
