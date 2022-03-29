@@ -167,7 +167,7 @@ public class ACPTransactionExample {
 
     List<String> outputsData = new ArrayList<>();
     String acpInputSUDTAmount =
-        Numeric.cleanHexPrefix(api.getLiveCell(acpOutPoint, true).cell.data.content);
+        Numeric.toHexStringNoPrefix(api.getLiveCell(acpOutPoint, true).cell.data.content);
     BigInteger acpOutputSUDTAmount = new UInt128(acpInputSUDTAmount).getValue().add(sudtAmount);
     outputsData.add(Numeric.toHexString(new UInt128(acpOutputSUDTAmount).toBytes()));
     txBuilder.setOutputsData(outputsData);
@@ -198,7 +198,7 @@ public class ACPTransactionExample {
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
         OutPoint outPoint = cellsWithAddress.inputs.get(i).previousOutput;
-        String cellData = Numeric.cleanHexPrefix(api.getLiveCell(outPoint, true).cell.data.content);
+        String cellData = Numeric.toHexStringNoPrefix(api.getLiveCell(outPoint, true).cell.data.content);
         if (cellData.length() < 32) continue;
         inputSUDTAmount =
             inputSUDTAmount.add(

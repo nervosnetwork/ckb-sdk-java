@@ -149,7 +149,7 @@ public class NervosDaoExample {
   private static Transaction generateWithdrawingFromDaoTx(OutPoint depositOutPoint)
       throws IOException {
     CellWithStatus cellWithStatus = api.getLiveCell(depositOutPoint, true);
-    if (!CellWithStatus.Status.LIVE.getValue().equals(cellWithStatus.status)) {
+    if (!(CellWithStatus.Status.LIVE == cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
     TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexStringNoPrefix(depositOutPoint.txHash));
@@ -221,7 +221,7 @@ public class NervosDaoExample {
       OutPoint depositOutPoint, OutPoint withdrawingOutPoint, BigInteger fee) throws IOException {
     Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
     CellWithStatus cellWithStatus = api.getLiveCell(withdrawingOutPoint, true);
-    if (!CellWithStatus.Status.LIVE.getValue().equals(cellWithStatus.status)) {
+    if (!(CellWithStatus.Status.LIVE == cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
     TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexString(withdrawingOutPoint.txHash));
@@ -232,7 +232,7 @@ public class NervosDaoExample {
     }
 
     BigInteger depositBlockNumber =
-        new UInt64(Numeric.hexStringToByteArray(cellWithStatus.cell.data.content)).getValue();
+        new UInt64(cellWithStatus.cell.data.content).getValue();
     Block depositBlock = api.getBlockByNumber(Numeric.toHexStringWithPrefix(depositBlockNumber));
     EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
 
