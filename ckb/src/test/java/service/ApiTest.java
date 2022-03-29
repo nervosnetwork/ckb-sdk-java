@@ -78,8 +78,8 @@ public class ApiTest {
 
   @Test
   public void testTransaction() throws IOException {
-    String transactionHash = api.getBlockByNumber("0x1").transactions.get(0).hash;
-    Transaction transaction = api.getTransaction(transactionHash).transaction;
+    byte[] transactionHash = api.getBlockByNumber("0x1").transactions.get(0).hash;
+    Transaction transaction = api.getTransaction(Numeric.toHexString(transactionHash)).transaction;
     Assertions.assertNotNull(transaction);
   }
 
@@ -320,7 +320,7 @@ public class ApiTest {
           public void execute() throws Throwable {
             api.sendTransaction(
                 new Transaction(
-                    "0",
+                    0,
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -341,7 +341,7 @@ public class ApiTest {
           public void execute() throws Throwable {
             api.sendTransaction(
                 new Transaction(
-                    "0",
+                    0,
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -360,7 +360,7 @@ public class ApiTest {
           public void execute() throws Throwable {
             api.sendTransaction(
                 new Transaction(
-                    "0",
+                    0,
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -378,7 +378,7 @@ public class ApiTest {
     Cycles cycles =
         api.dryRunTransaction(
             new Transaction(
-                "0",
+                0,
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
@@ -393,7 +393,7 @@ public class ApiTest {
     String transactionHash =
         api.computeTransactionHash(
             new Transaction(
-                "0",
+                0,
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),

@@ -26,20 +26,20 @@ public class SystemContract {
     List<Transaction> transactions = getSystemCellTransactions(api);
     return new SystemScriptCell(
         transactions.get(0).outputs.get(1).type.computeHash(),
-        new OutPoint(Numeric.hexStringToByteArray(transactions.get(1).hash), 0));
+        new OutPoint(transactions.get(1).hash, 0));
   }
 
   public static SystemScriptCell getSystemMultiSigCell(Api api) throws IOException {
     List<Transaction> transactions = getSystemCellTransactions(api);
     return new SystemScriptCell(
         transactions.get(0).outputs.get(4).type.computeHash(),
-        new OutPoint(Numeric.hexStringToByteArray(transactions.get(1).hash), 1));
+        new OutPoint(transactions.get(1).hash, 1));
   }
 
   public static SystemScriptCell getSystemNervosDaoCell(Api api) throws IOException {
     List<Transaction> transactions = getSystemCellTransactions(api);
     return new SystemScriptCell(
         transactions.get(0).outputs.get(2).type.computeHash(),
-        new OutPoint(Numeric.hexStringToByteArray(transactions.get(0).hash), 2));
+        new OutPoint(transactions.get(0).hash, 2));
   }
 }

@@ -15,9 +15,9 @@ public class TransactionBuilder {
 
   private List<CellInput> cellInputs = new ArrayList<>();
   private List<CellOutput> cellOutputs = new ArrayList<>();
-  private List<String> cellOutputsData = new ArrayList<>();
+  private List<byte[]> cellOutputsData = new ArrayList<>();
   private List<CellDep> cellDeps = new ArrayList<>();
-  private List<String> headerDeps = Collections.emptyList();
+  private List<byte[]> headerDeps = Collections.emptyList();
   private List witnesses = new ArrayList<>();
 
   public TransactionBuilder(Api api) {
@@ -82,22 +82,22 @@ public class TransactionBuilder {
     return this.cellDeps;
   }
 
-  public void setOutputsData(List<String> outputsData) {
+  public void setOutputsData(List<byte[]> outputsData) {
     this.cellOutputsData = outputsData;
   }
 
-  public void setHeaderDeps(List<String> headerDeps) {
+  public void setHeaderDeps(List<byte[]> headerDeps) {
     this.headerDeps = headerDeps;
   }
 
   public Transaction buildTx() {
     if (cellOutputsData.size() == 0) {
       for (int i = 0; i < cellOutputs.size(); i++) {
-        cellOutputsData.add("0x");
+        cellOutputsData.add(new byte[]{});
       }
     }
 
     return new Transaction(
-        "0", cellDeps, headerDeps, cellInputs, cellOutputs, cellOutputsData, witnesses);
+        0, cellDeps, headerDeps, cellInputs, cellOutputs, cellOutputsData, witnesses);
   }
 }

@@ -53,7 +53,7 @@ public class CellCollector {
 
     Transaction transaction =
         new Transaction(
-            "0",
+            0,
             tx.cellDeps,
             tx.headerDeps,
             tx.inputs,

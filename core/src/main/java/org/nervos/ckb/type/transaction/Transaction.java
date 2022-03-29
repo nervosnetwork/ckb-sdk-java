@@ -22,33 +22,33 @@ import org.nervos.ckb.utils.Serializer;
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Transaction {
 
-  public String version;
+  public int version;
 
-  public String hash;
+  public byte[] hash;
 
   @SerializedName("cell_deps")
   public List<CellDep> cellDeps;
 
   @SerializedName("header_deps")
-  public List<String> headerDeps;
+  public List<byte[]> headerDeps;
 
   public List<CellInput> inputs;
   public List<CellOutput> outputs;
 
   @SerializedName("outputs_data")
-  public List<String> outputsData;
+  public List<byte[]> outputsData;
 
   public List witnesses;
 
   public Transaction() {}
 
   public Transaction(
-      String version,
+      int version,
       List<CellDep> cellDeps,
-      List<String> headerDeps,
+      List<byte[]> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
-      List<String> outputsData) {
+      List<byte[]> outputsData) {
     this.version = version;
     this.cellDeps = cellDeps;
     this.headerDeps = headerDeps;
@@ -58,12 +58,12 @@ public class Transaction {
   }
 
   public Transaction(
-      String version,
+      int version,
       List<CellDep> cellDeps,
-      List<String> headerDeps,
+      List<byte[]> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
-      List<String> outputsData,
+      List<byte[]> outputsData,
       List witnesses) {
     this.version = version;
     this.cellDeps = cellDeps;
@@ -75,13 +75,13 @@ public class Transaction {
   }
 
   public Transaction(
-      String version,
-      String hash,
+      int version,
+      byte[] hash,
       List<CellDep> cellDeps,
-      List<String> headerDeps,
+      List<byte[]> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
-      List<String> outputsData,
+      List<byte[]> outputsData,
       List witnesses) {
     this.version = version;
     this.hash = hash;
@@ -149,16 +149,16 @@ public class Transaction {
   }
 
   public static final class Builder {
-    public String version;
+    public int version;
     public List<CellDep> cellDeps;
-    public List<String> headerDeps;
+    public List<byte[]> headerDeps;
     public List<CellInput> inputs;
     public List<CellOutput> outputs;
-    public List<String> outputsData;
+    public List<byte[]> outputsData;
     public List witnesses;
 
     private Builder() {
-      this.version = "0x0";
+      this.version = 0;
       this.cellDeps = new ArrayList<>();
       this.headerDeps = new ArrayList<>();
       this.inputs = new ArrayList<>();
@@ -167,7 +167,7 @@ public class Transaction {
       this.witnesses = new ArrayList();
     }
 
-    public Builder setVersion(String version) {
+    public Builder setVersion(int version) {
       this.version = version;
       return this;
     }
@@ -193,12 +193,12 @@ public class Transaction {
       return this.addCellDep(txHash, index, CellDep.DepType.DEP_GROUP);
     }
 
-    public Builder setHeaderDeps(List<String> headerDeps) {
+    public Builder setHeaderDeps(List<byte[]> headerDeps) {
       this.headerDeps = headerDeps;
       return this;
     }
 
-    public Builder addHeaderDep(String headerDep) {
+    public Builder addHeaderDep(byte[] headerDep) {
       this.headerDeps.add(headerDep);
       return this;
     }
@@ -266,12 +266,12 @@ public class Transaction {
       return addOutput(output);
     }
 
-    public Builder setOutputsData(List<String> outputsData) {
+    public Builder setOutputsData(List<byte[]> outputsData) {
       this.outputsData = outputsData;
       return this;
     }
 
-    public Builder addOutputData(String outputData) {
+    public Builder addOutputData(byte[] outputData) {
       this.outputsData.add(outputData);
       return this;
     }

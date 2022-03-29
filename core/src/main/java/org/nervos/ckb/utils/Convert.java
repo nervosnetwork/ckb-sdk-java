@@ -42,7 +42,7 @@ public class Convert {
     }
 
     return new Transaction(
-        Numeric.toHexString(transaction.version),
+        transaction.version,
         cellDeps,
         transaction.headerDeps,
         inputs,

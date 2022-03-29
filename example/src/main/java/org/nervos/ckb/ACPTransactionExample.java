@@ -97,8 +97,8 @@ public class ACPTransactionExample {
     cellOutputs.get(0).type = sudtType;
     txBuilder.addOutputs(cellOutputs);
 
-    List<String> outputsData = new ArrayList<>();
-    outputsData.add(Numeric.toHexString(new UInt128(0L).toBytes()));
+    List<byte[]> outputsData = new ArrayList<>();
+    outputsData.add(new UInt128(0L).toBytes());
     txBuilder.setOutputsData(outputsData);
 
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DepType.DEP_GROUP));
@@ -117,7 +117,7 @@ public class ACPTransactionExample {
       cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
 
-      outputsData.add("0x");
+      outputsData.add(new byte[]{});
       txBuilder.setOutputsData(outputsData);
     }
 
@@ -165,11 +165,11 @@ public class ACPTransactionExample {
     cellOutputs.get(1).type = sudtType;
     txBuilder.addOutputs(cellOutputs);
 
-    List<String> outputsData = new ArrayList<>();
+    List<byte[]> outputsData = new ArrayList<>();
     String acpInputSUDTAmount =
         Numeric.toHexStringNoPrefix(api.getLiveCell(acpOutPoint, true).cell.data.content);
     BigInteger acpOutputSUDTAmount = new UInt128(acpInputSUDTAmount).getValue().add(sudtAmount);
-    outputsData.add(Numeric.toHexString(new UInt128(acpOutputSUDTAmount).toBytes()));
+    outputsData.add(new UInt128(acpOutputSUDTAmount).toBytes());
     txBuilder.setOutputsData(outputsData);
 
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DepType.DEP_GROUP));
@@ -217,8 +217,7 @@ public class ACPTransactionExample {
     txBuilder.addWitness("0x");
     txBuilder.addInput(new CellInput(acpOutPoint));
 
-    String changeCellData =
-        Numeric.toHexString(new UInt128(inputSUDTAmount.subtract(sudtAmount)).toBytes());
+    byte[] changeCellData = new UInt128(inputSUDTAmount.subtract(sudtAmount)).toBytes();
     outputsData.add(changeCellData);
     txBuilder.setOutputsData(outputsData);
 

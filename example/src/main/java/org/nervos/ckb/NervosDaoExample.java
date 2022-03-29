@@ -101,7 +101,7 @@ public class NervosDaoExample {
             Collections.singletonList(new Receiver(DaoTestAddress, capacity)), DaoTestAddress);
     cellOutputs.get(0).type = type;
 
-    List<String> cellOutputsData = Arrays.asList(NERVOS_DAO_DATA, "0x");
+    List<byte[]> cellOutputsData = Arrays.asList(Numeric.hexStringToByteArray(NERVOS_DAO_DATA), new byte[]{});
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -162,14 +162,14 @@ public class NervosDaoExample {
     BigInteger depositBlockNumber = Numeric.toBigInt(depositBlock.header.number);
     CellOutput cellOutput = cellWithStatus.cell.output;
 
-    String outputData = Numeric.toHexString(new UInt64(depositBlockNumber).toBytes());
+    byte[] outputData = new UInt64(depositBlockNumber).toBytes();
 
     Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
     CellOutput changeOutput = new CellOutput(BigInteger.ZERO, lock);
 
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
-    List<String> cellOutputsData = Arrays.asList(outputData, "0x");
-    List<String> headerDeps = Collections.singletonList(depositBlock.header.hash);
+    List<byte[]> cellOutputsData = Arrays.asList(outputData, new byte[]{});
+    List<byte[]> headerDeps = Collections.singletonList(Numeric.hexStringToByteArray(depositBlock.header.hash));
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -268,14 +268,15 @@ public class NervosDaoExample {
 
     Transaction tx =
         new Transaction(
-            "0x0",
+            0,
             Arrays.asList(
                 new CellDep(secpCell.outPoint, CellDep.DepType.DEP_GROUP),
                 new CellDep(nervosDaoCell.outPoint)),
-            Arrays.asList(depositBlock.header.hash, withdrawBlock.header.hash),
+            Arrays.asList(Numeric.hexStringToByteArray(depositBlock.header.hash),
+                    Numeric.hexStringToByteArray(withdrawBlock.header.hash)),
             Collections.singletonList(new CellInput(withdrawingOutPoint, minimalSince)),
             Collections.singletonList(cellOutput),
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             Collections.singletonList(new Witness("", NERVOS_DAO_DATA, "")));
 
     return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));

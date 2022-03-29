@@ -83,17 +83,17 @@ public class Serializer {
     return new Dynamic<>(cellOutputList);
   }
 
-  public static Dynamic<Bytes> serializeBytes(List<String> bytes) {
+  public static Dynamic<Bytes> serializeBytes(List<byte[]> bytes) {
     List<Bytes> bytesList = new ArrayList<>();
-    for (String data : bytes) {
+    for (byte[] data : bytes) {
       bytesList.add(new Bytes(data));
     }
     return new Dynamic<>(bytesList);
   }
 
-  public static Fixed<Byte32> serializeByte32(List<String> bytes) {
+  public static Fixed<Byte32> serializeByte32(List<byte[]> bytes) {
     List<Byte32> byte32List = new ArrayList<>();
-    for (String data : bytes) {
+    for (byte[] data : bytes) {
       byte32List.add(new Byte32(data));
     }
     return new Fixed<>(byte32List);

@@ -26,7 +26,7 @@ public class CalculatorTest {
   void testCalculateTransactionSize() {
     Transaction tx =
         new Transaction(
-            "0x0",
+            0,
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
@@ -61,7 +61,7 @@ public class CalculatorTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList("0x1234", "0x"),
+            Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[]{}),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 536);
@@ -71,7 +71,7 @@ public class CalculatorTest {
   public void testCalculateTransactionFee() {
     Transaction tx =
         new Transaction(
-            "0x0",
+            0,
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
@@ -106,7 +106,7 @@ public class CalculatorTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList("0x1234", "0x"),
+            Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[]{}),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
     Assertions.assertEquals(
@@ -117,7 +117,7 @@ public class CalculatorTest {
   void testCalculateTransactionSize1V1() {
     Transaction tx =
         new Transaction(
-            "0x0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
@@ -137,7 +137,7 @@ public class CalculatorTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             Collections.singletonList(
                 new Witness(
                     "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")));
@@ -148,7 +148,7 @@ public class CalculatorTest {
   void testCalculateTransactionSize1V2() {
     Transaction tx =
         new Transaction(
-            "0x0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
@@ -174,7 +174,7 @@ public class CalculatorTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList("0x", "0x"),
+            Arrays.asList(new byte[]{}, new byte[]{}),
             Collections.singletonList(
                 new Witness(
                     "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")));
@@ -185,7 +185,7 @@ public class CalculatorTest {
   void testCalculateTransactionSize2V1() {
     Transaction tx =
         new Transaction(
-                "0x0",
+                0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
@@ -209,7 +209,7 @@ public class CalculatorTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             Arrays.asList(
                 new Witness(
                     "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
@@ -221,7 +221,7 @@ public class CalculatorTest {
   void testCalculateTransactionSize2V2() {
     Transaction tx =
         new Transaction(
-            "0x0",
+           0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
@@ -251,7 +251,7 @@ public class CalculatorTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList("0x", "0x"),
+            Arrays.asList(new byte[]{}, new byte[]{}),
             Arrays.asList(
                 new Witness(
                     "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),

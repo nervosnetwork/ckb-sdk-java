@@ -39,19 +39,19 @@ class TransactionTest {
 
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"), 1),
                     CellDep.DepType.DEP_GROUP)),
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0))),
             cellOutputs,
-            Arrays.asList("0x", "0x"),
+            Arrays.asList(new byte[]{}, new byte[]{}),
             Collections.singletonList(new Witness()));
 
     BigInteger privateKey =
@@ -88,16 +88,16 @@ class TransactionTest {
 
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"), 1),
                     CellDep.DepType.DEP_GROUP)),
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             cellInputs,
             cellOutputs,
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             witnesses);
 
     BigInteger privateKey =
@@ -130,19 +130,19 @@ class TransactionTest {
 
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"), 1),
                     CellDep.DepType.DEP_GROUP)),
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0))),
             cellOutputs,
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[]{}),
             Collections.emptyList());
 
     BigInteger privateKey =
@@ -154,7 +154,7 @@ class TransactionTest {
   public void serializationTest() {
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
@@ -186,7 +186,7 @@ class TransactionTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList("0x", "0x"),
+            Arrays.asList(new byte[]{}, new byte[]{}),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
 

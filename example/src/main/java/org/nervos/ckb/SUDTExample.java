@@ -82,7 +82,7 @@ public class SUDTExample {
     txBuilder.addOutputs(cellOutputs);
 
     txBuilder.setOutputsData(
-        Arrays.asList(Numeric.toHexString(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes()), "0x"));
+        Arrays.asList(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes(), new byte[]{}));
     txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
@@ -158,9 +158,8 @@ public class SUDTExample {
 
     txBuilder.setOutputsData(
         Arrays.asList(
-            Numeric.toHexString(new UInt128((SUDT_TRANSFER_AMOUNT)).toBytes()),
-            Numeric.toHexString(
-                new UInt128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toBytes())));
+            new UInt128((SUDT_TRANSFER_AMOUNT)).toBytes(),
+                new UInt128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toBytes()));
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
