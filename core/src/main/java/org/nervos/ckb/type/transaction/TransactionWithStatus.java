@@ -16,7 +16,7 @@ public class TransactionWithStatus {
     public Status status;
 
     @SerializedName("block_hash")
-    public String blockHash;
+    public byte[] blockHash;
   }
 
   public enum Status {

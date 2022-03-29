@@ -157,7 +157,7 @@ public class NervosDaoExample {
         == transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
-    Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
+    Block depositBlock = api.getBlock(Numeric.toHexString(transactionWithStatus.txStatus.blockHash));
     BigInteger depositBlockNumber = BigInteger.valueOf(depositBlock.header.number);
     CellOutput cellOutput = cellWithStatus.cell.output;
 
@@ -230,10 +230,10 @@ public class NervosDaoExample {
 
     BigInteger depositBlockNumber =
         new UInt64(cellWithStatus.cell.data.content).getValue();
-    Block depositBlock = api.getBlockByNumber(Numeric.toHexStringWithPrefix(depositBlockNumber));
+    Block depositBlock = api.getBlockByNumber(Numeric.toHexString(Numeric.toHexStringWithPrefix(depositBlockNumber)));
     EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
 
-    Block withdrawBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
+    Block withdrawBlock = api.getBlock(Numeric.toHexString(transactionWithStatus.txStatus.blockHash));
     EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlock.header.epoch);
 
     long withdrawFraction = withdrawEpoch.index * depositEpoch.length;
