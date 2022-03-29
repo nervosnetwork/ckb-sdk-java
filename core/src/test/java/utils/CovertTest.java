@@ -54,8 +54,7 @@ public class CovertTest {
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                            Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0),
-                    "0")),
+                            Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0))),
             cellOutputs,
             Arrays.asList("0x", "0x"),
             Collections.singletonList("0x"));

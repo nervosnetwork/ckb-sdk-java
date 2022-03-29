@@ -215,10 +215,10 @@ public class Transaction {
 
     public Builder addInput(byte[] txHash, int index) {
       String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-      return this.addInput(txHash, index, "0x0");
+      return this.addInput(txHash, index, new byte[]{0});
     }
 
-    public Builder addInput(byte[] txHash, int index, String since) {
+    public Builder addInput(byte[] txHash, int index, byte[] since) {
       CellInput input = new CellInput();
       input.previousOutput = new OutPoint(txHash, index);
       input.since = since;

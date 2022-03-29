@@ -178,7 +178,7 @@ public class NervosDaoExample {
     txBuilder.setOutputsData(cellOutputsData);
     txBuilder.setHeaderDeps(headerDeps);
     txBuilder.addOutputs(cellOutputs);
-    txBuilder.addInput(new CellInput(depositOutPoint, "0x0"));
+    txBuilder.addInput(new CellInput(depositOutPoint));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
@@ -253,9 +253,9 @@ public class NervosDaoExample {
     long minimalSinceEpochIndex = depositEpoch.index;
     long minimalSinceEpochLength = depositEpoch.length;
 
-    String minimalSince =
+    byte[] minimalSince = Numeric.hexStringToByteArray(
         EpochUtils.generateSince(
-            minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber);
+            minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
     String outputCapacity =
         api.calculateDaoMaximumWithdraw(depositOutPoint, withdrawBlock.header.hash);
 

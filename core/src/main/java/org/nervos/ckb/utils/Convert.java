@@ -31,7 +31,7 @@ public class Convert {
               new OutPoint(
                   cellInput.previousOutput.txHash,
                   cellInput.previousOutput.index),
-              Numeric.toHexString(cellInput.since)));
+              cellInput.since));
     }
 
     List<CellOutput> outputs = new ArrayList<>();

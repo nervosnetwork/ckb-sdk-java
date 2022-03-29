@@ -215,7 +215,7 @@ public class ACPTransactionExample {
       }
     }
     txBuilder.addWitness("0x");
-    txBuilder.addInput(new CellInput(acpOutPoint, "0x0"));
+    txBuilder.addInput(new CellInput(acpOutPoint));
 
     String changeCellData =
         Numeric.toHexString(new UInt128(inputSUDTAmount.subtract(sudtAmount)).toBytes());

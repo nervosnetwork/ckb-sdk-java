@@ -49,8 +49,7 @@ class TransactionTest {
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0),
-                    "0")),
+                        Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0))),
             cellOutputs,
             Arrays.asList("0x", "0x"),
             Collections.singletonList(new Witness()));
@@ -70,11 +69,10 @@ class TransactionTest {
     cellInputs.add(
         new CellInput(
             new OutPoint(Numeric.hexStringToByteArray("0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4"), 0),
-            "113"));
+            new byte[]{113}));
     cellInputs.add(
         new CellInput(
-            new OutPoint(Numeric.hexStringToByteArray("0x00000000000000000000000000004e4552564f5344414f494e50555430303031"), 0),
-            "0"));
+            new OutPoint(Numeric.hexStringToByteArray("0x00000000000000000000000000004e4552564f5344414f494e50555430303031"), 0)));
 
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
@@ -142,8 +140,7 @@ class TransactionTest {
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0),
-                    "0")),
+                        Numeric.hexStringToByteArray("0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"), 0))),
             cellOutputs,
             Collections.singletonList("0x"),
             Collections.emptyList());
@@ -171,8 +168,7 @@ class TransactionTest {
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"), 1),
-                    "0")),
+                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"), 1))),
             Arrays.asList(
                 new CellOutput(
                         new BigInteger("100000000000"),

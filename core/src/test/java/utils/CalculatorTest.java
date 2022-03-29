@@ -43,8 +43,7 @@ public class CalculatorTest {
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                    "0x0")),
+                        1))),
             Arrays.asList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),
@@ -89,8 +88,7 @@ public class CalculatorTest {
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                    "0x0")),
+                        1))),
             Arrays.asList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),
@@ -131,8 +129,7 @@ public class CalculatorTest {
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                        "0x0")),
+                        1))),
             Collections.singletonList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),
@@ -163,8 +160,7 @@ public class CalculatorTest {
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                        "0x0")),
+                        1))),
             Arrays.asList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),
@@ -201,13 +197,11 @@ public class CalculatorTest {
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                        "0x0"),
+                        1)),
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                    "0x0")),
+                        1))),
             Collections.singletonList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),
@@ -239,13 +233,11 @@ public class CalculatorTest {
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                    "0x0"),
+                        1)),
                 new CellInput(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
-                        1),
-                    "0x0")),
+                        1))),
             Arrays.asList(
                 new CellOutput(
                         new BigInteger("0x174876e800"),

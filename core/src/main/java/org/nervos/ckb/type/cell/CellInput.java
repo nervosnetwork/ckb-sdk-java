@@ -9,12 +9,16 @@ public class CellInput {
   @SerializedName("previous_output")
   public OutPoint previousOutput;
 
-  public String since;
+  public byte[] since;
 
   public CellInput() {}
 
-  public CellInput(OutPoint previousOutput, String since) {
+  public CellInput(OutPoint previousOutput, byte[] since) {
     this.previousOutput = previousOutput;
     this.since = since;
+  }
+
+  public CellInput(OutPoint previousOutput) {
+    this(previousOutput, new byte[]{0});
   }
 }
