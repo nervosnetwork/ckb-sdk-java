@@ -38,15 +38,13 @@ public class TransactionSigner {
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
 
     Witness signedWitness = new Witness();
-    signedWitness.lock =
-        Numeric.toHexString(
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+    signedWitness.lock = Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
 
     int replaceIndexStart = scriptGroup.getOffset() * 2 + 2;
-    int replaceIndexEnd = Witness.SIGNATURE_PLACEHOLDER.length() + replaceIndexStart;
+    int replaceIndexEnd = Witness.SIGNATURE_PLACEHOLDER.length * 2 + replaceIndexStart;
     String newWitness =
         scriptGroup.getWitness().substring(0, replaceIndexStart)
-            + Numeric.cleanHexPrefix(signedWitness.lock)
+            + Numeric.toHexStringNoPrefix(signedWitness.lock)
             + scriptGroup.getWitness().substring(replaceIndexEnd);
     transaction.witnesses.set(scriptGroup.getWitnessIndex(), newWitness);
   }
@@ -70,21 +68,21 @@ public class TransactionSigner {
     byte[] messageBytes = keccak256.doFinalBytes();
 
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    String signature = ethereumPersonalSign(messageBytes, ecKeyPair);
+    byte[] signature = ethereumPersonalSign(messageBytes, ecKeyPair);
 
     Witness signedWitness = new Witness();
-    signedWitness.lock = Numeric.toHexString(signature);
+    signedWitness.lock = signature;
 
     int replaceIndexStart = scriptGroup.getOffset() * 2 + 2;
-    int replaceIndexEnd = Witness.SIGNATURE_PLACEHOLDER.length() + replaceIndexStart;
+    int replaceIndexEnd = Witness.SIGNATURE_PLACEHOLDER.length * 2 + replaceIndexStart;
     String newWitness =
         scriptGroup.getWitness().substring(0, replaceIndexStart)
-            + Numeric.cleanHexPrefix(signedWitness.lock)
+            + Numeric.toHexStringNoPrefix(signedWitness.lock)
             + scriptGroup.getWitness().substring(replaceIndexEnd);
     transaction.witnesses.set(scriptGroup.getWitnessIndex(), newWitness);
   }
 
-  private static String ethereumPersonalSign(byte[] message, ECKeyPair ecKeyPair) {
+  private static byte[] ethereumPersonalSign(byte[] message, ECKeyPair ecKeyPair) {
     Keccak256 keccak256 = new Keccak256();
     byte[] ETH_PERSONAL_SIGN =
         new String("\u0019Ethereum Signed Message:\n" + message.length)
@@ -95,7 +93,7 @@ public class TransactionSigner {
     System.arraycopy(message, 0, rawMessage, ETH_PERSONAL_SIGN.length, message.length);
     keccak256.update(rawMessage);
     byte[] messageToSign = keccak256.doFinalBytes();
-    return Numeric.toHexString(Sign.signMessage(messageToSign, ecKeyPair).getSignature());
+    return Sign.signMessage(messageToSign, ecKeyPair).getSignature();
   }
 
   public Transaction buildTx() {

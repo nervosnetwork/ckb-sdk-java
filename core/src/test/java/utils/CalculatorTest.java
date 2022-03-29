@@ -16,6 +16,7 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 
+import static org.nervos.ckb.type.Witness.SIGNATURE_PLACEHOLDER;
 import static utils.TestUtils.createScript;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -140,7 +141,7 @@ public class CalculatorTest {
             Collections.singletonList(new byte[]{}),
             Collections.singletonList(
                 new Witness(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")));
+                    SIGNATURE_PLACEHOLDER)));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 355);
   }
 
@@ -177,7 +178,7 @@ public class CalculatorTest {
             Arrays.asList(new byte[]{}, new byte[]{}),
             Collections.singletonList(
                 new Witness(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")));
+                    SIGNATURE_PLACEHOLDER)));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 464);
   }
 
@@ -211,8 +212,7 @@ public class CalculatorTest {
                         Script.HashType.TYPE))),
             Collections.singletonList(new byte[]{}),
             Arrays.asList(
-                new Witness(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
+                new Witness(SIGNATURE_PLACEHOLDER),
                 "0x"));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 407);
   }
@@ -254,9 +254,9 @@ public class CalculatorTest {
             Arrays.asList(new byte[]{}, new byte[]{}),
             Arrays.asList(
                 new Witness(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
+                    SIGNATURE_PLACEHOLDER),
                 new Witness(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")));
+                    SIGNATURE_PLACEHOLDER)));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 601);
   }
 }

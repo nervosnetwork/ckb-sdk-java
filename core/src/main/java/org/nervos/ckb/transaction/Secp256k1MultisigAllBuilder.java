@@ -17,9 +17,9 @@ import org.nervos.ckb.utils.Serializer;
 public class Secp256k1MultisigAllBuilder {
 
   private Transaction transaction;
-  private String multiSigSerialize;
+  private byte[] multiSigSerialize;
 
-  public Secp256k1MultisigAllBuilder(Transaction transaction, String multiSigSerialize) {
+  public Secp256k1MultisigAllBuilder(Transaction transaction, byte[] multiSigSerialize) {
     this.transaction = transaction;
     this.multiSigSerialize = multiSigSerialize;
   }
@@ -43,12 +43,13 @@ public class Secp256k1MultisigAllBuilder {
     }
 
     byte[] txHash = transaction.computeHash();
-    StringBuilder emptySignature = new StringBuilder();
+    byte[] emptySignature = new byte[0];
+//    StringBuilder emptySignature = new StringBuilder();
     for (int i = 0; i < privateKeys.size(); i++) {
-      emptySignature.append(Witness.SIGNATURE_PLACEHOLDER);
+      emptySignature = Numeric.concatBytes(emptySignature, Witness.SIGNATURE_PLACEHOLDER);
     }
     Witness emptiedWitness = (Witness) groupWitnesses.get(0);
-    emptiedWitness.lock = multiSigSerialize.concat(emptySignature.toString());
+    emptiedWitness.lock = Numeric.concatBytes(multiSigSerialize, emptySignature);
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
     blake2b.update(txHash);
@@ -75,7 +76,7 @@ public class Secp256k1MultisigAllBuilder {
     }
 
     Witness signedWitness = (Witness) groupWitnesses.get(0);
-    signedWitness.lock = multiSigSerialize.concat(concatenatedSignatures.toString());
+    signedWitness.lock = Numeric.concatBytes(multiSigSerialize, Numeric.hexStringToByteArray(concatenatedSignatures.toString()));
 
     transaction.witnesses.set(
         scriptGroup.inputIndexes.get(0),

@@ -127,8 +127,7 @@ public class Transaction {
     String message = blake2b.doFinalString();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     ((Witness) witnesses.get(0)).lock =
-        Numeric.toHexString(
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
 
     List<String> signedWitness = new ArrayList<>();
     for (Object witness : witnesses) {

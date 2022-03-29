@@ -102,15 +102,15 @@ public class Serializer {
   public static Table serializeWitnessArgs(Witness witness) {
     return new Table(
         new Option(
-            Strings.isEmpty(witness.lock) || "0x".equals(witness.lock)
+                witness.lock.length == 0
                 ? new Empty()
                 : new Bytes(witness.lock)),
         new Option(
-            Strings.isEmpty(witness.inputType) || "0x".equals(witness.inputType)
+                witness.inputType.length == 0
                 ? new Empty()
                 : new Bytes(witness.inputType)),
         new Option(
-            Strings.isEmpty(witness.outputType) || "0x".equals(witness.outputType)
+                witness.outputType.length == 0
                 ? new Empty()
                 : new Bytes(witness.outputType)));
   }

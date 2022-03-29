@@ -1,29 +1,31 @@
 package org.nervos.ckb.type;
 
+import org.nervos.ckb.utils.Numeric;
+
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 // The Witness class here corresponds to the WitnessArgs of CKB
 public class Witness {
 
-  public static final String SIGNATURE_PLACEHOLDER =
-      "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+  public static final byte[] SIGNATURE_PLACEHOLDER = Numeric.hexStringToByteArray(
+      "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
-  public String lock;
-  public String inputType;
-  public String outputType;
+  public byte[] lock;
+  public byte[] inputType;
+  public byte[] outputType;
 
   public Witness() {
-    this.lock = "";
-    this.inputType = "";
-    this.outputType = "";
+    this.lock = new byte[]{};
+    this.inputType = new byte[]{};
+    this.outputType = new byte[]{};
   }
 
-  public Witness(String lock) {
+  public Witness(byte[] lock) {
     this.lock = lock;
-    this.inputType = "";
-    this.outputType = "";
+    this.inputType = new byte[]{};
+    this.outputType = new byte[]{};
   }
 
-  public Witness(String lock, String inputType, String outputType) {
+  public Witness(byte[] lock, byte[] inputType, byte[] outputType) {
     this.lock = lock;
     this.inputType = inputType;
     this.outputType = outputType;

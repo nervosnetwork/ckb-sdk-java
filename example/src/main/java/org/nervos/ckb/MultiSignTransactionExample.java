@@ -145,7 +145,7 @@ public class MultiSignTransactionExample {
     }
 
     Secp256k1MultisigAllBuilder signBuilder =
-        new Secp256k1MultisigAllBuilder(txBuilder.buildTx(), configuration.serialize());
+        new Secp256k1MultisigAllBuilder(txBuilder.buildTx(), Numeric.hexStringToByteArray(configuration.serialize()));
 
     for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
       signBuilder.sign(

@@ -18,6 +18,7 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
 
+import static org.nervos.ckb.type.Witness.SIGNATURE_PLACEHOLDER;
 import static utils.TestUtils.createScript;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -127,20 +128,15 @@ public class SerializerTest {
   @Test
   public void testSerializeWitnessArgs() {
     Assertions.assertArrayEquals(
-        Serializer.serializeWitnessArgs(new Witness("", "0x", "")).toBytes(),
+        Serializer.serializeWitnessArgs(new Witness(new byte[0], new byte[0], new byte[0])).toBytes(),
         Numeric.hexStringToByteArray("0x10000000100000001000000010000000"));
 
     Assertions.assertArrayEquals(
-        Serializer.serializeWitnessArgs(new Witness("", "0x10", "0x20")).toBytes(),
+        Serializer.serializeWitnessArgs(new Witness(new byte[0], new byte[]{0x10}, new byte[]{0x20})).toBytes(),
         Numeric.hexStringToByteArray("0x1a00000010000000100000001500000001000000100100000020"));
 
     Assertions.assertArrayEquals(
-        Serializer.serializeWitnessArgs(
-                new Witness(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    "",
-                    ""))
-            .toBytes(),
+        Serializer.serializeWitnessArgs(new Witness(SIGNATURE_PLACEHOLDER)).toBytes(),
         Numeric.hexStringToByteArray(
             "55000000100000005500000055000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"));
   }

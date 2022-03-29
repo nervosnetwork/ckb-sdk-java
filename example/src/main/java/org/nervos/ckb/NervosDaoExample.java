@@ -31,7 +31,7 @@ import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NervosDaoExample {
-  private static final String NERVOS_DAO_DATA = "0x0000000000000000";
+  private static final byte[] NERVOS_DAO_DATA = Numeric.hexStringToByteArray("0x0000000000000000");
   private static final int DAO_LOCK_PERIOD_EPOCHS = 180;
   private static final int DAO_MATURITY_BLOCKS = 5;
 
@@ -101,7 +101,7 @@ public class NervosDaoExample {
             Collections.singletonList(new Receiver(DaoTestAddress, capacity)), DaoTestAddress);
     cellOutputs.get(0).type = type;
 
-    List<byte[]> cellOutputsData = Arrays.asList(Numeric.hexStringToByteArray(NERVOS_DAO_DATA), new byte[]{});
+    List<byte[]> cellOutputsData = Arrays.asList(NERVOS_DAO_DATA, new byte[]{});
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -273,7 +273,7 @@ public class NervosDaoExample {
             Collections.singletonList(new CellInput(withdrawingOutPoint, minimalSince)),
             Collections.singletonList(cellOutput),
             Collections.singletonList(new byte[]{}),
-            Collections.singletonList(new Witness("", NERVOS_DAO_DATA, "")));
+            Collections.singletonList(new Witness(new byte[0], NERVOS_DAO_DATA, new byte[0])));
 
     return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));
   }
