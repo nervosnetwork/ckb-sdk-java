@@ -42,7 +42,7 @@ public class Secp256k1MultisigAllBuilder {
       throw new RuntimeException("First witness must be of Witness type!");
     }
 
-    String txHash = transaction.computeHash();
+    byte[] txHash = transaction.computeHash();
     StringBuilder emptySignature = new StringBuilder();
     for (int i = 0; i < privateKeys.size(); i++) {
       emptySignature.append(Witness.SIGNATURE_PLACEHOLDER);
@@ -51,7 +51,7 @@ public class Secp256k1MultisigAllBuilder {
     emptiedWitness.lock = multiSigSerialize.concat(emptySignature.toString());
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    blake2b.update(txHash);
     blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
     blake2b.update(witnessTable.toBytes());
     for (int i = 1; i < groupWitnesses.size(); i++) {

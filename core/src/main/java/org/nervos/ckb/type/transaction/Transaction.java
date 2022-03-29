@@ -93,10 +93,10 @@ public class Transaction {
     this.witnesses = witnesses;
   }
 
-  public String computeHash() {
+  public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
     blake2b.update(Encoder.encode(Serializer.serializeRawTransaction(this)));
-    return blake2b.doFinalString();
+    return blake2b.doFinalBytes();
   }
 
   public Transaction sign(BigInteger privateKey) {
@@ -106,12 +106,12 @@ public class Transaction {
     if (witnesses.get(0).getClass() != Witness.class) {
       throw new RuntimeException("First witness must be of Witness type!");
     }
-    String txHash = computeHash();
+    byte[] txHash = computeHash();
     Witness emptiedWitness = (Witness) witnesses.get(0);
     emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    blake2b.update(txHash);
     blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
     blake2b.update(witnessTable.toBytes());
     for (int i = 1; i < witnesses.size(); i++) {

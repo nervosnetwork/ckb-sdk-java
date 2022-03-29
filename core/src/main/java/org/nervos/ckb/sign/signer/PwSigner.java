@@ -44,8 +44,8 @@ public class PwSigner implements ScriptSigner {
   private boolean signScriptGroup(
       Transaction transaction, ScriptGroup scriptGroup, String privateKey) {
     Keccak256 keccak256 = new Keccak256();
-    String txHash = transaction.computeHash();
-    keccak256.update(Numeric.hexStringToByteArray(txHash));
+    byte[] txHash = transaction.computeHash();
+    keccak256.update(txHash);
 
     List<String> witnesses = transaction.witnesses;
     for (int i : scriptGroup.getInputIndices()) {

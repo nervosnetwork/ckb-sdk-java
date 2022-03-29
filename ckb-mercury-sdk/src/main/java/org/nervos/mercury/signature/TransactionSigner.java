@@ -22,9 +22,9 @@ public class TransactionSigner {
   public void Secp256Blake2bSign(MercuryScriptGroup scriptGroup, String privateKey) {
     List groupWitnesses = scriptGroup.getGroupWitnesses();
 
-    String txHash = transaction.computeHash();
+    byte[] txHash = transaction.computeHash();
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    blake2b.update(txHash);
     blake2b.update(
         new UInt64(Numeric.hexStringToByteArray(scriptGroup.getWitness()).length).toBytes());
     blake2b.update(Numeric.hexStringToByteArray(scriptGroup.getWitness()));
@@ -54,10 +54,10 @@ public class TransactionSigner {
   public void KeccakEthereumPersonalSign(MercuryScriptGroup scriptGroup, String privateKey) {
     List groupWitnesses = scriptGroup.getGroupWitnesses();
 
-    String txHash = transaction.computeHash();
+    byte[] txHash = transaction.computeHash();
 
     Keccak256 keccak256 = new Keccak256();
-    keccak256.update(Numeric.hexStringToByteArray(txHash));
+    keccak256.update(txHash);
     keccak256.update(
         new UInt64(Numeric.hexStringToByteArray(scriptGroup.getWitness()).length).toBytes());
     keccak256.update(Numeric.hexStringToByteArray(scriptGroup.getWitness()));

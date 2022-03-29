@@ -45,10 +45,10 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
       Transaction transaction, ScriptGroup scriptGroup, String privateKey) {
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
 
-    String txHash = transaction.computeHash();
+    byte[] txHash = transaction.computeHash();
     List<String> witnesses = transaction.witnesses;
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    blake2b.update(txHash);
 
     for (int i : scriptGroup.getInputIndices()) {
       byte[] witness = Numeric.hexStringToByteArray(witnesses.get(i));
