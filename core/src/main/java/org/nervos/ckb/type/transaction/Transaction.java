@@ -238,7 +238,7 @@ public class Transaction {
     }
 
     public Builder addOutput(
-        String capacity,
+        BigInteger capacity,
         byte[] lockScriptCodeHash,
         byte[] lockScriptArgs,
         byte[] typeScriptCodeHash,
@@ -254,7 +254,7 @@ public class Transaction {
       return addOutput(output);
     }
 
-    public Builder addOutput(String capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
+    public Builder addOutput(BigInteger capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
       Script lockScript = new Script();
       lockScript.args = lockScriptArgs;
       lockScript.codeHash = lockScriptCodeHash;

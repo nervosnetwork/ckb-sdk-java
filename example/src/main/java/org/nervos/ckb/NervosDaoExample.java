@@ -121,7 +121,7 @@ public class NervosDaoExample {
             Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
@@ -165,7 +165,7 @@ public class NervosDaoExample {
     String outputData = Numeric.toHexString(new UInt64(depositBlockNumber).toBytes());
 
     Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
-    CellOutput changeOutput = new CellOutput("0x0", lock);
+    CellOutput changeOutput = new CellOutput(BigInteger.ZERO, lock);
 
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
     List<String> cellOutputsData = Arrays.asList(outputData, "0x");
@@ -191,7 +191,7 @@ public class NervosDaoExample {
             Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
     txBuilder.setOutputs(cellOutputs);
 
     CellsWithAddress cellsWithAddress = collectResult.cellsWithAddresses.get(0);
@@ -261,7 +261,7 @@ public class NervosDaoExample {
 
     CellOutput cellOutput =
         new CellOutput(
-            Numeric.toHexStringWithPrefix(Numeric.toBigInt(outputCapacity).subtract(fee)), lock);
+            Numeric.toBigInt(outputCapacity).subtract(fee), lock);
 
     SystemScriptCell secpCell = SystemContract.getSystemSecpCell(api);
     SystemScriptCell nervosDaoCell = SystemContract.getSystemNervosDaoCell(api);

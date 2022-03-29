@@ -167,7 +167,7 @@ public class MultiKeySingleSigTxExample {
         txUtils.collectInputs(sendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;

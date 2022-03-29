@@ -128,7 +128,7 @@ public class MultiSignTransactionExample {
             configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;

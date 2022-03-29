@@ -15,7 +15,7 @@ public class CellOutputTest {
   public void testOccupiedCapacity() {
     CellOutput cellOutput =
         new CellOutput(
-            "100000000000",
+                new BigInteger("100000000000"),
             createScript(
                 "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                 "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -27,7 +27,7 @@ public class CellOutputTest {
   public void testOccupiedCapacityWithData() {
     CellOutput cellOutput =
         new CellOutput(
-            "100000000000",
+                new BigInteger("100000000000"),
             createScript(
                 "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                 "0x59a27ef3ba84f061517d13f42cf44ed020610061",

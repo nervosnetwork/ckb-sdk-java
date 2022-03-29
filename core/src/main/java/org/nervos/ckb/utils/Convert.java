@@ -38,7 +38,7 @@ public class Convert {
     for (CellOutput cellOutput : transaction.outputs) {
       outputs.add(
           new CellOutput(
-              Numeric.toHexString(cellOutput.capacity), cellOutput.lock, cellOutput.type));
+              cellOutput.capacity, cellOutput.lock, cellOutput.type));
     }
 
     return new Transaction(

@@ -114,7 +114,7 @@ public class ACPTransactionExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
 
       outputsData.add("0x");
@@ -186,7 +186,7 @@ public class ACPTransactionExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_SUDT_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
     } else {
       throw new IOException("The change capacity is not enough for the SUDT cell");

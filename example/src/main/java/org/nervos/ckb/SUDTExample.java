@@ -95,7 +95,7 @@ public class SUDTExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
     }
 
@@ -151,7 +151,7 @@ public class SUDTExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
       cellOutputs.get(cellOutputs.size() - 1).type = sudtType;
       txBuilder.setOutputs(cellOutputs);
     }

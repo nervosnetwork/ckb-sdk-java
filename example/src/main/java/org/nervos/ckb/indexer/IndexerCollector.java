@@ -66,13 +66,13 @@ public class IndexerCollector {
       AddressParseResult addressParseResult = AddressParser.parse(receiver.address);
       cellOutputs.add(
           new CellOutput(
-              Numeric.toHexStringWithPrefix(receiver.capacity), addressParseResult.script));
+              receiver.capacity, addressParseResult.script));
     }
     //  If change address is null or an empty string it means caller wants to transfer all balance,
     // so change output is not needed
     if (changeAddress != null && !changeAddress.trim().isEmpty()) {
       AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
-      cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
+      cellOutputs.add(new CellOutput(BigInteger.ZERO, addressParseResult.script));
     }
 
     return cellOutputs;

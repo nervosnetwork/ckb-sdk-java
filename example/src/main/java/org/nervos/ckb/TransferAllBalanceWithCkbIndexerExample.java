@@ -103,7 +103,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
     }
 

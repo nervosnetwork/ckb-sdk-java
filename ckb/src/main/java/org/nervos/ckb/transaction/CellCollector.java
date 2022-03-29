@@ -46,7 +46,7 @@ public class CellCollector {
 
     for (int i = 0; i < tx.outputs.size() - 1; i++) {
       BigInteger size = tx.outputs.get(i).occupiedCapacity("0x");
-      if (size.compareTo(Numeric.toBigInt(tx.outputs.get(i).capacity)) > 0) {
+      if (size.compareTo(tx.outputs.get(i).capacity) > 0) {
         throw new IOException("Cell output byte size must not be bigger than capacity");
       }
     }
@@ -66,20 +66,20 @@ public class CellCollector {
       cellInputs.add(cellInput);
 
       CellWithStatus cellWithStatus = api.getLiveCell(cellInput.previousOutput, false);
-      inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellWithStatus.cell.output.capacity));
+      inputsCapacity = inputsCapacity.add(cellWithStatus.cell.output.capacity);
     }
     final List witnesses = new ArrayList<>();
 
     CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
     boolean haveChangeOutput = false;
     //  If the last cellOutput's capacity is not zero,  it means there is no changeOutput
-    if (Numeric.toBigInt(changeOutput.capacity).compareTo(BigInteger.ZERO) == 0) {
+    if (changeOutput.capacity.compareTo(BigInteger.ZERO) == 0) {
       haveChangeOutput = true;
     }
 
     BigInteger needCapacity = BigInteger.ZERO;
     for (CellOutput cellOutput : tx.outputs) {
-      needCapacity = needCapacity.add(Numeric.toBigInt(cellOutput.capacity));
+      needCapacity = needCapacity.add(cellOutput.capacity);
     }
 
     while (iterator.hasNext()) {
