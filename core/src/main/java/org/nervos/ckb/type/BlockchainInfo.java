@@ -9,11 +9,11 @@ public class BlockchainInfo {
   @SerializedName("is_initial_block_download")
   public boolean isInitialBlockDownload;
 
-  public String epoch;
-  public String difficulty;
+  public byte[] epoch;
+  public byte[] difficulty;
 
   @SerializedName("median_time")
-  public String medianTime;
+  public long medianTime;
 
   public String chain;
 
