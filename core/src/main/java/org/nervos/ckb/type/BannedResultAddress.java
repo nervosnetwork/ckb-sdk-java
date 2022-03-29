@@ -11,8 +11,8 @@ public class BannedResultAddress {
   public String banReason;
 
   @SerializedName("ban_until")
-  public String banUntil;
+  public long banUntil;
 
   @SerializedName("created_at")
-  public String createdAt;
+  public long createdAt;
 }
