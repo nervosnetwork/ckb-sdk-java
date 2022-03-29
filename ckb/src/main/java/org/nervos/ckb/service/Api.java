@@ -249,7 +249,7 @@ public class Api implements CkbRpcApi {
         Arrays.asList(
             bannedAddress.address,
             bannedAddress.command,
-            Numeric.toHexStringWithPrefix(new BigInteger(bannedAddress.banTime)),
+            Numeric.toHexStringWithPrefix(BigInteger.valueOf(bannedAddress.banTime)),
             bannedAddress.absolute,
             bannedAddress.reason),
         String.class);
