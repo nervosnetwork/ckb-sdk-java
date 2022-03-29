@@ -101,8 +101,8 @@ public class ACPTransactionExample {
     outputsData.add(Numeric.toHexString(new UInt128(0L).toBytes()));
     txBuilder.setOutputsData(outputsData);
 
-    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DEP_GROUP));
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.CODE));
+    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DepType.DEP_GROUP));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
@@ -172,8 +172,8 @@ public class ACPTransactionExample {
     outputsData.add(Numeric.toHexString(new UInt128(acpOutputSUDTAmount).toBytes()));
     txBuilder.setOutputsData(outputsData);
 
-    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DEP_GROUP));
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.CODE));
+    txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DepType.DEP_GROUP));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1500);

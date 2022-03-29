@@ -1,6 +1,6 @@
 package org.nervos.ckb.utils;
 
-import static org.nervos.ckb.type.cell.CellDep.CODE;
+import static org.nervos.ckb.type.cell.CellDep.DepType.CODE;
 
 import java.util.ArrayList;
 import java.util.List;

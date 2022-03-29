@@ -44,7 +44,7 @@ class TransactionTest {
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"), 1),
-                    CellDep.DEP_GROUP)),
+                    CellDep.DepType.DEP_GROUP)),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
@@ -95,7 +95,7 @@ class TransactionTest {
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"), 1),
-                    CellDep.DEP_GROUP)),
+                    CellDep.DepType.DEP_GROUP)),
             Collections.singletonList("0x"),
             cellInputs,
             cellOutputs,
@@ -137,7 +137,7 @@ class TransactionTest {
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"), 1),
-                    CellDep.DEP_GROUP)),
+                    CellDep.DepType.DEP_GROUP)),
             Collections.singletonList("0x"),
             Collections.singletonList(
                 new CellInput(
@@ -162,11 +162,11 @@ class TransactionTest {
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"), 0),
-                    CellDep.DEP_GROUP),
+                    CellDep.DepType.DEP_GROUP),
                 new CellDep(
                     new OutPoint(
                         Numeric.hexStringToByteArray("0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"), 2),
-                    CellDep.CODE)),
+                    CellDep.DepType.CODE)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(

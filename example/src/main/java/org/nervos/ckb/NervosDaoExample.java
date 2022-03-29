@@ -108,7 +108,7 @@ public class NervosDaoExample {
     txBuilder.addOutputs(cellOutputs);
     txBuilder.setOutputsData(cellOutputsData);
     txBuilder.addCellDep(
-        new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.CODE));
+        new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
@@ -174,7 +174,7 @@ public class NervosDaoExample {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
     txBuilder.addCellDep(
-        new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.CODE));
+        new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.DepType.CODE));
     txBuilder.setOutputsData(cellOutputsData);
     txBuilder.setHeaderDeps(headerDeps);
     txBuilder.addOutputs(cellOutputs);
@@ -270,7 +270,7 @@ public class NervosDaoExample {
         new Transaction(
             "0x0",
             Arrays.asList(
-                new CellDep(secpCell.outPoint, CellDep.DEP_GROUP),
+                new CellDep(secpCell.outPoint, CellDep.DepType.DEP_GROUP),
                 new CellDep(nervosDaoCell.outPoint)),
             Arrays.asList(depositBlock.header.hash, withdrawBlock.header.hash),
             Collections.singletonList(new CellInput(withdrawingOutPoint, minimalSince)),

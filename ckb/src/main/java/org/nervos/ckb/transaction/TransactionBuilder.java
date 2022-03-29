@@ -28,10 +28,10 @@ public class TransactionBuilder {
     try {
       if (isMultiSig) {
         this.cellDeps.add(
-            new CellDep(SystemContract.getSystemMultiSigCell(api).outPoint, CellDep.DEP_GROUP));
+            new CellDep(SystemContract.getSystemMultiSigCell(api).outPoint, CellDep.DepType.DEP_GROUP));
       } else {
         this.cellDeps.add(
-            new CellDep(SystemContract.getSystemSecpCell(api).outPoint, CellDep.DEP_GROUP));
+            new CellDep(SystemContract.getSystemSecpCell(api).outPoint, CellDep.DepType.DEP_GROUP));
       }
     } catch (Exception e) {
       e.printStackTrace();

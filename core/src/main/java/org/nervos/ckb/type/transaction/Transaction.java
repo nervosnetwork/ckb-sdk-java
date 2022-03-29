@@ -182,7 +182,7 @@ public class Transaction {
       return this;
     }
 
-    public Builder addCellDep(byte[] txHash, int index, String depType) {
+    public Builder addCellDep(byte[] txHash, int index, CellDep.DepType depType) {
       CellDep cellDep = new CellDep();
       cellDep.outPoint = new OutPoint(txHash, index);
       cellDep.depType = depType;
@@ -190,7 +190,7 @@ public class Transaction {
     }
 
     public Builder addCellDep(byte[] txHash, int index) {
-      return this.addCellDep(txHash, index, "dep_group");
+      return this.addCellDep(txHash, index, CellDep.DepType.DEP_GROUP);
     }
 
     public Builder setHeaderDeps(List<String> headerDeps) {
