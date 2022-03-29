@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
@@ -95,7 +96,7 @@ public class SourceTest {
 
       String hash = ApiFactory.getApi().sendTransaction(tx);
 
-      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == "pending") {
+      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == TransactionWithStatus.Status.PENDING) {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }
@@ -129,7 +130,7 @@ public class SourceTest {
 
       String hash = ApiFactory.getApi().sendTransaction(tx);
 
-      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == "pending") {
+      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == TransactionWithStatus.Status.PENDING) {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }

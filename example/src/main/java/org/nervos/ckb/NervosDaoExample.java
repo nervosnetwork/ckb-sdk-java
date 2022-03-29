@@ -153,9 +153,8 @@ public class NervosDaoExample {
       throw new IOException("Cell is not yet live!");
     }
     TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexStringNoPrefix(depositOutPoint.txHash));
-    if (!TransactionWithStatus.Status.COMMITTED
-        .getValue()
-        .equals(transactionWithStatus.txStatus.status)) {
+    if (!(TransactionWithStatus.Status.COMMITTED
+        == transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
     Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
@@ -225,9 +224,7 @@ public class NervosDaoExample {
       throw new IOException("Cell is not yet live!");
     }
     TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexString(withdrawingOutPoint.txHash));
-    if (!TransactionWithStatus.Status.COMMITTED
-        .getValue()
-        .equals(transactionWithStatus.txStatus.status)) {
+    if (!(TransactionWithStatus.Status.COMMITTED == transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
 
