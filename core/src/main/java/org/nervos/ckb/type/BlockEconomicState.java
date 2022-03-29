@@ -2,14 +2,13 @@ package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigInteger;
+
 /** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class BlockEconomicState {
 
   @SerializedName("finalized_at")
-  public String finalizedAt;
-
-  @SerializedName("proposal_reward")
-  public String proposalReward;
+  public byte[] finalizedAt;
 
   public Issuance issuance;
 
@@ -17,17 +16,17 @@ public class BlockEconomicState {
   public MinerReward minerReward;
 
   @SerializedName("txs_fee")
-  public String txsFee;
+  public BigInteger txsFee;
 
   public static class Issuance {
-    public String primary;
-    public String secondary;
+    public BigInteger primary;
+    public BigInteger secondary;
   }
 
   public static class MinerReward {
-    public String committed;
-    public String primary;
-    public String proposal;
-    public String secondary;
+    public BigInteger committed;
+    public BigInteger primary;
+    public BigInteger proposal;
+    public BigInteger secondary;
   }
 }
