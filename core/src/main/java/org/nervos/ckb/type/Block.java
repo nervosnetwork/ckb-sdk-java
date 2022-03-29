@@ -9,7 +9,7 @@ public class Block {
 
   public List<Transaction> transactions;
 
-  public List<String> proposals;
+  public List<byte[]> proposals;
 
   public List<Uncle> uncles;
 
@@ -17,6 +17,6 @@ public class Block {
 
     public Header header;
 
-    public List<String> proposals;
+    public List<byte[]> proposals;
   }
 }
