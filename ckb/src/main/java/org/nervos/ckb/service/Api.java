@@ -197,7 +197,7 @@ public class Api implements CkbRpcApi {
     return rpcService.post(
         "send_transaction",
         Arrays.asList(
-            Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH.getValue()),
+            Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
         String.class);
   }
 
@@ -206,7 +206,7 @@ public class Api implements CkbRpcApi {
       throws IOException {
     return rpcService.post(
         "send_transaction",
-        Arrays.asList(Convert.parseTransaction(transaction), outputsValidator.getValue()),
+        Arrays.asList(Convert.parseTransaction(transaction), outputsValidator),
         String.class);
   }
 
