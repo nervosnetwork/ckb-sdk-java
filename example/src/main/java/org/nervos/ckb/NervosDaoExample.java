@@ -158,7 +158,7 @@ public class NervosDaoExample {
       throw new IOException("Transaction is not committed yet!");
     }
     Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
-    BigInteger depositBlockNumber = Numeric.toBigInt(depositBlock.header.number);
+    BigInteger depositBlockNumber = BigInteger.valueOf(depositBlock.header.number);
     CellOutput cellOutput = cellWithStatus.cell.output;
 
     byte[] outputData = new UInt64(depositBlockNumber).toBytes();
@@ -168,7 +168,7 @@ public class NervosDaoExample {
 
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
     List<byte[]> cellOutputsData = Arrays.asList(outputData, new byte[]{});
-    List<byte[]> headerDeps = Collections.singletonList(Numeric.hexStringToByteArray(depositBlock.header.hash));
+    List<byte[]> headerDeps = Collections.singletonList(depositBlock.header.hash);
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -254,7 +254,7 @@ public class NervosDaoExample {
         EpochUtils.generateSince(
             minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
     String outputCapacity =
-        api.calculateDaoMaximumWithdraw(depositOutPoint, withdrawBlock.header.hash);
+        api.calculateDaoMaximumWithdraw(depositOutPoint, Numeric.toHexString(withdrawBlock.header.hash));
 
     CellOutput cellOutput =
         new CellOutput(
@@ -269,8 +269,7 @@ public class NervosDaoExample {
             Arrays.asList(
                 new CellDep(secpCell.outPoint, CellDep.DepType.DEP_GROUP),
                 new CellDep(nervosDaoCell.outPoint)),
-            Arrays.asList(Numeric.hexStringToByteArray(depositBlock.header.hash),
-                    Numeric.hexStringToByteArray(withdrawBlock.header.hash)),
+            Arrays.asList(depositBlock.header.hash, withdrawBlock.header.hash),
             Collections.singletonList(new CellInput(withdrawingOutPoint, minimalSince)),
             Collections.singletonList(cellOutput),
             Collections.singletonList(new byte[]{}),

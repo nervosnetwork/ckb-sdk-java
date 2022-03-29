@@ -3,13 +3,14 @@ package utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.EpochUtils;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class EpochUtilsTest {
 
   @Test
   void parseTest() {
-    EpochUtils.EpochInfo params = EpochUtils.parse("0x70800fd000058");
+    EpochUtils.EpochInfo params = EpochUtils.parse(Numeric.hexStringToByteArray("0x70800fd000058"));
     Assertions.assertEquals(253, params.index);
     Assertions.assertEquals(88, params.number);
     Assertions.assertEquals(1800, params.length);
