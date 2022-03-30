@@ -22,7 +22,7 @@ public class ScriptTest {
     Script script = new Script(codeHash, new byte[]{}, Script.HashType.DATA);
     System.out.println(script.computeHash());
     Assertions.assertEquals(
-            "0x63c5fece50cdeb3978b02b43d3cff43809310b7ac89519bc717309ecc58904d9", script.computeHash());
+            "0x63c5fece50cdeb3978b02b43d3cff43809310b7ac89519bc717309ecc58904d9", Numeric.toHexString(script.computeHash()));
   }
 
   @Test

@@ -191,6 +191,6 @@ class TransactionTest {
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
 
     Assertions.assertEquals(
-        "0xe765f9912b06c72552dae11779f6371309236e968aa045ae3b8f426d8ec8ca05", tx.computeHash());
+        "0xe765f9912b06c72552dae11779f6371309236e968aa045ae3b8f426d8ec8ca05", Numeric.toHexString(tx.computeHash()));
   }
 }

@@ -9,10 +9,13 @@ public class Byte32 extends FixedType<byte[]> {
   private byte[] value;
 
   public Byte32(byte[] value) {
-    if (value.length != 32) {
+    if (value.length > 32) {
       throw new UnsupportedOperationException("Byte32 length error");
+    } else {
+      byte[] dest = new byte[32];
+      System.arraycopy(value, 0, dest, 0, value.length);
+      this.value = dest;
     }
-    this.value = value;
   }
 
   public Byte32(String value) {

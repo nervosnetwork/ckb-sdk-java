@@ -63,14 +63,14 @@ public class CovertTest {
   @Test
   public void testParseOutPoint() {
     OutPoint outPoint = Convert.parseOutPoint(tx.inputs.get(0).previousOutput);
-    Assertions.assertEquals(outPoint.index, "0x0");
+    Assertions.assertEquals(outPoint.index, 0);
   }
 
   @Test
   public void testParseTransaction() {
     Transaction transaction = Convert.parseTransaction(tx);
     Assertions.assertEquals(transaction.cellDeps.get(0).outPoint.index, 1);
-    Assertions.assertEquals(transaction.inputs.get(0).since, new byte[]{0});
-    Assertions.assertEquals(transaction.outputs.get(0).capacity, Numeric.hexStringToByteArray("0x174876e800"));
+    Assertions.assertArrayEquals(transaction.inputs.get(0).since, new byte[]{0});
+    Assertions.assertEquals(transaction.outputs.get(0).capacity, Numeric.toBigInt("0x174876e800"));
   }
 }

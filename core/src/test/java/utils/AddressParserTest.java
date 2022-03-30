@@ -24,8 +24,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.TESTNET, addressParseResult.network);
-    Assertions.assertEquals(singleSigShortScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(singleSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(singleSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(singleSigShortScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(singleSigShortScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -39,8 +39,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(singleSigShortScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(singleSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(singleSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(singleSigShortScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(singleSigShortScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -54,8 +54,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.TESTNET, addressParseResult.network);
-    Assertions.assertEquals(multiSigShortScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(multiSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(multiSigShortScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -69,8 +69,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(multiSigShortScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(multiSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(multiSigShortScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -84,8 +84,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.TESTNET, addressParseResult.network);
-    Assertions.assertEquals(multiSigShortScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(multiSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(multiSigShortScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -99,8 +99,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(multiSigShortScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(multiSigShortScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(multiSigShortScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(multiSigShortScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -115,8 +115,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.TESTNET, addressParseResult.network);
-    Assertions.assertEquals(typeFullScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(typeFullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(typeFullScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(typeFullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(typeFullScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -131,8 +131,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(typeFullScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(typeFullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(typeFullScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(typeFullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(typeFullScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -147,8 +147,8 @@ public class AddressParserTest {
             Script.HashType.DATA);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.TESTNET, addressParseResult.network);
-    Assertions.assertEquals(dataFullScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(dataFullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(dataFullScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(dataFullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(dataFullScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -163,8 +163,8 @@ public class AddressParserTest {
             Script.HashType.DATA);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(dataFullScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(dataFullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(dataFullScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(dataFullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(dataFullScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -179,8 +179,8 @@ public class AddressParserTest {
             Script.HashType.TYPE);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(fullScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(fullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(fullScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(fullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(fullScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -195,8 +195,8 @@ public class AddressParserTest {
             Script.HashType.DATA);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(fullScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(fullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(fullScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(fullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(fullScript.hashType, addressParseResult.script.hashType);
   }
 
@@ -211,8 +211,8 @@ public class AddressParserTest {
             Script.HashType.DATA);
     AddressParseResult addressParseResult = AddressParser.parse(address);
     Assertions.assertEquals(Network.MAINNET, addressParseResult.network);
-    Assertions.assertEquals(fullScript.args, addressParseResult.script.args);
-    Assertions.assertEquals(fullScript.codeHash, addressParseResult.script.codeHash);
+    Assertions.assertArrayEquals(fullScript.args, addressParseResult.script.args);
+    Assertions.assertArrayEquals(fullScript.codeHash, addressParseResult.script.codeHash);
     Assertions.assertEquals(fullScript.hashType, addressParseResult.script.hashType);
   }
 

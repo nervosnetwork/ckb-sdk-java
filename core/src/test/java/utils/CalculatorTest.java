@@ -47,7 +47,7 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -57,7 +57,7 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                        new BigInteger("0x59e1416a5000"),
+                        Numeric.toBigInt("0x59e1416a5000"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -92,7 +92,7 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -102,7 +102,7 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                        new BigInteger("0x59e1416a5000"),
+                        Numeric.toBigInt("0x59e1416a5000"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -133,7 +133,7 @@ public class CalculatorTest {
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -164,13 +164,13 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -205,7 +205,7 @@ public class CalculatorTest {
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -240,13 +240,13 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                        new BigInteger("0x174876e800"),
+                        Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
