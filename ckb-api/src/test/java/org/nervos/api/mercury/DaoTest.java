@@ -40,7 +40,7 @@ public class DaoTest {
 
       Transaction signTx = SignUtils.sign(transactionCompletionResponse);
 
-      String txHash = ApiFactory.getApi().sendTransaction(signTx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(signTx);
 
       System.out.println(txHash);
 
@@ -70,7 +70,7 @@ public class DaoTest {
 
       Transaction signTx = SignUtils.sign(transactionCompletionResponse);
 
-      String txHash = ApiFactory.getApi().sendTransaction(signTx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(signTx);
 
       System.out.println(txHash);
 
@@ -96,7 +96,7 @@ public class DaoTest {
           ApiFactory.getApi().buildDaoDepositTransaction(builder.build());
       Transaction signTx = SignUtils.sign(transactionCompletionResponse);
 
-      String txHash = ApiFactory.getApi().sendTransaction(signTx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(signTx);
 
       System.out.println(txHash);
 
@@ -119,7 +119,7 @@ public class DaoTest {
           ApiFactory.getApi().buildDaoWithdrawTransaction(builder.build());
 
       Transaction signTx = SignUtils.sign(transactionCompletionResponse);
-      String txHash = ApiFactory.getApi().sendTransaction(signTx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(signTx);
 
       System.out.println(txHash);
     } catch (IOException e) {
@@ -142,7 +142,7 @@ public class DaoTest {
       System.out.println(g.toJson(transactionCompletionResponse));
 
       Transaction signTx = SignUtils.sign(transactionCompletionResponse);
-      String txHash = ApiFactory.getApi().sendTransaction(signTx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(signTx);
 
       System.out.println(txHash);
     } catch (IOException e) {

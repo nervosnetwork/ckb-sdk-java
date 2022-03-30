@@ -54,7 +54,7 @@ public class BuildAdjustAccountTest {
       Transaction tx = SignUtils.sign(s);
 
       System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {
@@ -84,7 +84,7 @@ public class BuildAdjustAccountTest {
       Transaction tx = SignUtils.sign(s);
 
       System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {
@@ -115,7 +115,7 @@ public class BuildAdjustAccountTest {
       Transaction tx = SignUtils.sign(s);
 
       System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {
@@ -146,7 +146,7 @@ public class BuildAdjustAccountTest {
       Transaction tx = SignUtils.sign(s);
 
       System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {

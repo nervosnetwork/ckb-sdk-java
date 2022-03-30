@@ -145,10 +145,10 @@ public class ACPTransactionExample {
           scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
     }
     Transaction tx = signBuilder.buildTx();
-    return Numeric.hexStringToByteArray(api.sendTransaction(tx));
+    return api.sendTransaction(tx);
   }
 
-  private static String transfer(OutPoint acpOutPoint, BigInteger sudtAmount) throws IOException {
+  private static byte[] transfer(OutPoint acpOutPoint, BigInteger sudtAmount) throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);

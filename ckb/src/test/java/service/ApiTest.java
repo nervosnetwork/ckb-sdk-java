@@ -51,26 +51,26 @@ public class ApiTest {
 
   @Test
   public void testGetBlockByNumber() throws IOException {
-    Block block = api.getBlockByNumber("0x1");
+    Block block = api.getBlockByNumber(1);
     Assertions.assertNotNull(block);
   }
 
   @Test
   public void testGetBlockHashByNumber() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
+    byte[] blockHash = api.getBlockHash(1);
     Assertions.assertNotNull(blockHash);
   }
 
   @Test
   public void testGetBlockEconomicState() throws IOException {
-    String blockHash = api.getBlockHash("0x2");
+    byte[] blockHash = api.getBlockHash(2);
     BlockEconomicState blockEconomicState = api.getBlockEconomicState(blockHash);
     Assertions.assertNotNull(blockEconomicState);
   }
 
   @Test
   public void testBlockAndTransaction() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
+    byte[] blockHash = api.getBlockHash(1);
     Block block = api.getBlock(blockHash);
     Assertions.assertNotNull(block);
     Assertions.assertNotNull(block.header);
@@ -78,8 +78,8 @@ public class ApiTest {
 
   @Test
   public void testTransaction() throws IOException {
-    byte[] transactionHash = api.getBlockByNumber("0x1").transactions.get(0).hash;
-    Transaction transaction = api.getTransaction(Numeric.toHexString(transactionHash)).transaction;
+    byte[] transactionHash = api.getBlockByNumber(1).transactions.get(0).hash;
+    Transaction transaction = api.getTransaction(transactionHash).transaction;
     Assertions.assertNotNull(transaction);
   }
 
@@ -103,20 +103,20 @@ public class ApiTest {
 
   @Test
   public void testGetEpochByNumber() throws IOException {
-    Epoch epoch = api.getEpochByNumber("0");
+    Epoch epoch = api.getEpochByNumber(0);
     Assertions.assertNotNull(epoch);
   }
 
   @Test
   public void testGetHeader() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
+    byte[] blockHash = api.getBlockHash(1);
     Header header = api.getHeader(blockHash);
     Assertions.assertNotNull(header);
   }
 
   @Test
   public void testGetHeaderByNumber() throws IOException {
-    Header header = api.getHeaderByNumber("0x1");
+    Header header = api.getHeaderByNumber(1);
     Assertions.assertNotNull(header);
   }
 
@@ -130,9 +130,9 @@ public class ApiTest {
 
   @Test
   public void testGetBlockMedianTime() throws IOException {
-    String blockMedianTime =
+    long blockMedianTime =
         api.getBlockMedianTime(
-            "0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40");
+                Numeric.hexStringToByteArray("0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40"));
     Assertions.assertNull(blockMedianTime);
   }
 
@@ -141,7 +141,7 @@ public class ApiTest {
     TransactionProof transactionProof =
         api.getTransactionProof(
             Collections.singletonList(
-                "0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3"));
+                    Numeric.hexStringToByteArray("0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3")));
     Assertions.assertNotNull(transactionProof);
     Assertions.assertNotNull(transactionProof.blockHash);
     Assertions.assertTrue(transactionProof.proof.indices.size() > 0);
@@ -157,7 +157,7 @@ public class ApiTest {
                         Numeric.hexStringToByteArray("0x705d0774a1f870c1e92571e9db806bd85c0ac7f26015f3d6c7b822f7616c1fb4"))),
                 Numeric.hexStringToByteArray("0x36038509b555c8acf360175b9bc4f67bd68be02b152f4a9d1131a424fffd8d23"),
             Numeric.hexStringToByteArray("0x56431856ad780db4cc1181c44b3fddf596380f1e21fb1c0b31db6deca2892c75"));
-    List<String> result = api.verifyTransactionProof(transactionProof);
+    List<byte[]> result = api.verifyTransactionProof(transactionProof);
     Assertions.assertEquals(
         result,
         Arrays.asList("0xc9ae96ff99b48e755ccdb350a69591ba80877be3d6c67ac9660bb9a0c52dc3d6"));
@@ -166,7 +166,7 @@ public class ApiTest {
   @Test
   public void testGetForkBlock() throws IOException {
     Block forkBlock =
-        api.getForkBlock("0xdca341a42890536551f99357612cef7148ed471e3b6419d0844a4e400be6ee94");
+        api.getForkBlock(Numeric.hexStringToByteArray("0xdca341a42890536551f99357612cef7148ed471e3b6419d0844a4e400be6ee94"));
     System.out.println(new Gson().toJson(forkBlock));
   }
 
@@ -198,30 +198,24 @@ public class ApiTest {
 
   @Test
   public void testSetNetworkActive() throws IOException {
-    String result = api.setNetworkActive(true);
-    Assertions.assertNull(result);
+    api.setNetworkActive(true);
   }
 
   @Test
   public void testAddNode() throws IOException {
-    String result =
-        api.addNode(
-            "QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
-    Assertions.assertNull(result);
+    api.addNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
   }
 
   @Test
   public void testRemoveNode() throws IOException {
-    String result = api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
-    Assertions.assertNull(result);
+    api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
   }
 
   @Test
   public void testSetBan() throws IOException {
     BannedAddress bannedAddress =
         new BannedAddress("192.168.0.2", BannedAddress.Command.INSERT, 1840546800000L, true, "test set_ban rpc");
-    String banResult = api.setBan(bannedAddress);
-    Assertions.assertNull(banResult);
+    api.setBan(bannedAddress);
   }
 
   @Test
@@ -232,14 +226,12 @@ public class ApiTest {
 
   @Test
   public void testClearBannedAddresses() throws IOException {
-    String result = api.clearBannedAddresses();
-    Assertions.assertNull(result);
+    api.clearBannedAddresses();
   }
 
   @Test
   public void testPingPeers() throws IOException {
-    String result = api.clearBannedAddresses();
-    Assertions.assertNull(result);
+    api.clearBannedAddresses();
   }
 
   @Test
@@ -252,8 +244,7 @@ public class ApiTest {
 
   @Test
   public void testClearTxPool() throws IOException {
-    String txPoolInfo = api.clearTxPool();
-    Assertions.assertNull(txPoolInfo);
+    api.clearTxPool();
   }
 
   @Test
@@ -390,7 +381,7 @@ public class ApiTest {
 
   @Test
   public void testComputeTransactionHash() throws IOException {
-    String transactionHash =
+    byte[] transactionHash =
         api.computeTransactionHash(
             new Transaction(
                 0,

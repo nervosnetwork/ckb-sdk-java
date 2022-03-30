@@ -70,7 +70,7 @@ public class MultiKeySingleSigTxExample {
     System.out.println(
         "Before transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
 
-    String hash = sendCapacity(TestAddress, receivers1, changeAddress);
+    byte[] hash = sendCapacity(TestAddress, receivers1, changeAddress);
     System.out.println("First transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
@@ -104,7 +104,7 @@ public class MultiKeySingleSigTxExample {
     System.out.println(
         "Before transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
 
-    String hash2 = sendCapacity(Addresses.subList(0, 3), receivers2, changeAddress);
+    byte[] hash2 = sendCapacity(Addresses.subList(0, 3), receivers2, changeAddress);
     System.out.println("Second transaction hash: " + hash2);
 
     // waiting transaction into block, sometimes you should wait more seconds
@@ -131,13 +131,13 @@ public class MultiKeySingleSigTxExample {
         .toString(10);
   }
 
-  private static String sendCapacity(
+  private static byte[] sendCapacity(
       String sendAddress, List<Receiver> receivers, String changeAddress) throws IOException {
     Transaction transaction = generateTx(sendAddress, receivers, changeAddress);
     return api.sendTransaction(transaction);
   }
 
-  private static String sendCapacity(
+  private static byte[] sendCapacity(
       List<String> sendAddresses, List<Receiver> receivers, String changeAddress)
       throws IOException {
     Transaction transaction = generateTx(sendAddresses, receivers, changeAddress);

@@ -56,7 +56,7 @@ public class NervosDaoExample {
       if (DEPOSIT.equals(args[0])) {
         System.out.println("Before depositing, balance: " + getBalance(DaoTestAddress) + " CKB");
         Transaction transaction = generateDepositingToDaoTx(Utils.ckbToShannon(1000));
-        String txHash = api.sendTransaction(transaction);
+        byte[] txHash = api.sendTransaction(transaction);
         System.out.println("Nervos DAO deposit tx hash: " + txHash);
         // Waiting some time to make tx into blockchain
         System.out.println("After depositing, balance: " + getBalance(DaoTestAddress) + " CKB");
@@ -65,17 +65,17 @@ public class NervosDaoExample {
         byte[] depositTxHash = args[1];
         OutPoint depositOutPoint = new OutPoint(depositTxHash, 0);
         Transaction transaction = generateWithdrawingFromDaoTx(depositOutPoint);
-        String txHash = api.sendTransaction(transaction);
+        byte[] txHash = api.sendTransaction(transaction);
         System.out.println("Nervos DAO withdraw phase1 tx hash: " + txHash);
       } else if (WITHDRAW_PHASE2.equals(args[0])) {
         // Nervos DAO withdraw phase2 must be after 180 epoch of depositing transaction
         byte[] withdrawTxHash = args[1];
-        TransactionWithStatus withdrawTx = api.getTransaction(Numeric.toHexString(withdrawTxHash));
+        TransactionWithStatus withdrawTx = api.getTransaction(withdrawTxHash);
         OutPoint depositOutPoint = withdrawTx.transaction.inputs.get(0).previousOutput;
         OutPoint withdrawOutPoint = new OutPoint(withdrawTxHash, 0);
         Transaction transaction =
             generateClaimingFromDaoTx(depositOutPoint, withdrawOutPoint, Utils.ckbToShannon(0.01));
-        String txHash = api.sendTransaction(transaction);
+        byte[] txHash = api.sendTransaction(transaction);
         System.out.println("Nervos DAO withdraw phase2 tx hash: " + txHash);
         // Waiting some time to make tx into blockchain
         System.out.println("After withdrawing, balance: " + getBalance(DaoTestAddress) + " CKB");
@@ -152,12 +152,12 @@ public class NervosDaoExample {
     if (!(CellWithStatus.Status.LIVE == cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
-    TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexStringNoPrefix(depositOutPoint.txHash));
+    TransactionWithStatus transactionWithStatus = api.getTransaction(depositOutPoint.txHash);
     if (!(TransactionWithStatus.Status.COMMITTED
         == transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
-    Block depositBlock = api.getBlock(Numeric.toHexString(transactionWithStatus.txStatus.blockHash));
+    Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
     BigInteger depositBlockNumber = BigInteger.valueOf(depositBlock.header.number);
     CellOutput cellOutput = cellWithStatus.cell.output;
 
@@ -223,17 +223,17 @@ public class NervosDaoExample {
     if (!(CellWithStatus.Status.LIVE == cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");
     }
-    TransactionWithStatus transactionWithStatus = api.getTransaction(Numeric.toHexString(withdrawingOutPoint.txHash));
+    TransactionWithStatus transactionWithStatus = api.getTransaction(withdrawingOutPoint.txHash);
     if (!(TransactionWithStatus.Status.COMMITTED == transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
 
-    BigInteger depositBlockNumber =
-        new UInt64(cellWithStatus.cell.data.content).getValue();
-    Block depositBlock = api.getBlockByNumber(Numeric.toHexString(Numeric.toHexStringWithPrefix(depositBlockNumber)));
+    int depositBlockNumber =
+        new UInt64(cellWithStatus.cell.data.content).getValue().intValue();
+    Block depositBlock = api.getBlockByNumber(depositBlockNumber);
     EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
 
-    Block withdrawBlock = api.getBlock(Numeric.toHexString(transactionWithStatus.txStatus.blockHash));
+    Block withdrawBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
     EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlock.header.epoch);
 
     long withdrawFraction = withdrawEpoch.index * depositEpoch.length;
@@ -253,12 +253,11 @@ public class NervosDaoExample {
     byte[] minimalSince = Numeric.hexStringToByteArray(
         EpochUtils.generateSince(
             minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
-    String outputCapacity =
+    BigInteger outputCapacity =
         api.calculateDaoMaximumWithdraw(depositOutPoint, Numeric.toHexString(withdrawBlock.header.hash));
 
     CellOutput cellOutput =
-        new CellOutput(
-            Numeric.toBigInt(outputCapacity).subtract(fee), lock);
+        new CellOutput(outputCapacity.subtract(fee), lock);
 
     SystemScriptCell secpCell = SystemContract.getSystemSecpCell(api);
     SystemScriptCell nervosDaoCell = SystemContract.getSystemNervosDaoCell(api);

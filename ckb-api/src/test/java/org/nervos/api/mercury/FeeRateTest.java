@@ -49,7 +49,7 @@ public class FeeRateTest {
 
       Transaction tx = SignUtils.sign(s);
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -80,7 +80,7 @@ public class FeeRateTest {
 
       Transaction tx = SignUtils.sign(s);
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {

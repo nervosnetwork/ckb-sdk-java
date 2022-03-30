@@ -94,7 +94,7 @@ public class SourceTest {
           ApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
 
-      String hash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] hash = ApiFactory.getApi().sendTransaction(tx);
 
       while (ApiFactory.getApi().getTransaction(hash).txStatus.status == TransactionWithStatus.Status.PENDING) {
         System.out.println("Awaiting transaction results");
@@ -128,7 +128,7 @@ public class SourceTest {
           ApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
 
-      String hash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] hash = ApiFactory.getApi().sendTransaction(tx);
 
       while (ApiFactory.getApi().getTransaction(hash).txStatus.status == TransactionWithStatus.Status.PENDING) {
         System.out.println("Awaiting transaction results");

@@ -67,7 +67,7 @@ public class SingleSigWithCkbIndexerTxExample {
             + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
             + " CKB");
 
-    String hash = sendCapacity(receivers, SendAddresses.get(0));
+    byte[] hash = sendCapacity(receivers, SendAddresses.get(0));
     System.out.println("Transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
@@ -83,7 +83,7 @@ public class SingleSigWithCkbIndexerTxExample {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
-  private static String sendCapacity(List<Receiver> receivers, String changeAddress)
+  private static byte[] sendCapacity(List<Receiver> receivers, String changeAddress)
       throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 

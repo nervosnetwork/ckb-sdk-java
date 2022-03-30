@@ -71,7 +71,7 @@ public class MultiSignTransactionExample {
             + getBalance(targetAddress)
             + " CKB");
 
-    String txHash = sendCapacity(targetAddress, Utils.ckbToShannon(3000), privateKeys);
+    byte[] txHash = sendCapacity(targetAddress, Utils.ckbToShannon(3000), privateKeys);
     System.out.println("Transaction hash: " + txHash);
     Thread.sleep(30000);
 
@@ -155,7 +155,7 @@ public class MultiSignTransactionExample {
     return signBuilder.buildTx();
   }
 
-  public static String sendCapacity(
+  public static byte[] sendCapacity(
       String targetAddress, BigInteger capacity, List<String> privateKeys) throws IOException {
     Transaction tx = generateTx(targetAddress, capacity, privateKeys);
     return api.sendTransaction(tx);

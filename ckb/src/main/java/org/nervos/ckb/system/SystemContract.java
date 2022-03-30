@@ -7,12 +7,11 @@ import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.Block;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
 
 public class SystemContract {
 
   private static List<Transaction> getSystemCellTransactions(Api api) throws IOException {
-    Block block = api.getBlockByNumber("0x0");
+    Block block = api.getBlockByNumber(0);
     if (block == null) {
       throw new IOException("Genesis block not found");
     }

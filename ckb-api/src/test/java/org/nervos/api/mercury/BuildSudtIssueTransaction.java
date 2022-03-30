@@ -61,7 +61,7 @@ public class BuildSudtIssueTransaction {
       System.out.println(g.toJson(s));
       Transaction tx = SignUtils.sign(s);
       System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println("upload udt cell: " + txHash);
     } catch (IOException e) {
       e.printStackTrace();
@@ -81,7 +81,7 @@ public class BuildSudtIssueTransaction {
         System.out.println(g.toJson(s));
         Transaction tx = SignUtils.sign(s);
         System.out.println(g.toJson(tx));
-        String txHash = ApiFactory.getApi().sendTransaction(tx);
+        byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
         System.out.println("build acp cell: " + txHash);
       }
     } catch (IOException e) {
@@ -102,7 +102,7 @@ public class BuildSudtIssueTransaction {
       System.out.println(g.toJson(s));
       Transaction tx = SignUtils.sign(s);
       System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println("issue udt cell: " + txHash);
     } catch (IOException e) {
       e.printStackTrace();

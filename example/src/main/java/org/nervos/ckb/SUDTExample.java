@@ -69,7 +69,7 @@ public class SUDTExample {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
-  private static String issue() throws IOException {
+  private static byte[] issue() throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -126,7 +126,7 @@ public class SUDTExample {
     return api.sendTransaction(tx);
   }
 
-  private static String transfer() throws IOException {
+  private static byte[] transfer() throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);

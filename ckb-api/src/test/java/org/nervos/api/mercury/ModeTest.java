@@ -52,7 +52,7 @@ public class ModeTest {
       System.out.println(g.toJson(s));
       Transaction tx = sign(s);
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -81,7 +81,7 @@ public class ModeTest {
 
       Transaction tx = sign(s);
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -144,7 +144,7 @@ public class ModeTest {
       Transaction tx = sign(s);
       System.out.println(g.toJson(s.txView));
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {

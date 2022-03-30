@@ -76,7 +76,7 @@ public class BuildSimpleTransferTransactionTest {
 
       Transaction tx = SignUtils.sign(transactionCompletionResponse);
 
-      String hash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] hash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(hash);
     } catch (Exception e) {
       e.printStackTrace();
@@ -101,7 +101,7 @@ public class BuildSimpleTransferTransactionTest {
 
       Transaction tx = SignUtils.sign(transactionCompletionResponse);
 
-      String hash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] hash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(hash);
     } catch (Exception e) {
       e.printStackTrace();
@@ -124,7 +124,7 @@ public class BuildSimpleTransferTransactionTest {
 
       Transaction tx = SignUtils.sign(transactionCompletionResponse);
 
-      String hash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] hash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(hash);
     } catch (Exception e) {
       e.printStackTrace();
@@ -150,7 +150,7 @@ public class BuildSimpleTransferTransactionTest {
 
       Transaction tx = SignUtils.sign(transactionCompletionResponse);
 
-      String hash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] hash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(hash);
     } catch (Exception e) {
       e.printStackTrace();

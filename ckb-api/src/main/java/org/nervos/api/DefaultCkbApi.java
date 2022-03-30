@@ -140,27 +140,27 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public Block getBlock(String blockHash) throws IOException {
+  public Block getBlock(byte[] blockHash) throws IOException {
     return this.ckbApi.getBlock(blockHash);
   }
 
   @Override
-  public Block getBlockByNumber(String blockNumber) throws IOException {
+  public Block getBlockByNumber(int blockNumber) throws IOException {
     return this.ckbApi.getBlockByNumber(blockNumber);
   }
 
   @Override
-  public TransactionWithStatus getTransaction(String transactionHash) throws IOException {
+  public TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException {
     return this.ckbApi.getTransaction(transactionHash);
   }
 
   @Override
-  public String getBlockHash(String blockNumber) throws IOException {
+  public byte[] getBlockHash(int blockNumber) throws IOException {
     return this.ckbApi.getBlockHash(blockNumber);
   }
 
   @Override
-  public BlockEconomicState getBlockEconomicState(String blockHash) throws IOException {
+  public BlockEconomicState getBlockEconomicState(byte[] blockHash) throws IOException {
     return this.ckbApi.getBlockEconomicState(blockHash);
   }
 
@@ -185,38 +185,38 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public Epoch getEpochByNumber(String epochNumber) throws IOException {
+  public Epoch getEpochByNumber(int epochNumber) throws IOException {
     return this.ckbApi.getEpochByNumber(epochNumber);
   }
 
   @Override
-  public Header getHeader(String blockHash) throws IOException {
+  public Header getHeader(byte[] blockHash) throws IOException {
     return this.ckbApi.getHeader(blockHash);
   }
 
   @Override
-  public Header getHeaderByNumber(String blockNumber) throws IOException {
+  public Header getHeaderByNumber(int blockNumber) throws IOException {
     return this.ckbApi.getHeaderByNumber(blockNumber);
   }
 
   @Override
-  public TransactionProof getTransactionProof(List<String> txHashes) throws IOException {
+  public TransactionProof getTransactionProof(List<byte[]> txHashes) throws IOException {
     return this.ckbApi.getTransactionProof(txHashes);
   }
 
   @Override
-  public TransactionProof getTransactionProof(List<String> txHashes, String blockHash)
+  public TransactionProof getTransactionProof(List<byte[]> txHashes, byte[] blockHash)
       throws IOException {
     return this.ckbApi.getTransactionProof(txHashes, blockHash);
   }
 
   @Override
-  public List<String> verifyTransactionProof(TransactionProof transactionProof) throws IOException {
+  public List<byte[]> verifyTransactionProof(TransactionProof transactionProof) throws IOException {
     return this.ckbApi.verifyTransactionProof(transactionProof);
   }
 
   @Override
-  public Block getForkBlock(String blockHash) throws IOException {
+  public Block getForkBlock(byte[] blockHash) throws IOException {
     return this.ckbApi.getForkBlock(blockHash);
   }
 
@@ -226,7 +226,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public String getBlockMedianTime(String blockHash) throws IOException {
+  public long getBlockMedianTime(byte[] blockHash) throws IOException {
     return this.ckbApi.getBlockMedianTime(blockHash);
   }
 
@@ -241,8 +241,8 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public String clearTxPool() throws IOException {
-    return this.ckbApi.clearTxPool();
+  public void clearTxPool() throws IOException {
+    this.ckbApi.clearTxPool();
   }
 
   @Override
@@ -256,12 +256,12 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public String sendTransaction(Transaction transaction) throws IOException {
+  public byte[] sendTransaction(Transaction transaction) throws IOException {
     return this.ckbApi.sendTransaction(transaction);
   }
 
   @Override
-  public String sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
+  public byte[] sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
       throws IOException {
     return this.ckbApi.sendTransaction(transaction, outputsValidator);
   }
@@ -282,23 +282,23 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public String setNetworkActive(Boolean state) throws IOException {
-    return this.ckbApi.setNetworkActive(state);
+  public void setNetworkActive(Boolean state) throws IOException {
+    this.ckbApi.setNetworkActive(state);
   }
 
   @Override
-  public String addNode(String peerId, String address) throws IOException {
-    return this.ckbApi.addNode(peerId, address);
+  public void addNode(String peerId, String address) throws IOException {
+    this.ckbApi.addNode(peerId, address);
   }
 
   @Override
-  public String removeNode(String peerId) throws IOException {
-    return this.ckbApi.removeNode(peerId);
+  public void removeNode(String peerId) throws IOException {
+    this.ckbApi.removeNode(peerId);
   }
 
   @Override
-  public String setBan(BannedAddress bannedAddress) throws IOException {
-    return this.ckbApi.setBan(bannedAddress);
+  public void setBan(BannedAddress bannedAddress) throws IOException {
+    this.ckbApi.setBan(bannedAddress);
   }
 
   @Override
@@ -307,13 +307,13 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public String clearBannedAddresses() throws IOException {
-    return this.ckbApi.clearBannedAddresses();
+  public void clearBannedAddresses() throws IOException {
+    this.ckbApi.clearBannedAddresses();
   }
 
   @Override
-  public String pingPeers() throws IOException {
-    return this.ckbApi.pingPeers();
+  public void pingPeers() throws IOException {
+    this.ckbApi.pingPeers();
   }
 
   @Override
@@ -323,18 +323,18 @@ public class DefaultCkbApi implements CkbApi {
 
   @Override
   @Deprecated
-  public String computeTransactionHash(Transaction transaction) throws IOException {
+  public byte[] computeTransactionHash(Transaction transaction) throws IOException {
     return this.ckbApi.computeTransactionHash(transaction);
   }
 
   @Override
   @Deprecated
-  public String computeScriptHash(Script script) throws IOException {
+  public byte[] computeScriptHash(Script script) throws IOException {
     return this.ckbApi.computeScriptHash(script);
   }
 
   @Override
-  public String calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return this.ckbApi.calculateDaoMaximumWithdraw(outPoint, withdrawBlockHash);
   }

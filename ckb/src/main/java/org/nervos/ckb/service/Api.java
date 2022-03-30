@@ -50,34 +50,34 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public Block getBlock(String blockHash) throws IOException {
+  public Block getBlock(byte[] blockHash) throws IOException {
     return rpcService.post("get_block", Collections.singletonList(blockHash), Block.class);
   }
 
   @Override
-  public Block getBlockByNumber(String blockNumber) throws IOException {
+  public Block getBlockByNumber(int blockNumber) throws IOException {
     return rpcService.post(
         "get_block_by_number",
-        Collections.singletonList(Numeric.toHexString(blockNumber)),
+        Collections.singletonList(blockNumber),
         Block.class);
   }
 
   @Override
-  public TransactionWithStatus getTransaction(String transactionHash) throws IOException {
+  public TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException {
     return rpcService.post(
         "get_transaction", Collections.singletonList(transactionHash), TransactionWithStatus.class);
   }
 
   @Override
-  public String getBlockHash(String blockNumber) throws IOException {
+  public byte[] getBlockHash(int blockNumber) throws IOException {
     return rpcService.post(
         "get_block_hash",
-        Collections.singletonList(Numeric.toHexString(blockNumber)),
+        Collections.singletonList(blockNumber),
         String.class);
   }
 
   @Override
-  public BlockEconomicState getBlockEconomicState(String blockHash) throws IOException {
+  public BlockEconomicState getBlockEconomicState(byte[] blockHash) throws IOException {
     return rpcService.post(
         "get_block_economic_state", Collections.singletonList(blockHash), BlockEconomicState.class);
   }
@@ -108,41 +108,41 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public Epoch getEpochByNumber(String epochNumber) throws IOException {
+  public Epoch getEpochByNumber(int epochNumber) throws IOException {
     return rpcService.post(
         "get_epoch_by_number",
-        Collections.singletonList(Numeric.toHexString(epochNumber)),
+        Collections.singletonList(epochNumber),
         Epoch.class);
   }
 
   @Override
-  public Header getHeader(String blockHash) throws IOException {
+  public Header getHeader(byte[] blockHash) throws IOException {
     return rpcService.post("get_header", Collections.singletonList(blockHash), Header.class);
   }
 
   @Override
-  public Header getHeaderByNumber(String blockNumber) throws IOException {
+  public Header getHeaderByNumber(int blockNumber) throws IOException {
     return rpcService.post(
         "get_header_by_number",
-        Collections.singletonList(Numeric.toHexString(blockNumber)),
+        Collections.singletonList(blockNumber),
         Header.class);
   }
 
   @Override
-  public TransactionProof getTransactionProof(List<String> txHashes) throws IOException {
+  public TransactionProof getTransactionProof(List<byte[]> txHashes) throws IOException {
     return rpcService.post(
         "get_transaction_proof", Collections.singletonList(txHashes), TransactionProof.class);
   }
 
   @Override
-  public TransactionProof getTransactionProof(List<String> txHashes, String blockHash)
+  public TransactionProof getTransactionProof(List<byte[]> txHashes, byte[] blockHash)
       throws IOException {
     return rpcService.post(
         "get_transaction_proof", Arrays.asList(txHashes, blockHash), TransactionProof.class);
   }
 
   @Override
-  public List<String> verifyTransactionProof(TransactionProof transactionProof) throws IOException {
+  public List<byte[]> verifyTransactionProof(TransactionProof transactionProof) throws IOException {
     return rpcService.post(
         "verify_transaction_proof",
         Collections.singletonList(transactionProof),
@@ -150,7 +150,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public Block getForkBlock(String blockHash) throws IOException {
+  public Block getForkBlock(byte[] blockHash) throws IOException {
     return rpcService.post("get_fork_block", Collections.singletonList(blockHash), Block.class);
   }
 
@@ -160,7 +160,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public String getBlockMedianTime(String blockHash) throws IOException {
+  public long getBlockMedianTime(byte[] blockHash) throws IOException {
     return rpcService.post("get_block_median_time", Arrays.asList(blockHash), Consensus.class);
   }
 
@@ -177,8 +177,8 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public String clearTxPool() throws IOException {
-    return rpcService.post("clear_tx_pool", Collections.emptyList(), String.class);
+  public void clearTxPool() throws IOException {
+    rpcService.post("clear_tx_pool", Collections.emptyList(), String.class);
   }
 
   @Override
@@ -193,7 +193,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public String sendTransaction(Transaction transaction) throws IOException {
+  public byte[] sendTransaction(Transaction transaction) throws IOException {
     return rpcService.post(
         "send_transaction",
         Arrays.asList(
@@ -202,7 +202,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public String sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
+  public byte[] sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
       throws IOException {
     return rpcService.post(
         "send_transaction",
@@ -228,23 +228,23 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public String setNetworkActive(Boolean state) throws IOException {
-    return rpcService.post("set_network_active", Collections.singletonList(state), String.class);
+  public void setNetworkActive(Boolean state) throws IOException {
+    rpcService.post("set_network_active", Collections.singletonList(state), String.class);
   }
 
   @Override
-  public String addNode(String peerId, String address) throws IOException {
-    return rpcService.post("add_node", Arrays.asList(peerId, address), String.class);
+  public void addNode(String peerId, String address) throws IOException {
+    rpcService.post("add_node", Arrays.asList(peerId, address), String.class);
   }
 
   @Override
-  public String removeNode(String peerId) throws IOException {
-    return rpcService.post("remove_node", Collections.singletonList(peerId), String.class);
+  public void removeNode(String peerId) throws IOException {
+    rpcService.post("remove_node", Collections.singletonList(peerId), String.class);
   }
 
   @Override
-  public String setBan(BannedAddress bannedAddress) throws IOException {
-    return rpcService.post(
+  public void setBan(BannedAddress bannedAddress) throws IOException {
+    rpcService.post(
         "set_ban",
         Arrays.asList(
             bannedAddress.address,
@@ -264,13 +264,13 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public String clearBannedAddresses() throws IOException {
-    return rpcService.post("clear_banned_addresses", Collections.emptyList(), String.class);
+  public void clearBannedAddresses() throws IOException {
+    rpcService.post("clear_banned_addresses", Collections.emptyList(), String.class);
   }
 
   @Override
-  public String pingPeers() throws IOException {
-    return rpcService.post("ping_peers", Collections.emptyList(), String.class);
+  public void pingPeers() throws IOException {
+    rpcService.post("ping_peers", Collections.emptyList(), String.class);
   }
 
   /** Experiment RPC */
@@ -284,7 +284,7 @@ public class Api implements CkbRpcApi {
 
   @Override
   @Deprecated
-  public String computeTransactionHash(Transaction transaction) throws IOException {
+  public byte[] computeTransactionHash(Transaction transaction) throws IOException {
     return rpcService.post(
         "_compute_transaction_hash",
         Collections.singletonList(Convert.parseTransaction(transaction)),
@@ -293,12 +293,12 @@ public class Api implements CkbRpcApi {
 
   @Override
   @Deprecated
-  public String computeScriptHash(Script script) throws IOException {
+  public byte[] computeScriptHash(Script script) throws IOException {
     return rpcService.post("_compute_script_hash", Collections.singletonList(script), String.class);
   }
 
   @Override
-  public String calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return rpcService.post(
         "calculate_dao_maximum_withdraw", Arrays.asList(outPoint, withdrawBlockHash), String.class);
