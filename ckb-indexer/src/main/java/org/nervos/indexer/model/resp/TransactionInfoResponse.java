@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class TransactionInfoResponse {
   @SerializedName("block_number")
-  public String blockNumber;
+  public int blockNumber;
 
   @SerializedName("io_index")
-  public String ioIndex;
+  public int ioIndex;
 
   @SerializedName("io_type")
   public String ioType;
 
   @SerializedName("tx_hash")
-  public String txHash;
+  public byte[] txHash;
 
   @SerializedName("tx_index")
-  public String txIndex;
+  public int txIndex;
 }

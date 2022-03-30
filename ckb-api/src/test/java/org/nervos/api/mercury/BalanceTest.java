@@ -180,7 +180,7 @@ public class BalanceTest {
 
     SearchKeyBuilder key = new SearchKeyBuilder();
     key.script(script);
-    key.scriptType(ScriptType.lock);
+    key.scriptType(ScriptType.LOCK);
 
     System.out.println(g.toJson(key.build()));
 

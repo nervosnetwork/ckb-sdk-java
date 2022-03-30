@@ -23,7 +23,7 @@ public class FilterTest {
                 Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
                         Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
                 Script.HashType.TYPE));
-    key.scriptType(ScriptType.lock);
+    key.scriptType(ScriptType.LOCK);
 
     key.filterScript(
         new Script(
@@ -53,10 +53,9 @@ public class FilterTest {
                 Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
                         Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
                 Script.HashType.TYPE));
-    key.scriptType(ScriptType.lock);
+    key.scriptType(ScriptType.LOCK);
 
-    key.filterOutputCapacityRange(
-        Numeric.toHexString("0"), Numeric.toHexString("1000000000000000000"));
+    key.filterOutputCapacityRange(BigInteger.ZERO, new BigInteger("1000000000000000000"));
 
     System.out.println(g.toJson(key.build()));
 
@@ -81,9 +80,9 @@ public class FilterTest {
                 Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
                 Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
                 Script.HashType.TYPE));
-    key.scriptType(ScriptType.lock);
+    key.scriptType(ScriptType.LOCK);
 
-    key.filterOutputDataLenRange(Numeric.toHexString("0"), Numeric.toHexString("32"));
+    key.filterOutputDataLenRange(0, 32);
 
     System.out.println(g.toJson(key.build()));
 
@@ -106,9 +105,9 @@ public class FilterTest {
                 Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
                         Numeric.hexStringToByteArray("0x0c24d18f16e3c43272695e5db006a22cb9ddde51"),
                 Script.HashType.TYPE));
-    key.scriptType(ScriptType.lock);
+    key.scriptType(ScriptType.LOCK);
 
-    key.filterBlockRange(Numeric.toHexString("2003365"), Numeric.toHexString("2103365"));
+    key.filterBlockRange(2003365, 2103365);
 
     System.out.println(g.toJson(key.build()));
 
