@@ -44,10 +44,10 @@ public class Script {
 
   public BigInteger occupiedCapacity() {
     int byteSize = 1;
-    if (codeHash == null) {
+    if (codeHash != null) {
       byteSize += codeHash.length;
     }
-    if (args == null) {
+    if (args != null) {
       byteSize += args.length;
     }
     return Utils.ckbToShannon(byteSize);

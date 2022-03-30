@@ -25,10 +25,10 @@ public class CellOutput {
     this.type = type;
   }
 
-  public BigInteger occupiedCapacity(String data) {
+  public BigInteger occupiedCapacity(byte[] data) {
     BigInteger byteSize = Utils.ckbToShannon(8);
-    if (!Strings.isEmpty(data)) {
-      byteSize = byteSize.add(Utils.ckbToShannon(Numeric.hexStringToByteArray(data).length));
+    if (data != null) {
+      byteSize = byteSize.add(Utils.ckbToShannon(data.length));
     }
     if (lock != null) {
       byteSize = byteSize.add(lock.occupiedCapacity());
