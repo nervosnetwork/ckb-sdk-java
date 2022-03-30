@@ -3,6 +3,7 @@ package org.nervos.indexer.model;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
 
 public class SearchKeyBuilder {
 

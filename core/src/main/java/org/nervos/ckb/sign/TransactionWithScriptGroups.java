@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.transaction.Transaction;
 
 public class TransactionWithScriptGroups {
