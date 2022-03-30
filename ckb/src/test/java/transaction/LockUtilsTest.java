@@ -15,9 +15,12 @@ public class LockUtilsTest {
         LockUtils.generateLockScriptWithPrivateKey(
             "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3",
                 Numeric.hexStringToByteArray("9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"));
-    Assertions.assertEquals(
-        "9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8", lock.codeHash);
-    Assertions.assertEquals("0x36c329ed630d6ce750712a477543672adab57f4c", lock.args);
+    Assertions.assertArrayEquals(
+            Numeric.hexStringToByteArray("9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
+            lock.codeHash);
+    Assertions.assertArrayEquals(
+            Numeric.hexStringToByteArray("0x36c329ed630d6ce750712a477543672adab57f4c"),
+            lock.args);
   }
 
   @Test
@@ -25,9 +28,9 @@ public class LockUtilsTest {
     Script lock =
         LockUtils.generateLockScriptWithAddress(
             "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdrhpvcu82numz73852ed45cdxn4kcn72cr4338a");
-    Assertions.assertEquals(
-        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8", lock.codeHash);
-    Assertions.assertEquals("0x36c329ed630d6ce750712a477543672adab57f4c", lock.args);
+    Assertions.assertArrayEquals(
+            Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"), lock.codeHash);
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b"), lock.args);
   }
 
   @Test
