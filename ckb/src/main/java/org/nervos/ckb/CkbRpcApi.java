@@ -102,12 +102,6 @@ public interface CkbRpcApi {
 
   Cycles dryRunTransaction(Transaction transaction) throws IOException;
 
-  @Deprecated
-  byte[] computeTransactionHash(Transaction transaction) throws IOException;
-
-  @Deprecated
-  byte[] computeScriptHash(Script script) throws IOException;
-
   BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException;
 

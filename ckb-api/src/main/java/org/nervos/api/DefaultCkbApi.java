@@ -322,18 +322,6 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  @Deprecated
-  public byte[] computeTransactionHash(Transaction transaction) throws IOException {
-    return this.ckbApi.computeTransactionHash(transaction);
-  }
-
-  @Override
-  @Deprecated
-  public byte[] computeScriptHash(Script script) throws IOException {
-    return this.ckbApi.computeScriptHash(script);
-  }
-
-  @Override
   public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return this.ckbApi.calculateDaoMaximumWithdraw(outPoint, withdrawBlockHash);

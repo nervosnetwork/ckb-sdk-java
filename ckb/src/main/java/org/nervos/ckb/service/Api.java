@@ -281,21 +281,6 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  @Deprecated
-  public byte[] computeTransactionHash(Transaction transaction) throws IOException {
-    return rpcService.post(
-        "_compute_transaction_hash",
-        Collections.singletonList(Convert.parseTransaction(transaction)),
-        byte[].class);
-  }
-
-  @Override
-  @Deprecated
-  public byte[] computeScriptHash(Script script) throws IOException {
-    return rpcService.post("_compute_script_hash", Collections.singletonList(script), byte[].class);
-  }
-
-  @Override
   public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return rpcService.post(
