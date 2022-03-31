@@ -17,7 +17,7 @@ public class Header {
   @SerializedName("parent_hash")
   public byte[] parentHash;
 
-  public byte[] timestamp;
+  public long timestamp;
 
   @SerializedName("transactions_root")
   public byte[] transactionsRoot;

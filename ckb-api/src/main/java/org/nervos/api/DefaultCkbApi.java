@@ -226,7 +226,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public long getBlockMedianTime(byte[] blockHash) throws IOException {
+  public Long getBlockMedianTime(byte[] blockHash) throws IOException {
     return this.ckbApi.getBlockMedianTime(blockHash);
   }
 

@@ -30,7 +30,7 @@ public class Consensus {
   public int maxBlockBytes;
 
   @SerializedName("max_block_cycles")
-  public int maxBlockCycles;
+  public long maxBlockCycles;
 
   @SerializedName("max_block_proposals_limit")
   public int maxBlockProposalsLimit;

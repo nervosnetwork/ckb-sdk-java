@@ -73,7 +73,7 @@ public class Api implements CkbRpcApi {
     return rpcService.post(
         "get_block_hash",
         Collections.singletonList(blockNumber),
-        String.class);
+        byte[].class);
   }
 
   @Override
@@ -97,9 +97,7 @@ public class Api implements CkbRpcApi {
 
   @Override
   public BigInteger getTipBlockNumber() throws IOException {
-    String blockNumber =
-        rpcService.post("get_tip_block_number", Collections.<String>emptyList(), String.class);
-    return Numeric.toBigInt(blockNumber);
+    return rpcService.post("get_tip_block_number", Collections.<String>emptyList(), BigInteger.class);
   }
 
   @Override
@@ -146,7 +144,7 @@ public class Api implements CkbRpcApi {
     return rpcService.post(
         "verify_transaction_proof",
         Collections.singletonList(transactionProof),
-        new TypeToken<List<String>>() {}.getType());
+        new TypeToken<List<byte[]>>() {}.getType());
   }
 
   @Override
@@ -160,8 +158,8 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public long getBlockMedianTime(byte[] blockHash) throws IOException {
-    return rpcService.post("get_block_median_time", Arrays.asList(blockHash), Consensus.class);
+  public Long getBlockMedianTime(byte[] blockHash) throws IOException {
+    return rpcService.post("get_block_median_time", Arrays.asList(blockHash), Long.class);
   }
 
   /** Stats RPC */
@@ -178,7 +176,7 @@ public class Api implements CkbRpcApi {
 
   @Override
   public void clearTxPool() throws IOException {
-    rpcService.post("clear_tx_pool", Collections.emptyList(), String.class);
+    rpcService.post("clear_tx_pool", Collections.emptyList(), Object.class);
   }
 
   @Override
@@ -198,7 +196,7 @@ public class Api implements CkbRpcApi {
         "send_transaction",
         Arrays.asList(
             Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
-        String.class);
+        byte[].class);
   }
 
   @Override
@@ -207,7 +205,7 @@ public class Api implements CkbRpcApi {
     return rpcService.post(
         "send_transaction",
         Arrays.asList(Convert.parseTransaction(transaction), outputsValidator),
-        String.class);
+        byte[].class);
   }
 
   /** Net RPC */
@@ -229,17 +227,17 @@ public class Api implements CkbRpcApi {
 
   @Override
   public void setNetworkActive(Boolean state) throws IOException {
-    rpcService.post("set_network_active", Collections.singletonList(state), String.class);
+    rpcService.post("set_network_active", Collections.singletonList(state), Object.class);
   }
 
   @Override
   public void addNode(String peerId, String address) throws IOException {
-    rpcService.post("add_node", Arrays.asList(peerId, address), String.class);
+    rpcService.post("add_node", Arrays.asList(peerId, address), Object.class);
   }
 
   @Override
   public void removeNode(String peerId) throws IOException {
-    rpcService.post("remove_node", Collections.singletonList(peerId), String.class);
+    rpcService.post("remove_node", Collections.singletonList(peerId), Object.class);
   }
 
   @Override
@@ -252,7 +250,7 @@ public class Api implements CkbRpcApi {
             Numeric.toHexStringWithPrefix(BigInteger.valueOf(bannedAddress.banTime)),
             bannedAddress.absolute,
             bannedAddress.reason),
-        String.class);
+        Object.class);
   }
 
   @Override
@@ -265,12 +263,12 @@ public class Api implements CkbRpcApi {
 
   @Override
   public void clearBannedAddresses() throws IOException {
-    rpcService.post("clear_banned_addresses", Collections.emptyList(), String.class);
+    rpcService.post("clear_banned_addresses", Collections.emptyList(), Object.class);
   }
 
   @Override
   public void pingPeers() throws IOException {
-    rpcService.post("ping_peers", Collections.emptyList(), String.class);
+    rpcService.post("ping_peers", Collections.emptyList(), Object.class);
   }
 
   /** Experiment RPC */
@@ -288,20 +286,20 @@ public class Api implements CkbRpcApi {
     return rpcService.post(
         "_compute_transaction_hash",
         Collections.singletonList(Convert.parseTransaction(transaction)),
-        String.class);
+        byte[].class);
   }
 
   @Override
   @Deprecated
   public byte[] computeScriptHash(Script script) throws IOException {
-    return rpcService.post("_compute_script_hash", Collections.singletonList(script), String.class);
+    return rpcService.post("_compute_script_hash", Collections.singletonList(script), byte[].class);
   }
 
   @Override
   public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return rpcService.post(
-        "calculate_dao_maximum_withdraw", Arrays.asList(outPoint, withdrawBlockHash), String.class);
+        "calculate_dao_maximum_withdraw", Arrays.asList(outPoint, withdrawBlockHash), BigInteger.class);
   }
 
   /**

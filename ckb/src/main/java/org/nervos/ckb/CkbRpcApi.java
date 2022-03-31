@@ -63,7 +63,7 @@ public interface CkbRpcApi {
 
   Consensus getConsensus() throws IOException;
 
-  long getBlockMedianTime(byte[] blockHash) throws IOException;
+  Long getBlockMedianTime(byte[] blockHash) throws IOException;
 
   BlockchainInfo getBlockchainInfo() throws IOException;
 
