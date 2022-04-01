@@ -54,8 +54,11 @@ public class Script {
   }
 
   public enum HashType {
+    @SerializedName("data")
     DATA,
+    @SerializedName("type")
     TYPE,
+    @SerializedName("data1")
     DATA1;
   }
 }

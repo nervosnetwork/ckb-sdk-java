@@ -10,7 +10,6 @@ import org.nervos.ckb.transaction.CollectResult;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -57,7 +56,7 @@ public class IndexerCollector {
     AddressParseResult rs = AddressParser.parse(address);
     CkbIndexerCellsCapacity capacityInfo = indexerApi.getCellsCapacity(new SearchKey(rs.script));
 
-    return Numeric.toBigInt(capacityInfo.capacity);
+    return capacityInfo.capacity;
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {

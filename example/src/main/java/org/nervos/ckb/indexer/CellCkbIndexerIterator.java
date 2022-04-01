@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.nervos.ckb.transaction.TransactionInput;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
@@ -19,22 +20,22 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   private List<TransactionInput> transactionInputs = new ArrayList<>();
   private int addressIndex;
   private int inputIndex;
-  private String afterCursor;
+  private byte[] afterCursor;
 
   private final List<String> addresses;
   private final CkbIndexerApi indexerApi;
   private final boolean skipDataAndType;
-  private final String order;
-  private final BigInteger limit;
+  private final Order order;
+  private final Integer limit;
   private final Script type;
 
   CellCkbIndexerIterator(
       CkbIndexerApi indexerApi,
       List<String> addresses,
       boolean skipDataAndType,
-      String order,
-      BigInteger limit,
-      String afterCursor,
+      Order order,
+      Integer limit,
+      byte[] afterCursor,
       Script type) {
     this.indexerApi = indexerApi;
     this.addresses = addresses;
@@ -49,11 +50,11 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   }
 
   CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses, boolean skipDataAndType) {
-    this(api, addresses, skipDataAndType, "asc", BigInteger.valueOf(100), "0x", null);
+    this(api, addresses, skipDataAndType, Order.ASC, 100, null, null);
   }
 
   CellCkbIndexerIterator(CkbIndexerApi api, List<String> addresses, Script type) {
-    this(api, addresses, false, "asc", BigInteger.valueOf(100), "0x", type);
+    this(api, addresses, false, Order.ASC, 100, null, type);
   }
 
   @Override
@@ -73,14 +74,15 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
           byte[] lockHash = lock.computeHash();
           transactionInputs =
               fetchTransactionInputsByType(
-                  Numeric.toHexString(lockHash), new SearchKey(lock, "lock", new SearchKey.Filter(type)));
+                  Numeric.toHexString(lockHash),
+                      new SearchKey(lock, ScriptType.LOCK, new SearchKey.Filter(type)));
         } else {
           transactionInputs =
               fetchTransactionInputsByLock(
                   new SearchKey(AddressParser.parse(addresses.get(addressIndex)).script));
         }
         if (transactionInputs == null || transactionInputs.size() == 0) {
-          afterCursor = "0x";
+          afterCursor = null;
           addressIndex++;
         }
         if (addressIndex >= addresses.size()) {
@@ -103,7 +105,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
     for (CkbIndexerCells.Cell liveCell : liveCells) {
       if (skipDataAndType) {
         CellOutput cellOutput = liveCell.output;
-        if ((!Strings.isEmpty(liveCell.outputData) && !"0x".equals(liveCell.outputData))
+        if ((liveCell.outputData != null && liveCell.outputData.length > 0)
             || cellOutput.type != null) {
           continue;
         }
@@ -135,7 +137,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
     for (CkbIndexerCells.Cell liveCell : liveCells) {
       if (skipDataAndType) {
         CellOutput cellOutput = liveCell.output;
-        if ((!Strings.isEmpty(liveCell.outputData) && !"0x".equals(liveCell.outputData))
+        if ((liveCell.outputData != null && liveCell.outputData.length > 0)
             || cellOutput.type != null) {
           continue;
         }

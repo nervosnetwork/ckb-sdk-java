@@ -21,16 +21,16 @@ public class CkbIndexerApi {
   }
 
   public CkbIndexerCells getCells(
-      SearchKey searchKey, String order, BigInteger limit, String afterCursor) throws IOException {
-    if ("0x".equals(afterCursor)) {
+      SearchKey searchKey, Order order, Integer limit, byte[] afterCursor) throws IOException {
+    if (afterCursor == null || afterCursor.length == 0) {
       return rpcService.post(
           "get_cells",
-          Arrays.asList(searchKey, order, Numeric.toHexStringWithPrefix(limit)),
+          Arrays.asList(searchKey, order, limit),
           CkbIndexerCells.class);
     } else {
       return rpcService.post(
           "get_cells",
-          Arrays.asList(searchKey, order, Numeric.toHexStringWithPrefix(limit), afterCursor),
+          Arrays.asList(searchKey, order, limit, afterCursor),
           CkbIndexerCells.class);
     }
   }
