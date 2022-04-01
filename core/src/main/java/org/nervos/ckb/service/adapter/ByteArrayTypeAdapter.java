@@ -1,6 +1,7 @@
 package org.nervos.ckb.service.adapter;
 
 import com.google.gson.*;
+import org.bouncycastle.util.encoders.Hex;
 import org.nervos.ckb.utils.Numeric;
 
 import java.lang.reflect.Type;
@@ -12,8 +13,8 @@ public class ByteArrayTypeAdapter implements JsonSerializer<byte[]>, JsonDeseria
         if (src == null) {
             return null;
         }
-        String value = AdapterUtils.toHexString(src);
-        return new JsonPrimitive(AdapterUtils.toHexString(src));
+        String value = AdapterUtils.toHexStringPadded(src);
+        return new JsonPrimitive(value);
     }
 
     @Override
