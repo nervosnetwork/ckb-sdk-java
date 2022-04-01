@@ -2,6 +2,8 @@ package org.nervos.mercury;
 
 import java.io.IOException;
 import java.util.List;
+
+import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
@@ -76,11 +78,11 @@ public interface MercuryApi {
   TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
       GetSpentTransactionPayload payload) throws IOException;
 
-  CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+  CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
       throws IOException;
 
   TransactionResponse getTransactions(
-      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException;
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
 
   TipResponse getTip() throws IOException;
 

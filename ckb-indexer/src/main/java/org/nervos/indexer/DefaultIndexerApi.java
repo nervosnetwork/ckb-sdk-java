@@ -1,9 +1,9 @@
 package org.nervos.indexer;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Arrays;
 import org.nervos.ckb.service.RpcService;
+import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
@@ -13,8 +13,6 @@ import org.nervos.indexer.model.resp.TransactionResponse;
 public class DefaultIndexerApi implements CkbIndexerApi {
 
   protected RpcService rpcService;
-
-  private Gson gson = new Gson();
 
   public DefaultIndexerApi(String mercuryUrl, boolean isDebug) {
     this.rpcService = new RpcService(mercuryUrl, isDebug);
@@ -30,7 +28,7 @@ public class DefaultIndexerApi implements CkbIndexerApi {
   }
 
   @Override
-  public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+  public CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
       throws IOException {
     return this.rpcService.post(
         CkbIndexerRpcMethods.GET_CELLS,
@@ -40,7 +38,7 @@ public class DefaultIndexerApi implements CkbIndexerApi {
 
   @Override
   public TransactionResponse getTransactions(
-      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
     return this.rpcService.post(
         CkbIndexerRpcMethods.GET_TRANSACTIONS,
         Arrays.asList(searchKey, order, limit, afterCursor),

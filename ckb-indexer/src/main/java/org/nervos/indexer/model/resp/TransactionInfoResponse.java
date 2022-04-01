@@ -10,11 +10,18 @@ public class TransactionInfoResponse {
   public int ioIndex;
 
   @SerializedName("io_type")
-  public String ioType;
+  public IoType ioType;
 
   @SerializedName("tx_hash")
   public byte[] txHash;
 
   @SerializedName("tx_index")
   public int txIndex;
+
+  public enum IoType {
+    @SerializedName("input")
+    INPUT,
+    @SerializedName("output")
+    OUTPUT;
+  }
 }

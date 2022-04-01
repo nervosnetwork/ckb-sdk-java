@@ -32,6 +32,7 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.indexer.CkbIndexerApi;
 import org.nervos.indexer.DefaultIndexerApi;
+import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
@@ -98,11 +99,11 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+  public CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
       throws IOException {
 
     if (this.mercuryApi != null) {
-      return this.mercuryApi.getCells(searchKey, order, limit, afterCursor);
+//      return this.mercuryApi.getCells(searchKey, order, limit, afterCursor);
     }
 
     if (this.ckbIndexerApi != null) {
@@ -114,10 +115,10 @@ public class DefaultCkbApi implements CkbApi {
 
   @Override
   public TransactionResponse getTransactions(
-      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
+          SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
 
     if (this.mercuryApi != null) {
-      return this.mercuryApi.getTransactions(searchKey, order, limit, afterCursor);
+//      return this.mercuryApi.getTransactions(searchKey, order, limit, afterCursor);
     }
 
     if (this.ckbIndexerApi != null) {

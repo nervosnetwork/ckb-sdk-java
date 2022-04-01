@@ -13,6 +13,7 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressTools;
+import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
@@ -186,7 +187,7 @@ public class BalanceTest {
 
     CellsResponse cells =
         ApiFactory.getApi()
-            .getCells(key.build(), "asc", "0x" + new BigInteger("10").toString(16), null);
+            .getCells(key.build(), Order.ASC, 10, null);
 
     if (cells.objects.size() > 0) {
       return cells.objects.get(0);

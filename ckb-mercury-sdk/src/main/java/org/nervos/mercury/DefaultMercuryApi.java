@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.CkbIndexerRpcMethods;
+import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
@@ -218,18 +219,12 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
+  public CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
       throws IOException {
-
-    List<Integer> mercuryCursor =
-        (afterCursor == null || afterCursor == "")
-            ? null
-            : Arrays.stream(afterCursor.split(",")).map(x -> Integer.valueOf(x)).collect(toList());
-
     MercuryCellsResponse response =
         this.rpcService.post(
             CkbIndexerRpcMethods.GET_CELLS,
-            Arrays.asList(searchKey, order, limit, mercuryCursor),
+            Arrays.asList(searchKey, order, limit, afterCursor),
             MercuryCellsResponse.class);
 
     return response.toCellsResponse();
@@ -237,17 +232,11 @@ public class DefaultMercuryApi implements MercuryApi {
 
   @Override
   public TransactionResponse getTransactions(
-      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
-
-    List<Integer> mercuryCursor =
-        (afterCursor == null || afterCursor == "")
-            ? null
-            : Arrays.stream(afterCursor.split(",")).map(x -> Integer.valueOf(x)).collect(toList());
-
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
     MercuryTransactionResponse response =
         this.rpcService.post(
             CkbIndexerRpcMethods.GET_TRANSACTIONS,
-            Arrays.asList(searchKey, order, limit, mercuryCursor),
+            Arrays.asList(searchKey, order, limit, afterCursor),
             MercuryTransactionResponse.class);
 
     return response.toTransactionResponse();

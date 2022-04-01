@@ -11,6 +11,5 @@ public class CellCapacityResponse {
   @SerializedName("block_number")
   public int blockNumber;
 
-  @SerializedName("")
   public BigInteger capacity;
 }
