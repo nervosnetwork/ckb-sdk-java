@@ -9,6 +9,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
@@ -32,12 +33,12 @@ public class TransferCompletionTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     try {
       sendTx(builder);
@@ -54,14 +55,14 @@ public class TransferCompletionTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(100)),
                 new ToInfo(AddressWithKeyHolder.testAddress3(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     try {
       sendTx(builder);
@@ -78,13 +79,13 @@ public class TransferCompletionTest {
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1()),
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress2())),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress3(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     System.out.println(g.toJson(builder.build()));
 
@@ -104,13 +105,13 @@ public class TransferCompletionTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     builder.payFee(AddressWithKeyHolder.testAddress3());
 
@@ -132,13 +133,13 @@ public class TransferCompletionTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     builder.change(AddressWithKeyHolder.testAddress4());
 
@@ -158,13 +159,13 @@ public class TransferCompletionTest {
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.PW_LOCK_ADDRESS)),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(1))),
-            Mode.HoldByTo));
+            Mode.HOLD_BY_TO));
 
     builder.change(AddressWithKeyHolder.testAddress4());
     System.out.println(g.toJson(builder.build()));
@@ -182,16 +183,16 @@ public class TransferCompletionTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.assetInfo(
         AssetInfo.newUdtAsset(
-            "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd"));
+            Numeric.hexStringToByteArray("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd")));
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.PW_LOCK_ADDRESS)),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), new BigInteger("1"))),
-            Mode.HoldByTo));
+            Mode.HOLD_BY_TO));
 
     builder.change(AddressWithKeyHolder.testAddress4());
     System.out.println(g.toJson(builder.build()));

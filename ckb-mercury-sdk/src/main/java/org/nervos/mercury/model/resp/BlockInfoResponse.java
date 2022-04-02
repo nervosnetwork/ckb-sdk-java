@@ -7,15 +7,15 @@ import java.util.List;
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class BlockInfoResponse {
   @SerializedName("block_number")
-  public BigInteger blockNumber;
+  public int blockNumber;
 
   @SerializedName("block_hash")
-  public String blockHash;
+  public byte[] blockHash;
 
   @SerializedName("parent_hash")
-  public String parentHash;
+  public byte[] parentHash;
 
-  public BigInteger timestamp;
+  public long timestamp;
 
   public List<TransactionInfoResponse> transactions;
 }

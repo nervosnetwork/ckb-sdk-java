@@ -82,12 +82,12 @@ public class SourceTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.from(
         From.newFrom(
-            Arrays.asList(ItemFactory.newIdentityItemByAddress(senderAddress)), Source.Free));
+            Arrays.asList(ItemFactory.newIdentityItemByAddress(senderAddress)), Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(new ToInfo(chequeCellReceiverAddress, new BigInteger("100"))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     try {
       TransactionCompletionResponse s =
@@ -117,11 +117,11 @@ public class SourceTest {
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newIdentityItemByAddress(chequeCellReceiverAddress)),
-            Source.Claimable));
+            Source.CLAIMABLE));
 
     builder.to(
         To.newTo(
-            Arrays.asList(new ToInfo(receiverAddress, new BigInteger("100"))), Mode.HoldByFrom));
+            Arrays.asList(new ToInfo(receiverAddress, new BigInteger("100"))), Mode.HOLD_BY_FROM));
 
     try {
       TransactionCompletionResponse s =

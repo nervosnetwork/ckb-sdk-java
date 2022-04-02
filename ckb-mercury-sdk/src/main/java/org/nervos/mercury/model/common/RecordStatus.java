@@ -7,5 +7,5 @@ public class RecordStatus {
 
   public AssetStatus type;
 
-  public BigInteger value;
+  public int value;
 }

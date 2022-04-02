@@ -36,13 +36,13 @@ public class ModeTest {
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress0())),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom)); // unit: CKB, 1 CKB = 10^8 Shannon
+            Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
 
     System.out.println(g.toJson(builder.build()));
 
@@ -68,11 +68,11 @@ public class ModeTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
     builder.to(
         To.newTo(
             Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), new BigInteger("100"))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     try {
       TransactionCompletionResponse s =
@@ -97,13 +97,13 @@ public class ModeTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Claimable));
+            Source.CLAIMABLE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom)); // unit: CKB, 1 CKB = 10^8 Shannon
+            Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
 
     try {
       TransactionCompletionResponse s =
@@ -127,14 +127,14 @@ public class ModeTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(
                     AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()),
                     new BigInteger("100"))),
-            Mode.HoldByTo));
+            Mode.HOLD_BY_TO));
 
     System.out.println(g.toJson(builder.build()));
 

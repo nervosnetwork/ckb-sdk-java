@@ -8,5 +8,5 @@ public class GetBalanceResponse {
   public List<BalanceResponse> balances;
 
   @SerializedName("tip_block_number")
-  public BigInteger tipBlockNumber;
+  public int tipBlockNumber;
 }

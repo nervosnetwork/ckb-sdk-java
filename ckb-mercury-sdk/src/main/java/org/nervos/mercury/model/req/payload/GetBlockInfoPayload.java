@@ -6,10 +6,10 @@ import java.math.BigInteger;
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class GetBlockInfoPayload {
   @SerializedName("block_number")
-  public BigInteger blockNumber;
+  public int blockNumber;
 
   @SerializedName("block_hash")
-  public String blockHash;
+  public byte[] blockHash;
 
   protected GetBlockInfoPayload() {}
 }

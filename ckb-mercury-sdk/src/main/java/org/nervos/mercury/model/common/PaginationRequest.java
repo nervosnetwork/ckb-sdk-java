@@ -5,17 +5,19 @@ import java.math.BigInteger;
 import java.util.List;
 
 public class PaginationRequest {
-
-  public static final String ORDER_BY_DESC = "desc";
-  public static final String ORDER_BY_ASC = "ASC";
-
   public List<Integer> cursor;
-
-  public String order;
-  public BigInteger limit;
+  public Order order;
+  public int limit;
   // TODO: 2021/8/26 zhengjianhui
-  public BigInteger skip;
+  public int skip;
 
   @SerializedName("return_count")
-  public Boolean returnCount;
+  public boolean returnCount;
+
+  public enum Order {
+    @SerializedName("ASC")
+    ASC,
+    @SerializedName("Desc")
+    DESC;
+  }
 }

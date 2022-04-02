@@ -53,7 +53,7 @@ public class BuildSudtIssueTransaction {
     new_sudt_builder.to(
         To.newTo(
             Arrays.asList(new ToInfo(admin_address, AmountUtils.ckbToShannon(issue_udt_amount))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
     System.out.println(g.toJson(new_sudt_builder.build()));
     try {
       TransactionCompletionResponse s =
@@ -70,7 +70,7 @@ public class BuildSudtIssueTransaction {
     // 4. ensure receiver has one acp cell of this UDT
     AdjustAccountPayloadBuilder account_builder = new AdjustAccountPayloadBuilder();
     account_builder.item(ItemFactory.newAddressItem(receiver_address));
-    account_builder.assetInfo(AssetInfo.newUdtAsset(Numeric.toHexString(udt_hash)));
+    account_builder.assetInfo(AssetInfo.newUdtAsset(udt_hash));
     account_builder.accountNumber(BigInteger.ONE);
     System.out.println(g.toJson(account_builder.build()));
     try {
@@ -94,7 +94,7 @@ public class BuildSudtIssueTransaction {
     sudt_builder.to(
         To.newTo(
             Arrays.asList(new ToInfo(receiver_address, AmountUtils.ckbToShannon(issue_udt_amount))),
-            Mode.HoldByTo));
+            Mode.HOLD_BY_TO));
     System.out.println(g.toJson(sudt_builder.build()));
     try {
       TransactionCompletionResponse s =

@@ -14,7 +14,7 @@ public class RegisterAddressTest {
   @Test
   void testRegisterAddress() {
     try {
-      List<String> scriptHashes =
+      List<byte[]> scriptHashes =
           ApiFactory.getApi()
               .registerAddresses(
                   Arrays.asList(

@@ -12,10 +12,7 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
-import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.common.ExtraFilterType;
-import org.nervos.mercury.model.common.PaginationResponse;
-import org.nervos.mercury.model.common.Range;
+import org.nervos.mercury.model.common.*;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
@@ -137,8 +134,8 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(minerAddress));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
-      builder.extraFilter(ExtraFilterType.CellBase);
-      builder.limit(BigInteger.valueOf(3));
+      builder.extraFilter(ExtraFilterType.CELL_BASE);
+      builder.limit(3);
 
       //      System.out.println(g.toJson(builder.build()));
 
@@ -162,8 +159,8 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(daoAddress));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
-      builder.extraFilter(ExtraFilterType.Dao);
-      builder.limit(BigInteger.valueOf(10));
+      builder.extraFilter(ExtraFilterType.DAO);
+      builder.limit(10);
 
       //      System.out.println(g.toJson(builder.build()));
 
@@ -187,7 +184,7 @@ public class QueryTransactionsTest {
 
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-      builder.range(new Range(new BigInteger("2778110"), new BigInteger("2778201")));
+      builder.range(new Range(2778110, 2778201));
 
       //      System.out.println(g.toJson(builder.build()));
 
@@ -207,7 +204,7 @@ public class QueryTransactionsTest {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-      builder.limit(new BigInteger("2"));
+      builder.limit(2);
 
       //      System.out.println(g.toJson(builder.build()));
 
@@ -228,7 +225,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       // default order desc
-      builder.order("asc");
+      builder.order(PaginationRequest.Order.ASC);
 
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -246,7 +243,7 @@ public class QueryTransactionsTest {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-      builder.limit(new BigInteger("1"));
+      builder.limit(1);
       builder.returnCount(true);
 
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
@@ -267,7 +264,7 @@ public class QueryTransactionsTest {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-      builder.limit(new BigInteger("1"));
+      builder.limit(1);
       builder.returnCount(true);
 
       //      System.out.println(g.toJson(builder.build()));
@@ -285,7 +282,7 @@ public class QueryTransactionsTest {
         QueryTransactionsPayloadBuilder builder2 = new QueryTransactionsPayloadBuilder();
         builder2.item(
             ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-        builder2.limit(new BigInteger("1"));
+        builder2.limit(1);
         builder2.returnCount(true);
         System.out.println(resp.nextCursor);
         builder2.cursor(resp.nextCursor);
@@ -307,8 +304,8 @@ public class QueryTransactionsTest {
       // total count = 3
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-      builder.limit(new BigInteger("1"));
-      builder.pageNumber(BigInteger.valueOf(3));
+      builder.limit(1);
+      builder.pageNumber(3);
       builder.returnCount(true);
 
       //      System.out.println(g.toJson(builder.build()));

@@ -18,8 +18,8 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
   public QueryTransactionsPayloadBuilder() {
     this.assetInfos = new HashSet<>(2, 1);
     this.pagination = new PaginationRequest();
-    this.pagination.limit = new BigInteger("50");
-    this.pagination.order = PaginationRequest.ORDER_BY_DESC;
+    this.pagination.limit = 50;
+    this.pagination.order = PaginationRequest.Order.DESC;
     this.pagination.returnCount = Boolean.FALSE;
   }
 
@@ -35,7 +35,7 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.blockRange = range;
   }
 
-  public void limit(BigInteger limit) {
+  public void limit(int limit) {
     this.pagination.limit = limit;
   }
 
@@ -43,11 +43,11 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.pagination.cursor = cursor;
   }
 
-  public void order(String order) {
+  public void order(PaginationRequest.Order order) {
     this.pagination.order = order;
   }
 
-  public void pageNumber(BigInteger skip) {
+  public void pageNumber(int skip) {
     this.pagination.skip = skip;
   }
 
@@ -61,8 +61,7 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
 
   public QueryTransactionsPayload build() {
     if (Objects.nonNull(this.pagination.skip)) {
-      this.pagination.skip =
-          this.pagination.limit.multiply(this.pagination.skip).subtract(this.pagination.limit);
+      this.pagination.skip = this.pagination.limit * this.pagination.skip - this.pagination.limit;
     }
 
     if (Objects.isNull(this.pagination.cursor) && Objects.equals(this.pagination.order, "desc")) {

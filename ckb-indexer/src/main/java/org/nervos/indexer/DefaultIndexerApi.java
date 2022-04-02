@@ -14,8 +14,8 @@ public class DefaultIndexerApi implements CkbIndexerApi {
 
   protected RpcService rpcService;
 
-  public DefaultIndexerApi(String mercuryUrl, boolean isDebug) {
-    this.rpcService = new RpcService(mercuryUrl, isDebug);
+  public DefaultIndexerApi(String indexerUrl, boolean isDebug) {
+    this.rpcService = new RpcService(indexerUrl, isDebug);
   }
 
   public DefaultIndexerApi(RpcService rpcService) {

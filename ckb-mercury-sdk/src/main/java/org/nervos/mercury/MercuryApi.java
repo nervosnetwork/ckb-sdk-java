@@ -1,38 +1,17 @@
 package org.nervos.mercury;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.nervos.indexer.model.Order;
-import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
-import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.CkbIndexerApi;
 import org.nervos.mercury.model.common.PaginationResponse;
-import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
-import org.nervos.mercury.model.req.payload.DaoClaimPayload;
-import org.nervos.mercury.model.req.payload.DaoDepositPayload;
-import org.nervos.mercury.model.req.payload.DaoWithdrawPayload;
-import org.nervos.mercury.model.req.payload.GetBalancePayload;
-import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
-import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
-import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
-import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
-import org.nervos.mercury.model.req.payload.SudtIssuePayload;
-import org.nervos.mercury.model.req.payload.TransferPayload;
-import org.nervos.mercury.model.resp.BlockInfoResponse;
-import org.nervos.mercury.model.resp.GetBalanceResponse;
-import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
-import org.nervos.mercury.model.resp.TransactionInfoResponse;
-import org.nervos.mercury.model.resp.TransactionWithRichStatus;
-import org.nervos.mercury.model.resp.TxView;
+import org.nervos.mercury.model.req.payload.*;
+import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 import org.nervos.mercury.model.resp.info.MercurySyncState;
 
-public interface MercuryApi {
+import java.io.IOException;
+import java.util.List;
+
+public interface MercuryApi extends CkbIndexerApi {
 
   GetBalanceResponse getBalance(GetBalancePayload payload) throws IOException;
 
@@ -45,11 +24,11 @@ public interface MercuryApi {
   TransactionCompletionResponse buildSimpleTransferTransaction(SimpleTransferPayload payload)
       throws IOException;
 
-  GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException;
+  GetTransactionInfoResponse getTransactionInfo(byte[] txHash) throws IOException;
 
   BlockInfoResponse getBlockInfo(GetBlockInfoPayload payload) throws IOException;
 
-  List<String> registerAddresses(List<String> normalAddresses) throws IOException;
+  List<byte[]> registerAddresses(List<String> normalAddresses) throws IOException;
 
   PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException;
@@ -77,16 +56,6 @@ public interface MercuryApi {
 
   TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
       GetSpentTransactionPayload payload) throws IOException;
-
-  CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
-      throws IOException;
-
-  TransactionResponse getTransactions(
-      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
-
-  TipResponse getTip() throws IOException;
-
-  CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
 
   TransactionCompletionResponse buildSudtIssueTransaction(SudtIssuePayload payload)
       throws IOException;

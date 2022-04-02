@@ -5,6 +5,7 @@ import constant.ApiFactory;
 import java.io.IOException;
 import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBlockInfoPayloadBuilder;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
@@ -18,7 +19,7 @@ public class BlockInfoTest {
     try {
 
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockNumber(new BigInteger("2172093"));
+      builder.blockNumber(2172093);
 
       System.out.println(g.toJson(builder.build()));
 
@@ -35,7 +36,7 @@ public class BlockInfoTest {
     try {
 
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockHash("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742");
+      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
       System.out.println(g.toJson(builder.build()));
 
@@ -52,8 +53,8 @@ public class BlockInfoTest {
     try {
 
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockNumber(new BigInteger("2172093"));
-      builder.blockHash("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742");
+      builder.blockNumber(2172093);
+      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
       System.out.println(g.toJson(builder.build()));
 
@@ -87,8 +88,8 @@ public class BlockInfoTest {
     try {
 
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockNumber(new BigInteger("2172092"));
-      builder.blockHash("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742");
+      builder.blockNumber(2172092);
+      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
       System.out.println(g.toJson(builder.build()));
 
@@ -104,7 +105,7 @@ public class BlockInfoTest {
     try {
 
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockHash("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e741");
+      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e741"));
 
       System.out.println(g.toJson(builder.build()));
 
@@ -124,7 +125,7 @@ public class BlockInfoTest {
     try {
 
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockNumber(new BigInteger("217209233"));
+      builder.blockNumber(217209233);
 
       System.out.println(g.toJson(builder.build()));
 

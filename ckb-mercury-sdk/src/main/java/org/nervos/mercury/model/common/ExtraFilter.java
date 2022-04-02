@@ -9,6 +9,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.annotations.SerializedName;
+
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -23,15 +25,15 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
   public ExtraFilter deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
     String type = json.getAsJsonObject().get("type").getAsString();
-    if (Objects.equals(type, FilterType.Dao.toString())) {
+    if (Objects.equals(type, FilterType.DAO.toString())) {
       return RpcExtraFilter.toExtraFilter(json);
     }
 
     ExtraFilter extraFilter = new ExtraFilter();
-    if (Objects.equals(type, FilterType.CellBase.toString())) {
-      extraFilter.type = FilterType.CellBase;
-    } else if (Objects.equals(type, FilterType.Freeze.toString())) {
-      extraFilter.type = FilterType.Freeze;
+    if (Objects.equals(type, FilterType.CELL_BASE.toString())) {
+      extraFilter.type = FilterType.CELL_BASE;
+    } else if (Objects.equals(type, FilterType.FREEZE.toString())) {
+      extraFilter.type = FilterType.FREEZE;
     } else {
       throw new JsonParseException("Unknown extra filter type " + type);
     }
@@ -41,19 +43,22 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
   @Override
   public JsonElement serialize(ExtraFilter src, Type typeOfSrc, JsonSerializationContext context) {
 
-    if (Objects.equals(src.type, FilterType.CellBase)) {
-      return new JsonPrimitive(FilterType.CellBase.toString());
-    } else if (Objects.equals(src.type, FilterType.Freeze)) {
-      return new JsonPrimitive(FilterType.Freeze.toString());
+    if (Objects.equals(src.type, FilterType.CELL_BASE)) {
+      return new JsonPrimitive(FilterType.CELL_BASE.toString());
+    } else if (Objects.equals(src.type, FilterType.FREEZE)) {
+      return new JsonPrimitive(FilterType.FREEZE.toString());
     } else {
       return context.serialize(RpcExtraFilter.build(src));
     }
   }
 
   enum FilterType {
-    Dao,
-    CellBase,
-    Freeze,
+    @SerializedName("Dao")
+    DAO,
+    @SerializedName("CellBase")
+    CELL_BASE,
+    @SerializedName("Freeze")
+    FREEZE,
   }
 
   static class RpcExtraFilter {
@@ -61,7 +66,7 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
 
     public static RpcExtraFilter build(ExtraFilter src) {
       RpcDaoState state;
-      if (Objects.equals(src.daoInfo.state, DaoState.Deposit)) {
+      if (Objects.equals(src.daoInfo.state, DaoState.DEPOSIT)) {
         state = new RpcDeposit(src.daoInfo.depositBlockNumber);
       } else {
         state =
@@ -88,10 +93,10 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
       DaoInfo info = new DaoInfo();
       String type = state.get("type").getAsString();
       if (Objects.equals(type, "Deposit")) {
-        info.state = DaoState.Deposit;
+        info.state = DaoState.DEPOSIT;
         info.depositBlockNumber = state.get("value").getAsBigInteger();
       } else {
-        info.state = DaoState.Withdraw;
+        info.state = DaoState.WITHDRAW;
         JsonArray withdraw = state.get("value").getAsJsonArray();
         info.depositBlockNumber = withdraw.get(0).getAsBigInteger();
         info.withdrawBlockNumber = withdraw.get(0).getAsBigInteger();
@@ -100,7 +105,7 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
       info.reward = dao.get("reward").getAsBigInteger();
 
       ExtraFilter e = new ExtraFilter();
-      e.type = FilterType.Dao;
+      e.type = FilterType.DAO;
       e.daoInfo = info;
 
       return e;

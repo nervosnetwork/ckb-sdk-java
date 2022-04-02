@@ -22,7 +22,6 @@ import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.PeerNodeInfo;
 import org.nervos.ckb.type.RawTxPool;
 import org.nervos.ckb.type.RawTxPoolVerbose;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.SyncState;
 import org.nervos.ckb.type.TransactionProof;
 import org.nervos.ckb.type.TxPoolInfo;
@@ -357,7 +356,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException {
+  public GetTransactionInfoResponse getTransactionInfo(byte[] txHash) throws IOException {
     return this.mercuryApi.getTransactionInfo(txHash);
   }
 
@@ -367,7 +366,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
+  public List<byte[]> registerAddresses(List<String> normalAddresses) throws IOException {
     return this.mercuryApi.registerAddresses(normalAddresses);
   }
 

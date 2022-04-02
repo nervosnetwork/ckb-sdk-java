@@ -27,7 +27,7 @@ public class DaoTest {
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3())),
-            Source.Free));
+            Source.FREE));
     builder.amount(AmountUtils.ckbToShannon(300));
 
     System.out.println(g.toJson(builder));
@@ -56,7 +56,7 @@ public class DaoTest {
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.PW_LOCK_ADDRESS)),
-            Source.Free));
+            Source.FREE));
 
     builder.amount(AmountUtils.ckbToShannon(200));
 
@@ -85,7 +85,7 @@ public class DaoTest {
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3())),
-            Source.Free));
+            Source.FREE));
     builder.amount(AmountUtils.ckbToShannon(300));
 
     System.out.println(g.toJson(builder));

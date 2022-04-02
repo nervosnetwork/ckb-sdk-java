@@ -25,7 +25,7 @@ public class Record {
   public ExtraFilter extra;
 
   @SerializedName("block_number")
-  public BigInteger blockNumber;
+  public int blockNumber;
 
   @SerializedName("epoch_number")
   public BigInteger epochNumber;

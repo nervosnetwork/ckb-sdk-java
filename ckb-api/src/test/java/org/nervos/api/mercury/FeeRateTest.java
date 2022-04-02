@@ -33,12 +33,12 @@ public class FeeRateTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress0())),
-            Source.Free));
+            Source.FREE));
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom)); // unit: CKB, 1 CKB = 10^8 Shannon
+            Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
     // default 1000 shannons/KB
     //    builder.feeRate(new BigInteger("1000"));
 
@@ -65,12 +65,12 @@ public class FeeRateTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress0())),
-            Source.Free));
+            Source.FREE));
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom)); // unit: CKB, 1 CKB = 10^8 Shannon
+            Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
     builder.feeRate(new BigInteger("10000"));
 
     try {

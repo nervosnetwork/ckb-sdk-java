@@ -1,6 +1,10 @@
 package org.nervos.mercury.model.common;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum ExtraFilterType {
-  Dao,
-  CellBase,
+  @SerializedName("DAO")
+  DAO,
+  @SerializedName("CellBase")
+  CELL_BASE,
 }

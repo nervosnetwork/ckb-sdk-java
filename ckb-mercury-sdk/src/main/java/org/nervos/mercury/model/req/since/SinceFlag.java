@@ -1,6 +1,10 @@
 package org.nervos.mercury.model.req.since;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum SinceFlag {
-  Relative,
-  Absolute,
+  @SerializedName("Relative")
+  RELATIVE,
+  @SerializedName("Absolute")
+  ABSOLUTE,
 }
