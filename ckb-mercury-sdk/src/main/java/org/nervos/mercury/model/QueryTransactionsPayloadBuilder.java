@@ -47,9 +47,6 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.pagination.order = order;
   }
 
-  public void pageNumber(int skip) {
-    this.pagination.skip = skip;
-  }
 
   public void returnCount(Boolean returnCount) {
     this.pagination.returnCount = returnCount;
@@ -60,10 +57,6 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
   }
 
   public QueryTransactionsPayload build() {
-    if (Objects.nonNull(this.pagination.skip)) {
-      this.pagination.skip = this.pagination.limit * this.pagination.skip - this.pagination.limit;
-    }
-
     if (Objects.isNull(this.pagination.cursor) && Objects.equals(this.pagination.order, "desc")) {
       pagination.cursor = Arrays.asList(127, 255, 255, 255, 255, 255, 255, 254);
     }

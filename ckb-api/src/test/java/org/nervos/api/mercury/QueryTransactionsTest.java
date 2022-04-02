@@ -305,7 +305,6 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.limit(1);
-      builder.pageNumber(3);
       builder.returnCount(true);
 
       //      System.out.println(g.toJson(builder.build()));
