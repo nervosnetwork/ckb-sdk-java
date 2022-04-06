@@ -1,6 +1,5 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
@@ -11,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
@@ -30,7 +28,6 @@ public class SourceTest {
   private String chequeCellReceiverAddress = AddressWithKeyHolder.testAddress2();
   private String receiverAddress = AddressWithKeyHolder.testAddress3();
   private String udtHash = "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd";
-  private Gson g = GsonFactory.newGson();
 
   @Test
   void test() {
@@ -49,16 +46,16 @@ public class SourceTest {
   }
 
   private void printBalance() throws IOException {
-
-    System.out.println("sender ckb balance: " + g.toJson(getBalance(senderAddress, null)));
-    System.out.println("sender udt balance: " + g.toJson(getBalance(senderAddress, udtHash)));
-
-    System.out.println(
-        "cheque cell receiver ckb balance: "
-            + g.toJson(getBalance(chequeCellReceiverAddress, null)));
-    System.out.println(
-        "cheque cell receiver udt balance: "
-            + g.toJson(getBalance(chequeCellReceiverAddress, udtHash)));
+//
+//    System.out.println("sender ckb balance: " + g.toJson(getBalance(senderAddress, null)));
+//    System.out.println("sender udt balance: " + g.toJson(getBalance(senderAddress, udtHash)));
+//
+//    System.out.println(
+//        "cheque cell receiver ckb balance: "
+//            + g.toJson(getBalance(chequeCellReceiverAddress, null)));
+//    System.out.println(
+//        "cheque cell receiver udt balance: "
+//            + g.toJson(getBalance(chequeCellReceiverAddress, udtHash)));
   }
 
   private GetBalanceResponse getBalance(String addr, String udtHash) {
@@ -69,7 +66,6 @@ public class SourceTest {
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       return ApiFactory.getApi().getBalance(builder.build());
-
     } catch (IOException e) {
       e.printStackTrace();
     }

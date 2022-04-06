@@ -1,6 +1,5 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
@@ -10,7 +9,6 @@ import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressTools;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
 import org.nervos.mercury.model.common.*;
 import org.nervos.mercury.model.req.item.ItemFactory;
@@ -21,8 +19,6 @@ import org.nervos.mercury.model.resp.TxView;
 /** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryTransactionsTest {
 
-  Gson g = GsonFactory.newGson();
-
   @Test
   void testQueryTransactionsWithCkb() {
 
@@ -31,13 +27,10 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -55,7 +48,6 @@ public class QueryTransactionsTest {
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -69,13 +61,10 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -90,13 +79,10 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -111,13 +97,10 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.addAssetInfo(AssetInfo.newCkbAsset());
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionInfoResponse>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionInfo(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -137,13 +120,10 @@ public class QueryTransactionsTest {
       builder.extraFilter(ExtraFilterType.CELL_BASE);
       builder.limit(3);
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -162,13 +142,10 @@ public class QueryTransactionsTest {
       builder.extraFilter(ExtraFilterType.DAO);
       builder.limit(10);
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -186,13 +163,10 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.range(new Range(2778110, 2778201));
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -206,13 +180,10 @@ public class QueryTransactionsTest {
       builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
       builder.limit(2);
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -231,7 +202,6 @@ public class QueryTransactionsTest {
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -249,10 +219,7 @@ public class QueryTransactionsTest {
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
 
-      //      System.out.println(g.toJson(builder.build()));
-
       System.out.println(resp.response.size());
-      System.out.println(g.toJson(resp));
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -267,12 +234,8 @@ public class QueryTransactionsTest {
       builder.limit(1);
       builder.returnCount(true);
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
-
-      System.out.println(g.toJson(resp));
 
       if (Objects.isNull(resp.nextCursor)) {
         return;
@@ -287,10 +250,7 @@ public class QueryTransactionsTest {
         System.out.println(resp.nextCursor);
         builder2.cursor(resp.nextCursor);
 
-        System.out.println(g.toJson(builder2.build()));
         resp = ApiFactory.getApi().queryTransactionsWithTransactionView(builder2.build());
-
-        System.out.println(g.toJson(resp));
       }
 
     } catch (IOException e) {
@@ -307,12 +267,8 @@ public class QueryTransactionsTest {
       builder.limit(1);
       builder.returnCount(true);
 
-      //      System.out.println(g.toJson(builder.build()));
-
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
-
-      System.out.println(g.toJson(resp));
 
       if (Objects.isNull(resp.nextCursor)) {
         return;

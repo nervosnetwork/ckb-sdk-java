@@ -1,6 +1,5 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.From;
@@ -23,7 +21,6 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class TransferCompletionTest {
-  Gson g = GsonFactory.newGson();
 
   @Test
   void testSingleFromSingleTo() {
@@ -87,8 +84,6 @@ public class TransferCompletionTest {
                 new ToInfo(AddressWithKeyHolder.testAddress3(), AmountUtils.ckbToShannon(100))),
             Mode.HOLD_BY_FROM));
 
-    System.out.println(g.toJson(builder.build()));
-
     try {
       sendTx(builder);
 
@@ -115,11 +110,8 @@ public class TransferCompletionTest {
 
     builder.payFee(AddressWithKeyHolder.testAddress3());
 
-    System.out.println(g.toJson(builder.build()));
-
     try {
       sendTx(builder);
-
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -142,8 +134,6 @@ public class TransferCompletionTest {
             Mode.HOLD_BY_FROM));
 
     builder.change(AddressWithKeyHolder.testAddress4());
-
-    System.out.println(g.toJson(builder.build()));
 
     try {
       sendTx(builder);
@@ -168,7 +158,6 @@ public class TransferCompletionTest {
             Mode.HOLD_BY_TO));
 
     builder.change(AddressWithKeyHolder.testAddress4());
-    System.out.println(g.toJson(builder.build()));
 
     try {
       sendTx(builder);
@@ -195,11 +184,9 @@ public class TransferCompletionTest {
             Mode.HOLD_BY_TO));
 
     builder.change(AddressWithKeyHolder.testAddress4());
-    System.out.println(g.toJson(builder.build()));
 
     try {
       sendTx(builder);
-
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -207,10 +194,9 @@ public class TransferCompletionTest {
 
   private void sendTx(TransferPayloadBuilder builder) throws IOException {
     TransactionCompletionResponse s = ApiFactory.getApi().buildTransferTransaction(builder.build());
-    System.out.println(g.toJson(s));
+
     Transaction tx = SignUtils.sign(s);
 
-    System.out.println(g.toJson(tx));
     byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
     System.out.println(txHash);
   }

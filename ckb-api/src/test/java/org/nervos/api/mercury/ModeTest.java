@@ -2,7 +2,6 @@ package org.nervos.api.mercury;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.From;
@@ -26,9 +24,6 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class ModeTest {
-
-  Gson g = GsonFactory.newGson();
-
   @Test
   void transferCompletionCkbWithFree() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
@@ -44,12 +39,10 @@ public class ModeTest {
                 new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100))),
             Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
 
-    System.out.println(g.toJson(builder.build()));
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
-      System.out.println(g.toJson(s));
+
       Transaction tx = sign(s);
 
       byte[] result = ApiFactory.getApi().sendTransaction(tx);
@@ -77,7 +70,6 @@ public class ModeTest {
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
-      System.out.println(g.toJson(s));
 
       Transaction tx = sign(s);
 
@@ -136,13 +128,10 @@ public class ModeTest {
                     new BigInteger("100"))),
             Mode.HOLD_BY_TO));
 
-    System.out.println(g.toJson(builder.build()));
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
-      System.out.println(g.toJson(s.txView));
 
       byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);

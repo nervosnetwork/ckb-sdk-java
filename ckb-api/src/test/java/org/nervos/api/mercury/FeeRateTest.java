@@ -1,6 +1,5 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.From;
@@ -22,11 +20,9 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class FeeRateTest {
-  Gson g = GsonFactory.newGson();
 
   @Test
   void defaultFeeRate() {
-
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.assetInfo(AssetInfo.newCkbAsset());
     builder.from(
@@ -45,8 +41,6 @@ public class FeeRateTest {
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
-      System.out.println(g.toJson(s));
-
       Transaction tx = SignUtils.sign(s);
 
       byte[] result = ApiFactory.getApi().sendTransaction(tx);
@@ -76,7 +70,6 @@ public class FeeRateTest {
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
-      System.out.println(g.toJson(s));
 
       Transaction tx = SignUtils.sign(s);
 

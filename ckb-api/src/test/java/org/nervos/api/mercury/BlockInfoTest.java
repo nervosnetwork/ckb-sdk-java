@@ -1,31 +1,24 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.ApiFactory;
 import java.io.IOException;
-import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.GetBlockInfoPayloadBuilder;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class BlockInfoTest {
-  Gson g = GsonFactory.newGson();
-
+  
   @Test
   void testGetBlockInfoWithBlockNumber() {
     try {
-
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockNumber(2172093);
 
-      System.out.println(g.toJson(builder.build()));
-
       BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
-
-      System.out.println(g.toJson(blockInfo));
+      System.out.println();
+      
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -34,15 +27,10 @@ public class BlockInfoTest {
   @Test
   void testGetBlockInfoWithBlockHash() {
     try {
-
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
-      System.out.println(g.toJson(builder.build()));
-
       BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
-
-      System.out.println(g.toJson(blockInfo));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -51,16 +39,11 @@ public class BlockInfoTest {
   @Test
   void testGetBlockInfoWithBlockHashAndBlockNumber() {
     try {
-
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockNumber(2172093);
       builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
-      System.out.println(g.toJson(builder.build()));
-
       BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
-
-      System.out.println(g.toJson(blockInfo));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -69,15 +52,10 @@ public class BlockInfoTest {
   @Test
   void testTipBlockInfo() {
     try {
-
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
 
       // Request parameter is empty
-      System.out.println(g.toJson(builder.build()));
-
       BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
-
-      System.out.println(g.toJson(blockInfo));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -86,12 +64,9 @@ public class BlockInfoTest {
   @Test
   void testBlockHashAndBlockNumberDoNotMatch() {
     try {
-
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockNumber(2172092);
       builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
-
-      System.out.println(g.toJson(builder.build()));
 
       ApiFactory.getApi().getBlockInfo(builder.build());
 
@@ -103,11 +78,8 @@ public class BlockInfoTest {
   @Test
   void testCannotFind() {
     try {
-
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e741"));
-
-      System.out.println(g.toJson(builder.build()));
 
       ApiFactory.getApi().getBlockInfo(builder.build());
       // TODO: 2021/7/22 error handle
@@ -123,11 +95,8 @@ public class BlockInfoTest {
   @Test
   void testWrongHeight() {
     try {
-
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockNumber(217209233);
-
-      System.out.println(g.toJson(builder.build()));
 
       // error: invalid block number
       ApiFactory.getApi().getBlockInfo(builder.build());

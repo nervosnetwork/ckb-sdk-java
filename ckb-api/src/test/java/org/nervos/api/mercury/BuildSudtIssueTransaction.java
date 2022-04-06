@@ -1,6 +1,5 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import java.io.IOException;
@@ -12,7 +11,6 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
 import org.nervos.mercury.model.SudtIssuePayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
@@ -24,7 +22,6 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class BuildSudtIssueTransaction {
-  Gson g = GsonFactory.newGson();
 
   @Test
   void testIssueSudt() {
@@ -54,13 +51,12 @@ public class BuildSudtIssueTransaction {
         To.newTo(
             Arrays.asList(new ToInfo(admin_address, AmountUtils.ckbToShannon(issue_udt_amount))),
             Mode.HOLD_BY_FROM));
-    System.out.println(g.toJson(new_sudt_builder.build()));
+
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildSudtIssueTransaction(new_sudt_builder.build());
-      System.out.println(g.toJson(s));
       Transaction tx = SignUtils.sign(s);
-      System.out.println(g.toJson(tx));
+
       byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println("upload udt cell: " + txHash);
     } catch (IOException e) {
@@ -72,15 +68,13 @@ public class BuildSudtIssueTransaction {
     account_builder.item(ItemFactory.newAddressItem(receiver_address));
     account_builder.assetInfo(AssetInfo.newUdtAsset(udt_hash));
     account_builder.accountNumber(BigInteger.ONE);
-    System.out.println(g.toJson(account_builder.build()));
+
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(account_builder.build());
 
       if (!Objects.isNull(s)) {
-        System.out.println(g.toJson(s));
         Transaction tx = SignUtils.sign(s);
-        System.out.println(g.toJson(tx));
         byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
         System.out.println("build acp cell: " + txHash);
       }
@@ -95,13 +89,12 @@ public class BuildSudtIssueTransaction {
         To.newTo(
             Arrays.asList(new ToInfo(receiver_address, AmountUtils.ckbToShannon(issue_udt_amount))),
             Mode.HOLD_BY_TO));
-    System.out.println(g.toJson(sudt_builder.build()));
+
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildSudtIssueTransaction(sudt_builder.build());
-      System.out.println(g.toJson(s));
       Transaction tx = SignUtils.sign(s);
-      System.out.println(g.toJson(tx));
+
       byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println("issue udt cell: " + txHash);
     } catch (IOException e) {
