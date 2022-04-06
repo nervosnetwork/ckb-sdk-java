@@ -17,7 +17,7 @@ public class Ownership {
     @SerializedName("Address")
     ADDRESS,
     @SerializedName("LockHash")
-    LOCKHASH
+    LOCK_HASH
   }
 
   public static class Deserializer implements JsonDeserializer<Ownership> {
