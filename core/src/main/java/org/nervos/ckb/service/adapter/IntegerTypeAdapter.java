@@ -15,7 +15,7 @@ public class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserial
         if (src == -1) {
             return new JsonPrimitive("0xffffffff");
         } else {
-            return new JsonPrimitive(AdapterUtils.toHexString(value.toByteArray()));
+            return new JsonPrimitive(AdapterUtils.toHexStringForNumber(value.toByteArray()));
         }
     }
 

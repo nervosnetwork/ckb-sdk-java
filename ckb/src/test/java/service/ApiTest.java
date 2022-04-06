@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.BannedAddress;
 import org.nervos.ckb.type.BannedResultAddress;
@@ -382,17 +383,17 @@ public class ApiTest {
     List<RpcResponse> rpcResponses =
         api.batchRPC(
             Arrays.asList(
-                Arrays.asList("get_block_hash", "0x200"),
-                Arrays.asList("get_block_by_number", "300"),
+                Arrays.asList("get_block_hash", 200),
+                Arrays.asList("get_block_by_number", 300),
                 Arrays.asList("get_header_by_number", 100)));
     Assertions.assertNotNull(rpcResponses);
     Assertions.assertEquals(3, rpcResponses.size());
     Assertions.assertTrue(rpcResponses.get(0).result instanceof String);
     Assertions.assertTrue(
-        new Gson().fromJson(rpcResponses.get(1).result.toString(), Block.class).transactions.size()
+        GsonFactory.create().fromJson(rpcResponses.get(1).result.toString(), Block.class).transactions.size()
             > 0);
     Assertions.assertNotNull(
-        new Gson().fromJson(rpcResponses.get(2).result.toString(), Header.class).compactTarget);
+        GsonFactory.create().fromJson(rpcResponses.get(2).result.toString(), Header.class).compactTarget);
 
     Assertions.assertThrows(
         IOException.class,

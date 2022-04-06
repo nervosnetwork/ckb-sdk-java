@@ -13,7 +13,7 @@ public class BigIntegerTypeAdapter implements JsonSerializer<BigInteger>, JsonDe
         if (src == null) {
             return null;
         }
-        return new JsonPrimitive(AdapterUtils.toHexString(src.toByteArray()));
+        return new JsonPrimitive(AdapterUtils.toHexStringForNumber(src.toByteArray()));
     }
 
     @Override

@@ -13,7 +13,7 @@ public class ByteArrayTypeAdapter implements JsonSerializer<byte[]>, JsonDeseria
         if (src == null) {
             return null;
         }
-        String value = AdapterUtils.toHexStringPadded(src);
+        String value = Numeric.toHexString(src);
         return new JsonPrimitive(value);
     }
 
