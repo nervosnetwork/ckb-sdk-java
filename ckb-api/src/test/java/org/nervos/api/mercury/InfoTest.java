@@ -37,6 +37,5 @@ public class InfoTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 }

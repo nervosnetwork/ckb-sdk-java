@@ -9,7 +9,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
-
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.mercury.model.common.AssetInfo;
 
@@ -51,7 +50,9 @@ public class RecordResponse
       }
 
       if (fieldExist(amount, "udt_hash")) {
-        record.assetInfo = AssetInfo.newUdtAsset(Numeric.hexStringToByteArray(amount.get("udt_hash").getAsString()));
+        record.assetInfo =
+            AssetInfo.newUdtAsset(
+                Numeric.hexStringToByteArray(amount.get("udt_hash").getAsString()));
       } else {
         record.assetInfo = AssetInfo.newCkbAsset();
       }

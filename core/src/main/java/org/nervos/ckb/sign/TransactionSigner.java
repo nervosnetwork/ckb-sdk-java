@@ -46,7 +46,7 @@ public class TransactionSigner {
   }
 
   private TransactionSigner register(
-          byte[] codeHash, Script.HashType hashType, ScriptType scriptType, ScriptSigner scriptSigner) {
+      byte[] codeHash, Script.HashType hashType, ScriptType scriptType, ScriptSigner scriptSigner) {
     scriptSignerMap.put(new Key(codeHash, hashType, scriptType), scriptSigner);
     return this;
   }

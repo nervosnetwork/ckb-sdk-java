@@ -100,7 +100,6 @@ public class DaoTest {
     builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     builder.payFee(AddressWithKeyHolder.testAddress1());
 
-
     TransactionCompletionResponse transactionCompletionResponse = null;
     try {
       transactionCompletionResponse =
@@ -113,7 +112,6 @@ public class DaoTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 
   @Test
@@ -132,6 +130,5 @@ public class DaoTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 }

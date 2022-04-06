@@ -1,7 +1,5 @@
 package org.nervos.mercury.model.common;
 
-import java.math.BigInteger;
-
 public class Range {
   public Integer from;
   public Integer to;

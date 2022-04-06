@@ -13,7 +13,6 @@ public class ItemFactory {
     return new Item(Item.Type.IDENTITY, new Identity(Identity.IDENTITY_FLAGS_CKB, pubKey));
   }
 
-
   public static Item newIdentityItemByCkb(String pubKey) {
     return newIdentityItemByCkb(Numeric.hexStringToByteArray(pubKey));
   }

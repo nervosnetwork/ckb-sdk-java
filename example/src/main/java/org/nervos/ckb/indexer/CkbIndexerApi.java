@@ -1,11 +1,9 @@
 package org.nervos.ckb.indexer;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import org.nervos.ckb.service.RpcService;
-import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class CkbIndexerApi {
@@ -24,14 +22,10 @@ public class CkbIndexerApi {
       SearchKey searchKey, Order order, Integer limit, byte[] afterCursor) throws IOException {
     if (afterCursor == null || afterCursor.length == 0) {
       return rpcService.post(
-          "get_cells",
-          Arrays.asList(searchKey, order, limit),
-          CkbIndexerCells.class);
+          "get_cells", Arrays.asList(searchKey, order, limit), CkbIndexerCells.class);
     } else {
       return rpcService.post(
-          "get_cells",
-          Arrays.asList(searchKey, order, limit, afterCursor),
-          CkbIndexerCells.class);
+          "get_cells", Arrays.asList(searchKey, order, limit, afterCursor), CkbIndexerCells.class);
     }
   }
 

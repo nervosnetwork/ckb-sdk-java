@@ -28,7 +28,8 @@ public class TransactionBuilder {
     try {
       if (isMultiSig) {
         this.cellDeps.add(
-            new CellDep(SystemContract.getSystemMultiSigCell(api).outPoint, CellDep.DepType.DEP_GROUP));
+            new CellDep(
+                SystemContract.getSystemMultiSigCell(api).outPoint, CellDep.DepType.DEP_GROUP));
       } else {
         this.cellDeps.add(
             new CellDep(SystemContract.getSystemSecpCell(api).outPoint, CellDep.DepType.DEP_GROUP));
@@ -93,7 +94,7 @@ public class TransactionBuilder {
   public Transaction buildTx() {
     if (cellOutputsData.size() == 0) {
       for (int i = 0; i < cellOutputs.size(); i++) {
-        cellOutputsData.add(new byte[]{});
+        cellOutputsData.add(new byte[] {});
       }
     }
 

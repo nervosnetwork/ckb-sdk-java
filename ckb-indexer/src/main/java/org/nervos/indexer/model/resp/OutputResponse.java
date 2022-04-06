@@ -1,8 +1,7 @@
 package org.nervos.indexer.model.resp;
 
-import org.nervos.ckb.type.Script;
-
 import java.math.BigInteger;
+import org.nervos.ckb.type.Script;
 
 public class OutputResponse {
   public BigInteger capacity;

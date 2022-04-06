@@ -102,7 +102,7 @@ public class DefaultCkbApi implements CkbApi {
       throws IOException {
 
     if (this.mercuryApi != null) {
-//      return this.mercuryApi.getCells(searchKey, order, limit, afterCursor);
+      //      return this.mercuryApi.getCells(searchKey, order, limit, afterCursor);
     }
 
     if (this.ckbIndexerApi != null) {
@@ -114,10 +114,10 @@ public class DefaultCkbApi implements CkbApi {
 
   @Override
   public TransactionResponse getTransactions(
-          SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
 
     if (this.mercuryApi != null) {
-//      return this.mercuryApi.getTransactions(searchKey, order, limit, afterCursor);
+      //      return this.mercuryApi.getTransactions(searchKey, order, limit, afterCursor);
     }
 
     if (this.ckbIndexerApi != null) {

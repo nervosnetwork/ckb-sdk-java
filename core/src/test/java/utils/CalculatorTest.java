@@ -1,5 +1,8 @@
 package utils;
 
+import static org.nervos.ckb.type.Witness.SIGNATURE_PLACEHOLDER;
+import static utils.TestUtils.createScript;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,9 +19,6 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 
-import static org.nervos.ckb.type.Witness.SIGNATURE_PLACEHOLDER;
-import static utils.TestUtils.createScript;
-
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CalculatorTest {
@@ -31,23 +31,26 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        Numeric.hexStringToByteArray(
+                            "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
                         0),
                     CellDep.DepType.DEP_GROUP),
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"),
+                        Numeric.hexStringToByteArray(
+                            "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"),
                         2),
                     CellDep.DepType.CODE)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -57,12 +60,12 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                        Numeric.toBigInt("0x59e1416a5000"),
+                    Numeric.toBigInt("0x59e1416a5000"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[]{}),
+            Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[] {}),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 536);
@@ -76,23 +79,26 @@ public class CalculatorTest {
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        Numeric.hexStringToByteArray(
+                            "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
                         0),
                     CellDep.DepType.DEP_GROUP),
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"),
+                        Numeric.hexStringToByteArray(
+                            "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"),
                         2),
                     CellDep.DepType.CODE)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -102,12 +108,12 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                        Numeric.toBigInt("0x59e1416a5000"),
+                    Numeric.toBigInt("0x59e1416a5000"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[]{}),
+            Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[] {}),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
     Assertions.assertEquals(
@@ -122,26 +128,26 @@ public class CalculatorTest {
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        Numeric.hexStringToByteArray(
+                            "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
                         0),
                     CellDep.DepType.DEP_GROUP)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Collections.singletonList(new byte[]{}),
-            Collections.singletonList(
-                new Witness(
-                    SIGNATURE_PLACEHOLDER)));
+            Collections.singletonList(new byte[] {}),
+            Collections.singletonList(new Witness(SIGNATURE_PLACEHOLDER)));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 355);
   }
 
@@ -153,32 +159,32 @@ public class CalculatorTest {
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        Numeric.hexStringToByteArray(
+                            "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
                         0),
                     CellDep.DepType.DEP_GROUP)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList(new byte[]{}, new byte[]{}),
-            Collections.singletonList(
-                new Witness(
-                    SIGNATURE_PLACEHOLDER)));
+            Arrays.asList(new byte[] {}, new byte[] {}),
+            Collections.singletonList(new Witness(SIGNATURE_PLACEHOLDER)));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 464);
   }
 
@@ -186,34 +192,35 @@ public class CalculatorTest {
   void testCalculateTransactionSize2V1() {
     Transaction tx =
         new Transaction(
-                0,
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        Numeric.hexStringToByteArray(
+                            "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
                         0),
                     CellDep.DepType.DEP_GROUP)),
             Collections.emptyList(),
             Arrays.asList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1)),
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Collections.singletonList(new byte[]{}),
-            Arrays.asList(
-                new Witness(SIGNATURE_PLACEHOLDER),
-                "0x"));
+            Collections.singletonList(new byte[] {}),
+            Arrays.asList(new Witness(SIGNATURE_PLACEHOLDER), "0x"));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 407);
   }
 
@@ -221,42 +228,41 @@ public class CalculatorTest {
   void testCalculateTransactionSize2V2() {
     Transaction tx =
         new Transaction(
-           0,
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        Numeric.hexStringToByteArray(
+                            "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
                         0),
                     CellDep.DepType.DEP_GROUP)),
             Collections.emptyList(),
             Arrays.asList(
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1)),
                 new CellInput(
                     new OutPoint(
-                        Numeric.hexStringToByteArray("0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
                         1))),
             Arrays.asList(
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                        Numeric.toBigInt("0x174876e800"),
+                    Numeric.toBigInt("0x174876e800"),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList(new byte[]{}, new byte[]{}),
-            Arrays.asList(
-                new Witness(
-                    SIGNATURE_PLACEHOLDER),
-                new Witness(
-                    SIGNATURE_PLACEHOLDER)));
+            Arrays.asList(new byte[] {}, new byte[] {}),
+            Arrays.asList(new Witness(SIGNATURE_PLACEHOLDER), new Witness(SIGNATURE_PLACEHOLDER)));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 601);
   }
 }

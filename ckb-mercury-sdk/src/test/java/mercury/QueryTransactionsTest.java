@@ -2,7 +2,6 @@ package mercury;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.math.BigInteger;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;

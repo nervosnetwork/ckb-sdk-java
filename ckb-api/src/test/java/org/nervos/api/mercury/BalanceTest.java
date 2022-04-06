@@ -6,7 +6,6 @@ import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
 import java.io.IOException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.Numeric;
@@ -72,7 +71,9 @@ public class BalanceTest {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
     builder.item(
         ItemFactory.newOutPointItem(
-                Numeric.hexStringToByteArray("0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"), 0));
+            Numeric.hexStringToByteArray(
+                "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"),
+            0));
     builder.addAssetInfo(AssetInfo.newCkbAsset());
 
     GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());
@@ -84,7 +85,9 @@ public class BalanceTest {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
     builder.item(
         ItemFactory.newOutPointItem(
-                Numeric.hexStringToByteArray("0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"), 0));
+            Numeric.hexStringToByteArray(
+                "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"),
+            0));
     builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());

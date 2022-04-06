@@ -82,7 +82,7 @@ public class SUDTExample {
     txBuilder.addOutputs(cellOutputs);
 
     txBuilder.setOutputsData(
-        Arrays.asList(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes(), new byte[]{}));
+        Arrays.asList(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes(), new byte[] {}));
     txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
@@ -95,7 +95,8 @@ public class SUDTExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+      cellOutputs.get(cellOutputs.size() - 1).capacity =
+          new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
     }
 
@@ -151,7 +152,8 @@ public class SUDTExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+      cellOutputs.get(cellOutputs.size() - 1).capacity =
+          new BigInteger(collectResult.changeCapacity);
       cellOutputs.get(cellOutputs.size() - 1).type = sudtType;
       txBuilder.setOutputs(cellOutputs);
     }
@@ -159,7 +161,7 @@ public class SUDTExample {
     txBuilder.setOutputsData(
         Arrays.asList(
             new UInt128((SUDT_TRANSFER_AMOUNT)).toBytes(),
-                new UInt128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toBytes()));
+            new UInt128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toBytes()));
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {

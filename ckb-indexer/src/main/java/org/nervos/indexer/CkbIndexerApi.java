@@ -1,7 +1,6 @@
 package org.nervos.indexer;
 
 import java.io.IOException;
-
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.CellCapacityResponse;

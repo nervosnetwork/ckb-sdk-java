@@ -4,7 +4,6 @@ import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;

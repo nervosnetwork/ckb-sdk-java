@@ -63,9 +63,7 @@ public class IndexerCollector {
     List<CellOutput> cellOutputs = new ArrayList<>();
     for (Receiver receiver : receivers) {
       AddressParseResult addressParseResult = AddressParser.parse(receiver.address);
-      cellOutputs.add(
-          new CellOutput(
-              receiver.capacity, addressParseResult.script));
+      cellOutputs.add(new CellOutput(receiver.capacity, addressParseResult.script));
     }
     //  If change address is null or an empty string it means caller wants to transfer all balance,
     // so change output is not needed

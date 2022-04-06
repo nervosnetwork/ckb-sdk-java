@@ -1,8 +1,6 @@
 package org.nervos.ckb.utils;
 
 import com.google.common.primitives.Bytes;
-
-import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;

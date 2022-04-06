@@ -2,8 +2,6 @@ package org.nervos.ckb.type.cell;
 
 import java.math.BigInteger;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */

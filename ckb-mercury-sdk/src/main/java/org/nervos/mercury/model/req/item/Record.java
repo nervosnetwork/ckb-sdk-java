@@ -38,17 +38,14 @@ public class Record {
   }
 
   public String toRecordItem() {
-    byte[] record =
-        Bytes.concat(
-            this.outPoint.txHash,
-            intToByteArray(this.outPoint.index));
+    byte[] record = Bytes.concat(this.outPoint.txHash, intToByteArray(this.outPoint.index));
 
     if (Objects.nonNull(this.script)) {
       return Numeric.toHexString(
           Bytes.concat(
               record,
               Numeric.hexStringToByteArray(Record.SCRIPT_TYPE),
-                  Arrays.copyOfRange(this.script.computeHash(), 0, 20)));
+              Arrays.copyOfRange(this.script.computeHash(), 0, 20)));
     } else {
       return Numeric.toHexString(
           Bytes.concat(

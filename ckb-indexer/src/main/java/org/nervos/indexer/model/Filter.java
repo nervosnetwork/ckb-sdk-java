@@ -1,7 +1,6 @@
 package org.nervos.indexer.model;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.math.BigInteger;
 import java.util.List;
 import org.nervos.ckb.type.Script;

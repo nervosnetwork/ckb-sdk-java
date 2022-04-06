@@ -25,15 +25,19 @@ public class BuildSudtIssueTransaction {
 
   @Test
   void testIssueSudt() {
-    byte[] secp_code_hash = Numeric.hexStringToByteArray( "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8");
-    byte[] sudt_testnet_code_hash = Numeric.hexStringToByteArray("0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4");
+    byte[] secp_code_hash =
+        Numeric.hexStringToByteArray(
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8");
+    byte[] sudt_testnet_code_hash =
+        Numeric.hexStringToByteArray(
+            "0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4");
     String admin_address = AddressWithKeyHolder.testAddress0();
     byte[] admin_public_key = AddressWithKeyHolder.testPubKey0();
     String receiver_address = AddressWithKeyHolder.testAddress0();
     long issue_udt_amount = 1000000000;
 
     // 1. get admin lock hash
-//    TestUtils.creteScript
+    //    TestUtils.creteScript
     Script admin_script = new Script(secp_code_hash, admin_public_key, Script.HashType.TYPE);
     byte[] admin_lock_hash = admin_script.computeHash();
     System.out.println("admin_lock_hash: " + admin_lock_hash);

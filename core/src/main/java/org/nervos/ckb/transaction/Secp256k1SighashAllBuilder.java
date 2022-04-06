@@ -62,7 +62,7 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
 
     Witness signedWitness = (Witness) groupWitnesses.get(0);
     signedWitness.lock =
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
+        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
 
     transaction.witnesses.set(
         scriptGroup.inputIndexes.get(0),

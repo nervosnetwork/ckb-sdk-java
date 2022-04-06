@@ -1,7 +1,6 @@
 package org.nervos.ckb.indexer;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.math.BigInteger;
 
 public class CkbIndexerCellsCapacity {

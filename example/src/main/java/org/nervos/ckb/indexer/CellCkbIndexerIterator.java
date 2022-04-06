@@ -11,7 +11,6 @@ import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.address.AddressParser;
 
 public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
@@ -75,7 +74,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
           transactionInputs =
               fetchTransactionInputsByType(
                   Numeric.toHexString(lockHash),
-                      new SearchKey(lock, ScriptType.LOCK, new SearchKey.Filter(type)));
+                  new SearchKey(lock, ScriptType.LOCK, new SearchKey.Filter(type)));
         } else {
           transactionInputs =
               fetchTransactionInputsByLock(
@@ -116,7 +115,8 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
       CellInput cellInput = new CellInput(liveCell.outPoint);
       BigInteger capacity = liveCell.output.capacity;
       transactionInputs.add(
-          new TransactionInput(cellInput, capacity, Numeric.toHexString(searchKey.script.computeHash())));
+          new TransactionInput(
+              cellInput, capacity, Numeric.toHexString(searchKey.script.computeHash())));
     }
     if (liveCells.size() == 0) {
       transactionInputs.clear();

@@ -101,18 +101,9 @@ public class Serializer {
 
   public static Table serializeWitnessArgs(Witness witness) {
     return new Table(
-        new Option(
-                witness.lock.length == 0
-                ? new Empty()
-                : new Bytes(witness.lock)),
-        new Option(
-                witness.inputType.length == 0
-                ? new Empty()
-                : new Bytes(witness.inputType)),
-        new Option(
-                witness.outputType.length == 0
-                ? new Empty()
-                : new Bytes(witness.outputType)));
+        new Option(witness.lock.length == 0 ? new Empty() : new Bytes(witness.lock)),
+        new Option(witness.inputType.length == 0 ? new Empty() : new Bytes(witness.inputType)),
+        new Option(witness.outputType.length == 0 ? new Empty() : new Bytes(witness.outputType)));
   }
 
   public static Dynamic<Type> serializeWitnesses(List witnesses) {

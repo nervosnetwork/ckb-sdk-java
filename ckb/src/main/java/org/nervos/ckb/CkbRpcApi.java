@@ -18,7 +18,6 @@ import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.PeerNodeInfo;
 import org.nervos.ckb.type.RawTxPool;
 import org.nervos.ckb.type.RawTxPoolVerbose;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.SyncState;
 import org.nervos.ckb.type.TransactionProof;
 import org.nervos.ckb.type.TxPoolInfo;

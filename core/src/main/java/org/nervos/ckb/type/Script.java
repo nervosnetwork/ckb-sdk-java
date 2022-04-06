@@ -4,9 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
-import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */

@@ -38,7 +38,6 @@ public class BuildAdjustAccountTest {
     builder.addFrom(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3()));
     builder.accountNumber(BigInteger.ONE);
 
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
@@ -64,7 +63,6 @@ public class BuildAdjustAccountTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.ONE);
 
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
@@ -72,7 +70,6 @@ public class BuildAdjustAccountTest {
       if (Objects.isNull(s)) {
         return;
       }
-
 
       Transaction tx = SignUtils.sign(s);
 
@@ -92,7 +89,6 @@ public class BuildAdjustAccountTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.valueOf(1));
 
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
@@ -100,7 +96,6 @@ public class BuildAdjustAccountTest {
       if (Objects.isNull(s)) {
         return;
       }
-
 
       Transaction tx = SignUtils.sign(s);
 
@@ -120,7 +115,6 @@ public class BuildAdjustAccountTest {
     builder.extraCkb(AmountUtils.ckbToShannon(200));
     builder.accountNumber(BigInteger.ONE);
 
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
@@ -128,7 +122,7 @@ public class BuildAdjustAccountTest {
       if (Objects.isNull(s)) {
         return;
       }
-      
+
       Transaction tx = SignUtils.sign(s);
       byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);

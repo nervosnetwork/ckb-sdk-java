@@ -92,7 +92,10 @@ public class NervosDaoExample {
 
   private static Transaction generateDepositingToDaoTx(BigInteger capacity) throws IOException {
     Script type =
-        new Script(SystemContract.getSystemNervosDaoCell(api).cellHash, new byte[]{}, Script.HashType.TYPE);
+        new Script(
+            SystemContract.getSystemNervosDaoCell(api).cellHash,
+            new byte[] {},
+            Script.HashType.TYPE);
 
     IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
 
@@ -101,7 +104,7 @@ public class NervosDaoExample {
             Collections.singletonList(new Receiver(DaoTestAddress, capacity)), DaoTestAddress);
     cellOutputs.get(0).type = type;
 
-    List<byte[]> cellOutputsData = Arrays.asList(NERVOS_DAO_DATA, new byte[]{});
+    List<byte[]> cellOutputsData = Arrays.asList(NERVOS_DAO_DATA, new byte[] {});
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -153,8 +156,7 @@ public class NervosDaoExample {
       throw new IOException("Cell is not yet live!");
     }
     TransactionWithStatus transactionWithStatus = api.getTransaction(depositOutPoint.txHash);
-    if (!(TransactionWithStatus.Status.COMMITTED
-        == transactionWithStatus.txStatus.status)) {
+    if (!(TransactionWithStatus.Status.COMMITTED == transactionWithStatus.txStatus.status)) {
       throw new IOException("Transaction is not committed yet!");
     }
     Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
@@ -167,7 +169,7 @@ public class NervosDaoExample {
     CellOutput changeOutput = new CellOutput(BigInteger.ZERO, lock);
 
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
-    List<byte[]> cellOutputsData = Arrays.asList(outputData, new byte[]{});
+    List<byte[]> cellOutputsData = Arrays.asList(outputData, new byte[] {});
     List<byte[]> headerDeps = Collections.singletonList(depositBlock.header.hash);
 
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
@@ -228,8 +230,7 @@ public class NervosDaoExample {
       throw new IOException("Transaction is not committed yet!");
     }
 
-    int depositBlockNumber =
-        new UInt64(cellWithStatus.cell.data.content).getValue().intValue();
+    int depositBlockNumber = new UInt64(cellWithStatus.cell.data.content).getValue().intValue();
     Block depositBlock = api.getBlockByNumber(depositBlockNumber);
     EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
 
@@ -250,14 +251,15 @@ public class NervosDaoExample {
     long minimalSinceEpochIndex = depositEpoch.index;
     long minimalSinceEpochLength = depositEpoch.length;
 
-    byte[] minimalSince = Numeric.hexStringToByteArray(
-        EpochUtils.generateSince(
-            minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
+    byte[] minimalSince =
+        Numeric.hexStringToByteArray(
+            EpochUtils.generateSince(
+                minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
     BigInteger outputCapacity =
-        api.calculateDaoMaximumWithdraw(depositOutPoint, Numeric.toHexString(withdrawBlock.header.hash));
+        api.calculateDaoMaximumWithdraw(
+            depositOutPoint, Numeric.toHexString(withdrawBlock.header.hash));
 
-    CellOutput cellOutput =
-        new CellOutput(outputCapacity.subtract(fee), lock);
+    CellOutput cellOutput = new CellOutput(outputCapacity.subtract(fee), lock);
 
     SystemScriptCell secpCell = SystemContract.getSystemSecpCell(api);
     SystemScriptCell nervosDaoCell = SystemContract.getSystemNervosDaoCell(api);
@@ -271,7 +273,7 @@ public class NervosDaoExample {
             Arrays.asList(depositBlock.header.hash, withdrawBlock.header.hash),
             Collections.singletonList(new CellInput(withdrawingOutPoint, minimalSince)),
             Collections.singletonList(cellOutput),
-            Collections.singletonList(new byte[]{}),
+            Collections.singletonList(new byte[] {}),
             Collections.singletonList(new Witness(new byte[0], NERVOS_DAO_DATA, new byte[0])));
 
     return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));

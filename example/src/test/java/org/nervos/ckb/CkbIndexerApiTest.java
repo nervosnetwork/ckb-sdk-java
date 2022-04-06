@@ -1,14 +1,13 @@
 package org.nervos.ckb;
 
+import java.io.IOException;
+import java.math.BigInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
-
-import java.io.IOException;
-import java.math.BigInteger;
 
 public class CkbIndexerApiTest {
   CkbIndexerApi service = new CkbIndexerApi("https://testnet.ckb.dev/indexer");
@@ -35,7 +34,9 @@ public class CkbIndexerApiTest {
 
   private SearchKey newSearchKey() {
     Script script = new Script();
-    script.codeHash = Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8");
+    script.codeHash =
+        Numeric.hexStringToByteArray(
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8");
     script.args = Numeric.hexStringToByteArray("0x64257f00b6b63e987609fa9be2d0c86d351020fb");
     script.hashType = Script.HashType.TYPE;
     SearchKey searchKey = new SearchKey(script);

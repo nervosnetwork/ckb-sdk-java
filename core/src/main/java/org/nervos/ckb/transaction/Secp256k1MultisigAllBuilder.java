@@ -44,7 +44,7 @@ public class Secp256k1MultisigAllBuilder {
 
     byte[] txHash = transaction.computeHash();
     byte[] emptySignature = new byte[0];
-//    StringBuilder emptySignature = new StringBuilder();
+    //    StringBuilder emptySignature = new StringBuilder();
     for (int i = 0; i < privateKeys.size(); i++) {
       emptySignature = Numeric.concatBytes(emptySignature, Witness.SIGNATURE_PLACEHOLDER);
     }
@@ -76,7 +76,9 @@ public class Secp256k1MultisigAllBuilder {
     }
 
     Witness signedWitness = (Witness) groupWitnesses.get(0);
-    signedWitness.lock = Numeric.concatBytes(multiSigSerialize, Numeric.hexStringToByteArray(concatenatedSignatures.toString()));
+    signedWitness.lock =
+        Numeric.concatBytes(
+            multiSigSerialize, Numeric.hexStringToByteArray(concatenatedSignatures.toString()));
 
     transaction.witnesses.set(
         scriptGroup.inputIndexes.get(0),

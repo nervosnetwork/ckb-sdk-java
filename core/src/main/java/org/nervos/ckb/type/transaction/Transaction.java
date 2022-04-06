@@ -127,7 +127,7 @@ public class Transaction {
     String message = blake2b.doFinalString();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     ((Witness) witnesses.get(0)).lock =
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
+        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
 
     List<String> signedWitness = new ArrayList<>();
     for (Object witness : witnesses) {
@@ -214,7 +214,7 @@ public class Transaction {
 
     public Builder addInput(byte[] txHash, int index) {
       String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-      return this.addInput(txHash, index, new byte[]{0});
+      return this.addInput(txHash, index, new byte[] {0});
     }
 
     public Builder addInput(byte[] txHash, int index, byte[] since) {
@@ -251,7 +251,8 @@ public class Transaction {
       return addOutput(output);
     }
 
-    public Builder addOutput(BigInteger capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
+    public Builder addOutput(
+        BigInteger capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
       Script lockScript = new Script();
       lockScript.args = lockScriptArgs;
       lockScript.codeHash = lockScriptCodeHash;

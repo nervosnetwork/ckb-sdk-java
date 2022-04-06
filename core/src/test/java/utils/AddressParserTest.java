@@ -1,5 +1,7 @@
 package utils;
 
+import static utils.TestUtils.createScript;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -8,8 +10,6 @@ import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
-
-import static utils.TestUtils.createScript;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressParserTest {

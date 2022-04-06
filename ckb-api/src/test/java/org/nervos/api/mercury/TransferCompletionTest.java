@@ -172,7 +172,8 @@ public class TransferCompletionTest {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
     builder.assetInfo(
         AssetInfo.newUdtAsset(
-            Numeric.hexStringToByteArray("0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd")));
+            Numeric.hexStringToByteArray(
+                "0xf21e7350fa9518ed3cbb008e0e8c941d7e01a12181931d5608aa366ee22228bd")));
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.PW_LOCK_ADDRESS)),

@@ -19,6 +19,6 @@ public class CellInput {
   }
 
   public CellInput(OutPoint previousOutput) {
-    this(previousOutput, new byte[]{0});
+    this(previousOutput, new byte[] {0});
   }
 }

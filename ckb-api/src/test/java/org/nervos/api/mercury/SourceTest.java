@@ -46,16 +46,16 @@ public class SourceTest {
   }
 
   private void printBalance() throws IOException {
-//
-//    System.out.println("sender ckb balance: " + g.toJson(getBalance(senderAddress, null)));
-//    System.out.println("sender udt balance: " + g.toJson(getBalance(senderAddress, udtHash)));
-//
-//    System.out.println(
-//        "cheque cell receiver ckb balance: "
-//            + g.toJson(getBalance(chequeCellReceiverAddress, null)));
-//    System.out.println(
-//        "cheque cell receiver udt balance: "
-//            + g.toJson(getBalance(chequeCellReceiverAddress, udtHash)));
+    //
+    //    System.out.println("sender ckb balance: " + g.toJson(getBalance(senderAddress, null)));
+    //    System.out.println("sender udt balance: " + g.toJson(getBalance(senderAddress, udtHash)));
+    //
+    //    System.out.println(
+    //        "cheque cell receiver ckb balance: "
+    //            + g.toJson(getBalance(chequeCellReceiverAddress, null)));
+    //    System.out.println(
+    //        "cheque cell receiver udt balance: "
+    //            + g.toJson(getBalance(chequeCellReceiverAddress, udtHash)));
   }
 
   private GetBalanceResponse getBalance(String addr, String udtHash) {
@@ -92,7 +92,8 @@ public class SourceTest {
 
       byte[] hash = ApiFactory.getApi().sendTransaction(tx);
 
-      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == TransactionWithStatus.Status.PENDING) {
+      while (ApiFactory.getApi().getTransaction(hash).txStatus.status
+          == TransactionWithStatus.Status.PENDING) {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }
@@ -126,7 +127,8 @@ public class SourceTest {
 
       byte[] hash = ApiFactory.getApi().sendTransaction(tx);
 
-      while (ApiFactory.getApi().getTransaction(hash).txStatus.status == TransactionWithStatus.Status.PENDING) {
+      while (ApiFactory.getApi().getTransaction(hash).txStatus.status
+          == TransactionWithStatus.Status.PENDING) {
         System.out.println("Awaiting transaction results");
         TimeUnit.SECONDS.sleep(1);
       }

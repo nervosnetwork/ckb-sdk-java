@@ -21,7 +21,6 @@ import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.PeerNodeInfo;
 import org.nervos.ckb.type.RawTxPool;
 import org.nervos.ckb.type.RawTxPoolVerbose;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.SyncState;
 import org.nervos.ckb.type.TransactionProof;
 import org.nervos.ckb.type.TxPoolInfo;
@@ -57,9 +56,7 @@ public class Api implements CkbRpcApi {
   @Override
   public Block getBlockByNumber(int blockNumber) throws IOException {
     return rpcService.post(
-        "get_block_by_number",
-        Collections.singletonList(blockNumber),
-        Block.class);
+        "get_block_by_number", Collections.singletonList(blockNumber), Block.class);
   }
 
   @Override
@@ -70,10 +67,7 @@ public class Api implements CkbRpcApi {
 
   @Override
   public byte[] getBlockHash(int blockNumber) throws IOException {
-    return rpcService.post(
-        "get_block_hash",
-        Collections.singletonList(blockNumber),
-        byte[].class);
+    return rpcService.post("get_block_hash", Collections.singletonList(blockNumber), byte[].class);
   }
 
   @Override
@@ -97,7 +91,8 @@ public class Api implements CkbRpcApi {
 
   @Override
   public BigInteger getTipBlockNumber() throws IOException {
-    return rpcService.post("get_tip_block_number", Collections.<String>emptyList(), BigInteger.class);
+    return rpcService.post(
+        "get_tip_block_number", Collections.<String>emptyList(), BigInteger.class);
   }
 
   @Override
@@ -108,9 +103,7 @@ public class Api implements CkbRpcApi {
   @Override
   public Epoch getEpochByNumber(int epochNumber) throws IOException {
     return rpcService.post(
-        "get_epoch_by_number",
-        Collections.singletonList(epochNumber),
-        Epoch.class);
+        "get_epoch_by_number", Collections.singletonList(epochNumber), Epoch.class);
   }
 
   @Override
@@ -121,9 +114,7 @@ public class Api implements CkbRpcApi {
   @Override
   public Header getHeaderByNumber(int blockNumber) throws IOException {
     return rpcService.post(
-        "get_header_by_number",
-        Collections.singletonList(blockNumber),
-        Header.class);
+        "get_header_by_number", Collections.singletonList(blockNumber), Header.class);
   }
 
   @Override
@@ -194,8 +185,7 @@ public class Api implements CkbRpcApi {
   public byte[] sendTransaction(Transaction transaction) throws IOException {
     return rpcService.post(
         "send_transaction",
-        Arrays.asList(
-            Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
+        Arrays.asList(Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
         byte[].class);
   }
 
@@ -284,7 +274,9 @@ public class Api implements CkbRpcApi {
   public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return rpcService.post(
-        "calculate_dao_maximum_withdraw", Arrays.asList(outPoint, withdrawBlockHash), BigInteger.class);
+        "calculate_dao_maximum_withdraw",
+        Arrays.asList(outPoint, withdrawBlockHash),
+        BigInteger.class);
   }
 
   /**

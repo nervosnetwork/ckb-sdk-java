@@ -45,7 +45,7 @@ public class CellCollector {
     final List<CellInput> cellInputs = new ArrayList<>();
 
     for (int i = 0; i < tx.outputs.size() - 1; i++) {
-      BigInteger size = tx.outputs.get(i).occupiedCapacity(new byte[]{});
+      BigInteger size = tx.outputs.get(i).occupiedCapacity(new byte[] {});
       if (size.compareTo(tx.outputs.get(i).capacity) > 0) {
         throw new IOException("Cell output byte size must not be bigger than capacity");
       }
@@ -126,7 +126,7 @@ public class CellCollector {
     }
 
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    List<byte[]> lockHashList = Arrays.asList(lockHashes.toArray(new byte[][]{}));
+    List<byte[]> lockHashList = Arrays.asList(lockHashes.toArray(new byte[][] {}));
     for (Map.Entry<byte[], List<CellInput>> entry : lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(

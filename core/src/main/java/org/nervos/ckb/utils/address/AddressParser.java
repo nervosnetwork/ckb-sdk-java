@@ -30,27 +30,32 @@ public class AddressParser extends AddressBaseOperator {
     if (TYPE_SHORT.equals(type)) {
       String codeHashIndex = payload.substring(2, 4);
       byte[] args = Numeric.hexStringToByteArray(payload.substring(4));
-      if (!codeHashIndex.equals(CODE_HASH_IDX_ANYONE_CAN_PAY)
-          && args.length != 20) {
+      if (!codeHashIndex.equals(CODE_HASH_IDX_ANYONE_CAN_PAY) && args.length != 20) {
         throw new AddressFormatException("Short address args byte length must be equal to 20");
       }
       switch (codeHashIndex) {
         case CODE_HASH_IDX_BLAKE160:
           return new AddressParseResult(
               network,
-              new Script(Numeric.hexStringToByteArray(SECP_BLAKE160_CODE_HASH), args, Script.HashType.TYPE),
+              new Script(
+                  Numeric.hexStringToByteArray(SECP_BLAKE160_CODE_HASH),
+                  args,
+                  Script.HashType.TYPE),
               AddressParseResult.Type.SHORT);
         case CODE_HASH_IDX_MULTISIG:
           return new AddressParseResult(
               network,
-              new Script(Numeric.hexStringToByteArray(MULTISIG_CODE_HASH), args, Script.HashType.TYPE),
+              new Script(
+                  Numeric.hexStringToByteArray(MULTISIG_CODE_HASH), args, Script.HashType.TYPE),
               AddressParseResult.Type.SHORT);
         case CODE_HASH_IDX_ANYONE_CAN_PAY:
           byte[] codeHash =
               Numeric.hexStringToByteArray(
                   network == Network.MAINNET ? ACP_MAINNET_CODE_HASH : ACP_TESTNET_CODE_HASH);
           return new AddressParseResult(
-              network, new Script(codeHash, args, Script.HashType.TYPE), AddressParseResult.Type.SHORT);
+              network,
+              new Script(codeHash, args, Script.HashType.TYPE),
+              AddressParseResult.Type.SHORT);
         default:
           throw new AddressFormatException("Short address code hash index must be 00, 01 or 02");
       }

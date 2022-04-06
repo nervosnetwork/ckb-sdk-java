@@ -9,7 +9,7 @@ import org.nervos.mercury.model.resp.BlockInfoResponse;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class BlockInfoTest {
-  
+
   @Test
   void testGetBlockInfoWithBlockNumber() {
     try {
@@ -18,7 +18,7 @@ public class BlockInfoTest {
 
       BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
       System.out.println();
-      
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -28,7 +28,9 @@ public class BlockInfoTest {
   void testGetBlockInfoWithBlockHash() {
     try {
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
+      builder.blockHash(
+          Numeric.hexStringToByteArray(
+              "0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
       BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
     } catch (IOException e) {
@@ -41,7 +43,9 @@ public class BlockInfoTest {
     try {
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockNumber(2172093);
-      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
+      builder.blockHash(
+          Numeric.hexStringToByteArray(
+              "0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
       BlockInfoResponse blockInfo = ApiFactory.getApi().getBlockInfo(builder.build());
     } catch (IOException e) {
@@ -66,7 +70,9 @@ public class BlockInfoTest {
     try {
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
       builder.blockNumber(2172092);
-      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
+      builder.blockHash(
+          Numeric.hexStringToByteArray(
+              "0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e742"));
 
       ApiFactory.getApi().getBlockInfo(builder.build());
 
@@ -79,7 +85,9 @@ public class BlockInfoTest {
   void testCannotFind() {
     try {
       GetBlockInfoPayloadBuilder builder = new GetBlockInfoPayloadBuilder();
-      builder.blockHash(Numeric.hexStringToByteArray("0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e741"));
+      builder.blockHash(
+          Numeric.hexStringToByteArray(
+              "0xee8adba356105149cb9dc1cb0d09430a6bd01182868787ace587961c0d64e741"));
 
       ApiFactory.getApi().getBlockInfo(builder.build());
       // TODO: 2021/7/22 error handle

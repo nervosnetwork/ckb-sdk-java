@@ -20,25 +20,20 @@ public class Convert {
     for (CellDep cellDep : transaction.cellDeps) {
       cellDeps.add(
           new CellDep(
-              new OutPoint(cellDep.outPoint.txHash, cellDep.outPoint.index),
-              cellDep.depType));
+              new OutPoint(cellDep.outPoint.txHash, cellDep.outPoint.index), cellDep.depType));
     }
 
     List<CellInput> inputs = new ArrayList<>();
     for (CellInput cellInput : transaction.inputs) {
       inputs.add(
           new CellInput(
-              new OutPoint(
-                  cellInput.previousOutput.txHash,
-                  cellInput.previousOutput.index),
+              new OutPoint(cellInput.previousOutput.txHash, cellInput.previousOutput.index),
               cellInput.since));
     }
 
     List<CellOutput> outputs = new ArrayList<>();
     for (CellOutput cellOutput : transaction.outputs) {
-      outputs.add(
-          new CellOutput(
-              cellOutput.capacity, cellOutput.lock, cellOutput.type));
+      outputs.add(new CellOutput(cellOutput.capacity, cellOutput.lock, cellOutput.type));
     }
 
     return new Transaction(

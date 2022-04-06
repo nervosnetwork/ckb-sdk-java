@@ -1,6 +1,5 @@
 package org.nervos.mercury.model;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +45,6 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
   public void order(PaginationRequest.Order order) {
     this.pagination.order = order;
   }
-
 
   public void returnCount(Boolean returnCount) {
     this.pagination.returnCount = returnCount;

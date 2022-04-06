@@ -76,7 +76,9 @@ public class AddressGenerator extends AddressBaseOperator {
     String type = Script.HashType.TYPE.equals(script.hashType) ? TYPE_FULL_TYPE : TYPE_FULL_DATA;
     // Payload: type(02/04) | code hash | args
     String payload =
-        type + Numeric.toHexStringNoPrefix(script.codeHash) + Numeric.toHexStringNoPrefix(script.args);
+        type
+            + Numeric.toHexStringNoPrefix(script.codeHash)
+            + Numeric.toHexStringNoPrefix(script.args);
     byte[] data = Numeric.hexStringToByteArray(payload);
     return Bech32.encode(
         prefix(network), convertBits(com.google.common.primitives.Bytes.asList(data), 8, 5, true));

@@ -145,7 +145,8 @@ public class MultiSignTransactionExample {
     }
 
     Secp256k1MultisigAllBuilder signBuilder =
-        new Secp256k1MultisigAllBuilder(txBuilder.buildTx(), Numeric.hexStringToByteArray(configuration.serialize()));
+        new Secp256k1MultisigAllBuilder(
+            txBuilder.buildTx(), Numeric.hexStringToByteArray(configuration.serialize()));
 
     for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
       signBuilder.sign(
@@ -208,7 +209,10 @@ public class MultiSignTransactionExample {
 
     public String address() throws IOException {
       Script script =
-          new Script(SystemContract.getSystemMultiSigCell(api).cellHash, Numeric.hexStringToByteArray(blake160()), Script.HashType.TYPE);
+          new Script(
+              SystemContract.getSystemMultiSigCell(api).cellHash,
+              Numeric.hexStringToByteArray(blake160()),
+              Script.HashType.TYPE);
       return AddressGenerator.generate(Network.TESTNET, script);
     }
   }

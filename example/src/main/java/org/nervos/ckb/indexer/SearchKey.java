@@ -1,7 +1,6 @@
 package org.nervos.ckb.indexer;
 
 import com.google.gson.annotations.SerializedName;
-import java.util.List;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 
@@ -48,10 +47,7 @@ public class SearchKey {
     }
 
     public Filter(
-        Script script,
-        int[] outputDataLenRange,
-        int[] outputCapacityRange,
-        int[] blockRange) {
+        Script script, int[] outputDataLenRange, int[] outputCapacityRange, int[] blockRange) {
       this.script = script;
       this.outputDataLenRange = outputDataLenRange;
       this.outputCapacityRange = outputCapacityRange;

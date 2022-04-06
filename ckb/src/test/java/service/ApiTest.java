@@ -1,6 +1,5 @@
 package service;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.function.Executable;
@@ -59,20 +57,27 @@ public class ApiTest {
   @Test
   public void testGetBlockHashByNumber() throws IOException {
     byte[] blockHash = api.getBlockHash(1);
-    Assertions.assertEquals("0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd", Numeric.toHexString(blockHash));
+    Assertions.assertEquals(
+        "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd",
+        Numeric.toHexString(blockHash));
   }
 
   @Test
   public void testGetBlockEconomicState() throws IOException {
-    byte[] blockHash = Numeric.hexStringToByteArray("0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
+    byte[] blockHash =
+        Numeric.hexStringToByteArray(
+            "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
     BlockEconomicState blockEconomicState = api.getBlockEconomicState(blockHash);
     Assertions.assertNotNull(blockEconomicState);
-    Assertions.assertEquals(BigInteger.valueOf(9207601095L), blockEconomicState.minerReward.secondary);
+    Assertions.assertEquals(
+        BigInteger.valueOf(9207601095L), blockEconomicState.minerReward.secondary);
   }
 
   @Test
   public void testGetBlock() throws IOException {
-    byte[] blockHash = Numeric.hexStringToByteArray("0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
+    byte[] blockHash =
+        Numeric.hexStringToByteArray(
+            "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
     Block block = api.getBlock(blockHash);
     Assertions.assertEquals(1, block.transactions.size());
     Assertions.assertNotNull(block.header);
@@ -80,14 +85,15 @@ public class ApiTest {
 
   @Test
   public void testTransaction() throws IOException {
-    byte[] transactionHash = Numeric.hexStringToByteArray("0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1");
+    byte[] transactionHash =
+        Numeric.hexStringToByteArray(
+            "0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1");
     Transaction transaction = api.getTransaction(transactionHash).transaction;
     Assertions.assertNotNull(transaction);
     Assertions.assertEquals(4, transaction.cellDeps.size());
     Assertions.assertEquals(1, transaction.inputs.size());
     Assertions.assertEquals(3, transaction.outputs.size());
-    Assertions.assertEquals(new BigInteger("30000000000"),
-            transaction.outputs.get(0).capacity);
+    Assertions.assertEquals(new BigInteger("30000000000"), transaction.outputs.get(0).capacity);
   }
 
   @Test
@@ -119,7 +125,9 @@ public class ApiTest {
 
   @Test
   public void testGetHeader() throws IOException {
-    byte[] blockHash = Numeric.hexStringToByteArray("0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
+    byte[] blockHash =
+        Numeric.hexStringToByteArray(
+            "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
     Header header = api.getHeader(blockHash);
     Assertions.assertEquals(1, header.number);
     Assertions.assertEquals(1590137711584L, header.timestamp);
@@ -144,7 +152,8 @@ public class ApiTest {
   public void testGetBlockMedianTime() throws IOException {
     Long blockMedianTime =
         api.getBlockMedianTime(
-                Numeric.hexStringToByteArray("0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
+            Numeric.hexStringToByteArray(
+                "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
     Assertions.assertNotNull(blockMedianTime);
     Assertions.assertNotEquals(0, blockMedianTime);
   }
@@ -154,7 +163,8 @@ public class ApiTest {
     TransactionProof transactionProof =
         api.getTransactionProof(
             Collections.singletonList(
-                    Numeric.hexStringToByteArray("0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1")));
+                Numeric.hexStringToByteArray(
+                    "0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1")));
     Assertions.assertNotNull(transactionProof);
     Assertions.assertNotNull(transactionProof.blockHash);
     Assertions.assertEquals(1, transactionProof.proof.indices.size());
@@ -166,7 +176,9 @@ public class ApiTest {
   @Test
   public void testGetForkBlock() throws IOException {
     Block forkBlock =
-        api.getForkBlock(Numeric.hexStringToByteArray("0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
+        api.getForkBlock(
+            Numeric.hexStringToByteArray(
+                "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
   }
 
   @Test
@@ -213,7 +225,8 @@ public class ApiTest {
   @Test
   public void testSetBan() throws IOException {
     BannedAddress bannedAddress =
-        new BannedAddress("192.168.0.2", BannedAddress.Command.INSERT, 1840546800000L, true, "test set_ban rpc");
+        new BannedAddress(
+            "192.168.0.2", BannedAddress.Command.INSERT, 1840546800000L, true, "test set_ban rpc");
     api.setBan(bannedAddress);
   }
 
@@ -278,7 +291,10 @@ public class ApiTest {
   public void testGetLiveCell() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint(Numeric.hexStringToByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"), 0),
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"),
+                0),
             true);
     Assertions.assertNotNull(cellWithStatus.cell);
   }
@@ -287,7 +303,10 @@ public class ApiTest {
   public void testGetLiveCellWithData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint(Numeric.hexStringToByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"), 0),
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"),
+                0),
             true);
     Assertions.assertNotNull(cellWithStatus.cell.data);
   }
@@ -296,7 +315,10 @@ public class ApiTest {
   public void testGetLiveCellWithoutData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint(Numeric.hexStringToByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"), 0),
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"),
+                0),
             false);
     Assertions.assertNull(cellWithStatus.cell.data);
   }
@@ -390,10 +412,15 @@ public class ApiTest {
     Assertions.assertEquals(3, rpcResponses.size());
     Assertions.assertTrue(rpcResponses.get(0).result instanceof String);
     Assertions.assertTrue(
-        GsonFactory.create().fromJson(rpcResponses.get(1).result.toString(), Block.class).transactions.size()
+        GsonFactory.create()
+                .fromJson(rpcResponses.get(1).result.toString(), Block.class)
+                .transactions
+                .size()
             > 0);
     Assertions.assertNotNull(
-        GsonFactory.create().fromJson(rpcResponses.get(2).result.toString(), Header.class).compactTarget);
+        GsonFactory.create()
+            .fromJson(rpcResponses.get(2).result.toString(), Header.class)
+            .compactTarget);
 
     Assertions.assertThrows(
         IOException.class,

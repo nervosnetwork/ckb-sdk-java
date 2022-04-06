@@ -28,7 +28,9 @@ public class AddressTest {
   @Test
   public void testArgToAddressTestnet() throws AddressFormatException {
     String expected = "ckt1qyqz6824th6pekd6858nru9p4j3u783fttl4k3r0cp2lt7uxhx00fxcxpzeq8";
-    byte[] args = Numeric.hexStringToByteArray("0x2d1d555df41cd9ba3d0f31f0a1aca3cf1e295aff5b446fc055f5fb86b99ef49b");
+    byte[] args =
+        Numeric.hexStringToByteArray(
+            "0x2d1d555df41cd9ba3d0f31f0a1aca3cf1e295aff5b446fc055f5fb86b99ef49b");
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     String actual = utils.generate(args);
     Assertions.assertEquals(expected, actual);

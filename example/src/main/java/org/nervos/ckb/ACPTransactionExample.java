@@ -57,7 +57,8 @@ public class ACPTransactionExample {
 
     Script receiverScript = AddressParser.parse(ReceiveAddresses.get(0)).script;
     receiverScript.codeHash = ACP_CODE_HASH;
-    receiverScript.args = Numeric.hexStringToByteArray(receiverScript.args + ACP_CKB_MINIMUM + ACP_SUDT_MINIMUM);
+    receiverScript.args =
+        Numeric.hexStringToByteArray(receiverScript.args + ACP_CKB_MINIMUM + ACP_SUDT_MINIMUM);
     receiverAcpAddress = AddressGenerator.generate(Network.TESTNET, receiverScript);
 
     Script senderScript = AddressParser.parse(SendAddresses.get(0)).script;
@@ -77,8 +78,7 @@ public class ACPTransactionExample {
     // waiting transaction into block, sometimes you should wait more seconds
     Thread.sleep(30000);
     System.out.println(
-        "Transfer acp tx hash: "
-            + transfer(new OutPoint(acpHash, 0), BigInteger.valueOf(1000L)));
+        "Transfer acp tx hash: " + transfer(new OutPoint(acpHash, 0), BigInteger.valueOf(1000L)));
   }
 
   private static BigInteger getBalance(String address) throws IOException {
@@ -114,10 +114,11 @@ public class ACPTransactionExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+      cellOutputs.get(cellOutputs.size() - 1).capacity =
+          new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
 
-      outputsData.add(new byte[]{});
+      outputsData.add(new byte[] {});
       txBuilder.setOutputsData(outputsData);
     }
 
@@ -186,7 +187,8 @@ public class ACPTransactionExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_SUDT_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+      cellOutputs.get(cellOutputs.size() - 1).capacity =
+          new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
     } else {
       throw new IOException("The change capacity is not enough for the SUDT cell");
@@ -198,7 +200,8 @@ public class ACPTransactionExample {
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
         OutPoint outPoint = cellsWithAddress.inputs.get(i).previousOutput;
-        String cellData = Numeric.toHexStringNoPrefix(api.getLiveCell(outPoint, true).cell.data.content);
+        String cellData =
+            Numeric.toHexStringNoPrefix(api.getLiveCell(outPoint, true).cell.data.content);
         if (cellData.length() < 32) continue;
         inputSUDTAmount =
             inputSUDTAmount.add(

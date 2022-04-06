@@ -23,8 +23,7 @@ public class Identity {
 
   public String toIdentity() {
     if (Objects.isNull(this.identity)) {
-      return Numeric.toHexString(
-          Bytes.concat(Numeric.hexStringToByteArray(flag), pubKey));
+      return Numeric.toHexString(Bytes.concat(Numeric.hexStringToByteArray(flag), pubKey));
     } else {
       return this.identity;
     }

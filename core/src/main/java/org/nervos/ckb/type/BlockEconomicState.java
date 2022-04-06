@@ -1,7 +1,6 @@
 package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.math.BigInteger;
 
 /** Copyright © 2020 Nervos Foundation. All rights reserved. */

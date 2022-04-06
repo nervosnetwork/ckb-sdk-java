@@ -5,7 +5,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Arrays;
-import java.util.Objects;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.address.Network;
@@ -161,15 +160,16 @@ public class AddressTools {
     System.out.println(AddressTools.getChequeCodeHash(AddressTools.parseNetwork(senderAddress)));
 
     byte[] bytes =
-            Bytes.concat(Arrays.copyOfRange(receiverAddressScript.script.computeHash(), 0, 20),
-                    Arrays.copyOfRange(senderAddressScript.script.computeHash(), 0, 20));
+        Bytes.concat(
+            Arrays.copyOfRange(receiverAddressScript.script.computeHash(), 0, 20),
+            Arrays.copyOfRange(senderAddressScript.script.computeHash(), 0, 20));
 
     String fullAddress =
         AddressGenerator.generate(
             Network.TESTNET,
             new Script(
                 AddressTools.getChequeCodeHash(AddressTools.parseNetwork(senderAddress)),
-                    bytes,
+                bytes,
                 Script.HashType.TYPE));
 
     return fullAddress;

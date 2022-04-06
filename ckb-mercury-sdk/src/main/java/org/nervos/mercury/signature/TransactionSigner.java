@@ -38,7 +38,8 @@ public class TransactionSigner {
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
 
     Witness signedWitness = new Witness();
-    signedWitness.lock = Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
+    signedWitness.lock =
+        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
 
     int replaceIndexStart = scriptGroup.getOffset() * 2 + 2;
     int replaceIndexEnd = Witness.SIGNATURE_PLACEHOLDER.length * 2 + replaceIndexStart;
