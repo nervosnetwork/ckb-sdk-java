@@ -9,11 +9,6 @@ import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
-
-  public static final String DATA = "data";
-  public static final String TYPE = "type";
-  public static final String DATA1 = "data1";
-
   @SerializedName("code_hash")
   public byte[] codeHash;
 

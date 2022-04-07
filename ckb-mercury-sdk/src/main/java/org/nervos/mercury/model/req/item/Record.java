@@ -10,9 +10,9 @@ import org.nervos.ckb.utils.Numeric;
 
 public class Record {
 
-  public static final String SCRIPT_TYPE = "0x01";
+  public static final byte[] SCRIPT_TYPE = new byte[] {0x1};
 
-  public static final String Address_TYPE = "0x00";
+  public static final byte[] Address_TYPE = new byte[] {0x0};
 
   public String record;
 
@@ -42,16 +42,10 @@ public class Record {
 
     if (Objects.nonNull(this.script)) {
       return Numeric.toHexString(
-          Bytes.concat(
-              record,
-              Numeric.hexStringToByteArray(Record.SCRIPT_TYPE),
-              Arrays.copyOfRange(this.script.computeHash(), 0, 20)));
+          Bytes.concat(record, SCRIPT_TYPE, Arrays.copyOfRange(this.script.computeHash(), 0, 20)));
     } else {
       return Numeric.toHexString(
-          Bytes.concat(
-              record,
-              Numeric.hexStringToByteArray(Record.Address_TYPE),
-              this.address.getBytes(StandardCharsets.UTF_8)));
+          Bytes.concat(record, Address_TYPE, this.address.getBytes(StandardCharsets.UTF_8)));
     }
   }
 
