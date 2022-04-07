@@ -24,7 +24,19 @@ public class CellDep {
   }
 
   public enum DepType {
-    CODE,
-    DEP_GROUP;
+    @SerializedName("code")
+    CODE(0x00),
+    @SerializedName("dep_group")
+    DEP_GROUP(0x01);
+
+    private byte value;
+
+    DepType(int value) {
+      this.value = (byte) value;
+    }
+
+    public byte toByte() {
+      return value;
+    }
   }
 }

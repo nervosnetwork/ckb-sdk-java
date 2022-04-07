@@ -2,17 +2,19 @@ package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigInteger;
+
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Header {
 
   public byte[] dao;
   public byte[] hash;
-  public byte[] nonce;
+  public BigInteger nonce;
   public int number;
   public byte[] epoch;
 
   @SerializedName("compact_target")
-  public byte[] compactTarget;
+  public long compactTarget;
 
   @SerializedName("parent_hash")
   public byte[] parentHash;

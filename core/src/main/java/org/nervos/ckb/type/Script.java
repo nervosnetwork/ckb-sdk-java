@@ -48,10 +48,33 @@ public class Script {
 
   public enum HashType {
     @SerializedName("data")
-    DATA,
+    DATA(0x00),
     @SerializedName("type")
-    TYPE,
+    TYPE(0x01),
     @SerializedName("data1")
-    DATA1;
+    DATA1(0x02);
+
+    private byte byteValue;
+
+    HashType(int byteValue) {
+      this.byteValue = (byte) byteValue;
+    }
+
+    public byte toByte() {
+      return byteValue;
+    }
+
+    public static HashType valueOf(byte value) {
+      switch (value) {
+        case 0x00:
+          return DATA;
+        case 0x01:
+          return TYPE;
+        case 0x02:
+          return DATA1;
+        default:
+          throw new NullPointerException();
+      }
+    }
   }
 }
