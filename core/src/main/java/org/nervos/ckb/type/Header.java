@@ -5,28 +5,28 @@ import com.google.gson.annotations.SerializedName;
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Header {
 
-  public String dao;
-  public String hash;
-  public String nonce;
-  public String number;
-  public String epoch;
+  public byte[] dao;
+  public byte[] hash;
+  public byte[] nonce;
+  public int number;
+  public byte[] epoch;
 
   @SerializedName("compact_target")
-  public String compactTarget;
+  public byte[] compactTarget;
 
   @SerializedName("parent_hash")
-  public String parentHash;
+  public byte[] parentHash;
 
-  public String timestamp;
+  public long timestamp;
 
   @SerializedName("transactions_root")
-  public String transactionsRoot;
+  public byte[] transactionsRoot;
 
   @SerializedName("proposals_hash")
-  public String proposalsHash;
+  public byte[] proposalsHash;
 
   @SerializedName("extra_hash")
-  public String extraHash;
+  public byte[] extraHash;
 
-  public String version;
+  public int version;
 }

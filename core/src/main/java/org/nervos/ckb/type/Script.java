@@ -4,9 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
-import org.nervos.ckb.utils.Strings;
 import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -17,41 +15,48 @@ public class Script {
   public static final String DATA1 = "data1";
 
   @SerializedName("code_hash")
-  public String codeHash;
+  public byte[] codeHash;
 
-  public String args;
+  public byte[] args;
 
   @SerializedName("hash_type")
-  public String hashType;
+  public HashType hashType;
 
   public Script() {}
 
-  public Script(String codeHash, String args) {
-    this.codeHash = codeHash;
-    this.args = args;
-    this.hashType = DATA;
+  public Script(byte[] codeHash, byte[] args) {
+    this(codeHash, args, HashType.DATA);
   }
 
-  public Script(String codeHash, String args, String hashType) {
+  public Script(byte[] codeHash, byte[] args, HashType hashType) {
     this.codeHash = codeHash;
     this.args = args;
     this.hashType = hashType;
   }
 
-  public String computeHash() {
+  public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
     blake2b.update(Encoder.encode(Serializer.serializeScript(this)));
-    return blake2b.doFinalString();
+    return blake2b.doFinalBytes();
   }
 
   public BigInteger occupiedCapacity() {
     int byteSize = 1;
-    if (!Strings.isEmpty(codeHash)) {
-      byteSize += Numeric.hexStringToByteArray(codeHash).length;
+    if (codeHash != null) {
+      byteSize += codeHash.length;
     }
-    if (!Strings.isEmpty(args)) {
-      byteSize += Numeric.hexStringToByteArray(args).length;
+    if (args != null) {
+      byteSize += args.length;
     }
     return Utils.ckbToShannon(byteSize);
+  }
+
+  public enum HashType {
+    @SerializedName("data")
+    DATA,
+    @SerializedName("type")
+    TYPE,
+    @SerializedName("data1")
+    DATA1;
   }
 }

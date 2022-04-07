@@ -1,5 +1,7 @@
 package type;
 
+import static utils.TestUtils.createScript;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,33 +26,36 @@ class TransactionTest {
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
-            "100000000000",
-            new Script(
+            new BigInteger("100000000000"),
+            createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
-            "4900000000000",
-            new Script(
+            new BigInteger("4900000000000"),
+            createScript(
                 "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
-                    CellDep.DEP_GROUP)),
-            Collections.singletonList("0x"),
+                        Numeric.hexStringToByteArray(
+                            "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"),
+                        1),
+                    CellDep.DepType.DEP_GROUP)),
+            Collections.singletonList(new byte[] {}),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
-                    "0")),
+                        Numeric.hexStringToByteArray(
+                            "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"),
+                        0))),
             cellOutputs,
-            Arrays.asList("0x", "0x"),
+            Arrays.asList(new byte[] {}, new byte[] {}),
             Collections.singletonList(new Witness()));
 
     BigInteger privateKey =
@@ -67,18 +72,23 @@ class TransactionTest {
     List<CellInput> cellInputs = new ArrayList<>();
     cellInputs.add(
         new CellInput(
-            new OutPoint("0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4", "0"),
-            "113"));
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4"),
+                0),
+            new byte[] {113}));
     cellInputs.add(
         new CellInput(
-            new OutPoint("0x00000000000000000000000000004e4552564f5344414f494e50555430303031", "0"),
-            "0"));
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0x00000000000000000000000000004e4552564f5344414f494e50555430303031"),
+                0)));
 
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
-            "10000009045634",
-            new Script(
+            new BigInteger("10000009045634"),
+            createScript(
                 "0xf1951123466e4479842387a66fabfd6b65fc87fd84ae8e6cd3053edb27fff2fd",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
@@ -88,16 +98,18 @@ class TransactionTest {
 
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
-                    CellDep.DEP_GROUP)),
-            Collections.singletonList("0x"),
+                        Numeric.hexStringToByteArray(
+                            "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"),
+                        1),
+                    CellDep.DepType.DEP_GROUP)),
+            Collections.singletonList(new byte[] {}),
             cellInputs,
             cellOutputs,
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[] {}),
             witnesses);
 
     BigInteger privateKey =
@@ -117,33 +129,36 @@ class TransactionTest {
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
-            "100000000000",
-            new Script(
+            new BigInteger("100000000000"),
+            createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
-            "4900000000000",
-            new Script(
+            new BigInteger("4900000000000"),
+            createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
-                    CellDep.DEP_GROUP)),
-            Collections.singletonList("0x"),
+                        Numeric.hexStringToByteArray(
+                            "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"),
+                        1),
+                    CellDep.DepType.DEP_GROUP)),
+            Collections.singletonList(new byte[] {}),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
-                    "0")),
+                        Numeric.hexStringToByteArray(
+                            "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"),
+                        0))),
             cellOutputs,
-            Collections.singletonList("0x"),
+            Collections.singletonList(new byte[] {}),
             Collections.emptyList());
 
     BigInteger privateKey =
@@ -155,44 +170,50 @@ class TransactionTest {
   public void serializationTest() {
     Transaction tx =
         new Transaction(
-            "0",
+            0,
             Arrays.asList(
                 new CellDep(
                     new OutPoint(
-                        "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b", "0"),
-                    CellDep.DEP_GROUP),
+                        Numeric.hexStringToByteArray(
+                            "0xc12386705b5cbb312b693874f3edf45c43a274482e27b8df0fd80c8d3f5feb8b"),
+                        0),
+                    CellDep.DepType.DEP_GROUP),
                 new CellDep(
                     new OutPoint(
-                        "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60", "2"),
-                    CellDep.CODE)),
+                        Numeric.hexStringToByteArray(
+                            "0x0fb4945d52baf91e0dee2a686cdd9d84cad95b566a1d7409b970ee0a0f364f60"),
+                        2),
+                    CellDep.DepType.CODE)),
             Collections.emptyList(),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65", "1"),
-                    "0")),
+                        Numeric.hexStringToByteArray(
+                            "0x31f695263423a4b05045dd25ce6692bb55d7bba2965d8be16b036e138e72cc65"),
+                        1))),
             Arrays.asList(
                 new CellOutput(
-                    "100000000000",
-                    new Script(
+                    new BigInteger("100000000000"),
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE),
-                    new Script(
+                        Script.HashType.TYPE),
+                    createScript(
                         "0xece45e0979030e2f8909f76258631c42333b1e906fd9701ec3600a464a90b8f6",
                         "0x",
-                        Script.DATA)),
+                        Script.HashType.DATA)),
                 new CellOutput(
-                    "98824000000000",
-                    new Script(
+                    new BigInteger("98824000000000"),
+                    createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
-                        Script.TYPE))),
-            Arrays.asList("0x", "0x"),
+                        Script.HashType.TYPE))),
+            Arrays.asList(new byte[] {}, new byte[] {}),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
 
     Assertions.assertEquals(
-        "0xe765f9912b06c72552dae11779f6371309236e968aa045ae3b8f426d8ec8ca05", tx.computeHash());
+        "0xe765f9912b06c72552dae11779f6371309236e968aa045ae3b8f426d8ec8ca05",
+        Numeric.toHexString(tx.computeHash()));
   }
 }

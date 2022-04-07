@@ -7,19 +7,18 @@ public class AssetInfo {
   public AssetType assetType;
 
   @SerializedName("udt_hash")
-  public String udtHash;
+  public byte[] udtHash;
 
-  private AssetInfo(AssetType assetType, String udtHash) {
+  private AssetInfo(AssetType assetType, byte[] udtHash) {
     this.assetType = assetType;
     this.udtHash = udtHash;
   }
 
   public static AssetInfo newCkbAsset() {
-    return new AssetInfo(
-        AssetType.CKB, "0x0000000000000000000000000000000000000000000000000000000000000000");
+    return new AssetInfo(AssetType.CKB, new byte[32]);
   }
 
-  public static AssetInfo newUdtAsset(String udtHash) {
+  public static AssetInfo newUdtAsset(byte[] udtHash) {
     return new AssetInfo(AssetType.UDT, udtHash);
   }
 }

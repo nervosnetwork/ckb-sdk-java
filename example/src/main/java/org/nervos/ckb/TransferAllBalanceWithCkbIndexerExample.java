@@ -67,7 +67,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
     // For transferring all balance, change address is set to be null
     // Because the transfer of the entire balance will not set the change cell, you need to
     // carefully calculate the transfer amount
-    String hash = sendCapacity(receivers, null);
+    byte[] hash = sendCapacity(receivers, null);
     System.out.println("Transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
@@ -83,7 +83,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
-  private static String sendCapacity(List<Receiver> receivers, String changeAddress)
+  private static byte[] sendCapacity(List<Receiver> receivers, String changeAddress)
       throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
@@ -103,7 +103,8 @@ public class TransferAllBalanceWithCkbIndexerExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity =
+          new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
     }
 

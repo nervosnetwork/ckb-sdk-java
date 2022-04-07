@@ -71,7 +71,7 @@ public class MultiSignTransactionExample {
             + getBalance(targetAddress)
             + " CKB");
 
-    String txHash = sendCapacity(targetAddress, Utils.ckbToShannon(3000), privateKeys);
+    byte[] txHash = sendCapacity(targetAddress, Utils.ckbToShannon(3000), privateKeys);
     System.out.println("Transaction hash: " + txHash);
     Thread.sleep(30000);
 
@@ -128,7 +128,7 @@ public class MultiSignTransactionExample {
             configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
@@ -145,7 +145,8 @@ public class MultiSignTransactionExample {
     }
 
     Secp256k1MultisigAllBuilder signBuilder =
-        new Secp256k1MultisigAllBuilder(txBuilder.buildTx(), configuration.serialize());
+        new Secp256k1MultisigAllBuilder(
+            txBuilder.buildTx(), Numeric.hexStringToByteArray(configuration.serialize()));
 
     for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
       signBuilder.sign(
@@ -155,7 +156,7 @@ public class MultiSignTransactionExample {
     return signBuilder.buildTx();
   }
 
-  public static String sendCapacity(
+  public static byte[] sendCapacity(
       String targetAddress, BigInteger capacity, List<String> privateKeys) throws IOException {
     Transaction tx = generateTx(targetAddress, capacity, privateKeys);
     return api.sendTransaction(tx);
@@ -164,8 +165,8 @@ public class MultiSignTransactionExample {
   public static Script generateLock() {
     return new Script(
         systemMultiSigCell.cellHash,
-        Numeric.prependHexPrefix(configuration.blake160()),
-        Script.TYPE);
+        Numeric.hexStringToByteArray(Numeric.prependHexPrefix(configuration.blake160())),
+        Script.HashType.TYPE);
   }
 
   static class Configuration {
@@ -208,7 +209,10 @@ public class MultiSignTransactionExample {
 
     public String address() throws IOException {
       Script script =
-          new Script(SystemContract.getSystemMultiSigCell(api).cellHash, blake160(), Script.TYPE);
+          new Script(
+              SystemContract.getSystemMultiSigCell(api).cellHash,
+              Numeric.hexStringToByteArray(blake160()),
+              Script.HashType.TYPE);
       return AddressGenerator.generate(Network.TESTNET, script);
     }
   }

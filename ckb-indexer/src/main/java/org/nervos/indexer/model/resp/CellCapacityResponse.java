@@ -1,14 +1,14 @@
 package org.nervos.indexer.model.resp;
 
 import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
 
 public class CellCapacityResponse {
   @SerializedName("block_hash")
-  public String blockHash;
+  public byte[] blockHash;
 
   @SerializedName("block_number")
-  public String blockNumber;
+  public int blockNumber;
 
-  @SerializedName("")
-  public String capacity;
+  public BigInteger capacity;
 }

@@ -12,7 +12,7 @@ public class NodeInfo {
   public boolean active;
 
   @SerializedName("connections")
-  public String connections;
+  public int connections;
 
   public String version;
   public List<Address> addresses;
@@ -20,11 +20,11 @@ public class NodeInfo {
 
   public static class Address {
     public String address;
-    public String score;
+    public int score;
   }
 
   public static class Protocol {
-    public String id;
+    public int id;
     public String name;
 
     @SerializedName("support_versions")

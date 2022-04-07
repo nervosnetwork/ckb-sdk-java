@@ -47,8 +47,8 @@ public class SUDTExample {
     ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, true);
 
     Script senderScript = AddressParser.parse(SendAddresses.get(0)).script;
-    String sendLockHash = senderScript.computeHash();
-    sudtType = new Script(SUDT_CODE_HASH, sendLockHash, Script.TYPE);
+    byte[] sendLockHash = senderScript.computeHash();
+    sudtType = new Script(SUDT_CODE_HASH, sendLockHash, Script.HashType.TYPE);
   }
 
   public static void main(String[] args) throws Exception {
@@ -69,7 +69,7 @@ public class SUDTExample {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
-  private static String issue() throws IOException {
+  private static byte[] issue() throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -82,8 +82,8 @@ public class SUDTExample {
     txBuilder.addOutputs(cellOutputs);
 
     txBuilder.setOutputsData(
-        Arrays.asList(Numeric.toHexString(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes()), "0x"));
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, "0x0"), CellDep.CODE));
+        Arrays.asList(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes(), new byte[] {}));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1024);
@@ -95,7 +95,8 @@ public class SUDTExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity =
+          new BigInteger(collectResult.changeCapacity);
       txBuilder.setOutputs(cellOutputs);
     }
 
@@ -126,7 +127,7 @@ public class SUDTExample {
     return api.sendTransaction(tx);
   }
 
-  private static String transfer() throws IOException {
+  private static byte[] transfer() throws IOException {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     TransactionBuilder txBuilder = new TransactionBuilder(api);
@@ -138,7 +139,7 @@ public class SUDTExample {
     cellOutputs.get(0).type = sudtType;
     txBuilder.addOutputs(cellOutputs);
 
-    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, "0x0"), CellDep.CODE));
+    txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
     BigInteger feeRate = BigInteger.valueOf(1500);
@@ -151,16 +152,16 @@ public class SUDTExample {
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+      cellOutputs.get(cellOutputs.size() - 1).capacity =
+          new BigInteger(collectResult.changeCapacity);
       cellOutputs.get(cellOutputs.size() - 1).type = sudtType;
       txBuilder.setOutputs(cellOutputs);
     }
 
     txBuilder.setOutputsData(
         Arrays.asList(
-            Numeric.toHexString(new UInt128((SUDT_TRANSFER_AMOUNT)).toBytes()),
-            Numeric.toHexString(
-                new UInt128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toBytes())));
+            new UInt128((SUDT_TRANSFER_AMOUNT)).toBytes(),
+            new UInt128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toBytes()));
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {

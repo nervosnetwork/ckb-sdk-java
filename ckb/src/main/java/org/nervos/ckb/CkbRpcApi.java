@@ -18,7 +18,6 @@ import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.PeerNodeInfo;
 import org.nervos.ckb.type.RawTxPool;
 import org.nervos.ckb.type.RawTxPoolVerbose;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.SyncState;
 import org.nervos.ckb.type.TransactionProof;
 import org.nervos.ckb.type.TxPoolInfo;
@@ -29,15 +28,15 @@ import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public interface CkbRpcApi {
-  Block getBlock(String blockHash) throws IOException;
+  Block getBlock(byte[] blockHash) throws IOException;
 
-  Block getBlockByNumber(String blockNumber) throws IOException;
+  Block getBlockByNumber(int blockNumber) throws IOException;
 
-  TransactionWithStatus getTransaction(String transactionHash) throws IOException;
+  TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException;
 
-  String getBlockHash(String blockNumber) throws IOException;
+  byte[] getBlockHash(int blockNumber) throws IOException;
 
-  BlockEconomicState getBlockEconomicState(String blockHash) throws IOException;
+  BlockEconomicState getBlockEconomicState(byte[] blockHash) throws IOException;
 
   Header getTipHeader() throws IOException;
 
@@ -47,37 +46,37 @@ public interface CkbRpcApi {
 
   Epoch getCurrentEpoch() throws IOException;
 
-  Epoch getEpochByNumber(String epochNumber) throws IOException;
+  Epoch getEpochByNumber(int epochNumber) throws IOException;
 
-  Header getHeader(String blockHash) throws IOException;
+  Header getHeader(byte[] blockHash) throws IOException;
 
-  Header getHeaderByNumber(String blockNumber) throws IOException;
+  Header getHeaderByNumber(int blockNumber) throws IOException;
 
-  TransactionProof getTransactionProof(List<String> txHashes) throws IOException;
+  TransactionProof getTransactionProof(List<byte[]> txHashes) throws IOException;
 
-  TransactionProof getTransactionProof(List<String> txHashes, String blockHash) throws IOException;
+  TransactionProof getTransactionProof(List<byte[]> txHashes, byte[] blockHash) throws IOException;
 
-  List<String> verifyTransactionProof(TransactionProof transactionProof) throws IOException;
+  List<byte[]> verifyTransactionProof(TransactionProof transactionProof) throws IOException;
 
-  Block getForkBlock(String blockHash) throws IOException;
+  Block getForkBlock(byte[] blockHash) throws IOException;
 
   Consensus getConsensus() throws IOException;
 
-  String getBlockMedianTime(String blockHash) throws IOException;
+  Long getBlockMedianTime(byte[] blockHash) throws IOException;
 
   BlockchainInfo getBlockchainInfo() throws IOException;
 
   TxPoolInfo txPoolInfo() throws IOException;
 
-  String clearTxPool() throws IOException;
+  void clearTxPool() throws IOException;
 
   RawTxPool getRawTxPool() throws IOException;
 
   RawTxPoolVerbose getRawTxPoolVerbose() throws IOException;
 
-  String sendTransaction(Transaction transaction) throws IOException;
+  byte[] sendTransaction(Transaction transaction) throws IOException;
 
-  String sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
+  byte[] sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
       throws IOException;
 
   NodeInfo localNodeInfo() throws IOException;
@@ -86,29 +85,23 @@ public interface CkbRpcApi {
 
   SyncState syncState() throws IOException;
 
-  String setNetworkActive(Boolean state) throws IOException;
+  void setNetworkActive(Boolean state) throws IOException;
 
-  String addNode(String peerId, String address) throws IOException;
+  void addNode(String peerId, String address) throws IOException;
 
-  String removeNode(String peerId) throws IOException;
+  void removeNode(String peerId) throws IOException;
 
-  String setBan(BannedAddress bannedAddress) throws IOException;
+  void setBan(BannedAddress bannedAddress) throws IOException;
 
   List<BannedResultAddress> getBannedAddresses() throws IOException;
 
-  String clearBannedAddresses() throws IOException;
+  void clearBannedAddresses() throws IOException;
 
-  String pingPeers() throws IOException;
+  void pingPeers() throws IOException;
 
   Cycles dryRunTransaction(Transaction transaction) throws IOException;
 
-  @Deprecated
-  String computeTransactionHash(Transaction transaction) throws IOException;
-
-  @Deprecated
-  String computeScriptHash(Script script) throws IOException;
-
-  String calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException;
 
   List<RpcResponse> batchRPC(List<List> requests) throws IOException;

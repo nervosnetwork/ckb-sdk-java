@@ -13,27 +13,22 @@ public class TransactionWithStatus {
   public static class TxStatus {
 
     // pending / proposed / committed
-    public String status;
+    public Status status;
 
     @SerializedName("block_hash")
-    public String blockHash;
+    public byte[] blockHash;
   }
 
   public enum Status {
-    PENDING("pending"),
-    PROPOSED("proposed"),
-    COMMITTED("committed"),
-    UNKNOWN("unknown"),
-    REJECTED("rejected");
-
-    private final String value;
-
-    Status(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
+    @SerializedName("pending")
+    PENDING,
+    @SerializedName("proposed")
+    PROPOSED,
+    @SerializedName("committed")
+    COMMITTED,
+    @SerializedName("unknown")
+    UNKNOWN,
+    @SerializedName("rejected")
+    REJECTED;
   }
 }

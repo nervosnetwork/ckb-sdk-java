@@ -10,13 +10,13 @@ public class PeerNodeInfo {
   public String nodeId;
 
   @SerializedName("connected_duration")
-  public String connectedDuration;
+  public long connectedDuration;
 
   @SerializedName("is_outbound")
-  public Boolean isOutbound;
+  public boolean isOutbound;
 
   @SerializedName("last_ping_duration")
-  public String lastPingDuration;
+  public long lastPingDuration;
 
   public String version;
   public List<Address> addresses;
@@ -26,36 +26,35 @@ public class PeerNodeInfo {
   public SyncState syncState;
 
   public static class Address {
-
     public String address;
-    public String score;
+    public int score;
   }
 
   public static class Protocol {
-    public String id;
+    public int id;
     public String version;
   }
 
   public static class SyncState {
     @SerializedName("best_known_header_hash")
-    public String bestKnownHeader;
+    public String BEST_KNOWN_HEADER;
 
     @SerializedName("best_known_header_number")
-    public String bestKnownHeaderNumber;
+    public String BEST_KNOWN_HEADER_NUMBER;
 
     @SerializedName("can_fetch_count")
-    public String canFetchCount;
+    public String CAN_FETCH_COUNT;
 
     @SerializedName("inflight_count")
-    public String inflightCount;
+    public String INFLIGHT_COUNT;
 
     @SerializedName("last_common_header_hash")
-    public String lastCommonHeaderHash;
+    public String LAST_COMMON_HEADER_HASH;
 
     @SerializedName("last_common_header_number")
-    public String lastCommonHeaderNumber;
+    public String LAST_COMMON_HEADER_NUMBER;
 
     @SerializedName("unknown_header_list_size")
-    public String unknownHeaderListSize;
+    public String UNKNOWN_HEADER_LIST_SIZE;
   }
 }

@@ -5,25 +5,26 @@ import org.nervos.ckb.type.OutPoint;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellDep {
-
-  public static final String CODE = "code";
-  public static final String DEP_GROUP = "dep_group";
-
   @SerializedName("out_point")
   public OutPoint outPoint;
 
   @SerializedName("dep_type")
-  public String depType;
+  public DepType depType;
 
   public CellDep() {}
 
-  public CellDep(OutPoint outPoint, String depType) {
+  public CellDep(OutPoint outPoint, DepType depType) {
     this.outPoint = outPoint;
     this.depType = depType;
   }
 
   public CellDep(OutPoint outPoint) {
     this.outPoint = outPoint;
-    this.depType = CODE;
+    this.depType = DepType.CODE;
+  }
+
+  public enum DepType {
+    CODE,
+    DEP_GROUP;
   }
 }

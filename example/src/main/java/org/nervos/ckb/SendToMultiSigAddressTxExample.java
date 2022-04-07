@@ -44,7 +44,7 @@ public class SendToMultiSigAddressTxExample {
 
     System.out.println("Before transferring, change address balance: " + getBalance() + " CKB");
 
-    String hash = sendCapacity(receivers, changeAddress);
+    byte[] hash = sendCapacity(receivers, changeAddress);
     System.out.println("Transaction hash: " + hash);
 
     // waiting transaction into block, sometimes you should wait more seconds
@@ -72,7 +72,7 @@ public class SendToMultiSigAddressTxExample {
         .toString(10);
   }
 
-  private static String sendCapacity(List<Receiver> receivers, String changeAddress)
+  private static byte[] sendCapacity(List<Receiver> receivers, String changeAddress)
       throws IOException {
     TransactionBuilder txBuilder = new TransactionBuilder(api);
     IndexerCollector txUtils = new IndexerCollector(api, ckbIndexerApi);
@@ -94,7 +94,7 @@ public class SendToMultiSigAddressTxExample {
             Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
+    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;

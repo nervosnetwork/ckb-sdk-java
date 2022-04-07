@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Epoch {
-  public String number;
+  public int number;
 
   @SerializedName("start_number")
-  public String startNumber;
+  public int startNumber;
 
-  public String length;
+  public int length;
 
   @SerializedName("compact_target")
-  public String compactTarget;
+  public byte[] compactTarget;
 
   public Epoch() {}
 }

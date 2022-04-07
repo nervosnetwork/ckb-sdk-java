@@ -33,27 +33,27 @@ public class CellCollector {
       Iterator<TransactionInput> iterator)
       throws IOException {
 
-    Set<String> lockHashes = new LinkedHashSet<>();
+    Set<byte[]> lockHashes = new LinkedHashSet<>();
     for (String address : addresses) {
       AddressParseResult addressParseResult = AddressParser.parse(address);
       lockHashes.add(addressParseResult.script.computeHash());
     }
-    Map<String, List<CellInput>> lockInputsMap = new HashMap<>();
-    for (String lockHash : lockHashes) {
+    Map<byte[], List<CellInput>> lockInputsMap = new HashMap<>();
+    for (byte[] lockHash : lockHashes) {
       lockInputsMap.put(lockHash, new ArrayList<>());
     }
     final List<CellInput> cellInputs = new ArrayList<>();
 
     for (int i = 0; i < tx.outputs.size() - 1; i++) {
-      BigInteger size = tx.outputs.get(i).occupiedCapacity("0x");
-      if (size.compareTo(Numeric.toBigInt(tx.outputs.get(i).capacity)) > 0) {
+      BigInteger size = tx.outputs.get(i).occupiedCapacity(new byte[] {});
+      if (size.compareTo(tx.outputs.get(i).capacity) > 0) {
         throw new IOException("Cell output byte size must not be bigger than capacity");
       }
     }
 
     Transaction transaction =
         new Transaction(
-            "0",
+            0,
             tx.cellDeps,
             tx.headerDeps,
             tx.inputs,
@@ -66,20 +66,20 @@ public class CellCollector {
       cellInputs.add(cellInput);
 
       CellWithStatus cellWithStatus = api.getLiveCell(cellInput.previousOutput, false);
-      inputsCapacity = inputsCapacity.add(Numeric.toBigInt(cellWithStatus.cell.output.capacity));
+      inputsCapacity = inputsCapacity.add(cellWithStatus.cell.output.capacity);
     }
     final List witnesses = new ArrayList<>();
 
     CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
     boolean haveChangeOutput = false;
     //  If the last cellOutput's capacity is not zero,  it means there is no changeOutput
-    if (Numeric.toBigInt(changeOutput.capacity).compareTo(BigInteger.ZERO) == 0) {
+    if (changeOutput.capacity.compareTo(BigInteger.ZERO) == 0) {
       haveChangeOutput = true;
     }
 
     BigInteger needCapacity = BigInteger.ZERO;
     for (CellOutput cellOutput : tx.outputs) {
-      needCapacity = needCapacity.add(Numeric.toBigInt(cellOutput.capacity));
+      needCapacity = needCapacity.add(cellOutput.capacity);
     }
 
     while (iterator.hasNext()) {
@@ -98,9 +98,9 @@ public class CellCollector {
       if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
         // update witness of group first element
         int witnessIndex = 0;
-        for (String hash : lockHashes) {
+        for (byte[] hash : lockHashes) {
           if (lockInputsMap.get(hash).size() == 0) continue;
-          witnesses.set(witnessIndex, new Witness(getZeros(initialLength)));
+          witnesses.set(witnessIndex, new Witness(new byte[initialLength]));
           witnessIndex += lockInputsMap.get(hash).size();
         }
 
@@ -126,8 +126,8 @@ public class CellCollector {
     }
 
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    List<String> lockHashList = Arrays.asList(lockHashes.toArray(new String[0]));
-    for (Map.Entry<String, List<CellInput>> entry : lockInputsMap.entrySet()) {
+    List<byte[]> lockHashList = Arrays.asList(lockHashes.toArray(new byte[][] {}));
+    for (Map.Entry<byte[], List<CellInput>> entry : lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(
               entry.getValue(), addresses.get(lockHashList.indexOf(entry.getKey()))));
@@ -158,13 +158,5 @@ public class CellCollector {
 
   private BigInteger calculateOutputSize(CellOutput cellOutput) {
     return Utils.ckbToShannon(Serializer.serializeCellOutput(cellOutput).getLength());
-  }
-
-  private String getZeros(int length) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < length; i++) {
-      sb.append("0");
-    }
-    return sb.toString();
   }
 }

@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class OutPoint {
 
   @SerializedName("tx_hash")
-  public String txHash;
+  public byte[] txHash;
 
-  public String index;
+  public int index;
 
   public OutPoint() {}
 
-  public OutPoint(String txHash, String index) {
+  public OutPoint(byte[] txHash, int index) {
     this.txHash = txHash;
     this.index = index;
   }

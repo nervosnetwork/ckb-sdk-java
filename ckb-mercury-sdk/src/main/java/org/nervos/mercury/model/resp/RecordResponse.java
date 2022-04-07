@@ -9,6 +9,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.mercury.model.common.AssetInfo;
 
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
@@ -49,17 +50,19 @@ public class RecordResponse
       }
 
       if (fieldExist(amount, "udt_hash")) {
-        record.assetInfo = AssetInfo.newUdtAsset(amount.get("udt_hash").getAsString());
+        record.assetInfo =
+            AssetInfo.newUdtAsset(
+                Numeric.hexStringToByteArray(amount.get("udt_hash").getAsString()));
       } else {
         record.assetInfo = AssetInfo.newCkbAsset();
       }
       if (fieldExist(amount, "status")) {
         JsonObject status = amount.get("status").getAsJsonObject();
         if (fieldExist(status, "claimable")) {
-          record.status = AssetStatus.Claimable;
+          record.status = AssetStatus.CLAIMABLE;
           record.blockNumber = status.get("claimable").getAsBigInteger();
         } else if (fieldExist(status, "fixed")) {
-          record.status = AssetStatus.Fixed;
+          record.status = AssetStatus.FIXED;
           record.blockNumber = status.get("fixed").getAsBigInteger();
         }
       }

@@ -1,6 +1,5 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
@@ -14,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressTools;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
@@ -23,7 +22,6 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class BuildAdjustAccountTest {
-  Gson g = GsonFactory.newGson();
 
   @Test
   void testCreateAsset()
@@ -35,12 +33,10 @@ public class BuildAdjustAccountTest {
     AddressWithKeyHolder.put(newAddress.address, newAddress.privateKey);
 
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.item(ItemFactory.newIdentityItemByCkb(newAddress.lockArgs));
+    builder.item(ItemFactory.newIdentityItemByCkb(Numeric.toHexString(newAddress.lockArgs)));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.addFrom(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3()));
     builder.accountNumber(BigInteger.ONE);
-
-    System.out.println(g.toJson(builder.build()));
 
     try {
       TransactionCompletionResponse s =
@@ -52,8 +48,7 @@ public class BuildAdjustAccountTest {
 
       Transaction tx = SignUtils.sign(s);
 
-      System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {
@@ -68,8 +63,6 @@ public class BuildAdjustAccountTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.ONE);
 
-    System.out.println(g.toJson(builder.build()));
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
@@ -78,12 +71,9 @@ public class BuildAdjustAccountTest {
         return;
       }
 
-      System.out.println(g.toJson(s));
-
       Transaction tx = SignUtils.sign(s);
 
-      System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {
@@ -99,8 +89,6 @@ public class BuildAdjustAccountTest {
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.accountNumber(BigInteger.valueOf(1));
 
-    System.out.println(g.toJson(builder.build()));
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
@@ -109,12 +97,9 @@ public class BuildAdjustAccountTest {
         return;
       }
 
-      System.out.println(g.toJson(s));
-
       Transaction tx = SignUtils.sign(s);
 
-      System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {
@@ -130,8 +115,6 @@ public class BuildAdjustAccountTest {
     builder.extraCkb(AmountUtils.ckbToShannon(200));
     builder.accountNumber(BigInteger.ONE);
 
-    System.out.println(g.toJson(builder.build()));
-
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
@@ -140,12 +123,8 @@ public class BuildAdjustAccountTest {
         return;
       }
 
-      System.out.println(g.toJson(s));
-
       Transaction tx = SignUtils.sign(s);
-
-      System.out.println(g.toJson(tx));
-      String txHash = ApiFactory.getApi().sendTransaction(tx);
+      byte[] txHash = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(txHash);
 
     } catch (IOException e) {

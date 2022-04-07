@@ -1,7 +1,6 @@
 package org.nervos.mercury.model.resp.info;
 
 import com.google.gson.annotations.SerializedName;
-import java.math.BigInteger;
 
 public class DBInfo {
   public String version;
@@ -9,11 +8,11 @@ public class DBInfo {
   public DBDriver db;
 
   @SerializedName("conn_size")
-  public BigInteger connSize;
+  public int connSize;
 
   @SerializedName("center_id")
-  public BigInteger centerId;
+  public int centerId;
 
   @SerializedName("machine_id")
-  public BigInteger machineId;
+  public int machineId;
 }

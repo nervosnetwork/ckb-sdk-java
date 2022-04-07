@@ -1,6 +1,5 @@
 package service;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -9,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.BannedAddress;
 import org.nervos.ckb.type.BannedResultAddress;
@@ -38,7 +37,6 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
-@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest {
 
@@ -46,94 +44,118 @@ public class ApiTest {
 
   @BeforeAll
   public void init() {
-    api = new Api("http://localhost:8114", false);
+    api = new Api("https://testnet.ckb.dev", false);
   }
 
   @Test
   public void testGetBlockByNumber() throws IOException {
-    Block block = api.getBlockByNumber("0x1");
+    Block block = api.getBlockByNumber(1);
     Assertions.assertNotNull(block);
+    Assertions.assertEquals(1, block.transactions.size());
   }
 
   @Test
   public void testGetBlockHashByNumber() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
-    Assertions.assertNotNull(blockHash);
+    byte[] blockHash = api.getBlockHash(1);
+    Assertions.assertEquals(
+        "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd",
+        Numeric.toHexString(blockHash));
   }
 
   @Test
   public void testGetBlockEconomicState() throws IOException {
-    String blockHash = api.getBlockHash("0x2");
+    byte[] blockHash =
+        Numeric.hexStringToByteArray(
+            "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
     BlockEconomicState blockEconomicState = api.getBlockEconomicState(blockHash);
     Assertions.assertNotNull(blockEconomicState);
+    Assertions.assertEquals(
+        BigInteger.valueOf(9207601095L), blockEconomicState.minerReward.secondary);
   }
 
   @Test
-  public void testBlockAndTransaction() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
+  public void testGetBlock() throws IOException {
+    byte[] blockHash =
+        Numeric.hexStringToByteArray(
+            "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
     Block block = api.getBlock(blockHash);
-    Assertions.assertNotNull(block);
+    Assertions.assertEquals(1, block.transactions.size());
     Assertions.assertNotNull(block.header);
   }
 
   @Test
   public void testTransaction() throws IOException {
-    String transactionHash = api.getBlockByNumber("0x1").transactions.get(0).hash;
+    byte[] transactionHash =
+        Numeric.hexStringToByteArray(
+            "0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1");
     Transaction transaction = api.getTransaction(transactionHash).transaction;
     Assertions.assertNotNull(transaction);
+    Assertions.assertEquals(4, transaction.cellDeps.size());
+    Assertions.assertEquals(1, transaction.inputs.size());
+    Assertions.assertEquals(3, transaction.outputs.size());
+    Assertions.assertEquals(new BigInteger("30000000000"), transaction.outputs.get(0).capacity);
   }
 
   @Test
   public void testGetTipHeader() throws IOException {
     Header header = api.getTipHeader();
-    Assertions.assertNotNull(header);
+    Assertions.assertNotEquals(0, header.number);
+    Assertions.assertNotNull(header.compactTarget);
   }
 
   @Test
   public void testGetTipBlockNumber() throws IOException {
     BigInteger blockNumber = api.getTipBlockNumber();
-    Assertions.assertNotNull(blockNumber.toString());
+    Assertions.assertNotNull(blockNumber);
+    Assertions.assertNotEquals(BigInteger.ZERO, blockNumber);
   }
 
   @Test
   public void testGetCurrentEpoch() throws IOException {
     Epoch epoch = api.getCurrentEpoch();
-    Assertions.assertNotNull(epoch);
+    Assertions.assertNotEquals(0, epoch.number);
+    Assertions.assertNotNull(epoch.compactTarget);
   }
 
   @Test
   public void testGetEpochByNumber() throws IOException {
-    Epoch epoch = api.getEpochByNumber("0");
-    Assertions.assertNotNull(epoch);
+    Epoch epoch = api.getEpochByNumber(2);
+    Assertions.assertEquals(1500, epoch.startNumber);
   }
 
   @Test
   public void testGetHeader() throws IOException {
-    String blockHash = api.getBlockHash("0x1");
+    byte[] blockHash =
+        Numeric.hexStringToByteArray(
+            "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
     Header header = api.getHeader(blockHash);
-    Assertions.assertNotNull(header);
+    Assertions.assertEquals(1, header.number);
+    Assertions.assertEquals(1590137711584L, header.timestamp);
   }
 
   @Test
   public void testGetHeaderByNumber() throws IOException {
-    Header header = api.getHeaderByNumber("0x1");
+    Header header = api.getHeaderByNumber(1);
     Assertions.assertNotNull(header);
+    Assertions.assertEquals(1, header.number);
+    Assertions.assertEquals(1590137711584L, header.timestamp);
   }
 
   @Test
   public void testGetConsensus() throws IOException {
     Consensus consensus = api.getConsensus();
-    Assertions.assertNotNull(consensus);
-    Assertions.assertNotNull(consensus.blockVersion);
-    Assertions.assertNotNull(consensus.proposerRewardRatio.denom);
+    System.out.println(consensus.maxBlockCycles);
+    Assertions.assertEquals(3500000000L, consensus.maxBlockCycles);
   }
 
   @Test
   public void testGetBlockMedianTime() throws IOException {
-    String blockMedianTime =
+    Long blockMedianTime =
         api.getBlockMedianTime(
-            "0xa5f5c85987a15de25661e5a214f2c1449cd803f071acc7999820f25246471f40");
-    Assertions.assertNull(blockMedianTime);
+            Numeric.hexStringToByteArray(
+                "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
+    Assertions.assertNotNull(blockMedianTime);
+    Assertions.assertNotEquals(0, blockMedianTime);
   }
 
   @Test
@@ -141,33 +163,22 @@ public class ApiTest {
     TransactionProof transactionProof =
         api.getTransactionProof(
             Collections.singletonList(
-                "0xa4037a893eb48e18ed4ef61034ce26eba9c585f15c9cee102ae58505565eccc3"));
+                Numeric.hexStringToByteArray(
+                    "0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1")));
     Assertions.assertNotNull(transactionProof);
     Assertions.assertNotNull(transactionProof.blockHash);
-    Assertions.assertTrue(transactionProof.proof.indices.size() > 0);
-  }
+    Assertions.assertEquals(1, transactionProof.proof.indices.size());
 
-  @Test
-  public void testVerifyTransactionProof() throws IOException {
-    TransactionProof transactionProof =
-        new TransactionProof(
-            new TransactionProof.Proof(
-                Collections.singletonList(Numeric.toHexString("2")),
-                Arrays.asList(
-                    "0x705d0774a1f870c1e92571e9db806bd85c0ac7f26015f3d6c7b822f7616c1fb4")),
-            "0x36038509b555c8acf360175b9bc4f67bd68be02b152f4a9d1131a424fffd8d23",
-            "0x56431856ad780db4cc1181c44b3fddf596380f1e21fb1c0b31db6deca2892c75");
-    List<String> result = api.verifyTransactionProof(transactionProof);
-    Assertions.assertEquals(
-        result,
-        Arrays.asList("0xc9ae96ff99b48e755ccdb350a69591ba80877be3d6c67ac9660bb9a0c52dc3d6"));
+    List<byte[]> result = api.verifyTransactionProof(transactionProof);
+    Assertions.assertEquals(1, result.size());
   }
 
   @Test
   public void testGetForkBlock() throws IOException {
     Block forkBlock =
-        api.getForkBlock("0xdca341a42890536551f99357612cef7148ed471e3b6419d0844a4e400be6ee94");
-    System.out.println(new Gson().toJson(forkBlock));
+        api.getForkBlock(
+            Numeric.hexStringToByteArray(
+                "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
   }
 
   @Test
@@ -193,35 +204,30 @@ public class ApiTest {
   public void testSyncState() throws IOException {
     SyncState state = api.syncState();
     Assertions.assertNotNull(state);
-    Assertions.assertNotNull(state.bestKnownBlockNumber);
+    Assertions.assertNotEquals(0, state.bestKnownBlockNumber);
   }
 
   @Test
   public void testSetNetworkActive() throws IOException {
-    String result = api.setNetworkActive(true);
-    Assertions.assertNull(result);
+    api.setNetworkActive(true);
   }
 
   @Test
   public void testAddNode() throws IOException {
-    String result =
-        api.addNode(
-            "QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
-    Assertions.assertNull(result);
+    api.addNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
   }
 
   @Test
   public void testRemoveNode() throws IOException {
-    String result = api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
-    Assertions.assertNull(result);
+    api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
   }
 
   @Test
   public void testSetBan() throws IOException {
     BannedAddress bannedAddress =
-        new BannedAddress("192.168.0.2", "insert", "1840546800000", true, "test set_ban rpc");
-    String banResult = api.setBan(bannedAddress);
-    Assertions.assertNull(banResult);
+        new BannedAddress(
+            "192.168.0.2", BannedAddress.Command.INSERT, 1840546800000L, true, "test set_ban rpc");
+    api.setBan(bannedAddress);
   }
 
   @Test
@@ -232,14 +238,12 @@ public class ApiTest {
 
   @Test
   public void testClearBannedAddresses() throws IOException {
-    String result = api.clearBannedAddresses();
-    Assertions.assertNull(result);
+    api.clearBannedAddresses();
   }
 
   @Test
   public void testPingPeers() throws IOException {
-    String result = api.clearBannedAddresses();
-    Assertions.assertNull(result);
+    api.clearBannedAddresses();
   }
 
   @Test
@@ -252,8 +256,7 @@ public class ApiTest {
 
   @Test
   public void testClearTxPool() throws IOException {
-    String txPoolInfo = api.clearTxPool();
-    Assertions.assertNull(txPoolInfo);
+    api.clearTxPool();
   }
 
   @Test
@@ -288,16 +291,22 @@ public class ApiTest {
   public void testGetLiveCell() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"),
+                0),
             true);
-    Assertions.assertNotNull(cellWithStatus);
+    Assertions.assertNotNull(cellWithStatus.cell);
   }
 
   @Test
   public void testGetLiveCellWithData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"),
+                0),
             true);
     Assertions.assertNotNull(cellWithStatus.cell.data);
   }
@@ -306,7 +315,10 @@ public class ApiTest {
   public void testGetLiveCellWithoutData() throws IOException {
     CellWithStatus cellWithStatus =
         api.getLiveCell(
-            new OutPoint("0xde7ac423660b95df1fd8879a54a98020bcbb30fc9bfcf13da757e99b30effd8d", "0"),
+            new OutPoint(
+                Numeric.hexStringToByteArray(
+                    "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"),
+                0),
             false);
     Assertions.assertNull(cellWithStatus.cell.data);
   }
@@ -320,7 +332,7 @@ public class ApiTest {
           public void execute() throws Throwable {
             api.sendTransaction(
                 new Transaction(
-                    "0",
+                    0,
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -341,7 +353,7 @@ public class ApiTest {
           public void execute() throws Throwable {
             api.sendTransaction(
                 new Transaction(
-                    "0",
+                    0,
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -360,7 +372,7 @@ public class ApiTest {
           public void execute() throws Throwable {
             api.sendTransaction(
                 new Transaction(
-                    "0",
+                    0,
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -378,7 +390,7 @@ public class ApiTest {
     Cycles cycles =
         api.dryRunTransaction(
             new Transaction(
-                "0",
+                0,
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
@@ -389,36 +401,26 @@ public class ApiTest {
   }
 
   @Test
-  public void testComputeTransactionHash() throws IOException {
-    String transactionHash =
-        api.computeTransactionHash(
-            new Transaction(
-                "0",
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                Collections.emptyList()));
-    Assertions.assertNotNull(transactionHash);
-  }
-
-  @Test
   public void testBatchRpc() throws IOException {
     List<RpcResponse> rpcResponses =
         api.batchRPC(
             Arrays.asList(
-                Arrays.asList("get_block_hash", "0x200"),
-                Arrays.asList("get_block_by_number", "300"),
+                Arrays.asList("get_block_hash", 200),
+                Arrays.asList("get_block_by_number", 300),
                 Arrays.asList("get_header_by_number", 100)));
     Assertions.assertNotNull(rpcResponses);
     Assertions.assertEquals(3, rpcResponses.size());
     Assertions.assertTrue(rpcResponses.get(0).result instanceof String);
     Assertions.assertTrue(
-        new Gson().fromJson(rpcResponses.get(1).result.toString(), Block.class).transactions.size()
+        GsonFactory.create()
+                .fromJson(rpcResponses.get(1).result.toString(), Block.class)
+                .transactions
+                .size()
             > 0);
     Assertions.assertNotNull(
-        new Gson().fromJson(rpcResponses.get(2).result.toString(), Header.class).compactTarget);
+        GsonFactory.create()
+            .fromJson(rpcResponses.get(2).result.toString(), Header.class)
+            .compactTarget);
 
     Assertions.assertThrows(
         IOException.class,

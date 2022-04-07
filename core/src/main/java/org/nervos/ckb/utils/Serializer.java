@@ -1,6 +1,6 @@
 package org.nervos.ckb.utils;
 
-import static org.nervos.ckb.type.cell.CellDep.CODE;
+import static org.nervos.ckb.type.cell.CellDep.DepType.CODE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,17 +83,17 @@ public class Serializer {
     return new Dynamic<>(cellOutputList);
   }
 
-  public static Dynamic<Bytes> serializeBytes(List<String> bytes) {
+  public static Dynamic<Bytes> serializeBytes(List<byte[]> bytes) {
     List<Bytes> bytesList = new ArrayList<>();
-    for (String data : bytes) {
+    for (byte[] data : bytes) {
       bytesList.add(new Bytes(data));
     }
     return new Dynamic<>(bytesList);
   }
 
-  public static Fixed<Byte32> serializeByte32(List<String> bytes) {
+  public static Fixed<Byte32> serializeByte32(List<byte[]> bytes) {
     List<Byte32> byte32List = new ArrayList<>();
-    for (String data : bytes) {
+    for (byte[] data : bytes) {
       byte32List.add(new Byte32(data));
     }
     return new Fixed<>(byte32List);
@@ -101,18 +101,9 @@ public class Serializer {
 
   public static Table serializeWitnessArgs(Witness witness) {
     return new Table(
-        new Option(
-            Strings.isEmpty(witness.lock) || "0x".equals(witness.lock)
-                ? new Empty()
-                : new Bytes(witness.lock)),
-        new Option(
-            Strings.isEmpty(witness.inputType) || "0x".equals(witness.inputType)
-                ? new Empty()
-                : new Bytes(witness.inputType)),
-        new Option(
-            Strings.isEmpty(witness.outputType) || "0x".equals(witness.outputType)
-                ? new Empty()
-                : new Bytes(witness.outputType)));
+        new Option(witness.lock.length == 0 ? new Empty() : new Bytes(witness.lock)),
+        new Option(witness.inputType.length == 0 ? new Empty() : new Bytes(witness.inputType)),
+        new Option(witness.outputType.length == 0 ? new Empty() : new Bytes(witness.outputType)));
   }
 
   public static Dynamic<Type> serializeWitnesses(List witnesses) {
@@ -144,26 +135,29 @@ public class Serializer {
     return new Table(rawTransactionTable, witnessesVec);
   }
 
-  public static String serializeHashType(String hashType) {
-
-    if (Script.DATA.equals(hashType)) {
-      return "00";
-    } else if (Script.TYPE.equals(hashType)) {
-      return "01";
-    } else if (Script.DATA1.equals(hashType)) {
-      return "02";
+  public static String serializeHashType(Script.HashType hashType) {
+    switch (hashType) {
+      case DATA:
+        return "00";
+      case TYPE:
+        return "01";
+      case DATA1:
+        return "02";
+      default:
+        throw new RuntimeException("Unsupported hashType: " + hashType);
     }
-    throw new RuntimeException("Invalid script hash_type: ".concat(hashType));
   }
 
-  public static String deserializeHashType(String hashType) {
-    if ("00".equals(hashType)) {
-      return Script.DATA;
-    } else if ("01".equals(hashType)) {
-      return Script.TYPE;
-    } else if ("02".equals(hashType)) {
-      return Script.DATA1;
+  public static Script.HashType deserializeHashType(String hashType) {
+    switch (hashType) {
+      case "00":
+        return Script.HashType.DATA;
+      case "01":
+        return Script.HashType.TYPE;
+      case "02":
+        return Script.HashType.DATA1;
+      default:
+        throw new RuntimeException("Unsupported hashType: " + hashType);
     }
-    throw new RuntimeException("Invalid script hash_type: ".concat(hashType));
   }
 }

@@ -2,7 +2,6 @@ package org.nervos.api.mercury;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.gson.Gson;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.From;
@@ -26,9 +24,6 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 public class ModeTest {
-
-  Gson g = GsonFactory.newGson();
-
   @Test
   void transferCompletionCkbWithFree() {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
@@ -36,23 +31,21 @@ public class ModeTest {
     builder.from(
         From.newFrom(
             Arrays.asList(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress0())),
-            Source.Free));
+            Source.FREE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom)); // unit: CKB, 1 CKB = 10^8 Shannon
-
-    System.out.println(g.toJson(builder.build()));
+            Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
 
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
-      System.out.println(g.toJson(s));
+
       Transaction tx = sign(s);
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -68,20 +61,19 @@ public class ModeTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
     builder.to(
         To.newTo(
             Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), new BigInteger("100"))),
-            Mode.HoldByFrom));
+            Mode.HOLD_BY_FROM));
 
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
-      System.out.println(g.toJson(s));
 
       Transaction tx = sign(s);
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {
@@ -97,13 +89,13 @@ public class ModeTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Claimable));
+            Source.CLAIMABLE));
 
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress2(), AmountUtils.ckbToShannon(100))),
-            Mode.HoldByFrom)); // unit: CKB, 1 CKB = 10^8 Shannon
+            Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
 
     try {
       TransactionCompletionResponse s =
@@ -127,24 +119,21 @@ public class ModeTest {
         From.newFrom(
             Arrays.asList(
                 ItemFactory.newIdentityItemByAddress(AddressWithKeyHolder.testAddress1())),
-            Source.Free));
+            Source.FREE));
     builder.to(
         To.newTo(
             Arrays.asList(
                 new ToInfo(
                     AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()),
                     new BigInteger("100"))),
-            Mode.HoldByTo));
-
-    System.out.println(g.toJson(builder.build()));
+            Mode.HOLD_BY_TO));
 
     try {
       TransactionCompletionResponse s =
           ApiFactory.getApi().buildTransferTransaction(builder.build());
       Transaction tx = sign(s);
-      System.out.println(g.toJson(s.txView));
 
-      String result = ApiFactory.getApi().sendTransaction(tx);
+      byte[] result = ApiFactory.getApi().sendTransaction(tx);
       System.out.println(result);
 
     } catch (IOException e) {

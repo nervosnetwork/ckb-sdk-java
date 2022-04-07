@@ -1,7 +1,9 @@
 package org.nervos.indexer.model;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
 
 public class SearchKeyBuilder {
 
@@ -24,21 +26,21 @@ public class SearchKeyBuilder {
     this.filter.script = script;
   }
 
-  public void filterOutputDataLenRange(String inclusive, String exclusive) {
+  public void filterOutputDataLenRange(int inclusive, int exclusive) {
     initFilter();
     this.filter.outputDataLenRange = new ArrayList<>(2);
     this.filter.outputDataLenRange.add(inclusive);
     this.filter.outputDataLenRange.add(exclusive);
   }
 
-  public void filterOutputCapacityRange(String inclusive, String exclusive) {
+  public void filterOutputCapacityRange(BigInteger inclusive, BigInteger exclusive) {
     initFilter();
     this.filter.outputCapacityRange = new ArrayList<>(2);
     this.filter.outputCapacityRange.add(inclusive);
     this.filter.outputCapacityRange.add(exclusive);
   }
 
-  public void filterBlockRange(String inclusive, String exclusive) {
+  public void filterBlockRange(int inclusive, int exclusive) {
     initFilter();
     this.filter.blockRange = new ArrayList<>(2);
     this.filter.blockRange.add(inclusive);

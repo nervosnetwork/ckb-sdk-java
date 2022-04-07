@@ -10,7 +10,6 @@ import org.nervos.ckb.transaction.CollectResult;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -57,22 +56,20 @@ public class IndexerCollector {
     AddressParseResult rs = AddressParser.parse(address);
     CkbIndexerCellsCapacity capacityInfo = indexerApi.getCellsCapacity(new SearchKey(rs.script));
 
-    return Numeric.toBigInt(capacityInfo.capacity);
+    return capacityInfo.capacity;
   }
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
     List<CellOutput> cellOutputs = new ArrayList<>();
     for (Receiver receiver : receivers) {
       AddressParseResult addressParseResult = AddressParser.parse(receiver.address);
-      cellOutputs.add(
-          new CellOutput(
-              Numeric.toHexStringWithPrefix(receiver.capacity), addressParseResult.script));
+      cellOutputs.add(new CellOutput(receiver.capacity, addressParseResult.script));
     }
     //  If change address is null or an empty string it means caller wants to transfer all balance,
     // so change output is not needed
     if (changeAddress != null && !changeAddress.trim().isEmpty()) {
       AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
-      cellOutputs.add(new CellOutput("0x0", addressParseResult.script));
+      cellOutputs.add(new CellOutput(BigInteger.ZERO, addressParseResult.script));
     }
 
     return cellOutputs;

@@ -1,5 +1,8 @@
 package utils;
 
+import static org.nervos.ckb.type.Witness.SIGNATURE_PLACEHOLDER;
+import static utils.TestUtils.createScript;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +13,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
@@ -30,33 +32,36 @@ public class SerializerTest {
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
-            "100000000000",
-            new Script(
+            new BigInteger("100000000000"),
+            createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
-            "4900000000000",
-            new Script(
+            new BigInteger("4900000000000"),
+            createScript(
                 "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
 
     tx =
         new Transaction(
-            "0",
+            0,
             Collections.singletonList(
                 new CellDep(
                     new OutPoint(
-                        "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a", "1"),
-                    CellDep.DEP_GROUP)),
-            Collections.singletonList("0x"),
+                        Numeric.hexStringToByteArray(
+                            "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"),
+                        1),
+                    CellDep.DepType.DEP_GROUP)),
+            Collections.singletonList(new byte[] {}),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
-                        "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50", "0"),
-                    "0")),
+                        Numeric.hexStringToByteArray(
+                            "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"),
+                        0))),
             cellOutputs,
-            Arrays.asList("0x", "0x"),
+            Arrays.asList(new byte[] {}, new byte[] {}),
             Collections.singletonList(new Witness()));
   }
 
@@ -127,20 +132,18 @@ public class SerializerTest {
   @Test
   public void testSerializeWitnessArgs() {
     Assertions.assertArrayEquals(
-        Serializer.serializeWitnessArgs(new Witness("", "0x", "")).toBytes(),
+        Serializer.serializeWitnessArgs(new Witness(new byte[0], new byte[0], new byte[0]))
+            .toBytes(),
         Numeric.hexStringToByteArray("0x10000000100000001000000010000000"));
 
     Assertions.assertArrayEquals(
-        Serializer.serializeWitnessArgs(new Witness("", "0x10", "0x20")).toBytes(),
+        Serializer.serializeWitnessArgs(
+                new Witness(new byte[0], new byte[] {0x10}, new byte[] {0x20}))
+            .toBytes(),
         Numeric.hexStringToByteArray("0x1a00000010000000100000001500000001000000100100000020"));
 
     Assertions.assertArrayEquals(
-        Serializer.serializeWitnessArgs(
-                new Witness(
-                    "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                    "",
-                    ""))
-            .toBytes(),
+        Serializer.serializeWitnessArgs(new Witness(SIGNATURE_PLACEHOLDER)).toBytes(),
         Numeric.hexStringToByteArray(
             "55000000100000005500000055000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"));
   }

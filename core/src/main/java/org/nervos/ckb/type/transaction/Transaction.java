@@ -22,33 +22,33 @@ import org.nervos.ckb.utils.Serializer;
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Transaction {
 
-  public String version;
+  public int version;
 
-  public String hash;
+  public byte[] hash;
 
   @SerializedName("cell_deps")
   public List<CellDep> cellDeps;
 
   @SerializedName("header_deps")
-  public List<String> headerDeps;
+  public List<byte[]> headerDeps;
 
   public List<CellInput> inputs;
   public List<CellOutput> outputs;
 
   @SerializedName("outputs_data")
-  public List<String> outputsData;
+  public List<byte[]> outputsData;
 
   public List witnesses;
 
   public Transaction() {}
 
   public Transaction(
-      String version,
+      int version,
       List<CellDep> cellDeps,
-      List<String> headerDeps,
+      List<byte[]> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
-      List<String> outputsData) {
+      List<byte[]> outputsData) {
     this.version = version;
     this.cellDeps = cellDeps;
     this.headerDeps = headerDeps;
@@ -58,12 +58,12 @@ public class Transaction {
   }
 
   public Transaction(
-      String version,
+      int version,
       List<CellDep> cellDeps,
-      List<String> headerDeps,
+      List<byte[]> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
-      List<String> outputsData,
+      List<byte[]> outputsData,
       List witnesses) {
     this.version = version;
     this.cellDeps = cellDeps;
@@ -75,13 +75,13 @@ public class Transaction {
   }
 
   public Transaction(
-      String version,
-      String hash,
+      int version,
+      byte[] hash,
       List<CellDep> cellDeps,
-      List<String> headerDeps,
+      List<byte[]> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
-      List<String> outputsData,
+      List<byte[]> outputsData,
       List witnesses) {
     this.version = version;
     this.hash = hash;
@@ -93,10 +93,10 @@ public class Transaction {
     this.witnesses = witnesses;
   }
 
-  public String computeHash() {
+  public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
     blake2b.update(Encoder.encode(Serializer.serializeRawTransaction(this)));
-    return blake2b.doFinalString();
+    return blake2b.doFinalBytes();
   }
 
   public Transaction sign(BigInteger privateKey) {
@@ -106,12 +106,12 @@ public class Transaction {
     if (witnesses.get(0).getClass() != Witness.class) {
       throw new RuntimeException("First witness must be of Witness type!");
     }
-    String txHash = computeHash();
+    byte[] txHash = computeHash();
     Witness emptiedWitness = (Witness) witnesses.get(0);
     emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    blake2b.update(txHash);
     blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
     blake2b.update(witnessTable.toBytes());
     for (int i = 1; i < witnesses.size(); i++) {
@@ -127,8 +127,7 @@ public class Transaction {
     String message = blake2b.doFinalString();
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
     ((Witness) witnesses.get(0)).lock =
-        Numeric.toHexString(
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
 
     List<String> signedWitness = new ArrayList<>();
     for (Object witness : witnesses) {
@@ -149,16 +148,16 @@ public class Transaction {
   }
 
   public static final class Builder {
-    public String version;
+    public int version;
     public List<CellDep> cellDeps;
-    public List<String> headerDeps;
+    public List<byte[]> headerDeps;
     public List<CellInput> inputs;
     public List<CellOutput> outputs;
-    public List<String> outputsData;
+    public List<byte[]> outputsData;
     public List witnesses;
 
     private Builder() {
-      this.version = "0x0";
+      this.version = 0;
       this.cellDeps = new ArrayList<>();
       this.headerDeps = new ArrayList<>();
       this.inputs = new ArrayList<>();
@@ -167,7 +166,7 @@ public class Transaction {
       this.witnesses = new ArrayList();
     }
 
-    public Builder setVersion(String version) {
+    public Builder setVersion(int version) {
       this.version = version;
       return this;
     }
@@ -182,25 +181,23 @@ public class Transaction {
       return this;
     }
 
-    public Builder addCellDep(String txHash, int index, String depType) {
-      String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-
+    public Builder addCellDep(byte[] txHash, int index, CellDep.DepType depType) {
       CellDep cellDep = new CellDep();
-      cellDep.outPoint = new OutPoint(txHash, indexInString);
+      cellDep.outPoint = new OutPoint(txHash, index);
       cellDep.depType = depType;
       return this.addCellDep(cellDep);
     }
 
-    public Builder addCellDep(String txHash, int index) {
-      return this.addCellDep(txHash, index, "dep_group");
+    public Builder addCellDep(byte[] txHash, int index) {
+      return this.addCellDep(txHash, index, CellDep.DepType.DEP_GROUP);
     }
 
-    public Builder setHeaderDeps(List<String> headerDeps) {
+    public Builder setHeaderDeps(List<byte[]> headerDeps) {
       this.headerDeps = headerDeps;
       return this;
     }
 
-    public Builder addHeaderDep(String headerDep) {
+    public Builder addHeaderDep(byte[] headerDep) {
       this.headerDeps.add(headerDep);
       return this;
     }
@@ -215,12 +212,12 @@ public class Transaction {
       return this;
     }
 
-    public Builder addInput(String txHash, int index) {
+    public Builder addInput(byte[] txHash, int index) {
       String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-      return this.addInput(txHash, indexInString, "0x0");
+      return this.addInput(txHash, index, new byte[] {0});
     }
 
-    public Builder addInput(String txHash, String index, String since) {
+    public Builder addInput(byte[] txHash, int index, byte[] since) {
       CellInput input = new CellInput();
       input.previousOutput = new OutPoint(txHash, index);
       input.since = since;
@@ -238,13 +235,13 @@ public class Transaction {
     }
 
     public Builder addOutput(
-        String capacity,
-        String lockScriptCodeHash,
-        String lockScriptArgs,
-        String typeScriptCodeHash,
-        String typeScriptArgs) {
-      Script lockScript = new Script(lockScriptCodeHash, lockScriptArgs, "type");
-      Script typeScript = new Script(typeScriptCodeHash, typeScriptArgs, "type");
+        BigInteger capacity,
+        byte[] lockScriptCodeHash,
+        byte[] lockScriptArgs,
+        byte[] typeScriptCodeHash,
+        byte[] typeScriptArgs) {
+      Script lockScript = new Script(lockScriptCodeHash, lockScriptArgs, Script.HashType.TYPE);
+      Script typeScript = new Script(typeScriptCodeHash, typeScriptArgs, Script.HashType.TYPE);
 
       CellOutput output = new CellOutput();
       output.capacity = capacity;
@@ -254,11 +251,12 @@ public class Transaction {
       return addOutput(output);
     }
 
-    public Builder addOutput(String capacity, String lockScriptCodeHash, String lockScriptArgs) {
+    public Builder addOutput(
+        BigInteger capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
       Script lockScript = new Script();
       lockScript.args = lockScriptArgs;
       lockScript.codeHash = lockScriptCodeHash;
-      lockScript.hashType = "type";
+      lockScript.hashType = Script.HashType.TYPE;
 
       CellOutput output = new CellOutput();
       output.capacity = capacity;
@@ -268,12 +266,12 @@ public class Transaction {
       return addOutput(output);
     }
 
-    public Builder setOutputsData(List<String> outputsData) {
+    public Builder setOutputsData(List<byte[]> outputsData) {
       this.outputsData = outputsData;
       return this;
     }
 
-    public Builder addOutputData(String outputData) {
+    public Builder addOutputData(byte[] outputData) {
       this.outputsData.add(outputData);
       return this;
     }

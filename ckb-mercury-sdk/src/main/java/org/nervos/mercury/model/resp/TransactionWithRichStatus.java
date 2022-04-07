@@ -1,8 +1,8 @@
 package org.nervos.mercury.model.resp;
 
 import com.google.gson.annotations.SerializedName;
-import java.math.BigInteger;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
 public class TransactionWithRichStatus {
 
@@ -12,12 +12,12 @@ public class TransactionWithRichStatus {
   public TxRichStatus txStatus;
 
   public class TxRichStatus {
-    public String status;
+    public TransactionWithStatus.Status status;
 
     @SerializedName("block_hash")
-    public String blockHash;
+    public byte[] blockHash;
 
     public String reason;
-    public BigInteger timestamp;
+    public long timestamp;
   }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CellsResponse {
   @SerializedName("last_cursor")
-  public String lastCursor;
+  public byte[] lastCursor;
 
   public List<CellResponse> objects;
 }

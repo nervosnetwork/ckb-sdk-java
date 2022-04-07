@@ -1,12 +1,10 @@
 package org.nervos.mercury.model.common;
 
-import java.math.BigInteger;
-
 public class Range {
-  public BigInteger from;
-  public BigInteger to;
+  public Integer from;
+  public Integer to;
 
-  public Range(BigInteger from, BigInteger to) {
+  public Range(Integer from, Integer to) {
     this.from = from;
     this.to = to;
   }

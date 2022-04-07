@@ -27,10 +27,10 @@ public class RpcExample {
     System.out.println("Current block number: " + currentBlockNumber.toString());
     System.out.println(
         "Current block information: "
-            + new Gson().toJson(client.getBlockByNumber(currentBlockNumber.toString())));
+            + new Gson().toJson(client.getBlockByNumber(currentBlockNumber.intValue())));
   }
 
-  public Block getBlockByNumber(String blockNumber) throws IOException {
+  public Block getBlockByNumber(int blockNumber) throws IOException {
     return api.getBlockByNumber(blockNumber);
   }
 

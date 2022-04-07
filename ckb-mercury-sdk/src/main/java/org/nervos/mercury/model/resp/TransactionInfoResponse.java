@@ -8,7 +8,7 @@ import org.nervos.mercury.model.common.Record;
 /** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
 public class TransactionInfoResponse {
   @SerializedName("tx_hash")
-  public String txHash;
+  public byte[] txHash;
 
   public List<Record> records;
 
@@ -16,5 +16,5 @@ public class TransactionInfoResponse {
 
   public List<BurnInfo> burn;
 
-  public BigInteger timestamp;
+  public long timestamp;
 }

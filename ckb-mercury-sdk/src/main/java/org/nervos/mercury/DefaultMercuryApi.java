@@ -1,59 +1,42 @@
 package org.nervos.mercury;
 
-import static java.util.stream.Collectors.toList;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcService;
-import org.nervos.indexer.CkbIndexerRpcMethods;
-import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
-import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.DefaultIndexerApi;
 import org.nervos.mercury.model.common.AssetType;
+import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
-import org.nervos.mercury.model.req.payload.DaoClaimPayload;
-import org.nervos.mercury.model.req.payload.DaoDepositPayload;
-import org.nervos.mercury.model.req.payload.DaoWithdrawPayload;
-import org.nervos.mercury.model.req.payload.GetBalancePayload;
-import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
-import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
-import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
-import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
-import org.nervos.mercury.model.req.payload.SudtIssuePayload;
-import org.nervos.mercury.model.req.payload.TransferPayload;
-import org.nervos.mercury.model.resp.BlockInfoResponse;
-import org.nervos.mercury.model.resp.GetBalanceResponse;
-import org.nervos.mercury.model.resp.GetTransactionInfoResponse;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
-import org.nervos.mercury.model.resp.TransactionInfoResponse;
-import org.nervos.mercury.model.resp.TransactionWithRichStatus;
-import org.nervos.mercury.model.resp.TxView;
-import org.nervos.mercury.model.resp.indexer.MercuryCellsResponse;
-import org.nervos.mercury.model.resp.indexer.MercuryTransactionResponse;
+import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.payload.*;
+import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 import org.nervos.mercury.model.resp.info.MercurySyncState;
 
-public class DefaultMercuryApi implements MercuryApi {
-
-  private RpcService rpcService;
-  private Gson g = GsonFactory.newGson();
+public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
+  private Gson g =
+      GsonFactory.create()
+          .newBuilder()
+          .registerTypeAdapter(Ownership.class, new Ownership.Deserializer())
+          .registerTypeAdapter(RecordResponse.class, new RecordResponse())
+          .registerTypeAdapter(ExtraFilter.class, new ExtraFilter())
+          .registerTypeAdapter(Item.class, new Item.Serializer())
+          .create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {
-    this.rpcService = new RpcService(mercuryUrl, isDebug);
+    super(mercuryUrl, isDebug);
   }
 
   public DefaultMercuryApi(RpcService rpcService) {
-    this.rpcService = rpcService;
+    super(rpcService);
   }
 
   @Override
@@ -71,7 +54,7 @@ public class DefaultMercuryApi implements MercuryApi {
       throws IOException {
 
     if (Objects.equals(payload.assetInfo.assetType, AssetType.CKB)
-        && Objects.equals(payload.from.source, Source.Claimable)) {
+        && Objects.equals(payload.from.source, Source.CLAIMABLE)) {
       throw new RuntimeException("The transaction does not support ckb");
     }
 
@@ -103,7 +86,7 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public GetTransactionInfoResponse getTransactionInfo(String txHash) throws IOException {
+  public GetTransactionInfoResponse getTransactionInfo(byte[] txHash) throws IOException {
     return this.rpcService.post(
         RpcMethods.GET_TRANSACTION_INFO,
         Arrays.asList(txHash),
@@ -118,7 +101,7 @@ public class DefaultMercuryApi implements MercuryApi {
   }
 
   @Override
-  public List<String> registerAddresses(List<String> normalAddresses) throws IOException {
+  public List<byte[]> registerAddresses(List<String> normalAddresses) throws IOException {
     return this.rpcService.post(
         RpcMethods.REGISTER_ADDRESS,
         Arrays.asList(normalAddresses),
@@ -129,7 +112,7 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException {
-    payload.viewType = ViewType.Native;
+    payload.viewType = ViewType.NATIVE;
 
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
@@ -141,7 +124,7 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public PaginationResponse<TxView<TransactionInfoResponse>> queryTransactionsWithTransactionInfo(
       QueryTransactionsPayload payload) throws IOException {
-    payload.viewType = ViewType.DoubleEntry;
+    payload.viewType = ViewType.DOUBLE_ENTRY;
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
@@ -197,7 +180,7 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public TxView<TransactionWithRichStatus> getSpentTransactionWithTransactionView(
       GetSpentTransactionPayload payload) throws IOException {
-    payload.structureType = ViewType.Native;
+    payload.structureType = ViewType.NATIVE;
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION,
         Arrays.asList(payload),
@@ -208,62 +191,13 @@ public class DefaultMercuryApi implements MercuryApi {
   @Override
   public TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
       GetSpentTransactionPayload payload) throws IOException {
-    payload.structureType = ViewType.DoubleEntry;
+    payload.structureType = ViewType.DOUBLE_ENTRY;
 
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION,
         Arrays.asList(payload),
         new TypeToken<TxView<TransactionInfoResponse>>() {}.getType(),
         this.g);
-  }
-
-  @Override
-  public CellsResponse getCells(SearchKey searchKey, String order, String limit, String afterCursor)
-      throws IOException {
-
-    List<Integer> mercuryCursor =
-        (afterCursor == null || afterCursor == "")
-            ? null
-            : Arrays.stream(afterCursor.split(",")).map(x -> Integer.valueOf(x)).collect(toList());
-
-    MercuryCellsResponse response =
-        this.rpcService.post(
-            CkbIndexerRpcMethods.GET_CELLS,
-            Arrays.asList(searchKey, order, limit, mercuryCursor),
-            MercuryCellsResponse.class);
-
-    return response.toCellsResponse();
-  }
-
-  @Override
-  public TransactionResponse getTransactions(
-      SearchKey searchKey, String order, String limit, String afterCursor) throws IOException {
-
-    List<Integer> mercuryCursor =
-        (afterCursor == null || afterCursor == "")
-            ? null
-            : Arrays.stream(afterCursor.split(",")).map(x -> Integer.valueOf(x)).collect(toList());
-
-    MercuryTransactionResponse response =
-        this.rpcService.post(
-            CkbIndexerRpcMethods.GET_TRANSACTIONS,
-            Arrays.asList(searchKey, order, limit, mercuryCursor),
-            MercuryTransactionResponse.class);
-
-    return response.toTransactionResponse();
-  }
-
-  @Override
-  public TipResponse getTip() throws IOException {
-    return this.rpcService.post(CkbIndexerRpcMethods.GET_TIP, Arrays.asList(), TipResponse.class);
-  }
-
-  @Override
-  public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
-    return this.rpcService.post(
-        CkbIndexerRpcMethods.GET_CELLS_CAPACITY,
-        Arrays.asList(searchKey),
-        CellCapacityResponse.class);
   }
 
   @Override

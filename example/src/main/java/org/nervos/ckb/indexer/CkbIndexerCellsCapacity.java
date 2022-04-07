@@ -1,13 +1,14 @@
 package org.nervos.ckb.indexer;
 
 import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
 
 public class CkbIndexerCellsCapacity {
   @SerializedName("block_hash")
-  public String blockHash;
+  public byte[] blockHash;
 
   @SerializedName("block_number")
-  public String blockNumber;
+  public int blockNumber;
 
-  public String capacity;
+  public BigInteger capacity;
 }

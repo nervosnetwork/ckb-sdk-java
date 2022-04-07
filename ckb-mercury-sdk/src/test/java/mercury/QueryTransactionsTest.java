@@ -2,7 +2,6 @@ package mercury;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.math.BigInteger;
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
+import org.nervos.mercury.model.common.PaginationRequest;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.ItemFactory;
@@ -119,7 +119,7 @@ public class QueryTransactionsTest {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
-      builder.range(new Range(new BigInteger("2224987"), null));
+      builder.range(new Range(2224987, null));
 
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -137,7 +137,7 @@ public class QueryTransactionsTest {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
-      builder.range(new Range(null, new BigInteger("2224987")));
+      builder.range(new Range(null, 2224987));
 
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -155,7 +155,7 @@ public class QueryTransactionsTest {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
-      builder.range(new Range(new BigInteger("2224993"), new BigInteger("2225023")));
+      builder.range(new Range(2224993, 2225023));
 
       System.out.println(new Gson().toJson(builder.build()));
 
@@ -176,7 +176,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       // default limit 50
-      builder.limit(new BigInteger("2"));
+      builder.limit(2);
 
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -195,7 +195,7 @@ public class QueryTransactionsTest {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
       // default order desc
-      builder.order("asc");
+      builder.order(PaginationRequest.Order.ASC);
 
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
@@ -213,7 +213,7 @@ public class QueryTransactionsTest {
     try {
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
       builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
-      builder.limit(new BigInteger("1"));
+      builder.limit(1);
 
       PaginationResponse<TxView<TransactionWithRichStatus>> resp =
           MercuryApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());

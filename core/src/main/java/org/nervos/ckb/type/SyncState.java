@@ -4,25 +4,25 @@ import com.google.gson.annotations.SerializedName;
 
 public class SyncState {
   @SerializedName("best_known_block_number")
-  public String bestKnownBlockNumber;
+  public int bestKnownBlockNumber;
 
   @SerializedName("best_known_block_timestamp")
-  public String bestKnownBlockTimestamp;
+  public long bestKnownBlockTimestamp;
 
   @SerializedName("fast_time")
-  public String fastTime;
+  public long fastTime;
 
-  public String ibd;
+  public boolean ibd;
 
   @SerializedName("inflight_blocks_count")
-  public String inflightBlocksCount;
+  public int inflightBlocksCount;
 
   @SerializedName("low_time")
-  public String lowTime;
+  public long lowTime;
 
   @SerializedName("normal_time")
-  public String normalTime;
+  public long normalTime;
 
   @SerializedName("orphan_blocks_count")
-  public String orphanBlocksCount;
+  public int orphanBlocksCount;
 }

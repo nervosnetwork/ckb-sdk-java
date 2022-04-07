@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.exceptions.AddressFormatException;
+import org.nervos.ckb.utils.Numeric;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class AddressTest {
@@ -27,7 +28,9 @@ public class AddressTest {
   @Test
   public void testArgToAddressTestnet() throws AddressFormatException {
     String expected = "ckt1qyqz6824th6pekd6858nru9p4j3u783fttl4k3r0cp2lt7uxhx00fxcxpzeq8";
-    String args = "0x2d1d555df41cd9ba3d0f31f0a1aca3cf1e295aff5b446fc055f5fb86b99ef49b";
+    byte[] args =
+        Numeric.hexStringToByteArray(
+            "0x2d1d555df41cd9ba3d0f31f0a1aca3cf1e295aff5b446fc055f5fb86b99ef49b");
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     String actual = utils.generate(args);
     Assertions.assertEquals(expected, actual);
@@ -36,7 +39,7 @@ public class AddressTest {
   @Test
   public void testArgToAddressTestnet1() throws AddressFormatException {
     String expected = "ckt1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qnzefn9";
-    String args = "0x81312ae06eeb0504b737e6bcfa5397be35a928de";
+    byte[] args = Numeric.hexStringToByteArray("0x81312ae06eeb0504b737e6bcfa5397be35a928de");
     AddressUtils utils = new AddressUtils(Network.TESTNET, CodeHashType.ANYONE_CAN_APY);
     String actual = utils.generate(args);
     Assertions.assertEquals(expected, actual);
@@ -45,7 +48,7 @@ public class AddressTest {
   @Test
   public void testArgToAddressMainnet() throws AddressFormatException {
     String expected = "ckb1qypgzvf2uphwkpgykum7d0862wtmuddf9r0qw88kle";
-    String args = "0x81312ae06eeb0504b737e6bcfa5397be35a928de";
+    byte[] args = Numeric.hexStringToByteArray("0x81312ae06eeb0504b737e6bcfa5397be35a928de");
     AddressUtils utils = new AddressUtils(Network.MAINNET, CodeHashType.ANYONE_CAN_APY);
     String actual = utils.generate(args);
     Assertions.assertEquals(expected, actual);
@@ -54,7 +57,7 @@ public class AddressTest {
   @Test
   public void testArgToAddressMainnet1() throws AddressFormatException {
     String expected = "ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd";
-    String args = "36c329ed630d6ce750712a477543672adab57f4c";
+    byte[] args = Numeric.hexStringToByteArray("36c329ed630d6ce750712a477543672adab57f4c");
     AddressUtils utils = new AddressUtils(Network.MAINNET, CodeHashType.BLAKE160);
     String actual = utils.generate(args);
     Assertions.assertEquals(expected, actual);
@@ -112,7 +115,7 @@ public class AddressTest {
     AddressUtils utils = new AddressUtils(Network.MAINNET);
     Assertions.assertEquals(
         "ckb1qyqp8eqad7ffy42ezmchkjyz54rhcqf8q9pqrn323p",
-        utils.generate("0x13e41d6F9292555916f17B4882a5477C01270142"));
+        utils.generate(Numeric.hexStringToByteArray("0x13e41d6F9292555916f17B4882a5477C01270142")));
   }
 
   @Test
@@ -120,7 +123,7 @@ public class AddressTest {
     AddressUtils utils = new AddressUtils(Network.TESTNET, CodeHashType.MULTISIG);
     Assertions.assertEquals(
         "ckt1qyqlqn8vsj7r0a5rvya76tey9jd2rdnca8lqh4kcuq",
-        utils.generate("f04cec84bc37f683613bed2f242c9aa1b678e9fe"));
+        utils.generate(Numeric.hexStringToByteArray("f04cec84bc37f683613bed2f242c9aa1b678e9fe")));
   }
 
   @Test

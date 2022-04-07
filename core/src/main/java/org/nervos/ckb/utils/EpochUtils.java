@@ -5,8 +5,8 @@ import java.math.BigInteger;
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class EpochUtils {
 
-  public static EpochInfo parse(String hexEpoch) {
-    long epochLong = Numeric.toBigInt(hexEpoch).longValue();
+  public static EpochInfo parse(byte[] epoch) {
+    long epochLong = Numeric.toBigInt(epoch).longValue();
     long length = (epochLong >> 40) & 0xFFFF;
     long index = (epochLong >> 24) & 0xFFFF;
     long number = epochLong & 0xFFFFFF;

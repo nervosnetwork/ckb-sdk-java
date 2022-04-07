@@ -11,7 +11,7 @@ import org.nervos.ckb.type.transaction.Transaction;
 public class SystemContract {
 
   private static List<Transaction> getSystemCellTransactions(Api api) throws IOException {
-    Block block = api.getBlockByNumber("0x0");
+    Block block = api.getBlockByNumber(0);
     if (block == null) {
       throw new IOException("Genesis block not found");
     }
@@ -25,20 +25,20 @@ public class SystemContract {
     List<Transaction> transactions = getSystemCellTransactions(api);
     return new SystemScriptCell(
         transactions.get(0).outputs.get(1).type.computeHash(),
-        new OutPoint(transactions.get(1).hash, "0x0"));
+        new OutPoint(transactions.get(1).hash, 0));
   }
 
   public static SystemScriptCell getSystemMultiSigCell(Api api) throws IOException {
     List<Transaction> transactions = getSystemCellTransactions(api);
     return new SystemScriptCell(
         transactions.get(0).outputs.get(4).type.computeHash(),
-        new OutPoint(transactions.get(1).hash, "0x1"));
+        new OutPoint(transactions.get(1).hash, 1));
   }
 
   public static SystemScriptCell getSystemNervosDaoCell(Api api) throws IOException {
     List<Transaction> transactions = getSystemCellTransactions(api);
     return new SystemScriptCell(
         transactions.get(0).outputs.get(2).type.computeHash(),
-        new OutPoint(transactions.get(0).hash, "0x2"));
+        new OutPoint(transactions.get(0).hash, 2));
   }
 }

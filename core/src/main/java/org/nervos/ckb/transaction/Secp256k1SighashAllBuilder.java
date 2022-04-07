@@ -39,12 +39,12 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
     if (groupWitnesses.get(0).getClass() != Witness.class) {
       throw new RuntimeException("First witness must be of Witness type!");
     }
-    String txHash = transaction.computeHash();
+    byte[] txHash = transaction.computeHash();
     Witness emptiedWitness = (Witness) groupWitnesses.get(0);
     emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
     Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Numeric.hexStringToByteArray(txHash));
+    blake2b.update(txHash);
     blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
     blake2b.update(witnessTable.toBytes());
     for (int i = 1; i < groupWitnesses.size(); i++) {
@@ -62,8 +62,7 @@ public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
 
     Witness signedWitness = (Witness) groupWitnesses.get(0);
     signedWitness.lock =
-        Numeric.toHexString(
-            Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature());
+        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
 
     transaction.witnesses.set(
         scriptGroup.inputIndexes.get(0),

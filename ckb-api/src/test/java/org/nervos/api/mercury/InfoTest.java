@@ -1,16 +1,13 @@
 package org.nervos.api.mercury;
 
-import com.google.gson.Gson;
 import constant.ApiFactory;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
-import org.nervos.mercury.GsonFactory;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 import org.nervos.mercury.model.resp.info.MercurySyncState;
 
 public class InfoTest {
-  Gson g = GsonFactory.newGson();
 
   @Test
   public void testDbInfo() {
@@ -20,7 +17,6 @@ public class InfoTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println(g.toJson(dbInfo));
   }
 
   @Test
@@ -31,7 +27,6 @@ public class InfoTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println(g.toJson(mercuryInfo));
   }
 
   @Test
@@ -42,6 +37,5 @@ public class InfoTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println(g.toJson(mercurySyncState));
   }
 }

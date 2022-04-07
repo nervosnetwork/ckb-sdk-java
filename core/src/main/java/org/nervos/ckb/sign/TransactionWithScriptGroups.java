@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.transaction.Transaction;
 
 public class TransactionWithScriptGroups {
@@ -66,8 +67,8 @@ public class TransactionWithScriptGroups {
       return addScriptGroup(scriptGroup);
     }
 
-    public Builder addLockScriptGroup(String codeHash, String args, int... inputIndices) {
-      Script script = new Script(codeHash, args, "type");
+    public Builder addLockScriptGroup(byte[] codeHash, byte[] args, int... inputIndices) {
+      Script script = new Script(codeHash, args, Script.HashType.TYPE);
       return addLockScriptGroup(script, inputIndices);
     }
 

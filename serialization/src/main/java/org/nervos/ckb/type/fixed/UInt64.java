@@ -28,7 +28,7 @@ public class UInt64 extends FixedType<BigInteger> {
   // generate int value from little endian bytes
   public UInt64(byte[] bytes) {
     long result = 0;
-    for (int i = 7; i >= 0; i--) {
+    for (int i = bytes.length - 1; i >= 0; i--) {
       result += ((long) bytes[i] & 0xff) << 8 * i;
     }
     this.value = BigInteger.valueOf(result);

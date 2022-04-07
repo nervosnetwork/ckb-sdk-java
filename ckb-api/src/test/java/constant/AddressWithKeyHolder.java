@@ -2,6 +2,7 @@ package constant;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.nervos.ckb.utils.Numeric;
 
 public class AddressWithKeyHolder {
 
@@ -105,8 +106,8 @@ public class AddressWithKeyHolder {
     return QUERY_TRANSACTION_ADDRESS;
   }
 
-  public static String testPubKey0() {
-    return TEST_PUBKEY0;
+  public static byte[] testPubKey0() {
+    return Numeric.hexStringToByteArray(TEST_PUBKEY0);
   }
 
   public static String testPubKey1() {

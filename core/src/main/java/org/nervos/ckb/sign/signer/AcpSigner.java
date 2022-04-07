@@ -33,7 +33,7 @@ public class AcpSigner implements ScriptSigner {
     }
   }
 
-  public boolean isMatched(String privateKey, String scriptArgs) {
-    return secp256K1Blake160SighashAllSigner.isMatched(privateKey, scriptArgs.substring(0, 42));
+  public boolean isMatched(String privateKey, byte[] scriptArgs) {
+    return secp256K1Blake160SighashAllSigner.isMatched(privateKey, scriptArgs);
   }
 }

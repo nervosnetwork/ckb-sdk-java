@@ -13,9 +13,9 @@ public class Identity {
 
   public transient String flag;
 
-  public transient String pubKey;
+  public transient byte[] pubKey;
 
-  public Identity(String flag, String pubKey) {
+  public Identity(String flag, byte[] pubKey) {
     this.flag = flag;
     this.pubKey = pubKey;
     this.identity = this.toIdentity();
@@ -23,8 +23,7 @@ public class Identity {
 
   public String toIdentity() {
     if (Objects.isNull(this.identity)) {
-      return Numeric.toHexString(
-          Bytes.concat(Numeric.hexStringToByteArray(flag), Numeric.hexStringToByteArray(pubKey)));
+      return Numeric.toHexString(Bytes.concat(Numeric.hexStringToByteArray(flag), pubKey));
     } else {
       return this.identity;
     }

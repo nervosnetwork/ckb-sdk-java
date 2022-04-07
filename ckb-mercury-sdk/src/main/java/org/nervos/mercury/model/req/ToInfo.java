@@ -4,10 +4,10 @@ import java.math.BigInteger;
 
 public class ToInfo {
   public String address;
-  public String amount;
+  public BigInteger amount;
 
   public ToInfo(String address, BigInteger amount) {
     this.address = address;
-    this.amount = amount.toString();
+    this.amount = amount;
   }
 }

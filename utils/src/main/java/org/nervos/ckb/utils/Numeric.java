@@ -233,4 +233,11 @@ public final class Numeric {
   public static List<Byte> intToBytes(int value) {
     return Bytes.asList(Numeric.hexStringToByteArray(Integer.toHexString(value)));
   }
+
+  public static byte[] concatBytes(byte[] a, byte[] b) {
+    byte[] c = new byte[a.length + b.length];
+    System.arraycopy(a, 0, c, 0, a.length);
+    System.arraycopy(b, 0, c, a.length, b.length);
+    return c;
+  }
 }

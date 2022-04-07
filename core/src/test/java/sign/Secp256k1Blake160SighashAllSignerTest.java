@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
+import org.nervos.ckb.utils.Numeric;
 
 public class Secp256k1Blake160SighashAllSignerTest {
 
@@ -14,12 +15,14 @@ public class Secp256k1Blake160SighashAllSignerTest {
     assertTrue(
         signer.isMatched(
             "9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f",
-            "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd"));
+            Numeric.hexStringToByteArray("0xaf0b41c627807fbddcee75afa174d5a7e5135ebd")));
     assertFalse(
         signer.isMatched(
             "0x9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f",
-            "0x0450340178ae277261a838c89f9ccb76a190ed4b"));
-    assertFalse(signer.isMatched(null, "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd"));
+            Numeric.hexStringToByteArray("0x0450340178ae277261a838c89f9ccb76a190ed4b")));
+    assertFalse(
+        signer.isMatched(
+            null, Numeric.hexStringToByteArray("0xaf0b41c627807fbddcee75afa174d5a7e5135ebd")));
     assertFalse(
         signer.isMatched("9d8ca87d75d150692211fa62b0d30de4d1ee6c530d5678b40b8cedacf0750d0f", null));
   }
