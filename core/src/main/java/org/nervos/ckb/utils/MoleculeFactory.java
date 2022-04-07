@@ -24,10 +24,14 @@ class MoleculeFactory {
     }
 
     protected static Uint32 createUnit32(long in) {
-        byte[] arr = Numeric.toBytesPadded(BigInteger.valueOf(in), Uint32.SIZE);
+        return createUnit32(BigInteger.valueOf(in));
+    }
+
+    protected static Uint32 createUnit32(BigInteger in) {
+        byte[] arr = Numeric.toBytesPadded(in, Uint32.SIZE);
         return Uint32
-                .builder(padAfter(flip(arr), Uint32.SIZE))
-                .build();
+            .builder(padAfter(flip(arr), Uint32.SIZE))
+            .build();
     }
 
     protected static Uint64 createUnit64(long in) {
@@ -35,7 +39,10 @@ class MoleculeFactory {
     }
 
     protected static Uint64 createUnit64(BigInteger in) {
-        return createUnit64(Numeric.toBytesPadded(in, Uint64.SIZE));
+        byte[] arr = Numeric.toBytesPadded(in, Uint64.SIZE);
+        return Uint64
+            .builder(flip(arr))
+            .build();
     }
 
     protected static Uint64 createUnit64(byte[] in) {
