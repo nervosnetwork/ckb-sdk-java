@@ -1,15 +1,15 @@
 package org.nervos.ckb.utils.address;
 
 import com.google.common.primitives.Bytes;
-import java.util.Arrays;
-import java.util.List;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Bech32m;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer;
+
+import java.util.Arrays;
+import java.util.List;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressGenerator extends AddressBaseOperator {
@@ -91,7 +91,7 @@ public class AddressGenerator extends AddressBaseOperator {
         Numeric.hexStringToByteArray(
             TYPE_FULL_WITH_BECH32M
                 + Numeric.toHexStringNoPrefix(script.codeHash)
-                + Serializer.serializeHashType(script.hashType)
+                + String.format("%02x", script.hashType.toByte() & 0xFF)
                 + Numeric.toHexStringNoPrefix(script.args));
 
     byte[] data_part = convertBits(Bytes.asList(payload), 8, 5, true);

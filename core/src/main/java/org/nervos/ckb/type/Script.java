@@ -1,11 +1,11 @@
 package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
-import java.math.BigInteger;
-import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.utils.Serializer;
+import org.nervos.ckb.utils.Serializer2;
 import org.nervos.ckb.utils.Utils;
+
+import java.math.BigInteger;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
@@ -31,7 +31,7 @@ public class Script {
 
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Encoder.encode(Serializer.serializeScript(this)));
+    blake2b.update(Serializer2.serialize(this));
     return blake2b.doFinalBytes();
   }
 

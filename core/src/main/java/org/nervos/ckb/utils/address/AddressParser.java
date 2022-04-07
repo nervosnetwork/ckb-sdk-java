@@ -5,7 +5,6 @@ import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressParser extends AddressBaseOperator {
@@ -79,7 +78,10 @@ public class AddressParser extends AddressBaseOperator {
 
     if (TYPE_FULL_WITH_BECH32M.equals(type)) {
       byte[] codeHash = Numeric.hexStringToByteArray(payload.substring(2, 66));
-      Script.HashType hashType = Serializer.deserializeHashType(payload.substring(66, 68));
+      byte hashTypeByte = (byte)
+          ((Character.digit(payload.charAt(66), 16) << 4)
+              + Character.digit(payload.charAt(67), 16));
+      Script.HashType hashType = Script.HashType.valueOf(hashTypeByte);
       byte[] args = Numeric.hexStringToByteArray(payload.substring(68));
 
       return new AddressParseResult(

@@ -1,23 +1,18 @@
 package org.nervos.ckb.type.transaction;
 
 import com.google.gson.annotations.SerializedName;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
-import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.dynamic.Table;
-import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer;
+import org.nervos.ckb.utils.Serializer2;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Transaction {
@@ -95,7 +90,7 @@ public class Transaction {
 
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Encoder.encode(Serializer.serializeRawTransaction(this)));
+    blake2b.update(Serializer2.serialize(this, false));
     return blake2b.doFinalBytes();
   }
 
@@ -215,8 +210,7 @@ public class Transaction {
     }
 
     public Builder addInput(byte[] txHash, int index) {
-      String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-      return this.addInput(txHash, index, new byte[] {0});
+      return this.addInput(txHash, index, new byte[]{0});
     }
 
     public Builder addInput(byte[] txHash, int index, byte[] since) {
