@@ -2,15 +2,12 @@ package org.nervos.ckb.service.adapter;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;
-import java.math.BigInteger;
-import org.nervos.ckb.utils.Numeric;
 
 public class LongTypeAdapter implements JsonDeserializer<Long>, JsonSerializer<Long> {
 
   @Override
   public JsonElement serialize(Long src, Type typeOfSrc, JsonSerializationContext context) {
-    return new JsonPrimitive(
-        AdapterUtils.toHexStringForNumber(BigInteger.valueOf(src).toByteArray()));
+    return new JsonPrimitive("0x" + Long.toHexString(src));
   }
 
   @Override
@@ -19,6 +16,7 @@ public class LongTypeAdapter implements JsonDeserializer<Long>, JsonSerializer<L
     if (json.getAsJsonPrimitive().isNumber()) {
       return json.getAsLong();
     }
-    return Numeric.toBigInt(json.getAsString()).longValue();
+    String hexValue = json.getAsString().substring(2);
+    return Long.valueOf(hexValue, 16);
   }
 }
