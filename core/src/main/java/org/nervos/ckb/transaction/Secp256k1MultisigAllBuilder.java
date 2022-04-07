@@ -82,7 +82,7 @@ public class Secp256k1MultisigAllBuilder {
 
     transaction.witnesses.set(
         scriptGroup.inputIndexes.get(0),
-        Numeric.toHexString(Serializer.serializeWitnessArgs(signedWitness).toBytes()));
+        Serializer.serializeWitnessArgs(signedWitness).toBytes());
   }
 
   public Transaction buildTx() {

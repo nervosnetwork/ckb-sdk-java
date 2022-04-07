@@ -38,7 +38,7 @@ public class Transaction {
   @SerializedName("outputs_data")
   public List<byte[]> outputsData;
 
-  public List witnesses;
+  public List<byte[]> witnesses;
 
   public Transaction() {}
 
@@ -99,48 +99,50 @@ public class Transaction {
     return blake2b.doFinalBytes();
   }
 
+  // TODO: sign with witness of byte array
   public Transaction sign(BigInteger privateKey) {
-    if (witnesses.size() < 1) {
-      throw new RuntimeException("Need at least one witness!");
-    }
-    if (witnesses.get(0).getClass() != Witness.class) {
-      throw new RuntimeException("First witness must be of Witness type!");
-    }
-    byte[] txHash = computeHash();
-    Witness emptiedWitness = (Witness) witnesses.get(0);
-    emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
-    Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
-    Blake2b blake2b = new Blake2b();
-    blake2b.update(txHash);
-    blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
-    blake2b.update(witnessTable.toBytes());
-    for (int i = 1; i < witnesses.size(); i++) {
-      byte[] bytes;
-      if (witnesses.get(i).getClass() == Witness.class) {
-        bytes = Serializer.serializeWitnessArgs((Witness) witnesses.get(i)).toBytes();
-      } else {
-        bytes = Numeric.hexStringToByteArray((String) witnesses.get(i));
-      }
-      blake2b.update(new UInt64(bytes.length).toBytes());
-      blake2b.update(bytes);
-    }
-    String message = blake2b.doFinalString();
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    ((Witness) witnesses.get(0)).lock =
-        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
-
-    List<String> signedWitness = new ArrayList<>();
-    for (Object witness : witnesses) {
-      if (witness.getClass() == Witness.class) {
-        signedWitness.add(
-            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
-      } else {
-        signedWitness.add((String) witness);
-      }
-    }
-
-    return new Transaction(
-        version, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitness);
+//    if (witnesses.size() < 1) {
+//      throw new RuntimeException("Need at least one witness!");
+//    }
+//    if (witnesses.get(0).getClass() != Witness.class) {
+//      throw new RuntimeException("First witness must be of Witness type!");
+//    }
+//    byte[] txHash = computeHash();
+//    Witness emptiedWitness = (Witness) witnesses.get(0);
+//    emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
+//    Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
+//    Blake2b blake2b = new Blake2b();
+//    blake2b.update(txHash);
+//    blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
+//    blake2b.update(witnessTable.toBytes());
+//    for (int i = 1; i < witnesses.size(); i++) {
+//      byte[] bytes;
+//      if (witnesses.get(i).getClass() == Witness.class) {
+//        bytes = Serializer.serializeWitnessArgs((Witness) witnesses.get(i)).toBytes();
+//      } else {
+//        bytes = Numeric.hexStringToByteArray((String) witnesses.get(i));
+//      }
+//      blake2b.update(new UInt64(bytes.length).toBytes());
+//      blake2b.update(bytes);
+//    }
+//    String message = blake2b.doFinalString();
+//    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+//    ((Witness) witnesses.get(0)).lock =
+//        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
+//
+//    List<String> signedWitness = new ArrayList<>();
+//    for (Object witness : witnesses) {
+//      if (witness.getClass() == Witness.class) {
+//        signedWitness.add(
+//            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
+//      } else {
+//        signedWitness.add((String) witness);
+//      }
+//    }
+//
+//    return new Transaction(
+//        version, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitness);
+    return null;
   }
 
   public static Builder builder() {

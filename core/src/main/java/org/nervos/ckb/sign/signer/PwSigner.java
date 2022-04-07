@@ -47,9 +47,9 @@ public class PwSigner implements ScriptSigner {
     byte[] txHash = transaction.computeHash();
     keccak256.update(txHash);
 
-    List<String> witnesses = transaction.witnesses;
+    List<byte[]> witnesses = transaction.witnesses;
     for (int i : scriptGroup.getInputIndices()) {
-      byte[] witness = Numeric.hexStringToByteArray(witnesses.get(i));
+      byte[] witness = witnesses.get(i);
       keccak256.update(new UInt64(witness.length).toBytes());
       keccak256.update(witness);
     }
@@ -61,14 +61,16 @@ public class PwSigner implements ScriptSigner {
 
     int index = scriptGroup.getInputIndices().get(0);
     // TODO: need parsing from witnessArgs but not replace in place
-    String witness = Numeric.cleanHexPrefix(witnesses.get(index));
-    witness =
-        "0x"
-            + witness.substring(0, WITNESS_OFFSET_IN_BYTE * 2)
-            + Numeric.toHexStringNoPrefix(signature)
-            + witness.substring(WITNESS_OFFSET_IN_BYTE * 2 + SIGNATURE_LENGTH_IN_BYTE * 2);
+    byte[] witness = witnesses.get(index);
+    byte[] finalWitness = new byte[witnesses.get(index).length + SIGNATURE_LENGTH_IN_BYTE];
+    int pos = 0;
+    System.arraycopy(witness, 0, finalWitness, 0, WITNESS_OFFSET_IN_BYTE);
+    pos += WITNESS_OFFSET_IN_BYTE;
+    System.arraycopy(signature, 0, finalWitness, pos, SIGNATURE_LENGTH_IN_BYTE);
+    pos += SIGNATURE_LENGTH_IN_BYTE;
+    System.arraycopy(witness, WITNESS_OFFSET_IN_BYTE, finalWitness, pos, witness.length - WITNESS_OFFSET_IN_BYTE);
 
-    witnesses.set(index, witness);
+    witnesses.set(index, finalWitness);
     return true;
   }
 
