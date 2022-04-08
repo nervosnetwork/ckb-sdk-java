@@ -11,7 +11,7 @@ import org.nervos.ckb.type.transaction.Transaction;
 
 import java.math.BigInteger;
 
-public class Serializer2 {
+public class Serializer {
   public static byte[] serialize(CellDep in) {
     return MoleculeFactory.createCellDep(in).toByteArray();
   }

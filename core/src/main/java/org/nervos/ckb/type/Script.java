@@ -2,7 +2,7 @@ package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.utils.Serializer2;
+import org.nervos.ckb.utils.Serializer;
 import org.nervos.ckb.utils.Utils;
 
 import java.math.BigInteger;
@@ -31,7 +31,7 @@ public class Script {
 
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Serializer2.serialize(this));
+    blake2b.update(Serializer.serialize(this));
     return blake2b.doFinalBytes();
   }
 

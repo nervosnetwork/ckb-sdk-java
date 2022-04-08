@@ -17,7 +17,7 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer2;
+import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -269,6 +269,6 @@ public class CalculatorTest {
   public byte[] witnessPlaceholder() {
     WitnessArgs witnessArgs = new WitnessArgs();
     witnessArgs.setLock(new byte[65]);
-    return Serializer2.serialize(witnessArgs);
+    return Serializer.serialize(witnessArgs);
   }
 }
