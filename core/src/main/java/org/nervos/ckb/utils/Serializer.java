@@ -13,39 +13,39 @@ import java.math.BigInteger;
 
 public class Serializer {
   public static byte[] serialize(CellDep in) {
-    return MoleculeFactory.createCellDep(in).toByteArray();
+    return MoleculeConverter.createCellDep(in).toByteArray();
   }
 
   public static byte[] serialize(CellInput in) {
-    return MoleculeFactory.createCellInput(in).toByteArray();
+    return MoleculeConverter.createCellInput(in).toByteArray();
   }
 
   public static byte[] serialize(CellOutput in) {
-    return MoleculeFactory.createCellOutput(in).toByteArray();
+    return MoleculeConverter.createCellOutput(in).toByteArray();
   }
 
   public static byte[] serialize(Transaction in, boolean includeWitnesses) {
     if (includeWitnesses) {
-      return MoleculeFactory.createTransaction(in).toByteArray();
+      return MoleculeConverter.createTransaction(in).toByteArray();
     } else {
-      return MoleculeFactory.createRawTransaction(in).toByteArray();
+      return MoleculeConverter.createRawTransaction(in).toByteArray();
     }
   }
 
   public static byte[] serialize(Header in, boolean includeNonce) {
     if (includeNonce) {
-      return MoleculeFactory.createHeader(in).toByteArray();
+      return MoleculeConverter.createHeader(in).toByteArray();
     } else {
-      return MoleculeFactory.createRawHeader(in).toByteArray();
+      return MoleculeConverter.createRawHeader(in).toByteArray();
     }
   }
 
   public static byte[] serialize(WitnessArgs in) {
-    return MoleculeFactory.createWitnessArgs(in).toByteArray();
+    return MoleculeConverter.createWitnessArgs(in).toByteArray();
   }
 
   public static byte[] serialize(Script script) {
-    return MoleculeFactory.createScript(script).toByteArray();
+    return MoleculeConverter.createScript(script).toByteArray();
   }
 
   public static byte[] serialize(long in, MoleculeNumber type) {
@@ -56,13 +56,13 @@ public class Serializer {
     Molecule molecule;
     switch (type) {
       case UINT32:
-        molecule = MoleculeFactory.createUnit32(in);
+        molecule = MoleculeConverter.createUnit32(in);
         break;
       case UINT64:
-        molecule = MoleculeFactory.createUnit64(in);
+        molecule = MoleculeConverter.createUnit64(in);
         break;
       case UINT128:
-        molecule = MoleculeFactory.createUnit128(in);
+        molecule = MoleculeConverter.createUnit128(in);
         break;
       default:
         throw new IllegalArgumentException("Unsupported molecule number type");

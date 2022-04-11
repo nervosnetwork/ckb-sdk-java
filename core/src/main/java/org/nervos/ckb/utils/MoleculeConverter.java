@@ -5,7 +5,7 @@ import org.nervos.ckb.newtype.concrete.*;
 import java.math.BigInteger;
 import java.util.List;
 
-class MoleculeFactory {
+class MoleculeConverter {
     /**
      * Pad zero after byte array
      */
