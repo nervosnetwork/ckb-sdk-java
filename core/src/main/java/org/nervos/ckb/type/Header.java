@@ -11,7 +11,7 @@ public class Header {
   public byte[] hash;
   public BigInteger nonce;
   public int number;
-  public byte[] epoch;
+  public BigInteger epoch;
 
   @SerializedName("compact_target")
   public long compactTarget;

@@ -210,10 +210,10 @@ public class Transaction {
     }
 
     public Builder addInput(byte[] txHash, int index) {
-      return this.addInput(txHash, index, new byte[]{0});
+      return this.addInput(txHash, index, BigInteger.ZERO);
     }
 
-    public Builder addInput(byte[] txHash, int index, byte[] since) {
+    public Builder addInput(byte[] txHash, int index, BigInteger since) {
       CellInput input = new CellInput();
       input.previousOutput = new OutPoint(txHash, index);
       input.since = since;

@@ -37,10 +37,6 @@ class MoleculeConverter {
         return createUint64(BigInteger.valueOf(in));
     }
 
-    public static Uint64 createUint64(byte[] in) {
-        return createUint64(Numeric.toBigInt(in));
-    }
-
     public static Uint128 createUint128(BigInteger in) {
         byte[] arr = littleEndianBigInteger(in, Uint128.SIZE);
         return Uint128
