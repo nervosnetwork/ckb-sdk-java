@@ -6,63 +6,53 @@ import java.math.BigInteger;
 import java.util.List;
 
 class MoleculeConverter {
-    /**
-     * Pad zero after byte array
-     */
-    private static byte[] padAfter(byte[] in, int length) {
-        byte[] padBytes = new byte[length];
-        System.arraycopy(in, 0, padBytes, 0, in.length);
-        return padBytes;
+    public static Uint32 createUint32(long in) {
+        return createUint32(BigInteger.valueOf(in));
     }
 
-    private static byte[] flip(byte[] in) {
-        byte[] out = new byte[in.length];
-        for (int i = 0; i < in.length; i++) {
-            out[i] = in[in.length - i - 1];
+    public static byte[] littleEndianBigInteger(BigInteger in, int length) {
+        byte[] arr = Numeric.toBytesPadded(in, length);
+        byte[] out = new byte[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            out[i] = arr[arr.length - i - 1];
         }
         return out;
     }
 
-    protected static Uint32 createUnit32(long in) {
-        return createUnit32(BigInteger.valueOf(in));
-    }
-
-    protected static Uint32 createUnit32(BigInteger in) {
-        byte[] arr = Numeric.toBytesPadded(in, Uint32.SIZE);
+    public static Uint32 createUint32(BigInteger in) {
+        byte[] arr = littleEndianBigInteger(in, Uint32.SIZE);
         return Uint32
-            .builder(padAfter(flip(arr), Uint32.SIZE))
-            .build();
-    }
-
-    protected static Uint64 createUnit64(long in) {
-        return createUnit64(BigInteger.valueOf(in));
-    }
-
-    protected static Uint64 createUnit64(BigInteger in) {
-        byte[] arr = Numeric.toBytesPadded(in, Uint64.SIZE);
-        return Uint64
-            .builder(flip(arr))
-            .build();
-    }
-
-    protected static Uint64 createUnit64(byte[] in) {
-        return Uint64
-                .builder(padAfter(flip(in), Uint64.SIZE))
+                .builder(arr)
                 .build();
     }
 
-    protected static Uint128 createUnit128(BigInteger in) {
-        byte[] arr = Numeric.toBytesPadded(in, Uint128.SIZE);
+    public static Uint64 createUint64(BigInteger in) {
+        byte[] arr = littleEndianBigInteger(in, Uint64.SIZE);
+        return Uint64
+                .builder(arr)
+                .build();
+    }
+
+    public static Uint64 createUint64(long in) {
+        return createUint64(BigInteger.valueOf(in));
+    }
+
+    public static Uint64 createUint64(byte[] in) {
+        return createUint64(Numeric.toBigInt(in));
+    }
+
+    public static Uint128 createUint128(BigInteger in) {
+        byte[] arr = littleEndianBigInteger(in, Uint128.SIZE);
         return Uint128
-                .builder(padAfter(flip(arr), Uint128.SIZE))
+                .builder(arr)
                 .build();
     }
 
-    protected static Byte32 createByte32(byte[] in) {
+    public static Byte32 createByte32(byte[] in) {
         return Byte32.builder(in).build();
     }
 
-    protected static Bytes createBytes(byte[] in) {
+    public static Bytes createBytes(byte[] in) {
         if (in == null) {
             return null;
         }
@@ -71,7 +61,7 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static BytesVec createBytesVec(List<byte[]> in) {
+    public static BytesVec createBytesVec(List<byte[]> in) {
         Bytes[] arr = new Bytes[in.size()];
         for (int i = 0; i < in.size(); i++) {
             arr[i] = createBytes(in.get(i));
@@ -81,7 +71,7 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static Byte32Vec createByte32Vec(List<byte[]> in) {
+    public static Byte32Vec createByte32Vec(List<byte[]> in) {
         Byte32[] arr = new Byte32[in.size()];
         for (int i = 0; i < in.size(); i++) {
             arr[i] = createByte32(in.get(i));
@@ -91,21 +81,21 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static OutPoint createOutPoint(org.nervos.ckb.type.OutPoint in) {
+    public static OutPoint createOutPoint(org.nervos.ckb.type.OutPoint in) {
         return OutPoint.builder()
-                .setIndex(createUnit32(in.index))
+                .setIndex(createUint32(in.index))
                 .setTxHash(createByte32(in.txHash))
                 .build();
     }
 
-    protected static CellInput createCellInput(org.nervos.ckb.type.cell.CellInput in) {
+    public static CellInput createCellInput(org.nervos.ckb.type.cell.CellInput in) {
         return CellInput.builder()
-                .setSince(createUnit64(in.since))
+                .setSince(createUint64(in.since))
                 .setPreviousOutput(createOutPoint(in.previousOutput))
                 .build();
     }
 
-    protected static CellInputVec createCellInputVec(List<org.nervos.ckb.type.cell.CellInput> in) {
+    public static CellInputVec createCellInputVec(List<org.nervos.ckb.type.cell.CellInput> in) {
         CellInput[] arr = new CellInput[in.size()];
         for (int i = 0; i < in.size(); i++) {
             arr[i] = createCellInput(in.get(i));
@@ -115,15 +105,15 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static CellOutput createCellOutput(org.nervos.ckb.type.cell.CellOutput in) {
+    public static CellOutput createCellOutput(org.nervos.ckb.type.cell.CellOutput in) {
         return CellOutput.builder()
                 .setLock(createScript(in.lock))
                 .setType(createScript(in.type))
-                .setCapacity(createUnit64(in.capacity))
+                .setCapacity(createUint64(in.capacity))
                 .build();
     }
 
-    protected static CellOutputVec createCellOutputVec(List<org.nervos.ckb.type.cell.CellOutput> in) {
+    public static CellOutputVec createCellOutputVec(List<org.nervos.ckb.type.cell.CellOutput> in) {
         CellOutput[] arr = new CellOutput[in.size()];
         for (int i = 0; i < in.size(); i++) {
             arr[i] = createCellOutput(in.get(i));
@@ -133,14 +123,14 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static CellDep createCellDep(org.nervos.ckb.type.cell.CellDep in) {
+    public static CellDep createCellDep(org.nervos.ckb.type.cell.CellDep in) {
         return CellDep.builder()
                 .setOutPoint(createOutPoint(in.outPoint))
                 .setDepType(in.depType.toByte())
                 .build();
     }
 
-    protected static CellDepVec createCellDepVec(List<org.nervos.ckb.type.cell.CellDep> in) {
+    public static CellDepVec createCellDepVec(List<org.nervos.ckb.type.cell.CellDep> in) {
         CellDep[] arr = new CellDep[in.size()];
         for (int i = 0; i < in.size(); i++) {
             arr[i] = createCellDep(in.get(i));
@@ -150,7 +140,7 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static Script createScript(org.nervos.ckb.type.Script in) {
+    public static Script createScript(org.nervos.ckb.type.Script in) {
         if (in == null) {
             return null;
         }
@@ -161,9 +151,9 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static RawTransaction createRawTransaction(org.nervos.ckb.type.transaction.Transaction in) {
+    public static RawTransaction createRawTransaction(org.nervos.ckb.type.transaction.Transaction in) {
         return RawTransaction.builder()
-                .setVersion(createUnit32(in.version))
+                .setVersion(createUint32(in.version))
                 .setCellDeps(createCellDepVec(in.cellDeps))
                 .setHeaderDeps(createByte32Vec(in.headerDeps))
                 .setInputs(createCellInputVec(in.inputs))
@@ -172,20 +162,20 @@ class MoleculeConverter {
                 .build();
     }
 
-    protected static Transaction createTransaction(org.nervos.ckb.type.transaction.Transaction in) {
+    public static Transaction createTransaction(org.nervos.ckb.type.transaction.Transaction in) {
         return Transaction.builder()
                 .setRaw(createRawTransaction(in))
                 .setWitnesses(createBytesVec(in.witnesses))
                 .build();
     }
 
-    protected static RawHeader createRawHeader(org.nervos.ckb.type.Header in) {
+    public static RawHeader createRawHeader(org.nervos.ckb.type.Header in) {
         RawHeader header = RawHeader.builder()
-                .setVersion(createUnit32(in.version))
-                .setCompactTarget(createUnit32(in.compactTarget))
-                .setTimestamp(createUnit64(in.timestamp))
-                .setNumber(createUnit64(in.number))
-                .setEpoch(createUnit64(in.epoch))
+                .setVersion(createUint32(in.version))
+                .setCompactTarget(createUint32(in.compactTarget))
+                .setTimestamp(createUint64(in.timestamp))
+                .setNumber(createUint64(in.number))
+                .setEpoch(createUint64(in.epoch))
                 .setParentHash(createByte32(in.parentHash))
                 .setTransactionsRoot(createByte32(in.transactionsRoot))
                 .setProposalsHash(createByte32(in.proposalsHash))
@@ -195,14 +185,14 @@ class MoleculeConverter {
         return header;
     }
 
-    protected static Header createHeader(org.nervos.ckb.type.Header in) {
+    public static Header createHeader(org.nervos.ckb.type.Header in) {
         return Header.builder()
                 .setRaw(createRawHeader(in))
-                .setNonce(createUnit128(in.nonce))
+                .setNonce(createUint128(in.nonce))
                 .build();
     }
 
-    protected static WitnessArgs createWitnessArgs(org.nervos.ckb.type.WitnessArgs in) {
+    public static WitnessArgs createWitnessArgs(org.nervos.ckb.type.WitnessArgs in) {
         return WitnessArgs.builder()
                 .setLock(createBytes(in.getLock()))
                 .setInputType(createBytes(in.getInputType()))

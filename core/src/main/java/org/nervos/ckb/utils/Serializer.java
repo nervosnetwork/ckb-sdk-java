@@ -56,13 +56,13 @@ public class Serializer {
     Molecule molecule;
     switch (type) {
       case UINT32:
-        molecule = MoleculeConverter.createUnit32(in);
+        molecule = MoleculeConverter.createUint32(in);
         break;
       case UINT64:
-        molecule = MoleculeConverter.createUnit64(in);
+        molecule = MoleculeConverter.createUint64(in);
         break;
       case UINT128:
-        molecule = MoleculeConverter.createUnit128(in);
+        molecule = MoleculeConverter.createUint128(in);
         break;
       default:
         throw new IllegalArgumentException("Unsupported molecule number type");
