@@ -10,7 +10,6 @@ public class Calculator {
 
   public static int calculateTransactionSize(Transaction transaction) {
     byte[] bytes = transaction.pack().toByteArray();
-    System.out.println(Numeric.toHexString(bytes));
     return bytes.length + SERIALIZED_TX_OFFSET_BYTE_SIZE;
   }
 

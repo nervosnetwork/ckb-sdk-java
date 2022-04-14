@@ -14,7 +14,7 @@ public class Record {
 
   public static final byte[] SCRIPT_TYPE = new byte[]{0x1};
 
-  public static final byte[] Address_TYPE = new byte[]{0x0};
+  public static final byte[] ADDRESS_TYPE = new byte[]{0x0};
 
   public String record;
 
@@ -47,7 +47,7 @@ public class Record {
           Bytes.concat(record, SCRIPT_TYPE, Arrays.copyOfRange(this.script.computeHash(), 0, 20)));
     } else {
       return Numeric.toHexString(
-          Bytes.concat(record, Address_TYPE, this.address.getBytes(StandardCharsets.UTF_8)));
+          Bytes.concat(record, ADDRESS_TYPE, this.address.getBytes(StandardCharsets.UTF_8)));
     }
   }
 

@@ -5,7 +5,7 @@ import java.util.List;
 import org.nervos.ckb.newtype.concrete.*;
 
 public class MoleculeConverter {
-  public static byte[] littleEndianBigInteger(BigInteger in, int length) {
+  public static byte[] toByteArrayLittleEndianUnsigned(BigInteger in, int length) {
     byte[] arr = Numeric.toBytesPadded(in, length);
     byte[] out = new byte[arr.length];
     for (int i = 0; i < arr.length; i++) {
@@ -21,13 +21,13 @@ public class MoleculeConverter {
 
   // TODO: will be removed after the new type to Uint32 is ready
   public static Uint32 packUint32(BigInteger in) {
-    byte[] arr = littleEndianBigInteger(in, Uint32.SIZE);
+    byte[] arr = toByteArrayLittleEndianUnsigned(in, Uint32.SIZE);
     return Uint32.builder(arr).build();
   }
 
   // TODO: will be removed after the new type to Uint64 is ready
   public static Uint64 packUint64(BigInteger in) {
-    byte[] arr = littleEndianBigInteger(in, Uint64.SIZE);
+    byte[] arr = toByteArrayLittleEndianUnsigned(in, Uint64.SIZE);
     return Uint64.builder(arr).build();
   }
 
@@ -36,7 +36,7 @@ public class MoleculeConverter {
   }
 
   public static Uint128 packUint128(BigInteger in) {
-    byte[] arr = littleEndianBigInteger(in, Uint128.SIZE);
+    byte[] arr = toByteArrayLittleEndianUnsigned(in, Uint128.SIZE);
     return Uint128.builder(arr).build();
   }
 
