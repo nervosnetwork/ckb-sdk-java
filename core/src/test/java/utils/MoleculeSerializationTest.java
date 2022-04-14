@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.type.Header;
+import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
@@ -15,7 +16,7 @@ import java.nio.file.Paths;
 
 public class MoleculeSerializationTest {
   @Test
-  public void testTransaction() throws IOException {
+  public void testTransaction() {
     Transaction transaction = readData("transaction.json", Transaction.class);
 
     assertByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d370000000001",
@@ -39,10 +40,19 @@ public class MoleculeSerializationTest {
   }
 
   @Test
-  public void testHeader() throws IOException {
+  public void testHeader() {
     Header header = readData("header.json", Header.class);
     assertByteArray("0x000000005555011e4c2aeb3b7201000000040000000000000100001800f40100dc48626c5c978044c5055f316d395e74d0209b427091e4f5dd506ac849d23f2682988b971735834ea0c2766764647822ce0229cd16c0e7fb0b17248a445ec3b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007a063f88f10fa22ec7758d0b1f8723008670b170d23100000004a174a800ff06105d371a90473c1d07646cf03051a6b0",
         header.pack().toByteArray());
+  }
+
+  @Test
+  public void testWitnessArgs() {
+    byte[] bytes = Numeric.hexStringToByteArray("0x55000000100000005500000055000000410000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+    WitnessArgs witnessArgs = new WitnessArgs();
+    witnessArgs.setLock(new byte[65]);
+    Assertions.assertArrayEquals(bytes, witnessArgs.pack().toByteArray());
+    Assertions.assertEquals(witnessArgs, WitnessArgs.unpack(bytes));
   }
 
   private void assertByteArray(String expected, byte[] actual) {

@@ -1,5 +1,7 @@
 package org.nervos.ckb.type;
 
+import java.util.Arrays;
+
 import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
 
 public class WitnessArgs {
@@ -31,6 +33,26 @@ public class WitnessArgs {
     this.outputType = outputType;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    WitnessArgs that = (WitnessArgs) o;
+
+    if (!Arrays.equals(lock, that.lock)) return false;
+    if (!Arrays.equals(inputType, that.inputType)) return false;
+    return Arrays.equals(outputType, that.outputType);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Arrays.hashCode(lock);
+    result = 31 * result + Arrays.hashCode(inputType);
+    result = 31 * result + Arrays.hashCode(outputType);
+    return result;
+  }
+
   public org.nervos.ckb.newtype.concrete.WitnessArgs pack() {
     return org.nervos.ckb.newtype.concrete.WitnessArgs.builder()
         .setLock(getLock() != null ? packBytes(getLock()) : null)
@@ -38,4 +60,17 @@ public class WitnessArgs {
         .setOutputType(getOutputType() != null ? packBytes(getOutputType()) : null)
         .build();
   }
+
+  public static WitnessArgs unpack(byte[] in) {
+    org.nervos.ckb.newtype.concrete.WitnessArgs moleculeWitnessArgs =
+        org.nervos.ckb.newtype.concrete.WitnessArgs.builder(in).build();
+
+    WitnessArgs witnessArgs = new WitnessArgs();
+    witnessArgs.setLock(moleculeWitnessArgs.getLock() != null ? moleculeWitnessArgs.getLock().getItems() : null);
+    witnessArgs.setInputType(moleculeWitnessArgs.getInputType() != null ? moleculeWitnessArgs.getInputType().getItems() : null);
+    witnessArgs.setOutputType(moleculeWitnessArgs.getOutputType() != null ? moleculeWitnessArgs.getOutputType().getItems() : null);
+
+    return witnessArgs;
+  }
+
 }
