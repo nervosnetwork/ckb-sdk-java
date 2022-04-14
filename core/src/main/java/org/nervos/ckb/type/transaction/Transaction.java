@@ -14,23 +14,13 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 
 public class Transaction {
-
   public int version;
-
   public byte[] hash;
-
-  @SerializedName("cell_deps")
   public List<CellDep> cellDeps;
-
-  @SerializedName("header_deps")
   public List<byte[]> headerDeps;
-
   public List<CellInput> inputs;
   public List<CellOutput> outputs;
-
-  @SerializedName("outputs_data")
   public List<byte[]> outputsData;
-
   public List<byte[]> witnesses;
 
   public Transaction() {}

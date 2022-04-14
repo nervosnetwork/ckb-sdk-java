@@ -9,7 +9,7 @@ public class RawHeader {
   public byte[] hash;
   public int number;
   public BigInteger epoch;
-  public long compactTarget;
+  public int compactTarget;
   public byte[] parentHash;
   public long timestamp;
   public byte[] transactionsRoot;
