@@ -232,10 +232,10 @@ public class NervosDaoExample {
 
     int depositBlockNumber = new UInt64(cellWithStatus.cell.data.content).getValue().intValue();
     Block depositBlock = api.getBlockByNumber(depositBlockNumber);
-    EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
+    EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch.toByteArray());
 
     Block withdrawBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
-    EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlock.header.epoch);
+    EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlock.header.epoch.toByteArray());
 
     long withdrawFraction = withdrawEpoch.index * depositEpoch.length;
     long depositFraction = depositEpoch.index * withdrawEpoch.length;
@@ -251,10 +251,12 @@ public class NervosDaoExample {
     long minimalSinceEpochIndex = depositEpoch.index;
     long minimalSinceEpochLength = depositEpoch.length;
 
-    byte[] minimalSince =
-        Numeric.hexStringToByteArray(
-            EpochUtils.generateSince(
-                minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
+    // TODO: need fix later
+    //    byte[] minimalSince =
+    //        Numeric.hexStringToByteArray(
+    //            EpochUtils.generateSince(
+    //                minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
+    BigInteger minimalSince = BigInteger.ZERO;
     BigInteger outputCapacity =
         api.calculateDaoMaximumWithdraw(
             depositOutPoint, Numeric.toHexString(withdrawBlock.header.hash));
