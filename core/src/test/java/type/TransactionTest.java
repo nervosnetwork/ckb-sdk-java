@@ -75,7 +75,8 @@ class TransactionTest {
             new OutPoint(
                 Numeric.hexStringToByteArray(
                     "0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4"),
-                0), BigInteger.valueOf(113)));
+                0),
+            BigInteger.valueOf(113)));
     cellInputs.add(
         new CellInput(
             new OutPoint(
@@ -213,7 +214,7 @@ class TransactionTest {
 
     Assertions.assertArrayEquals(
         Numeric.hexStringToByteArray(
-        "0xe765f9912b06c72552dae11779f6371309236e968aa045ae3b8f426d8ec8ca05"),
+            "0xe765f9912b06c72552dae11779f6371309236e968aa045ae3b8f426d8ec8ca05"),
         tx.computeHash());
   }
 }

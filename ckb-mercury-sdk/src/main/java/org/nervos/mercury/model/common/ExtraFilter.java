@@ -10,6 +10,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
+
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -116,12 +117,14 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
     public BigInteger reward;
   }
 
-  interface RpcDaoState {}
+  interface RpcDaoState {
+  }
 
   static class RpcDeposit implements RpcDaoState {
     public BigInteger Deposit;
 
-    public RpcDeposit() {}
+    public RpcDeposit() {
+    }
 
     public RpcDeposit(BigInteger deposit) {
       Deposit = deposit;
@@ -131,7 +134,8 @@ public class ExtraFilter implements JsonSerializer<ExtraFilter>, JsonDeserialize
   static class RpcWithdraw implements RpcDaoState {
     public List<BigInteger> Withdraw;
 
-    public RpcWithdraw() {}
+    public RpcWithdraw() {
+    }
 
     public RpcWithdraw(List<BigInteger> withdraw) {
       Withdraw = withdraw;

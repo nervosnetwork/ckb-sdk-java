@@ -1,12 +1,11 @@
 package org.nervos.ckb.newtype.concrete;
 
+import java.util.Arrays;
+import java.util.Objects;
+import javax.annotation.Nonnull;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
 import org.nervos.ckb.newtype.base.Table;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Objects;
 
 public final class UncleBlock extends Table {
   public static int FIELD_COUNT = 2;
@@ -15,8 +14,7 @@ public final class UncleBlock extends Table {
 
   private ProposalShortIdVec proposals;
 
-  private UncleBlock() {
-  }
+  private UncleBlock() {}
 
   @Nonnull
   public Header getHeader() {
@@ -54,7 +52,8 @@ public final class UncleBlock extends Table {
       }
       int[] offsets = MoleculeUtils.getOffsets(buf);
       if (offsets.length - 1 != FIELD_COUNT) {
-        throw MoleculeException.invalidFieldCount(FIELD_COUNT, offsets.length - 1, UncleBlock.class);
+        throw MoleculeException.invalidFieldCount(
+            FIELD_COUNT, offsets.length - 1, UncleBlock.class);
       }
       byte[] itemBuf;
       itemBuf = Arrays.copyOfRange(buf, offsets[0], offsets[1]);

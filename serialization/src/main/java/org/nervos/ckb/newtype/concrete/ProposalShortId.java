@@ -1,11 +1,10 @@
 package org.nervos.ckb.newtype.concrete;
 
-import org.nervos.ckb.newtype.base.Array;
-import org.nervos.ckb.newtype.base.MoleculeException;
-
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Objects;
+import org.nervos.ckb.newtype.base.Array;
+import org.nervos.ckb.newtype.base.MoleculeException;
 
 public final class ProposalShortId extends Array {
   public static Class ITEM_TYPE = byte.class;
@@ -18,8 +17,7 @@ public final class ProposalShortId extends Array {
 
   private byte[] items;
 
-  private ProposalShortId() {
-  }
+  private ProposalShortId() {}
 
   @Nonnull
   public byte get(int i) {

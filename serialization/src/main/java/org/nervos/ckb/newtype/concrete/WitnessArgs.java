@@ -1,13 +1,12 @@
 package org.nervos.ckb.newtype.concrete;
 
+import java.util.Arrays;
+import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
 import org.nervos.ckb.newtype.base.Table;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Objects;
 
 public final class WitnessArgs extends Table {
   public static int FIELD_COUNT = 3;
@@ -18,8 +17,7 @@ public final class WitnessArgs extends Table {
 
   private Bytes outputType;
 
-  private WitnessArgs() {
-  }
+  private WitnessArgs() {}
 
   @Nullable
   public Bytes getLock() {
@@ -65,7 +63,8 @@ public final class WitnessArgs extends Table {
       }
       int[] offsets = MoleculeUtils.getOffsets(buf);
       if (offsets.length - 1 != FIELD_COUNT) {
-        throw MoleculeException.invalidFieldCount(FIELD_COUNT, offsets.length - 1, WitnessArgs.class);
+        throw MoleculeException.invalidFieldCount(
+            FIELD_COUNT, offsets.length - 1, WitnessArgs.class);
       }
       byte[] itemBuf;
       if (offsets[0] != offsets[1]) {
@@ -107,9 +106,9 @@ public final class WitnessArgs extends Table {
       fieldsSize[1] = (inputType == null ? 0 : inputType.getSize());
       fieldsSize[2] = (outputType == null ? 0 : outputType.getSize());
       byte[][] fieldsBuf = new byte[FIELD_COUNT][];
-      fieldsBuf[0] = (lock == null ? new byte[]{} : lock.toByteArray());
-      fieldsBuf[1] = (inputType == null ? new byte[]{} : inputType.toByteArray());
-      fieldsBuf[2] = (outputType == null ? new byte[]{} : outputType.toByteArray());
+      fieldsBuf[0] = (lock == null ? new byte[] {} : lock.toByteArray());
+      fieldsBuf[1] = (inputType == null ? new byte[] {} : inputType.toByteArray());
+      fieldsBuf[2] = (outputType == null ? new byte[] {} : outputType.toByteArray());
       int size = 4 + 4 * FIELD_COUNT;
       for (int i = 0; i < FIELD_COUNT; i++) {
         size += fieldsSize[i];

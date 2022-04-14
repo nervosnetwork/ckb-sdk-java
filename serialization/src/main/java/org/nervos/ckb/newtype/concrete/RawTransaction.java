@@ -1,12 +1,11 @@
 package org.nervos.ckb.newtype.concrete;
 
+import java.util.Arrays;
+import java.util.Objects;
+import javax.annotation.Nonnull;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
 import org.nervos.ckb.newtype.base.Table;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Objects;
 
 public final class RawTransaction extends Table {
   public static int FIELD_COUNT = 6;
@@ -23,8 +22,7 @@ public final class RawTransaction extends Table {
 
   private BytesVec outputsData;
 
-  private RawTransaction() {
-  }
+  private RawTransaction() {}
 
   @Nonnull
   public Uint32 getVersion() {
@@ -94,7 +92,8 @@ public final class RawTransaction extends Table {
       }
       int[] offsets = MoleculeUtils.getOffsets(buf);
       if (offsets.length - 1 != FIELD_COUNT) {
-        throw MoleculeException.invalidFieldCount(FIELD_COUNT, offsets.length - 1, RawTransaction.class);
+        throw MoleculeException.invalidFieldCount(
+            FIELD_COUNT, offsets.length - 1, RawTransaction.class);
       }
       byte[] itemBuf;
       itemBuf = Arrays.copyOfRange(buf, offsets[0], offsets[1]);

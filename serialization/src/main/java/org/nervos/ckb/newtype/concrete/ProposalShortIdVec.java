@@ -1,13 +1,12 @@
 package org.nervos.ckb.newtype.concrete;
 
+import java.util.Arrays;
+import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.nervos.ckb.newtype.base.FixedVector;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.Objects;
 
 public final class ProposalShortIdVec extends FixedVector {
   public static int ITEM_SIZE = ProposalShortId.SIZE;
@@ -16,8 +15,7 @@ public final class ProposalShortIdVec extends FixedVector {
 
   private ProposalShortId[] items;
 
-  private ProposalShortIdVec() {
-  }
+  private ProposalShortIdVec() {}
 
   @Override
   public int getItemSize() {

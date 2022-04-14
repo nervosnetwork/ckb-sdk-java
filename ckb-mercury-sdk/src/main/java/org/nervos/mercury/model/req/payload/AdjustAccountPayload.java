@@ -1,8 +1,10 @@
 package org.nervos.mercury.model.req.payload;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
 import java.util.Set;
+
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.Item;
 
@@ -24,5 +26,6 @@ public class AdjustAccountPayload {
   @SerializedName("fee_rate")
   public BigInteger feeRate;
 
-  protected AdjustAccountPayload() {}
+  protected AdjustAccountPayload() {
+  }
 }

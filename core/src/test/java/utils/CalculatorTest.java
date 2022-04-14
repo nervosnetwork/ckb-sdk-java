@@ -66,7 +66,8 @@ public class CalculatorTest {
                         Script.HashType.TYPE))),
             Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[] {}),
             Collections.singletonList(
-                Numeric.hexStringToByteArray("0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900")));
+                Numeric.hexStringToByteArray(
+                    "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900")));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 536);
   }
 
@@ -114,7 +115,8 @@ public class CalculatorTest {
                         Script.HashType.TYPE))),
             Arrays.asList(Numeric.hexStringToByteArray("0x1234"), new byte[] {}),
             Collections.singletonList(
-                Numeric.hexStringToByteArray("0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900")));
+                Numeric.hexStringToByteArray(
+                    "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900")));
     Assertions.assertEquals(
         Calculator.calculateTransactionFee(tx, BigInteger.valueOf(900)), BigInteger.valueOf(483));
   }
@@ -219,7 +221,7 @@ public class CalculatorTest {
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
             Collections.singletonList(new byte[] {}),
-            Arrays.asList(witnessPlaceholder(), new byte[]{}));
+            Arrays.asList(witnessPlaceholder(), new byte[] {}));
     Assertions.assertEquals(Calculator.calculateTransactionSize(tx), 407);
   }
 

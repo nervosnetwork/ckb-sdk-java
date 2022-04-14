@@ -26,7 +26,7 @@ public class MoleculeUtils {
       throw new MoleculeException("Byte length is less than 4.");
     }
     if (buf.length == 4) {
-      return new int[]{4};
+      return new int[] {4};
     }
     int headerEnd = littleEndianBytes4ToInt(buf, 4);
     if (headerEnd % 4 != 0) {

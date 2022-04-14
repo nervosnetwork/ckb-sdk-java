@@ -78,9 +78,10 @@ public class AddressParser extends AddressBaseOperator {
 
     if (TYPE_FULL_WITH_BECH32M.equals(type)) {
       byte[] codeHash = Numeric.hexStringToByteArray(payload.substring(2, 66));
-      byte hashTypeByte = (byte)
-          ((Character.digit(payload.charAt(66), 16) << 4)
-              + Character.digit(payload.charAt(67), 16));
+      byte hashTypeByte =
+          (byte)
+              ((Character.digit(payload.charAt(66), 16) << 4)
+                  + Character.digit(payload.charAt(67), 16));
       Script.HashType hashType = Script.HashType.unpack(hashTypeByte);
       byte[] args = Numeric.hexStringToByteArray(payload.substring(68));
 

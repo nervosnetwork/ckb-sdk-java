@@ -25,6 +25,7 @@ public class ECDSASignature {
     this.r = r;
     this.s = s;
   }
+
   /** @return true if the S component is "low", that means it is below */
   public boolean isCanonical() {
     return s.compareTo(Sign.HALF_CURVE_ORDER) <= 0;

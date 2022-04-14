@@ -68,7 +68,12 @@ public class PwSigner implements ScriptSigner {
     pos += WITNESS_OFFSET_IN_BYTE;
     System.arraycopy(signature, 0, finalWitness, pos, SIGNATURE_LENGTH_IN_BYTE);
     pos += SIGNATURE_LENGTH_IN_BYTE;
-    System.arraycopy(witness, WITNESS_OFFSET_IN_BYTE, finalWitness, pos, witness.length - WITNESS_OFFSET_IN_BYTE);
+    System.arraycopy(
+        witness,
+        WITNESS_OFFSET_IN_BYTE,
+        finalWitness,
+        pos,
+        witness.length - WITNESS_OFFSET_IN_BYTE);
 
     witnesses.set(index, finalWitness);
     return true;

@@ -2,7 +2,9 @@ package mercury.constant;
 
 import org.nervos.ckb.utils.Numeric;
 
-/** @author zjh @Created Date: 2021/7/23 @Description: @Modify by: */
+/**
+ * @author zjh @Created Date: 2021/7/23 @Description: @Modify by:
+ */
 public class UdtHolder {
   public static final byte[] UDT_HASH =
       Numeric.hexStringToByteArray(

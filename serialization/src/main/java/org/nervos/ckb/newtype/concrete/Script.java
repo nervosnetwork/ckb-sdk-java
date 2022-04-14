@@ -1,12 +1,11 @@
 package org.nervos.ckb.newtype.concrete;
 
+import java.util.Arrays;
+import java.util.Objects;
+import javax.annotation.Nonnull;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
 import org.nervos.ckb.newtype.base.Table;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Objects;
 
 public final class Script extends Table {
   public static int FIELD_COUNT = 3;
@@ -17,8 +16,7 @@ public final class Script extends Table {
 
   private Bytes args;
 
-  private Script() {
-  }
+  private Script() {}
 
   @Nonnull
   public Byte32 getCodeHash() {
@@ -102,7 +100,7 @@ public final class Script extends Table {
       fieldsSize[2] = args.getSize();
       byte[][] fieldsBuf = new byte[FIELD_COUNT][];
       fieldsBuf[0] = codeHash.toByteArray();
-      fieldsBuf[1] = new byte[]{hashType};
+      fieldsBuf[1] = new byte[] {hashType};
       fieldsBuf[2] = args.toByteArray();
       int size = 4 + 4 * FIELD_COUNT;
       for (int i = 0; i < FIELD_COUNT; i++) {

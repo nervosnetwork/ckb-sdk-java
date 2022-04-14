@@ -1,18 +1,20 @@
 package org.nervos.mercury.model.req.item;
 
 import com.google.common.primitives.Bytes;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
+
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 
 public class Record {
 
-  public static final byte[] SCRIPT_TYPE = new byte[] {0x1};
+  public static final byte[] SCRIPT_TYPE = new byte[]{0x1};
 
-  public static final byte[] Address_TYPE = new byte[] {0x0};
+  public static final byte[] Address_TYPE = new byte[]{0x0};
 
   public String record;
 

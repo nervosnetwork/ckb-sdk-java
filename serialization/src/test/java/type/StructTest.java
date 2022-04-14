@@ -2,6 +2,7 @@ package type;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.base.Type;
@@ -10,7 +11,9 @@ import org.nervos.ckb.type.fixed.Byte32;
 import org.nervos.ckb.type.fixed.Struct;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+/**
+ * Copyright © 2019 Nervos Foundation. All rights reserved.
+ */
 public class StructTest {
 
   @Test

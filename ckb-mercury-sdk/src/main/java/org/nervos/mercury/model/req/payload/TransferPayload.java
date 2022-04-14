@@ -1,7 +1,9 @@
 package org.nervos.mercury.model.req.payload;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
+
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.From;
 import org.nervos.mercury.model.req.To;
@@ -26,5 +28,6 @@ public class TransferPayload {
 
   public SinceConfig since;
 
-  protected TransferPayload() {}
+  protected TransferPayload() {
+  }
 }

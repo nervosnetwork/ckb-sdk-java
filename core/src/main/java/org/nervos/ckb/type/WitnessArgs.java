@@ -1,8 +1,8 @@
 package org.nervos.ckb.type;
 
-import java.util.Arrays;
-
 import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
+
+import java.util.Arrays;
 
 public class WitnessArgs {
   private byte[] lock;
@@ -66,11 +66,17 @@ public class WitnessArgs {
         org.nervos.ckb.newtype.concrete.WitnessArgs.builder(in).build();
 
     WitnessArgs witnessArgs = new WitnessArgs();
-    witnessArgs.setLock(moleculeWitnessArgs.getLock() != null ? moleculeWitnessArgs.getLock().getItems() : null);
-    witnessArgs.setInputType(moleculeWitnessArgs.getInputType() != null ? moleculeWitnessArgs.getInputType().getItems() : null);
-    witnessArgs.setOutputType(moleculeWitnessArgs.getOutputType() != null ? moleculeWitnessArgs.getOutputType().getItems() : null);
+    witnessArgs.setLock(
+        moleculeWitnessArgs.getLock() != null ? moleculeWitnessArgs.getLock().getItems() : null);
+    witnessArgs.setInputType(
+        moleculeWitnessArgs.getInputType() != null
+            ? moleculeWitnessArgs.getInputType().getItems()
+            : null);
+    witnessArgs.setOutputType(
+        moleculeWitnessArgs.getOutputType() != null
+            ? moleculeWitnessArgs.getOutputType().getItems()
+            : null);
 
     return witnessArgs;
   }
-
 }

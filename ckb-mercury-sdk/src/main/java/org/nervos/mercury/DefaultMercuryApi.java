@@ -2,10 +2,12 @@ package org.nervos.mercury;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.DefaultIndexerApi;
@@ -105,7 +107,8 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.REGISTER_ADDRESS,
         Arrays.asList(normalAddresses),
-        new TypeToken<List<String>>() {}.getType(),
+        new TypeToken<List<String>>() {
+        }.getType(),
         this.g);
   }
 
@@ -117,7 +120,8 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
-        new TypeToken<PaginationResponse<TxView<TransactionWithRichStatus>>>() {}.getType(),
+        new TypeToken<PaginationResponse<TxView<TransactionWithRichStatus>>>() {
+        }.getType(),
         this.g);
   }
 
@@ -128,7 +132,8 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
-        new TypeToken<PaginationResponse<TxView<TransactionInfoResponse>>>() {}.getType(),
+        new TypeToken<PaginationResponse<TxView<TransactionInfoResponse>>>() {
+        }.getType(),
         this.g);
   }
 
@@ -184,7 +189,8 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION,
         Arrays.asList(payload),
-        new TypeToken<TxView<TransactionWithRichStatus>>() {}.getType(),
+        new TypeToken<TxView<TransactionWithRichStatus>>() {
+        }.getType(),
         this.g);
   }
 
@@ -196,7 +202,8 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION,
         Arrays.asList(payload),
-        new TypeToken<TxView<TransactionInfoResponse>>() {}.getType(),
+        new TypeToken<TxView<TransactionInfoResponse>>() {
+        }.getType(),
         this.g);
   }
 
