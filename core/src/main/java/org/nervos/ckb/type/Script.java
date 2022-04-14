@@ -1,15 +1,15 @@
 package org.nervos.ckb.type;
 
-import com.google.gson.annotations.SerializedName;
-import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.utils.Utils;
-
-import java.math.BigInteger;
-
 import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
 import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import com.google.gson.annotations.SerializedName;
+
+import java.math.BigInteger;
+
+import org.nervos.ckb.crypto.Blake2b;
+import org.nervos.ckb.utils.Utils;
+
 public class Script {
   @SerializedName("code_hash")
   public byte[] codeHash;
@@ -19,7 +19,8 @@ public class Script {
   @SerializedName("hash_type")
   public HashType hashType;
 
-  public Script() {}
+  public Script() {
+  }
 
   public Script(byte[] codeHash, byte[] args) {
     this(codeHash, args, HashType.DATA);
@@ -50,10 +51,10 @@ public class Script {
 
   public org.nervos.ckb.newtype.concrete.Script pack() {
     return org.nervos.ckb.newtype.concrete.Script.builder()
-            .setCodeHash(packByte32(codeHash))
-            .setArgs(packBytes(args))
-            .setHashType(hashType.pack())
-            .build();
+        .setCodeHash(packByte32(codeHash))
+        .setArgs(packBytes(args))
+        .setHashType(hashType.pack())
+        .build();
   }
 
   public enum HashType {

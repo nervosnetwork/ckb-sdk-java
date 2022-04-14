@@ -1,15 +1,15 @@
 package org.nervos.ckb.newtype.base;
 
 public abstract class Union extends Molecule {
-    protected int typeId;
+  protected int typeId;
 
-    protected Object item;
+  protected Object item;
 
-    public int getTypeId() {
-        return this.typeId;
-    }
+  public int getTypeId() {
+    return this.typeId;
+  }
 
-    public Object getItem() {
-        return this.item;
-    }
+  public Object getItem() {
+    return this.item;
+  }
 }

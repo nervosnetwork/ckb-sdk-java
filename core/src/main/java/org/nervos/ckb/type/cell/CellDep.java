@@ -3,7 +3,6 @@ package org.nervos.ckb.type.cell;
 import com.google.gson.annotations.SerializedName;
 import org.nervos.ckb.type.OutPoint;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellDep {
   @SerializedName("out_point")
   public OutPoint outPoint;
@@ -25,9 +24,9 @@ public class CellDep {
 
   public org.nervos.ckb.newtype.concrete.CellDep pack() {
     return org.nervos.ckb.newtype.concrete.CellDep.builder()
-            .setOutPoint(outPoint.pack())
-            .setDepType(depType.pack())
-            .build();
+        .setOutPoint(outPoint.pack())
+        .setDepType(depType.pack())
+        .build();
   }
 
   public enum DepType {

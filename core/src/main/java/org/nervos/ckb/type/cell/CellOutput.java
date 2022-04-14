@@ -1,10 +1,10 @@
 package org.nervos.ckb.type.cell;
 
+import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
+
 import java.math.BigInteger;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Utils;
-
-import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
 
 public class CellOutput {
   public BigInteger capacity;
@@ -40,9 +40,9 @@ public class CellOutput {
 
   public org.nervos.ckb.newtype.concrete.CellOutput pack() {
     return org.nervos.ckb.newtype.concrete.CellOutput.builder()
-            .setLock(lock.pack())
-            .setType(type == null ? null : type.pack())
-            .setCapacity(packUint64(capacity))
-            .build();
+        .setLock(lock.pack())
+        .setType(type == null ? null : type.pack())
+        .setCapacity(packUint64(capacity))
+        .build();
   }
 }

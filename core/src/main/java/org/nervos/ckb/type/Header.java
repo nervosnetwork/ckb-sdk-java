@@ -1,14 +1,10 @@
 package org.nervos.ckb.type;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.math.BigInteger;
-
 import static org.nervos.ckb.utils.MoleculeConverter.packUint128;
 
-/**
- * Copyright © 2018 Nervos Foundation. All rights reserved.
- */
+import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
+
 public class Header {
 
   public byte[] dao;
