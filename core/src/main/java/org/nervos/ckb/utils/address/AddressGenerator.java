@@ -91,7 +91,7 @@ public class AddressGenerator extends AddressBaseOperator {
         Numeric.hexStringToByteArray(
             TYPE_FULL_WITH_BECH32M
                 + Numeric.toHexStringNoPrefix(script.codeHash)
-                + String.format("%02x", script.hashType.toByte() & 0xFF)
+                + String.format("%02x", script.hashType.pack() & 0xFF)
                 + Numeric.toHexStringNoPrefix(script.args));
 
     byte[] data_part = convertBits(Bytes.asList(payload), 8, 5, true);

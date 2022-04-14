@@ -4,7 +4,8 @@ import java.math.BigInteger;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Utils;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
+
 public class CellOutput {
   public BigInteger capacity;
   public Script type;
@@ -35,5 +36,13 @@ public class CellOutput {
       byteSize = byteSize.add(type.occupiedCapacity());
     }
     return byteSize;
+  }
+
+  public org.nervos.ckb.newtype.concrete.CellOutput pack() {
+    return org.nervos.ckb.newtype.concrete.CellOutput.builder()
+            .setLock(lock.pack())
+            .setType(type == null ? null : type.pack())
+            .setCapacity(packUint64(capacity))
+            .build();
   }
 }

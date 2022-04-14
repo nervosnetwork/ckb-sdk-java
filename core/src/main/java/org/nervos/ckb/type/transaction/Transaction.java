@@ -7,14 +7,14 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Serializer;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import static org.nervos.ckb.utils.MoleculeConverter.packBytesVec;
+
 public class Transaction {
 
   public int version;
@@ -139,6 +139,25 @@ public class Transaction {
 //        version, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitness);
     return null;
   }
+
+  public RawTransaction getRawTransaction() {
+    RawTransaction rawTransaction = new RawTransaction();
+    rawTransaction.version = version;
+    rawTransaction.cellDeps = cellDeps;
+    rawTransaction.headerDeps = headerDeps;
+    rawTransaction.inputs = inputs;
+    rawTransaction.outputs = outputs;
+    rawTransaction.outputsData = outputsData;
+    return rawTransaction;
+  }
+
+  public org.nervos.ckb.newtype.concrete.Transaction pack() {
+    return org.nervos.ckb.newtype.concrete.Transaction.builder()
+            .setRaw(getRawTransaction().pack())
+            .setWitnesses(packBytesVec(witnesses))
+            .build();
+  }
+
 
   public static Builder builder() {
     return new Builder();

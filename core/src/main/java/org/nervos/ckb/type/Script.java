@@ -7,6 +7,9 @@ import org.nervos.ckb.utils.Utils;
 
 import java.math.BigInteger;
 
+import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
+import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
+
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
   @SerializedName("code_hash")
@@ -46,6 +49,14 @@ public class Script {
     return Utils.ckbToShannon(byteSize);
   }
 
+  public org.nervos.ckb.newtype.concrete.Script pack() {
+    return org.nervos.ckb.newtype.concrete.Script.builder()
+            .setCodeHash(packByte32(codeHash))
+            .setArgs(packBytes(args))
+            .setHashType(hashType.pack())
+            .build();
+  }
+
   public enum HashType {
     @SerializedName("data")
     DATA(0x00),
@@ -60,11 +71,11 @@ public class Script {
       this.byteValue = (byte) byteValue;
     }
 
-    public byte toByte() {
+    public byte pack() {
       return byteValue;
     }
 
-    public static HashType valueOf(byte value) {
+    public static HashType unpack(byte value) {
       switch (value) {
         case 0x00:
           return DATA;

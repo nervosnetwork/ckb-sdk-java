@@ -5,7 +5,8 @@ import org.nervos.ckb.type.OutPoint;
 
 import java.math.BigInteger;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
+
 public class CellInput {
 
   @SerializedName("previous_output")
@@ -22,5 +23,12 @@ public class CellInput {
 
   public CellInput(OutPoint previousOutput) {
     this(previousOutput, BigInteger.ZERO);
+  }
+
+  public org.nervos.ckb.newtype.concrete.CellInput pack() {
+    return org.nervos.ckb.newtype.concrete.CellInput.builder()
+            .setSince(packUint64(since))
+            .setPreviousOutput(previousOutput.pack())
+            .build();
   }
 }

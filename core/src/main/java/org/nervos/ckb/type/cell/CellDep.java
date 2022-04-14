@@ -23,6 +23,13 @@ public class CellDep {
     this.depType = DepType.CODE;
   }
 
+  public org.nervos.ckb.newtype.concrete.CellDep pack() {
+    return org.nervos.ckb.newtype.concrete.CellDep.builder()
+            .setOutPoint(outPoint.pack())
+            .setDepType(depType.pack())
+            .build();
+  }
+
   public enum DepType {
     @SerializedName("code")
     CODE(0x00),
@@ -35,7 +42,7 @@ public class CellDep {
       this.value = (byte) value;
     }
 
-    public byte toByte() {
+    public byte pack() {
       return value;
     }
   }
