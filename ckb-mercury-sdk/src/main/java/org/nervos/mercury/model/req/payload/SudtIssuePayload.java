@@ -1,7 +1,9 @@
 package org.nervos.mercury.model.req.payload;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
+
 import org.nervos.mercury.model.req.To;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.since.SinceConfig;
@@ -22,5 +24,6 @@ public class SudtIssuePayload {
 
   public SinceConfig since;
 
-  protected SudtIssuePayload() {}
+  protected SudtIssuePayload() {
+  }
 }

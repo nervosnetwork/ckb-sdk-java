@@ -2,20 +2,20 @@ package org.nervos.ckb.service.adapter;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;
-import java.math.BigInteger;
-import org.nervos.ckb.utils.Numeric;
+import java.util.Objects;
 
 public class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserializer<Integer> {
 
   @Override
   public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
-    BigInteger value = BigInteger.valueOf(src);
+    String hexValue;
     // serialize -1 to 0xffffffff for outpoint index in coinbase transaction
     if (src == -1) {
-      return new JsonPrimitive("0xffffffff");
+      hexValue = "ffffffff";
     } else {
-      return new JsonPrimitive(AdapterUtils.toHexStringForNumber(value.toByteArray()));
+      hexValue = Integer.toHexString(src);
     }
+    return new JsonPrimitive("0x" + hexValue);
   }
 
   @Override
@@ -24,12 +24,12 @@ public class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserial
     if (json.getAsJsonPrimitive().isNumber()) {
       return json.getAsInt();
     }
-    BigInteger value = new BigInteger(Numeric.hexStringToByteArray(json.getAsString()));
+    String hexValue = json.getAsString().substring(2);
     // deserialize 0xffffffff to -1 for outpoint index in coinbase transaction
-    if (value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) == 1) {
+    if (Objects.equals("ffffffff", hexValue)) {
       return -1;
     } else {
-      return value.intValue();
+      return Integer.valueOf(hexValue, 16);
     }
   }
 }

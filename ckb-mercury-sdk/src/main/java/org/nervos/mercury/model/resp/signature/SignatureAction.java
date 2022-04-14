@@ -1,6 +1,7 @@
 package org.nervos.mercury.model.resp.signature;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class SignatureAction {

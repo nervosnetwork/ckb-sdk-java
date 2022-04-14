@@ -9,10 +9,7 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Calculator;
-import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer;
-import org.nervos.ckb.utils.Utils;
+import org.nervos.ckb.utils.*;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -157,6 +154,6 @@ public class CellCollector {
   }
 
   private BigInteger calculateOutputSize(CellOutput cellOutput) {
-    return Utils.ckbToShannon(Serializer.serializeCellOutput(cellOutput).getLength());
+    return Utils.ckbToShannon(cellOutput.pack().getSize());
   }
 }

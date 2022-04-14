@@ -23,6 +23,7 @@ public class Hash {
     byte[] result = blake2b(bytes);
     return Numeric.toHexString(result);
   }
+
   /**
    * Blake2b-256 hash function.
    *

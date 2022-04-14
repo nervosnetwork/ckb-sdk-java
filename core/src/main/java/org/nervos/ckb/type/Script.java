@@ -1,19 +1,14 @@
 package org.nervos.ckb.type;
 
+import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
+import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
+
 import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
-import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.utils.Serializer;
 import org.nervos.ckb.utils.Utils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Script {
-
-  public static final String DATA = "data";
-  public static final String TYPE = "type";
-  public static final String DATA1 = "data1";
-
   @SerializedName("code_hash")
   public byte[] codeHash;
 
@@ -36,7 +31,7 @@ public class Script {
 
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Encoder.encode(Serializer.serializeScript(this)));
+    blake2b.update(this.pack().toByteArray());
     return blake2b.doFinalBytes();
   }
 
@@ -51,12 +46,43 @@ public class Script {
     return Utils.ckbToShannon(byteSize);
   }
 
+  public org.nervos.ckb.newtype.concrete.Script pack() {
+    return org.nervos.ckb.newtype.concrete.Script.builder()
+        .setCodeHash(packByte32(codeHash))
+        .setArgs(packBytes(args))
+        .setHashType(hashType.pack())
+        .build();
+  }
+
   public enum HashType {
     @SerializedName("data")
-    DATA,
+    DATA(0x00),
     @SerializedName("type")
-    TYPE,
+    TYPE(0x01),
     @SerializedName("data1")
-    DATA1;
+    DATA1(0x02);
+
+    private byte byteValue;
+
+    HashType(int byteValue) {
+      this.byteValue = (byte) byteValue;
+    }
+
+    public byte pack() {
+      return byteValue;
+    }
+
+    public static HashType unpack(byte value) {
+      switch (value) {
+        case 0x00:
+          return DATA;
+        case 0x01:
+          return TYPE;
+        case 0x02:
+          return DATA1;
+        default:
+          throw new NullPointerException();
+      }
+    }
   }
 }

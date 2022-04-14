@@ -1,6 +1,7 @@
 package org.nervos.mercury.model.req;
 
 import java.util.List;
+
 import org.nervos.mercury.model.req.item.Item;
 
 public class From {

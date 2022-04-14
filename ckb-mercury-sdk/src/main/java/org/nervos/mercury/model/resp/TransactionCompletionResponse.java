@@ -3,7 +3,9 @@ package org.nervos.mercury.model.resp;
 import static java.util.stream.Collectors.toList;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
+
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.mercury.model.resp.signature.SignatureAction;
 

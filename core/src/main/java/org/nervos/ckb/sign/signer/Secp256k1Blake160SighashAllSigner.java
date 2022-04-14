@@ -46,17 +46,17 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
     ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
 
     byte[] txHash = transaction.computeHash();
-    List<String> witnesses = transaction.witnesses;
+    List<byte[]> witnesses = transaction.witnesses;
     Blake2b blake2b = new Blake2b();
     blake2b.update(txHash);
 
     for (int i : scriptGroup.getInputIndices()) {
-      byte[] witness = Numeric.hexStringToByteArray(witnesses.get(i));
+      byte[] witness = witnesses.get(i);
       blake2b.update(new UInt64(witness.length).toBytes());
       blake2b.update(witness);
     }
     for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
-      byte[] witness = Numeric.hexStringToByteArray(witnesses.get(i));
+      byte[] witness = witnesses.get(i);
       blake2b.update(new UInt64(witness.length).toBytes());
       blake2b.update(witness);
     }
@@ -66,13 +66,21 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
 
     int index = scriptGroup.getInputIndices().get(0);
     // TODO: need parsing from witnessArgs but not replace in place
-    String witness = witnesses.get(index);
-    witness =
-        witness.substring(0, 2 + WITNESS_OFFSET_IN_BYTE * 2)
-            + Numeric.toHexStringNoPrefix(signature)
-            + witness.substring(2 + WITNESS_OFFSET_IN_BYTE * 2 + SIGNATURE_LENGTH_IN_BYTE * 2);
+    byte[] witness = witnesses.get(index);
+    byte[] finalWitness = new byte[witnesses.get(index).length + SIGNATURE_LENGTH_IN_BYTE];
+    int pos = 0;
+    System.arraycopy(witness, 0, finalWitness, 0, WITNESS_OFFSET_IN_BYTE);
+    pos += WITNESS_OFFSET_IN_BYTE;
+    System.arraycopy(signature, 0, finalWitness, pos, SIGNATURE_LENGTH_IN_BYTE);
+    pos += SIGNATURE_LENGTH_IN_BYTE;
+    System.arraycopy(
+        witness,
+        WITNESS_OFFSET_IN_BYTE,
+        finalWitness,
+        pos,
+        witness.length - WITNESS_OFFSET_IN_BYTE);
 
-    witnesses.set(index, witness);
+    witnesses.set(index, finalWitness);
     return true;
   }
 

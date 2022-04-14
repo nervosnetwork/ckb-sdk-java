@@ -1,7 +1,6 @@
 package org.nervos.ckb.utils;
 
 import java.math.BigInteger;
-import org.nervos.ckb.type.dynamic.Table;
 import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -10,8 +9,8 @@ public class Calculator {
   private static final int SERIALIZED_TX_OFFSET_BYTE_SIZE = 4;
 
   public static int calculateTransactionSize(Transaction transaction) {
-    Table serializedTx = Serializer.serializeTransaction(transaction);
-    return serializedTx.getLength() + SERIALIZED_TX_OFFSET_BYTE_SIZE;
+    byte[] bytes = transaction.pack().toByteArray();
+    return bytes.length + SERIALIZED_TX_OFFSET_BYTE_SIZE;
   }
 
   private static final BigInteger RADIO = BigInteger.valueOf(1000);

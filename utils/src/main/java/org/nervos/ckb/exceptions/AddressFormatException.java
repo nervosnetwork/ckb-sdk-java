@@ -40,6 +40,7 @@ public class AddressFormatException extends IllegalArgumentException {
       this.position = position;
     }
   }
+
   /**
    * This exception is thrown by Bech32 when you try to decode data and a character isn't valid. You
    * shouldn't allow the user to proceed in this case.

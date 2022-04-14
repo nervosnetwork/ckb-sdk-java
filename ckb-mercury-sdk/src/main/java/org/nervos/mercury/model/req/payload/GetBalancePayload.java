@@ -1,8 +1,10 @@
 package org.nervos.mercury.model.req.payload;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
 import java.util.Set;
+
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.Item;
 
@@ -15,5 +17,6 @@ public class GetBalancePayload {
   @SerializedName("tip_block_number")
   public BigInteger tipBlockNumber;
 
-  protected GetBalancePayload() {}
+  protected GetBalancePayload() {
+  }
 }

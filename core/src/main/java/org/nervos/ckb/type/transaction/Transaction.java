@@ -1,25 +1,18 @@
 package org.nervos.ckb.type.transaction;
 
+import static org.nervos.ckb.utils.MoleculeConverter.packBytesVec;
+
 import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import org.nervos.ckb.Encoder;
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
-import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.dynamic.Table;
-import org.nervos.ckb.type.fixed.UInt64;
-import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Serializer;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Transaction {
 
   public int version;
@@ -38,7 +31,7 @@ public class Transaction {
   @SerializedName("outputs_data")
   public List<byte[]> outputsData;
 
-  public List witnesses;
+  public List<byte[]> witnesses;
 
   public Transaction() {}
 
@@ -95,52 +88,73 @@ public class Transaction {
 
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Encoder.encode(Serializer.serializeRawTransaction(this)));
+    blake2b.update(getRawTransaction().pack().toByteArray());
     return blake2b.doFinalBytes();
   }
 
+  // TODO: sign with witness of byte array
   public Transaction sign(BigInteger privateKey) {
-    if (witnesses.size() < 1) {
-      throw new RuntimeException("Need at least one witness!");
-    }
-    if (witnesses.get(0).getClass() != Witness.class) {
-      throw new RuntimeException("First witness must be of Witness type!");
-    }
-    byte[] txHash = computeHash();
-    Witness emptiedWitness = (Witness) witnesses.get(0);
-    emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
-    Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
-    Blake2b blake2b = new Blake2b();
-    blake2b.update(txHash);
-    blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
-    blake2b.update(witnessTable.toBytes());
-    for (int i = 1; i < witnesses.size(); i++) {
-      byte[] bytes;
-      if (witnesses.get(i).getClass() == Witness.class) {
-        bytes = Serializer.serializeWitnessArgs((Witness) witnesses.get(i)).toBytes();
-      } else {
-        bytes = Numeric.hexStringToByteArray((String) witnesses.get(i));
-      }
-      blake2b.update(new UInt64(bytes.length).toBytes());
-      blake2b.update(bytes);
-    }
-    String message = blake2b.doFinalString();
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    ((Witness) witnesses.get(0)).lock =
-        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
+    //    if (witnesses.size() < 1) {
+    //      throw new RuntimeException("Need at least one witness!");
+    //    }
+    //    if (witnesses.get(0).getClass() != Witness.class) {
+    //      throw new RuntimeException("First witness must be of Witness type!");
+    //    }
+    //    byte[] txHash = computeHash();
+    //    Witness emptiedWitness = (Witness) witnesses.get(0);
+    //    emptiedWitness.lock = Witness.SIGNATURE_PLACEHOLDER;
+    //    Table witnessTable = Serializer.serializeWitnessArgs(emptiedWitness);
+    //    Blake2b blake2b = new Blake2b();
+    //    blake2b.update(txHash);
+    //    blake2b.update(new UInt64(witnessTable.getLength()).toBytes());
+    //    blake2b.update(witnessTable.toBytes());
+    //    for (int i = 1; i < witnesses.size(); i++) {
+    //      byte[] bytes;
+    //      if (witnesses.get(i).getClass() == Witness.class) {
+    //        bytes = Serializer.serializeWitnessArgs((Witness) witnesses.get(i)).toBytes();
+    //      } else {
+    //        bytes = Numeric.hexStringToByteArray((String) witnesses.get(i));
+    //      }
+    //      blake2b.update(new UInt64(bytes.length).toBytes());
+    //      blake2b.update(bytes);
+    //    }
+    //    String message = blake2b.doFinalString();
+    //    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+    //    ((Witness) witnesses.get(0)).lock =
+    //        Sign.signMessage(Numeric.hexStringToByteArray(message), ecKeyPair).getSignature();
+    //
+    //    List<String> signedWitness = new ArrayList<>();
+    //    for (Object witness : witnesses) {
+    //      if (witness.getClass() == Witness.class) {
+    //        signedWitness.add(
+    //            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness)
+    // witness).toBytes()));
+    //      } else {
+    //        signedWitness.add((String) witness);
+    //      }
+    //    }
+    //
+    //    return new Transaction(
+    //        version, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitness);
+    return null;
+  }
 
-    List<String> signedWitness = new ArrayList<>();
-    for (Object witness : witnesses) {
-      if (witness.getClass() == Witness.class) {
-        signedWitness.add(
-            Numeric.toHexString(Serializer.serializeWitnessArgs((Witness) witness).toBytes()));
-      } else {
-        signedWitness.add((String) witness);
-      }
-    }
+  public RawTransaction getRawTransaction() {
+    RawTransaction rawTransaction = new RawTransaction();
+    rawTransaction.version = version;
+    rawTransaction.cellDeps = cellDeps;
+    rawTransaction.headerDeps = headerDeps;
+    rawTransaction.inputs = inputs;
+    rawTransaction.outputs = outputs;
+    rawTransaction.outputsData = outputsData;
+    return rawTransaction;
+  }
 
-    return new Transaction(
-        version, cellDeps, headerDeps, inputs, outputs, outputsData, signedWitness);
+  public org.nervos.ckb.newtype.concrete.Transaction pack() {
+    return org.nervos.ckb.newtype.concrete.Transaction.builder()
+        .setRaw(getRawTransaction().pack())
+        .setWitnesses(packBytesVec(witnesses))
+        .build();
   }
 
   public static Builder builder() {
@@ -213,11 +227,10 @@ public class Transaction {
     }
 
     public Builder addInput(byte[] txHash, int index) {
-      String indexInString = Numeric.toHexString(new byte[] {Integer.valueOf(index).byteValue()});
-      return this.addInput(txHash, index, new byte[] {0});
+      return this.addInput(txHash, index, BigInteger.ZERO);
     }
 
-    public Builder addInput(byte[] txHash, int index, byte[] since) {
+    public Builder addInput(byte[] txHash, int index, BigInteger since) {
       CellInput input = new CellInput();
       input.previousOutput = new OutPoint(txHash, index);
       input.since = since;

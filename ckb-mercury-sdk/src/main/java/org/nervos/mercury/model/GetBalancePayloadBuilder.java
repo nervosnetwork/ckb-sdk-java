@@ -2,11 +2,14 @@ package org.nervos.mercury.model;
 
 import java.math.BigInteger;
 import java.util.HashSet;
+
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 
-/** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
+/**
+ * @author zjh @Created Date: 2021/7/16 @Description: @Modify by:
+ */
 public class GetBalancePayloadBuilder extends GetBalancePayload {
 
   public GetBalancePayloadBuilder() {

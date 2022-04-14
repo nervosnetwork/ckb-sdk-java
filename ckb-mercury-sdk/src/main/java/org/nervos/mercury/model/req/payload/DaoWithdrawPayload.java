@@ -1,7 +1,9 @@
 package org.nervos.mercury.model.req.payload;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
+
 import org.nervos.mercury.model.req.item.Item;
 
 public class DaoWithdrawPayload {
@@ -13,5 +15,6 @@ public class DaoWithdrawPayload {
   @SerializedName("fee_rate")
   public BigInteger feeRate;
 
-  protected DaoWithdrawPayload() {}
+  protected DaoWithdrawPayload() {
+  }
 }

@@ -1,18 +1,20 @@
 package org.nervos.ckb.type;
 
-import com.google.gson.annotations.SerializedName;
+import static org.nervos.ckb.utils.MoleculeConverter.packUint128;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import com.google.gson.annotations.SerializedName;
+import java.math.BigInteger;
+
 public class Header {
 
   public byte[] dao;
   public byte[] hash;
-  public byte[] nonce;
+  public BigInteger nonce;
   public int number;
-  public byte[] epoch;
+  public BigInteger epoch;
 
   @SerializedName("compact_target")
-  public byte[] compactTarget;
+  public long compactTarget;
 
   @SerializedName("parent_hash")
   public byte[] parentHash;
@@ -29,4 +31,27 @@ public class Header {
   public byte[] extraHash;
 
   public int version;
+
+  public RawHeader getRawHeader() {
+    RawHeader rawHeader = new RawHeader();
+    rawHeader.dao = dao;
+    rawHeader.hash = hash;
+    rawHeader.number = number;
+    rawHeader.epoch = epoch;
+    rawHeader.compactTarget = compactTarget;
+    rawHeader.parentHash = parentHash;
+    rawHeader.timestamp = timestamp;
+    rawHeader.transactionsRoot = transactionsRoot;
+    rawHeader.proposalsHash = proposalsHash;
+    rawHeader.extraHash = extraHash;
+    rawHeader.version = version;
+    return rawHeader;
+  }
+
+  public org.nervos.ckb.newtype.concrete.Header pack() {
+    return org.nervos.ckb.newtype.concrete.Header.builder()
+        .setRaw(getRawHeader().pack())
+        .setNonce(packUint128(nonce))
+        .build();
+  }
 }

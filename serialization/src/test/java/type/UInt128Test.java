@@ -1,12 +1,15 @@
 package type;
 
 import java.math.BigInteger;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.fixed.UInt128;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+/**
+ * Copyright © 2019 Nervos Foundation. All rights reserved.
+ */
 public class UInt128Test {
 
   @Test

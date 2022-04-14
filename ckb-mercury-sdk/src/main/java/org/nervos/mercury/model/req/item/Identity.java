@@ -1,7 +1,9 @@
 package org.nervos.mercury.model.req.item;
 
 import com.google.common.primitives.Bytes;
+
 import java.util.Objects;
+
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressTools;

@@ -1,6 +1,7 @@
 package org.nervos.mercury.model;
 
 import java.math.BigInteger;
+
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.req.From;
 import org.nervos.mercury.model.req.payload.DaoDepositPayload;

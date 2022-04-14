@@ -14,6 +14,7 @@ import java.util.*;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
+import org.nervos.ckb.utils.Numeric;
 
 public class SignerChecker {
   @SerializedName("raw_transaction")
@@ -61,11 +62,11 @@ public class SignerChecker {
   }
 
   private void check() {
-    List<String> witnesses = transaction.getTxView().witnesses;
+    List<byte[]> witnesses = transaction.getTxView().witnesses;
     assertNotEquals(0, witnesses.size());
     assertEquals(expectedWitnesses.size(), witnesses.size());
     for (int i = 0; i < expectedWitnesses.size(); i++) {
-      assertEquals(expectedWitnesses.get(i), witnesses.get(i));
+      assertArrayEquals(Numeric.hexStringToByteArray(expectedWitnesses.get(i)), witnesses.get(i));
     }
   }
 }
