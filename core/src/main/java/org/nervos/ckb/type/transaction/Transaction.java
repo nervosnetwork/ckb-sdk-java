@@ -7,7 +7,6 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.utils.Serializer;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -90,7 +89,7 @@ public class Transaction {
 
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
-    blake2b.update(Serializer.serialize(this, false));
+    blake2b.update(getRawTransaction().pack().toByteArray());
     return blake2b.doFinalBytes();
   }
 

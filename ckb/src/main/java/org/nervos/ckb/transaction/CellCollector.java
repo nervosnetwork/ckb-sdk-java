@@ -154,6 +154,6 @@ public class CellCollector {
   }
 
   private BigInteger calculateOutputSize(CellOutput cellOutput) {
-    return Utils.ckbToShannon(Serializer.serialize(cellOutput).length);
+    return Utils.ckbToShannon(cellOutput.pack().toByteArray().length);
   }
 }
