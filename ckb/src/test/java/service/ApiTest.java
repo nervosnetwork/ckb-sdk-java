@@ -1,7 +1,6 @@
 package service;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +48,6 @@ public class ApiTest {
   @Test
   public void testGetBlockByNumber() throws IOException {
     Block block = api.getBlockByNumber(1);
-    Assertions.assertNotNull(block);
     Assertions.assertEquals(1, block.transactions.size());
   }
 
@@ -67,9 +65,7 @@ public class ApiTest {
         Numeric.hexStringToByteArray(
             "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
     BlockEconomicState blockEconomicState = api.getBlockEconomicState(blockHash);
-    Assertions.assertNotNull(blockEconomicState);
-    Assertions.assertEquals(
-        BigInteger.valueOf(9207601095L), blockEconomicState.minerReward.secondary);
+    Assertions.assertEquals(9207601095L, blockEconomicState.minerReward.secondary);
   }
 
   @Test
@@ -88,7 +84,6 @@ public class ApiTest {
         Numeric.hexStringToByteArray(
             "0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1");
     Transaction transaction = api.getTransaction(transactionHash).transaction;
-    Assertions.assertNotNull(transaction);
     Assertions.assertEquals(4, transaction.cellDeps.size());
     Assertions.assertEquals(1, transaction.inputs.size());
     Assertions.assertEquals(3, transaction.outputs.size());
@@ -99,7 +94,7 @@ public class ApiTest {
   public void testGetTipHeader() throws IOException {
     Header header = api.getTipHeader();
     Assertions.assertNotEquals(0, header.number);
-    Assertions.assertNotNull(header.compactTarget);
+    Assertions.assertNotEquals(0, header.compactTarget);
   }
 
   @Test
@@ -112,13 +107,14 @@ public class ApiTest {
   public void testGetCurrentEpoch() throws IOException {
     Epoch epoch = api.getCurrentEpoch();
     Assertions.assertNotEquals(0, epoch.number);
-    Assertions.assertNotNull(epoch.compactTarget);
+    Assertions.assertNotEquals(0, epoch.compactTarget);
   }
 
   @Test
   public void testGetEpochByNumber() throws IOException {
     Epoch epoch = api.getEpochByNumber(2);
     Assertions.assertEquals(1500, epoch.startNumber);
+    Assertions.assertEquals(500945247, epoch.compactTarget);
   }
 
   @Test
@@ -134,7 +130,6 @@ public class ApiTest {
   @Test
   public void testGetHeaderByNumber() throws IOException {
     Header header = api.getHeaderByNumber(1);
-    Assertions.assertNotNull(header);
     Assertions.assertEquals(1, header.number);
     Assertions.assertEquals(1590137711584L, header.timestamp);
   }
@@ -152,7 +147,7 @@ public class ApiTest {
         api.getBlockMedianTime(
             Numeric.hexStringToByteArray(
                 "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
-    Assertions.assertNotNull(blockMedianTime);
+    Assertions.assertNotEquals(0, blockMedianTime);
     Assertions.assertNotEquals(0, blockMedianTime);
   }
 
@@ -182,7 +177,6 @@ public class ApiTest {
   @Test
   public void testLocalNodeInfo() throws IOException {
     NodeInfo nodeInfo = api.localNodeInfo();
-    Assertions.assertNotNull(nodeInfo);
     Assertions.assertTrue(nodeInfo.addresses.size() > 0);
     Assertions.assertTrue(nodeInfo.protocols.size() > 0);
     Assertions.assertTrue(nodeInfo.protocols.get(0).supportVersions.size() > 0);
@@ -191,17 +185,14 @@ public class ApiTest {
   @Test
   public void testGetPeers() throws IOException {
     List<PeerNodeInfo> peers = api.getPeers();
-    Assertions.assertNotNull(peers);
     Assertions.assertTrue(peers.size() > 0);
     Assertions.assertTrue(peers.get(0).addresses.size() > 0);
     Assertions.assertTrue(peers.get(0).protocols.size() > 0);
-    Assertions.assertNotNull(peers.get(0).protocols.get(0).version);
   }
 
   @Test
   public void testSyncState() throws IOException {
     SyncState state = api.syncState();
-    Assertions.assertNotNull(state);
     Assertions.assertNotEquals(0, state.bestKnownBlockNumber);
   }
 

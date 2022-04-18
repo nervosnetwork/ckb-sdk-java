@@ -92,7 +92,7 @@ public class Api implements CkbRpcApi {
   @Override
   public long getTipBlockNumber() throws IOException {
     return rpcService.post(
-        "get_tip_block_number", Collections.<String>emptyList(), BigInteger.class);
+        "get_tip_block_number", Collections.<String>emptyList(), Long.class);
   }
 
   @Override
@@ -237,7 +237,7 @@ public class Api implements CkbRpcApi {
         Arrays.asList(
             bannedAddress.address,
             bannedAddress.command,
-            Numeric.toHexStringWithPrefix(BigInteger.valueOf(bannedAddress.banTime)),
+            bannedAddress.banTime,
             bannedAddress.absolute,
             bannedAddress.reason),
         Object.class);

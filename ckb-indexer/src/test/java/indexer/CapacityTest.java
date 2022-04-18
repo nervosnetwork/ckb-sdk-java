@@ -23,6 +23,6 @@ public class CapacityTest {
             Script.HashType.TYPE));
     key.scriptType(ScriptType.LOCK);
     CellCapacityResponse capacity = CkbIndexerFactory.getApi().getCellsCapacity(key.build());
-    Assertions.assertEquals(0, capacity.capacity);
+    Assertions.assertEquals(1388355000000L, capacity.capacity);
   }
 }

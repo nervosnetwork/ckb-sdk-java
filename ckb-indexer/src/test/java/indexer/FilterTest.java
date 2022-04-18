@@ -31,7 +31,7 @@ public class FilterTest {
             Script.HashType.TYPE));
 
     CellsResponse cells = CkbIndexerFactory.getApi().getCells(key.build(), Order.ASC, 10, null);
-    Assertions.assertNotEquals(0, cells.objects.size());
+    Assertions.assertTrue(cells.objects.size() > 0);
   }
 
   @Test
@@ -47,7 +47,7 @@ public class FilterTest {
     key.filterOutputCapacityRange(0, 1000000000000000000L);
 
     CellsResponse cells = CkbIndexerFactory.getApi().getCells(key.build(), Order.ASC, 10, null);
-    Assertions.assertNotEquals(0, cells.objects.size());
+    Assertions.assertTrue(cells.objects.size() > 0);
   }
 
   @Test
