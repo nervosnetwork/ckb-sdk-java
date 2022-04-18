@@ -11,5 +11,5 @@ public class BurnInfo {
   @SerializedName("udt_hash")
   public byte[] udtHash;
 
-  public BigInteger amount;
+  public long amount;
 }

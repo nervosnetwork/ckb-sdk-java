@@ -49,7 +49,7 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -59,7 +59,7 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                    Numeric.toBigInt("0x59e1416a5000"),
+                    Long.valueOf("59e1416a5000", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -98,7 +98,7 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -108,7 +108,7 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                    Numeric.toBigInt("0x59e1416a5000"),
+                    Long.valueOf("59e1416a5000", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -118,7 +118,7 @@ public class CalculatorTest {
                 Numeric.hexStringToByteArray(
                     "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900")));
     Assertions.assertEquals(
-        Calculator.calculateTransactionFee(tx, BigInteger.valueOf(900)), BigInteger.valueOf(483));
+        Calculator.calculateTransactionFee(tx, 900), BigInteger.valueOf(483));
   }
 
   @Test
@@ -142,7 +142,7 @@ public class CalculatorTest {
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -173,13 +173,13 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -215,7 +215,7 @@ public class CalculatorTest {
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -251,13 +251,13 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                    Numeric.toBigInt("0x174876e800"),
+                    Long.valueOf("174876e800", 16),
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",

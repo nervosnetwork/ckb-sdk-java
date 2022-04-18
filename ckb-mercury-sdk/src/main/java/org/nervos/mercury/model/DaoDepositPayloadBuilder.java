@@ -19,7 +19,7 @@ public class DaoDepositPayloadBuilder extends DaoDepositPayload {
     this.to = to;
   }
 
-  public void amount(BigInteger amount) {
+  public void amount(long amount) {
     this.amount = amount;
   }
 

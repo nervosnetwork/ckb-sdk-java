@@ -25,7 +25,7 @@ public class IndexerCollector {
   }
 
   public CollectResult collectInputs(
-      List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
+      List<String> addresses, Transaction transaction, long feeRate, int initialLength)
       throws IOException {
     return new CellCollector(api)
         .collectInputs(
@@ -39,7 +39,7 @@ public class IndexerCollector {
   public CollectResult collectInputs(
       List<String> addresses,
       Transaction transaction,
-      BigInteger feeRate,
+      long feeRate,
       int initialLength,
       Script type)
       throws IOException {
@@ -52,7 +52,7 @@ public class IndexerCollector {
             new CellCkbIndexerIterator(indexerApi, addresses, type));
   }
 
-  public BigInteger getCapacity(String address) throws IOException {
+  public long getCapacity(String address) throws IOException {
     AddressParseResult rs = AddressParser.parse(address);
     CkbIndexerCellsCapacity capacityInfo = indexerApi.getCellsCapacity(new SearchKey(rs.script));
 
@@ -69,7 +69,7 @@ public class IndexerCollector {
     // so change output is not needed
     if (changeAddress != null && !changeAddress.trim().isEmpty()) {
       AddressParseResult addressParseResult = AddressParser.parse(changeAddress);
-      cellOutputs.add(new CellOutput(BigInteger.ZERO, addressParseResult.script));
+      cellOutputs.add(new CellOutput(0, addressParseResult.script));
     }
 
     return cellOutputs;

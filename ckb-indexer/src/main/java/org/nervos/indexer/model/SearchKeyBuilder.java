@@ -33,7 +33,7 @@ public class SearchKeyBuilder {
     this.filter.outputDataLenRange.add(exclusive);
   }
 
-  public void filterOutputCapacityRange(BigInteger inclusive, BigInteger exclusive) {
+  public void filterOutputCapacityRange(long inclusive, long exclusive) {
     initFilter();
     this.filter.outputCapacityRange = new ArrayList<>(2);
     this.filter.outputCapacityRange.add(inclusive);

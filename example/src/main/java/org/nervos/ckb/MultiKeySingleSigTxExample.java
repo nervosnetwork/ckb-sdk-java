@@ -3,7 +3,6 @@ package org.nervos.ckb;
 import static org.nervos.ckb.utils.Const.*;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -124,11 +123,9 @@ public class MultiKeySingleSigTxExample {
         "After transferring, change address's balance: " + getBalance(changeAddress) + " CKB");
   }
 
-  private static String getBalance(String address) throws IOException {
+  private static long getBalance(String address) throws IOException {
     return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(address)
-        .divide(UnitCKB)
-        .toString(10);
+        .getCapacity(address) / UnitCKB;
   }
 
   private static byte[] sendCapacity(
@@ -160,14 +157,14 @@ public class MultiKeySingleSigTxExample {
     txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
 
     // initial_length = 2 * secp256k1_signature_byte.length
     CollectResult collectResult =
         txUtils.collectInputs(sendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;

@@ -4,7 +4,6 @@ import static org.nervos.ckb.utils.Const.*;
 
 import com.google.common.primitives.Bytes;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -90,19 +89,17 @@ public class MultiSignTransactionExample {
             + " CKB");
   }
 
-  public static String getMultiSigBalance() throws IOException {
+  public static long getMultiSigBalance() throws IOException {
     return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(configuration.address())
-        .divide(UnitCKB)
-        .toString();
+        .getCapacity(configuration.address()) / UnitCKB;
   }
 
-  public static String getBalance(String address) throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi).getCapacity(address).divide(UnitCKB).toString();
+  public static long getBalance(String address) throws IOException {
+    return new IndexerCollector(api, ckbIndexerApi).getCapacity(address) / UnitCKB;
   }
 
   public static Transaction generateTx(
-      String targetAddress, BigInteger capacity, List<String> privateKeys) throws IOException {
+      String targetAddress, long capacity, List<String> privateKeys) throws IOException {
     if (privateKeys.size() != configuration.threshold) {
       throw new IOException("Invalid number of keys");
     }
@@ -117,7 +114,7 @@ public class MultiSignTransactionExample {
     txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
 
     // initial_length = multi_sig_hash.length + 2 * secp256k1_signature_byte.length
     CollectResult collectResult =
@@ -128,7 +125,7 @@ public class MultiSignTransactionExample {
             configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
@@ -157,7 +154,7 @@ public class MultiSignTransactionExample {
   }
 
   public static byte[] sendCapacity(
-      String targetAddress, BigInteger capacity, List<String> privateKeys) throws IOException {
+      String targetAddress, long capacity, List<String> privateKeys) throws IOException {
     Transaction tx = generateTx(targetAddress, capacity, privateKeys);
     return api.sendTransaction(tx);
   }

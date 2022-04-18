@@ -322,7 +322,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  public long calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return this.ckbApi.calculateDaoMaximumWithdraw(outPoint, withdrawBlockHash);
   }

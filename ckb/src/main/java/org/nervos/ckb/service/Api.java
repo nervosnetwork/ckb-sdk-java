@@ -271,12 +271,12 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  public long calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException {
     return rpcService.post(
         "calculate_dao_maximum_withdraw",
         Arrays.asList(outPoint, withdrawBlockHash),
-        BigInteger.class);
+        Long.class);
   }
 
   /**

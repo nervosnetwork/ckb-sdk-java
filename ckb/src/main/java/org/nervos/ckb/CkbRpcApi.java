@@ -101,7 +101,7 @@ public interface CkbRpcApi {
 
   Cycles dryRunTransaction(Transaction transaction) throws IOException;
 
-  BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  long calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
       throws IOException;
 
   List<RpcResponse> batchRPC(List<List> requests) throws IOException;

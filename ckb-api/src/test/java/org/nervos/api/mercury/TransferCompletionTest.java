@@ -181,7 +181,7 @@ public class TransferCompletionTest {
 
     builder.to(
         To.newTo(
-            Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), new BigInteger("1"))),
+            Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), 1)),
             Mode.HOLD_BY_TO));
 
     builder.change(AddressWithKeyHolder.testAddress4());

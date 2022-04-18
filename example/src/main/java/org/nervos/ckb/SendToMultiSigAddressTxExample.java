@@ -3,7 +3,6 @@ package org.nervos.ckb;
 import static org.nervos.ckb.utils.Const.*;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,18 +57,14 @@ public class SendToMultiSigAddressTxExample {
     System.out.println("After transferring, change address balance: " + getBalance() + " CKB");
   }
 
-  private static String getBalance() throws IOException {
+  private static long getBalance() throws IOException {
     return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(TestAddress)
-        .divide(UnitCKB)
-        .toString(10);
+        .getCapacity(TestAddress) / UnitCKB;
   }
 
-  private static String getMultiSigBalance() throws IOException {
+  private static long getMultiSigBalance() throws IOException {
     return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(MultiSigAddress)
-        .divide(UnitCKB)
-        .toString(10);
+        .getCapacity(MultiSigAddress) / UnitCKB;
   }
 
   private static byte[] sendCapacity(List<Receiver> receivers, String changeAddress)
@@ -83,7 +78,7 @@ public class SendToMultiSigAddressTxExample {
     List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
 
     // initial_length = 2 * secp256k1_signature_byte.length
     CollectResult collectResult =
@@ -94,7 +89,7 @@ public class SendToMultiSigAddressTxExample {
             Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;

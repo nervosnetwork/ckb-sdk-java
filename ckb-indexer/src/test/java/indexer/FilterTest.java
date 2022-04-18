@@ -44,7 +44,7 @@ public class FilterTest {
             Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
             Script.HashType.TYPE));
     key.scriptType(ScriptType.LOCK);
-    key.filterOutputCapacityRange(BigInteger.ZERO, new BigInteger("1000000000000000000"));
+    key.filterOutputCapacityRange(0, 1000000000000000000L);
 
     CellsResponse cells = CkbIndexerFactory.getApi().getCells(key.build(), Order.ASC, 10, null);
     Assertions.assertNotEquals(0, cells.objects.size());

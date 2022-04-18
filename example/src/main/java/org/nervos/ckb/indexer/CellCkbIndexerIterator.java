@@ -113,7 +113,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
         continue;
       }
       CellInput cellInput = new CellInput(liveCell.outPoint);
-      BigInteger capacity = liveCell.output.capacity;
+      long capacity = liveCell.output.capacity;
       transactionInputs.add(
           new TransactionInput(
               cellInput, capacity, Numeric.toHexString(searchKey.script.computeHash())));
@@ -146,7 +146,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
         continue;
       }
       CellInput cellInput = new CellInput(liveCell.outPoint);
-      BigInteger capacity = liveCell.output.capacity;
+      long capacity = liveCell.output.capacity;
       transactionInputs.add(new TransactionInput(cellInput, capacity, lockHash));
     }
     if (liveCells.size() == 0) {

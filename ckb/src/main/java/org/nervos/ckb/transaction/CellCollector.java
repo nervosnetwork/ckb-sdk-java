@@ -25,7 +25,7 @@ public class CellCollector {
   public CollectResult collectInputs(
       List<String> addresses,
       Transaction tx,
-      BigInteger feeRate,
+      long feeRate,
       int initialLength,
       Iterator<TransactionInput> iterator)
       throws IOException {
@@ -42,8 +42,8 @@ public class CellCollector {
     final List<CellInput> cellInputs = new ArrayList<>();
 
     for (int i = 0; i < tx.outputs.size() - 1; i++) {
-      BigInteger size = tx.outputs.get(i).occupiedCapacity(new byte[] {});
-      if (size.compareTo(tx.outputs.get(i).capacity) > 0) {
+      long size = tx.outputs.get(i).occupiedCapacity(new byte[] {});
+      if (tx.outputs.get(i).capacity < size) {
         throw new IOException("Cell output byte size must not be bigger than capacity");
       }
     }
@@ -58,41 +58,42 @@ public class CellCollector {
             tx.outputsData,
             Collections.emptyList());
 
-    BigInteger inputsCapacity = BigInteger.ZERO;
+    long inputsCapacity = 0;
     for (CellInput cellInput : tx.inputs) {
       cellInputs.add(cellInput);
 
       CellWithStatus cellWithStatus = api.getLiveCell(cellInput.previousOutput, false);
-      inputsCapacity = inputsCapacity.add(cellWithStatus.cell.output.capacity);
+      initialLength += cellWithStatus.cell.output.capacity;
     }
     final List witnesses = new ArrayList<>();
 
     CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
     boolean haveChangeOutput = false;
     //  If the last cellOutput's capacity is not zero,  it means there is no changeOutput
-    if (changeOutput.capacity.compareTo(BigInteger.ZERO) == 0) {
+    if (changeOutput.capacity == 0) {
       haveChangeOutput = true;
     }
 
-    BigInteger needCapacity = BigInteger.ZERO;
+    long needCapacity = 0;
     for (CellOutput cellOutput : tx.outputs) {
-      needCapacity = needCapacity.add(cellOutput.capacity);
+      needCapacity += cellOutput.capacity;
     }
 
     while (iterator.hasNext()) {
       TransactionInput transactionInput = iterator.next();
       if (transactionInput == null) break;
       CellInput cellInput = transactionInput.input;
-      inputsCapacity = inputsCapacity.add(transactionInput.capacity);
+//      inputsCapacity = inputsCapacity.add(transactionInput.capacity);
+      inputsCapacity += transactionInput.capacity;
       List<CellInput> cellInputList = lockInputsMap.get(transactionInput.lockHash);
       cellInputList.add(cellInput);
       cellInputs.add(cellInput);
       witnesses.add("0x");
       transaction.inputs = cellInputs;
       transaction.witnesses = witnesses;
-      BigInteger sumNeedCapacity =
+      long sumNeedCapacity =
           calSumNeedCapacity(feeRate, transaction, changeOutput, haveChangeOutput, needCapacity);
-      if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+      if (inputsCapacity > sumNeedCapacity) {
         // update witness of group first element
         int witnessIndex = 0;
         for (byte[] hash : lockHashes) {
@@ -105,21 +106,20 @@ public class CellCollector {
         // calculate sum need capacity again
         sumNeedCapacity =
             calSumNeedCapacity(feeRate, transaction, changeOutput, haveChangeOutput, needCapacity);
-        if (inputsCapacity.compareTo(sumNeedCapacity) > 0) {
+        if (inputsCapacity > sumNeedCapacity) {
           break;
         }
       }
     }
 
-    if (inputsCapacity.compareTo(needCapacity.add(calculateTxFee(transaction, feeRate))) < 0) {
+    if (inputsCapacity < (needCapacity + calculateTxFee(transaction, feeRate))) {
       throw new IOException(
           "Capacity not enough, please check inputs capacity and change output capacity!");
     }
 
-    BigInteger changeCapacity = BigInteger.ZERO;
+    long changeCapacity = 0;
     if (haveChangeOutput) {
-      changeCapacity =
-          inputsCapacity.subtract(needCapacity.add(calculateTxFee(transaction, feeRate)));
+      changeCapacity = inputsCapacity - (needCapacity + calculateTxFee(transaction, feeRate));
     }
 
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
@@ -133,27 +133,30 @@ public class CellCollector {
       cellsWithAddresses.get(0).inputs.addAll(0, tx.inputs);
     }
     //  if there is no changeOutput then changeCapacity will be zero
-    return new CollectResult(cellsWithAddresses, Numeric.toHexStringWithPrefix(changeCapacity));
+    return new CollectResult(cellsWithAddresses, changeCapacity);
   }
 
-  private BigInteger calSumNeedCapacity(
-      BigInteger feeRate,
+  private long calSumNeedCapacity(
+      long feeRate,
       Transaction transaction,
       CellOutput changeOutput,
       boolean haveChangeOutput,
-      BigInteger needCapacity) {
-    return haveChangeOutput
-        ? needCapacity
-            .add(calculateTxFee(transaction, feeRate))
-            .add(calculateOutputSize(changeOutput))
-        : needCapacity.add(calculateTxFee(transaction, feeRate));
+      long needCapacity) {
+
+    long sum = needCapacity;
+    if (haveChangeOutput) {
+      sum = sum + calculateTxFee(transaction, feeRate) + calculateOutputSize(changeOutput);
+    } else {
+      sum = sum + calculateTxFee(transaction, feeRate);
+    }
+    return sum;
   }
 
-  private BigInteger calculateTxFee(Transaction transaction, BigInteger feeRate) {
+  private long calculateTxFee(Transaction transaction, long feeRate) {
     return Calculator.calculateTransactionFee(transaction, feeRate);
   }
 
-  private BigInteger calculateOutputSize(CellOutput cellOutput) {
+  private long calculateOutputSize(CellOutput cellOutput) {
     return Utils.ckbToShannon(cellOutput.pack().getSize());
   }
 }

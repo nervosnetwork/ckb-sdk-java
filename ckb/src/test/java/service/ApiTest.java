@@ -93,7 +93,7 @@ public class ApiTest {
     Assertions.assertEquals(4, transaction.cellDeps.size());
     Assertions.assertEquals(1, transaction.inputs.size());
     Assertions.assertEquals(3, transaction.outputs.size());
-    Assertions.assertEquals(new BigInteger("30000000000"), transaction.outputs.get(0).capacity);
+    Assertions.assertEquals(30000000000L, transaction.outputs.get(0).capacity);
   }
 
   @Test

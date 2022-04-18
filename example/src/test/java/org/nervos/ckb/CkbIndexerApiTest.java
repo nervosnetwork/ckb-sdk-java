@@ -1,7 +1,6 @@
 package org.nervos.ckb;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.indexer.*;
@@ -29,7 +28,7 @@ public class CkbIndexerApiTest {
   public void testGetCellCapacity() throws IOException {
     SearchKey searchKey = newSearchKey();
     CkbIndexerCellsCapacity cellsCapacity = service.getCellsCapacity(searchKey);
-    Assertions.assertTrue(cellsCapacity.capacity.compareTo(BigInteger.ZERO) > 0);
+    Assertions.assertTrue(cellsCapacity.capacity > 0);
   }
 
   private SearchKey newSearchKey() {

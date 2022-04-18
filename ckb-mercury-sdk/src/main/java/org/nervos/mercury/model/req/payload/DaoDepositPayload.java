@@ -12,7 +12,7 @@ public class DaoDepositPayload {
 
   public String to;
 
-  public BigInteger amount;
+  public long amount;
 
   @SerializedName("fee_rate")
   public BigInteger feeRate;

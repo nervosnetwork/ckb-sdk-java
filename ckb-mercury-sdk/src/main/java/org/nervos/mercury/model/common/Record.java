@@ -15,9 +15,9 @@ public class Record {
   @SerializedName("ownership")
   public Ownership ownership;
 
-  public BigInteger amount;
+  public long amount;
 
-  public BigInteger occupied;
+  public long occupied;
 
   @SerializedName("asset_info")
   public AssetInfo assetInfo;

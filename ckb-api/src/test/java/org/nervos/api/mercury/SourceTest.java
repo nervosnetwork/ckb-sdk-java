@@ -82,7 +82,7 @@ public class SourceTest {
 
     builder.to(
         To.newTo(
-            Arrays.asList(new ToInfo(chequeCellReceiverAddress, new BigInteger("100"))),
+            Arrays.asList(new ToInfo(chequeCellReceiverAddress, 100)),
             Mode.HOLD_BY_FROM));
 
     try {
@@ -118,7 +118,7 @@ public class SourceTest {
 
     builder.to(
         To.newTo(
-            Arrays.asList(new ToInfo(receiverAddress, new BigInteger("100"))), Mode.HOLD_BY_FROM));
+            Arrays.asList(new ToInfo(receiverAddress, 100)), Mode.HOLD_BY_FROM));
 
     try {
       TransactionCompletionResponse s =
