@@ -54,7 +54,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public Block getBlockByNumber(int blockNumber) throws IOException {
+  public Block getBlockByNumber(long blockNumber) throws IOException {
     return rpcService.post(
         "get_block_by_number", Collections.singletonList(blockNumber), Block.class);
   }
@@ -66,7 +66,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public byte[] getBlockHash(int blockNumber) throws IOException {
+  public byte[] getBlockHash(long blockNumber) throws IOException {
     return rpcService.post("get_block_hash", Collections.singletonList(blockNumber), byte[].class);
   }
 
@@ -90,7 +90,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public BigInteger getTipBlockNumber() throws IOException {
+  public long getTipBlockNumber() throws IOException {
     return rpcService.post(
         "get_tip_block_number", Collections.<String>emptyList(), BigInteger.class);
   }
@@ -101,7 +101,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public Epoch getEpochByNumber(int epochNumber) throws IOException {
+  public Epoch getEpochByNumber(long epochNumber) throws IOException {
     return rpcService.post(
         "get_epoch_by_number", Collections.singletonList(epochNumber), Epoch.class);
   }
@@ -112,7 +112,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public Header getHeaderByNumber(int blockNumber) throws IOException {
+  public Header getHeaderByNumber(long blockNumber) throws IOException {
     return rpcService.post(
         "get_header_by_number", Collections.singletonList(blockNumber), Header.class);
   }
@@ -149,7 +149,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public Long getBlockMedianTime(byte[] blockHash) throws IOException {
+  public long getBlockMedianTime(byte[] blockHash) throws IOException {
     return rpcService.post("get_block_median_time", Arrays.asList(blockHash), Long.class);
   }
 
@@ -216,7 +216,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public void setNetworkActive(Boolean state) throws IOException {
+  public void setNetworkActive(boolean state) throws IOException {
     rpcService.post("set_network_active", Collections.singletonList(state), Object.class);
   }
 
@@ -271,7 +271,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public long calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  public long calculateDaoMaximumWithdraw(OutPoint outPoint, byte[] withdrawBlockHash)
       throws IOException {
     return rpcService.post(
         "calculate_dao_maximum_withdraw",

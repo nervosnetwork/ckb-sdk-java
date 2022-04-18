@@ -1,7 +1,6 @@
 package org.nervos.ckb;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.List;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.BannedAddress;
@@ -26,15 +25,14 @@ import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public interface CkbRpcApi {
   Block getBlock(byte[] blockHash) throws IOException;
 
-  Block getBlockByNumber(int blockNumber) throws IOException;
+  Block getBlockByNumber(long blockNumber) throws IOException;
 
   TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException;
 
-  byte[] getBlockHash(int blockNumber) throws IOException;
+  byte[] getBlockHash(long blockNumber) throws IOException;
 
   BlockEconomicState getBlockEconomicState(byte[] blockHash) throws IOException;
 
@@ -42,15 +40,15 @@ public interface CkbRpcApi {
 
   CellWithStatus getLiveCell(OutPoint outPoint, boolean withData) throws IOException;
 
-  BigInteger getTipBlockNumber() throws IOException;
+  long getTipBlockNumber() throws IOException;
 
   Epoch getCurrentEpoch() throws IOException;
 
-  Epoch getEpochByNumber(int epochNumber) throws IOException;
+  Epoch getEpochByNumber(long epochNumber) throws IOException;
 
   Header getHeader(byte[] blockHash) throws IOException;
 
-  Header getHeaderByNumber(int blockNumber) throws IOException;
+  Header getHeaderByNumber(long blockNumber) throws IOException;
 
   TransactionProof getTransactionProof(List<byte[]> txHashes) throws IOException;
 
@@ -62,7 +60,7 @@ public interface CkbRpcApi {
 
   Consensus getConsensus() throws IOException;
 
-  Long getBlockMedianTime(byte[] blockHash) throws IOException;
+  long getBlockMedianTime(byte[] blockHash) throws IOException;
 
   BlockchainInfo getBlockchainInfo() throws IOException;
 
@@ -85,7 +83,7 @@ public interface CkbRpcApi {
 
   SyncState syncState() throws IOException;
 
-  void setNetworkActive(Boolean state) throws IOException;
+  void setNetworkActive(boolean state) throws IOException;
 
   void addNode(String peerId, String address) throws IOException;
 
@@ -101,7 +99,7 @@ public interface CkbRpcApi {
 
   Cycles dryRunTransaction(Transaction transaction) throws IOException;
 
-  long calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  long calculateDaoMaximumWithdraw(OutPoint outPoint, byte[] withdrawBlockHash)
       throws IOException;
 
   List<RpcResponse> batchRPC(List<List> requests) throws IOException;

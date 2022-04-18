@@ -36,7 +36,6 @@ import org.nervos.ckb.type.param.OutputsValidator;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest {
 
@@ -105,9 +104,8 @@ public class ApiTest {
 
   @Test
   public void testGetTipBlockNumber() throws IOException {
-    BigInteger blockNumber = api.getTipBlockNumber();
-    Assertions.assertNotNull(blockNumber);
-    Assertions.assertNotEquals(BigInteger.ZERO, blockNumber);
+    long blockNumber = api.getTipBlockNumber();
+    Assertions.assertNotEquals(0, blockNumber);
   }
 
   @Test
@@ -270,12 +268,12 @@ public class ApiTest {
     RawTxPoolVerbose rawTxPoolVerbose = api.getRawTxPoolVerbose();
     Assertions.assertNotNull(rawTxPoolVerbose);
 
-    for (Map.Entry<String, RawTxPoolVerbose.VerboseDetail> entry :
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
         rawTxPoolVerbose.pending.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }
 
-    for (Map.Entry<String, RawTxPoolVerbose.VerboseDetail> entry :
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
         rawTxPoolVerbose.proposed.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }

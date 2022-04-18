@@ -257,7 +257,7 @@ public class NervosDaoExample {
     long minimalSince = 0;
     long outputCapacity =
         api.calculateDaoMaximumWithdraw(
-            depositOutPoint, Numeric.toHexString(withdrawBlock.header.hash));
+            depositOutPoint, withdrawBlock.header.hash);
 
     CellOutput cellOutput = new CellOutput(outputCapacity - fee, lock);
 

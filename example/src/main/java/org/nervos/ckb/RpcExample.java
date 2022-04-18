@@ -4,7 +4,6 @@ import static org.nervos.ckb.utils.Const.*;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.math.BigInteger;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.Block;
 import org.nervos.ckb.type.BlockchainInfo;
@@ -23,18 +22,18 @@ public class RpcExample {
     RpcExample client = new RpcExample();
     System.out.println(
         "CKB Blockchain information: " + new Gson().toJson(client.getBlockchainInfo()));
-    BigInteger currentBlockNumber = client.getTipBlockNumber();
-    System.out.println("Current block number: " + currentBlockNumber.toString());
+    long currentBlockNumber = client.getTipBlockNumber();
+    System.out.println("Current block number: " + currentBlockNumber);
     System.out.println(
         "Current block information: "
-            + new Gson().toJson(client.getBlockByNumber(currentBlockNumber.intValue())));
+            + new Gson().toJson(client.getBlockByNumber(currentBlockNumber)));
   }
 
-  public Block getBlockByNumber(int blockNumber) throws IOException {
+  public Block getBlockByNumber(long blockNumber) throws IOException {
     return api.getBlockByNumber(blockNumber);
   }
 
-  public BigInteger getTipBlockNumber() throws IOException {
+  public long getTipBlockNumber() throws IOException {
     return api.getTipBlockNumber();
   }
 
