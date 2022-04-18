@@ -30,10 +30,10 @@ public class CellOutput {
       byteSize += Utils.ckbToShannon(data.length);
     }
     if (lock != null) {
-      byteSize += Utils.ckbToShannon(lock.occupiedCapacity());
+      byteSize += lock.occupiedCapacity();
     }
     if (type != null) {
-      byteSize += Utils.ckbToShannon(type.occupiedCapacity());
+      byteSize += type.occupiedCapacity();
     }
     return byteSize;
   }
