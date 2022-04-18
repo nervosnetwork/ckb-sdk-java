@@ -17,6 +17,6 @@ public class LongTypeAdapter implements JsonDeserializer<Long>, JsonSerializer<L
       return json.getAsLong();
     }
     String hexValue = json.getAsString().substring(2);
-    return Long.valueOf(hexValue, 16);
+    return Long.parseUnsignedLong(hexValue, 16);
   }
 }
