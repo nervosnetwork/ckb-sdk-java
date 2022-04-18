@@ -75,8 +75,7 @@ class TransactionTest {
             new OutPoint(
                 Numeric.hexStringToByteArray(
                     "0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4"),
-                0),
-            BigInteger.valueOf(113)));
+                0), 113));
     cellInputs.add(
         new CellInput(
             new OutPoint(

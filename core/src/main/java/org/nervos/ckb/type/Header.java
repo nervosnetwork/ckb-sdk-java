@@ -8,8 +8,8 @@ public class Header {
   public byte[] dao;
   public byte[] hash;
   public BigInteger nonce;
-  public int number;
-  public BigInteger epoch;
+  public long number;
+  public long epoch;
   public int compactTarget;
   public byte[] parentHash;
   public long timestamp;

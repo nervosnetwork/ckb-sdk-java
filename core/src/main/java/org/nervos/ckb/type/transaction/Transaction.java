@@ -2,7 +2,6 @@ package org.nervos.ckb.type.transaction;
 
 import static org.nervos.ckb.utils.MoleculeConverter.packBytesVec;
 
-import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -217,10 +216,10 @@ public class Transaction {
     }
 
     public Builder addInput(byte[] txHash, int index) {
-      return this.addInput(txHash, index, BigInteger.ZERO);
+      return this.addInput(txHash, index, 0);
     }
 
-    public Builder addInput(byte[] txHash, int index, BigInteger since) {
+    public Builder addInput(byte[] txHash, int index, long since) {
       CellInput input = new CellInput();
       input.previousOutput = new OutPoint(txHash, index);
       input.since = since;

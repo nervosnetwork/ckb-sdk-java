@@ -2,13 +2,11 @@ package org.nervos.ckb.type;
 
 import static org.nervos.ckb.utils.MoleculeConverter.*;
 
-import java.math.BigInteger;
-
 public class RawHeader {
   public byte[] dao;
   public byte[] hash;
-  public int number;
-  public BigInteger epoch;
+  public long number;
+  public long epoch;
   public int compactTarget;
   public byte[] parentHash;
   public long timestamp;
