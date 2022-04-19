@@ -14,25 +14,14 @@ public class MoleculeConverter {
     return out;
   }
 
-  // TODO: will be removed after the new type to Uint32 is ready
-  public static Uint32 packUint32(long in) {
-    return packUint32(BigInteger.valueOf(in));
-  }
-
-  // TODO: will be removed after the new type to Uint32 is ready
-  public static Uint32 packUint32(BigInteger in) {
-    byte[] arr = toByteArrayLittleEndianUnsigned(in, Uint32.SIZE);
+  public static Uint32 packUint32(int in) {
+    byte[] arr = toByteArrayLittleEndianUnsigned(BigInteger.valueOf(in), Uint32.SIZE);
     return Uint32.builder(arr).build();
   }
 
-  // TODO: will be removed after the new type to Uint64 is ready
-  public static Uint64 packUint64(BigInteger in) {
-    byte[] arr = toByteArrayLittleEndianUnsigned(in, Uint64.SIZE);
-    return Uint64.builder(arr).build();
-  }
-
   public static Uint64 packUint64(long in) {
-    return packUint64(BigInteger.valueOf(in));
+    byte[] arr = toByteArrayLittleEndianUnsigned(BigInteger.valueOf(in), Uint64.SIZE);
+    return Uint64.builder(arr).build();
   }
 
   public static Uint128 packUint128(BigInteger in) {

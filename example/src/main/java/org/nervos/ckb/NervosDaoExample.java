@@ -83,14 +83,12 @@ public class NervosDaoExample {
     }
   }
 
-  private static String getBalance(String address) throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(address)
-        .divide(UnitCKB)
-        .toString(10);
+  private static long getBalance(String address) throws IOException {
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(address), UnitCKB);
   }
 
-  private static Transaction generateDepositingToDaoTx(BigInteger capacity) throws IOException {
+  private static Transaction generateDepositingToDaoTx(long capacity) throws IOException {
     Script type =
         new Script(
             SystemContract.getSystemNervosDaoCell(api).cellHash,
@@ -114,7 +112,7 @@ public class NervosDaoExample {
         new CellDep(SystemContract.getSystemNervosDaoCell(api).outPoint, CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
     IndexerCollector indexerCollector = new IndexerCollector(api, ckbIndexerApi);
     CollectResult collectResult =
         indexerCollector.collectInputs(
@@ -124,7 +122,7 @@ public class NervosDaoExample {
             Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.setOutputs(cellOutputs);
 
     int startIndex = 0;
@@ -166,7 +164,7 @@ public class NervosDaoExample {
     byte[] outputData = new UInt64(depositBlockNumber).toBytes();
 
     Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
-    CellOutput changeOutput = new CellOutput(BigInteger.ZERO, lock);
+    CellOutput changeOutput = new CellOutput(0, lock);
 
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
     List<byte[]> cellOutputsData = Arrays.asList(outputData, new byte[] {});
@@ -182,7 +180,7 @@ public class NervosDaoExample {
     txBuilder.addInput(new CellInput(depositOutPoint));
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
     IndexerCollector indexerCollector = new IndexerCollector(api, ckbIndexerApi);
     CollectResult collectResult =
         indexerCollector.collectInputs(
@@ -192,7 +190,7 @@ public class NervosDaoExample {
             Sign.SIGN_LENGTH * 2);
 
     // update change output capacity after collecting cells
-    cellOutputs.get(cellOutputs.size() - 1).capacity = new BigInteger(collectResult.changeCapacity);
+    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.setOutputs(cellOutputs);
 
     CellsWithAddress cellsWithAddress = collectResult.cellsWithAddresses.get(0);
@@ -219,7 +217,7 @@ public class NervosDaoExample {
   }
 
   private static Transaction generateClaimingFromDaoTx(
-      OutPoint depositOutPoint, OutPoint withdrawingOutPoint, BigInteger fee) throws IOException {
+      OutPoint depositOutPoint, OutPoint withdrawingOutPoint, long fee) throws IOException {
     Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
     CellWithStatus cellWithStatus = api.getLiveCell(withdrawingOutPoint, true);
     if (!(CellWithStatus.Status.LIVE == cellWithStatus.status)) {
@@ -232,10 +230,10 @@ public class NervosDaoExample {
 
     int depositBlockNumber = new UInt64(cellWithStatus.cell.data.content).getValue().intValue();
     Block depositBlock = api.getBlockByNumber(depositBlockNumber);
-    EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch.toByteArray());
+    EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
 
     Block withdrawBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
-    EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlock.header.epoch.toByteArray());
+    EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlock.header.epoch);
 
     long withdrawFraction = withdrawEpoch.index * depositEpoch.length;
     long depositFraction = depositEpoch.index * withdrawEpoch.length;
@@ -256,12 +254,12 @@ public class NervosDaoExample {
     //        Numeric.hexStringToByteArray(
     //            EpochUtils.generateSince(
     //                minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber));
-    BigInteger minimalSince = BigInteger.ZERO;
-    BigInteger outputCapacity =
+    long minimalSince = 0;
+    long outputCapacity =
         api.calculateDaoMaximumWithdraw(
-            depositOutPoint, Numeric.toHexString(withdrawBlock.header.hash));
+            depositOutPoint, withdrawBlock.header.hash);
 
-    CellOutput cellOutput = new CellOutput(outputCapacity.subtract(fee), lock);
+    CellOutput cellOutput = new CellOutput(outputCapacity - fee, lock);
 
     SystemScriptCell secpCell = SystemContract.getSystemSecpCell(api);
     SystemScriptCell nervosDaoCell = SystemContract.getSystemNervosDaoCell(api);

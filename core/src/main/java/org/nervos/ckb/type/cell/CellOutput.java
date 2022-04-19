@@ -7,33 +7,33 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Utils;
 
 public class CellOutput {
-  public BigInteger capacity;
+  public long capacity;
   public Script type;
   public Script lock;
 
   public CellOutput() {}
 
-  public CellOutput(BigInteger capacity, Script lock) {
+  public CellOutput(long capacity, Script lock) {
     this.capacity = capacity;
     this.lock = lock;
   }
 
-  public CellOutput(BigInteger capacity, Script lock, Script type) {
+  public CellOutput(long capacity, Script lock, Script type) {
     this.capacity = capacity;
     this.lock = lock;
     this.type = type;
   }
 
-  public BigInteger occupiedCapacity(byte[] data) {
-    BigInteger byteSize = Utils.ckbToShannon(8);
+  public long occupiedCapacity(byte[] data) {
+    long byteSize = Utils.ckbToShannon(8);
     if (data != null) {
-      byteSize = byteSize.add(Utils.ckbToShannon(data.length));
+      byteSize += Utils.ckbToShannon(data.length);
     }
     if (lock != null) {
-      byteSize = byteSize.add(lock.occupiedCapacity());
+      byteSize += lock.occupiedCapacity();
     }
     if (type != null) {
-      byteSize = byteSize.add(type.occupiedCapacity());
+      byteSize += type.occupiedCapacity();
     }
     return byteSize;
   }

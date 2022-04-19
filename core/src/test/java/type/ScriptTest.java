@@ -1,7 +1,6 @@
 package type;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.crypto.Hash;
@@ -32,6 +31,6 @@ public class ScriptTest {
                 "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
             Numeric.hexStringToByteArray("0x36c329ed630d6ce750712a477543672adab57f4c"),
             Script.HashType.TYPE);
-    Assertions.assertEquals(BigInteger.valueOf(5300000000L), script.occupiedCapacity());
+    Assertions.assertEquals(5300000000L, script.occupiedCapacity());
   }
 }

@@ -35,7 +35,7 @@ public class Script {
     return blake2b.doFinalBytes();
   }
 
-  public BigInteger occupiedCapacity() {
+  public long occupiedCapacity() {
     int byteSize = 1;
     if (codeHash != null) {
       byteSize += codeHash.length;

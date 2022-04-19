@@ -3,7 +3,6 @@ package org.nervos.ckb;
 import static org.nervos.ckb.utils.Const.*;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +16,6 @@ import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -61,7 +59,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
 
     System.out.println(
         "Before transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
 
     // For transferring all balance, change address is set to be null
@@ -75,11 +73,11 @@ public class TransferAllBalanceWithCkbIndexerExample {
 
     System.out.println(
         "After transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
   }
 
-  private static BigInteger getBalance(String address) throws IOException {
+  private static long getBalance(String address) throws IOException {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
@@ -94,7 +92,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
     txBuilder.addOutputs(cellOutputs);
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
 
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
@@ -102,9 +100,9 @@ public class TransferAllBalanceWithCkbIndexerExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
-          new BigInteger(collectResult.changeCapacity);
+          collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
     }
 

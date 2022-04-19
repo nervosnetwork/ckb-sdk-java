@@ -7,9 +7,9 @@ public class Const {
   public static final String NODE_URL = "http://localhost:8114";
   public static final String CKB_INDEXER_URL = "http://localhost:8116";
 
-  public static final BigInteger UnitCKB = new BigInteger("100000000");
-  public static final BigInteger MIN_CKB = new BigInteger("6100000000");
-  public static final BigInteger MIN_SUDT_CKB = new BigInteger("14200000000");
+  public static final long UnitCKB = 100000000L;
+  public static final long MIN_CKB = 6100000000L;
+  public static final long MIN_SUDT_CKB = 14200000000L;
 
   public static final byte[] SUDT_CODE_HASH =
       Numeric.hexStringToByteArray(

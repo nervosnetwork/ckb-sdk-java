@@ -62,7 +62,6 @@ import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 import org.nervos.mercury.model.resp.info.MercurySyncState;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class DefaultCkbApi implements CkbApi {
   private CkbRpcApi ckbApi;
 
@@ -145,7 +144,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public Block getBlockByNumber(int blockNumber) throws IOException {
+  public Block getBlockByNumber(long blockNumber) throws IOException {
     return this.ckbApi.getBlockByNumber(blockNumber);
   }
 
@@ -155,7 +154,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public byte[] getBlockHash(int blockNumber) throws IOException {
+  public byte[] getBlockHash(long blockNumber) throws IOException {
     return this.ckbApi.getBlockHash(blockNumber);
   }
 
@@ -175,7 +174,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public BigInteger getTipBlockNumber() throws IOException {
+  public long getTipBlockNumber() throws IOException {
     return this.ckbApi.getTipBlockNumber();
   }
 
@@ -185,7 +184,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public Epoch getEpochByNumber(int epochNumber) throws IOException {
+  public Epoch getEpochByNumber(long epochNumber) throws IOException {
     return this.ckbApi.getEpochByNumber(epochNumber);
   }
 
@@ -195,7 +194,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public Header getHeaderByNumber(int blockNumber) throws IOException {
+  public Header getHeaderByNumber(long blockNumber) throws IOException {
     return this.ckbApi.getHeaderByNumber(blockNumber);
   }
 
@@ -226,7 +225,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public Long getBlockMedianTime(byte[] blockHash) throws IOException {
+  public long getBlockMedianTime(byte[] blockHash) throws IOException {
     return this.ckbApi.getBlockMedianTime(blockHash);
   }
 
@@ -282,7 +281,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public void setNetworkActive(Boolean state) throws IOException {
+  public void setNetworkActive(boolean state) throws IOException {
     this.ckbApi.setNetworkActive(state);
   }
 
@@ -322,7 +321,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public BigInteger calculateDaoMaximumWithdraw(OutPoint outPoint, String withdrawBlockHash)
+  public long calculateDaoMaximumWithdraw(OutPoint outPoint, byte[] withdrawBlockHash)
       throws IOException {
     return this.ckbApi.calculateDaoMaximumWithdraw(outPoint, withdrawBlockHash);
   }

@@ -26,13 +26,13 @@ class TransactionTest {
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
-            new BigInteger("100000000000"),
+            100000000000L,
             createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
-            new BigInteger("4900000000000"),
+            4900000000000L,
             createScript(
                 "0xe3b513a2105a5d4f833d1fad3d968b96b4510687234cd909f86b3ac450d8a2b5",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
@@ -75,8 +75,7 @@ class TransactionTest {
             new OutPoint(
                 Numeric.hexStringToByteArray(
                     "0x91fcfd61f420c1090aeded6b6d91d5920a279fe53ec34353afccc59264eeddd4"),
-                0),
-            BigInteger.valueOf(113)));
+                0), 113));
     cellInputs.add(
         new CellInput(
             new OutPoint(
@@ -87,7 +86,7 @@ class TransactionTest {
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
-            new BigInteger("10000009045634"),
+            10000009045634l,
             createScript(
                 "0xf1951123466e4479842387a66fabfd6b65fc87fd84ae8e6cd3053edb27fff2fd",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
@@ -129,13 +128,13 @@ class TransactionTest {
     List<CellOutput> cellOutputs = new ArrayList<>();
     cellOutputs.add(
         new CellOutput(
-            new BigInteger("100000000000"),
+            100000000000L,
             createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0xe2193df51d78411601796b35b17b4f8f2cd85bd0")));
     cellOutputs.add(
         new CellOutput(
-            new BigInteger("4900000000000"),
+            4900000000000L,
             createScript(
                 "0x9e3b3557f11b2b3532ce352bfe8017e9fd11d154c4c7f9b7aaaa1e621b539a08",
                 "0x36c329ed630d6ce750712a477543672adab57f4c")));
@@ -193,7 +192,7 @@ class TransactionTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    new BigInteger("100000000000"),
+                    100000000000L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -203,7 +202,7 @@ class TransactionTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                    new BigInteger("98824000000000"),
+                    98824000000000L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",

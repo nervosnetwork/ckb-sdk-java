@@ -59,7 +59,7 @@ public class BuildSimpleTransferTransactionTest {
 
     SimpleTransferPayloadBuilder builder = new SimpleTransferPayloadBuilder();
     builder.addFrom(AddressWithKeyHolder.testAddress2());
-    builder.addTo(new ToInfo(AddressWithKeyHolder.testAddress4(), new BigInteger("20")));
+    builder.addTo(new ToInfo(AddressWithKeyHolder.testAddress4(), 20));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     try {
@@ -84,7 +84,7 @@ public class BuildSimpleTransferTransactionTest {
 
       SimpleTransferPayloadBuilder builder = new SimpleTransferPayloadBuilder();
       builder.addFrom(AddressWithKeyHolder.testAddress2());
-      builder.addTo(new ToInfo(to.address, new BigInteger("20")));
+      builder.addTo(new ToInfo(to.address, 20));
       builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       TransactionCompletionResponse transactionCompletionResponse =
@@ -104,7 +104,7 @@ public class BuildSimpleTransferTransactionTest {
 
     SimpleTransferPayloadBuilder builder = new SimpleTransferPayloadBuilder();
     builder.addFrom(AddressWithKeyHolder.testAddress4());
-    builder.addTo(new ToInfo(AddressWithKeyHolder.testAddress1(), new BigInteger("20")));
+    builder.addTo(new ToInfo(AddressWithKeyHolder.testAddress1(), 20));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     try {
@@ -128,7 +128,7 @@ public class BuildSimpleTransferTransactionTest {
     builder.addTo(
         new ToInfo(
             AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()),
-            new BigInteger("20")));
+            20));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     try {

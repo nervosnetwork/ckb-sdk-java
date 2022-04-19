@@ -21,7 +21,7 @@ public class AdjustAccountPayload {
   public BigInteger accountNumber;
 
   @SerializedName("extra_ckb")
-  public BigInteger extraCkb;
+  public long extraCkb;
 
   @SerializedName("fee_rate")
   public BigInteger feeRate;

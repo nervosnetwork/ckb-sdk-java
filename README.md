@@ -156,7 +156,7 @@ TransactionBuilder txBuilder = new TransactionBuilder(ckbApi);
 IndexerCollector txUtils = new IndexerCollector(ckbApi, ckbIndexerApi);
 
 // Find live cells and calculate capacity balance with the help of CKB indexer.
-BigInteger feeRate = BigInteger.valueOf(1024);
+long feeRate = 1024;
 List<String> SendAddresses = Arrays.asList("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
 CollectResult collectResult = txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
@@ -164,7 +164,7 @@ CollectResult collectResult = txUtils.collectInputs(SendAddresses, txBuilder.bui
 List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
 txBuilder.addOutputs(cellOutputs);
 // Charge back (if inputs capacity - fee > outputs capacity)
-if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(BigInteger.ZERO) > 0) {
+if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.setOutputs(cellOutputs);
 }

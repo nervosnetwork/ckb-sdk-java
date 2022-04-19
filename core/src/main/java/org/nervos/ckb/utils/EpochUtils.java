@@ -13,6 +13,10 @@ public class EpochUtils {
     return new EpochInfo(length, index, number);
   }
 
+  public static EpochInfo parse(long epoch) {
+    return parse(BigInteger.valueOf(epoch).toByteArray());
+  }
+
   public static String generate(long length, long index, long number) {
     BigInteger epoch = BigInteger.valueOf((length << 40) + (index << 24) + number);
     return Numeric.toHexStringWithPrefix(epoch);

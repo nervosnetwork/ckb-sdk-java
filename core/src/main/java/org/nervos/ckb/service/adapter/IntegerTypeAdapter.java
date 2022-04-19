@@ -8,14 +8,7 @@ public class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserial
 
   @Override
   public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
-    String hexValue;
-    // serialize -1 to 0xffffffff for outpoint index in coinbase transaction
-    if (src == -1) {
-      hexValue = "ffffffff";
-    } else {
-      hexValue = Integer.toHexString(src);
-    }
-    return new JsonPrimitive("0x" + hexValue);
+    return new JsonPrimitive("0x" + Integer.toHexString(src));
   }
 
   @Override
@@ -25,11 +18,6 @@ public class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserial
       return json.getAsInt();
     }
     String hexValue = json.getAsString().substring(2);
-    // deserialize 0xffffffff to -1 for outpoint index in coinbase transaction
-    if (Objects.equals("ffffffff", hexValue)) {
-      return -1;
-    } else {
-      return Integer.valueOf(hexValue, 16);
-    }
+    return Integer.parseUnsignedInt(hexValue, 16);
   }
 }

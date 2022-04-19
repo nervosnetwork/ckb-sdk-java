@@ -10,5 +10,5 @@ public class CkbIndexerCellsCapacity {
   @SerializedName("block_number")
   public int blockNumber;
 
-  public BigInteger capacity;
+  public long capacity;
 }

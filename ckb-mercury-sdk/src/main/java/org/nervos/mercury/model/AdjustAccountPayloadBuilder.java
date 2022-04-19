@@ -31,7 +31,7 @@ public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
     this.accountNumber = accountNumber;
   }
 
-  public void extraCkb(BigInteger extraCkb) {
+  public void extraCkb(long extraCkb) {
     this.extraCkb = extraCkb;
   }
 

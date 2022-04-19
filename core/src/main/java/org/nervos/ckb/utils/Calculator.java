@@ -1,6 +1,8 @@
 package org.nervos.ckb.utils;
 
 import java.math.BigInteger;
+
+import org.nervos.ckb.type.RawHeader;
 import org.nervos.ckb.type.transaction.Transaction;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
@@ -13,20 +15,19 @@ public class Calculator {
     return bytes.length + SERIALIZED_TX_OFFSET_BYTE_SIZE;
   }
 
-  private static final BigInteger RADIO = BigInteger.valueOf(1000);
+  private static final long RADIO = 1000;
 
-  private static BigInteger calculateTransactionFee(
-      BigInteger transactionSize, BigInteger feeRate) {
-    BigInteger base = transactionSize.multiply(feeRate);
-    BigInteger fee = base.divide(RADIO);
-    if (fee.multiply(RADIO).compareTo(base) < 0) {
-      return fee.add(BigInteger.ONE);
+  private static long calculateTransactionFee(long transactionSize, long feeRate) {
+    long base = transactionSize * feeRate;
+    long fee = Long.divideUnsigned(base, RADIO);
+    if (Long.compareUnsigned(fee * feeRate, base) < 0) {
+      return fee + 1;
     }
     return fee;
   }
 
-  public static BigInteger calculateTransactionFee(Transaction transaction, BigInteger feeRate) {
-    BigInteger txSize = BigInteger.valueOf(calculateTransactionSize(transaction));
+  public static long calculateTransactionFee(Transaction transaction, long feeRate) {
+    long txSize = calculateTransactionSize(transaction);
     return calculateTransactionFee(txSize, feeRate);
   }
 }

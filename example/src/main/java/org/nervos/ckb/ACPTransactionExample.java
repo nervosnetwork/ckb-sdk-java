@@ -69,7 +69,7 @@ public class ACPTransactionExample {
   public static void main(String[] args) throws Exception {
     System.out.println(
         "Before transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
 
     byte[] acpHash = createACPCell();
@@ -81,7 +81,7 @@ public class ACPTransactionExample {
         "Transfer acp tx hash: " + transfer(new OutPoint(acpHash, 0), BigInteger.valueOf(1000L)));
   }
 
-  private static BigInteger getBalance(String address) throws IOException {
+  private static long getBalance(String address) throws IOException {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
@@ -105,7 +105,7 @@ public class ACPTransactionExample {
     txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
 
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
@@ -113,9 +113,8 @@ public class ACPTransactionExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity =
-          new BigInteger(collectResult.changeCapacity);
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_CKB) >= 0) {
+      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
 
       outputsData.add(new byte[] {});
@@ -177,7 +176,7 @@ public class ACPTransactionExample {
     txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1500);
+    long feeRate = 1500;
 
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
@@ -186,9 +185,8 @@ public class ACPTransactionExample {
             SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, sudtType);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_SUDT_CKB) >= 0) {
-      cellOutputs.get(cellOutputs.size() - 1).capacity =
-          new BigInteger(collectResult.changeCapacity);
+      if (Long.compareUnsigned(collectResult.changeCapacity, MIN_SUDT_CKB) >= 0) {
+      cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
     } else {
       throw new IOException("The change capacity is not enough for the SUDT cell");

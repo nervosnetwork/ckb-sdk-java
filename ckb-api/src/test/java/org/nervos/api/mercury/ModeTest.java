@@ -64,7 +64,7 @@ public class ModeTest {
             Source.FREE));
     builder.to(
         To.newTo(
-            Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), new BigInteger("100"))),
+            Arrays.asList(new ToInfo(AddressWithKeyHolder.testAddress2(), 100)),
             Mode.HOLD_BY_FROM));
 
     try {
@@ -125,7 +125,7 @@ public class ModeTest {
             Arrays.asList(
                 new ToInfo(
                     AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()),
-                    new BigInteger("100"))),
+                    100)),
             Mode.HOLD_BY_TO));
 
     try {

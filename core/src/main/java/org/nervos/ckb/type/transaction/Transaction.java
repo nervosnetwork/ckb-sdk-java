@@ -2,7 +2,6 @@ package org.nervos.ckb.type.transaction;
 
 import static org.nervos.ckb.utils.MoleculeConverter.packBytesVec;
 
-import com.google.gson.annotations.SerializedName;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,23 +13,13 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 
 public class Transaction {
-
   public int version;
-
   public byte[] hash;
-
-  @SerializedName("cell_deps")
   public List<CellDep> cellDeps;
-
-  @SerializedName("header_deps")
   public List<byte[]> headerDeps;
-
   public List<CellInput> inputs;
   public List<CellOutput> outputs;
-
-  @SerializedName("outputs_data")
   public List<byte[]> outputsData;
-
   public List<byte[]> witnesses;
 
   public Transaction() {}
@@ -227,10 +216,10 @@ public class Transaction {
     }
 
     public Builder addInput(byte[] txHash, int index) {
-      return this.addInput(txHash, index, BigInteger.ZERO);
+      return this.addInput(txHash, index, 0);
     }
 
-    public Builder addInput(byte[] txHash, int index, BigInteger since) {
+    public Builder addInput(byte[] txHash, int index, long since) {
       CellInput input = new CellInput();
       input.previousOutput = new OutPoint(txHash, index);
       input.since = since;
@@ -248,7 +237,7 @@ public class Transaction {
     }
 
     public Builder addOutput(
-        BigInteger capacity,
+        long capacity,
         byte[] lockScriptCodeHash,
         byte[] lockScriptArgs,
         byte[] typeScriptCodeHash,
@@ -265,7 +254,7 @@ public class Transaction {
     }
 
     public Builder addOutput(
-        BigInteger capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
+        long capacity, byte[] lockScriptCodeHash, byte[] lockScriptArgs) {
       Script lockScript = new Script();
       lockScript.args = lockScriptArgs;
       lockScript.codeHash = lockScriptCodeHash;

@@ -3,7 +3,6 @@ package org.nervos.ckb;
 import static org.nervos.ckb.utils.Const.*;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +18,6 @@ import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.fixed.UInt128;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressParser;
 
@@ -27,8 +25,8 @@ import org.nervos.ckb.utils.address.AddressParser;
 // SUDT RFC:
 // https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0025-simple-udt/0025-simple-udt.md
 public class SUDTExample {
-  private static final BigInteger SUDT_ISSUE_SUM_AMOUNT = new BigInteger("1000000000000");
-  private static final BigInteger SUDT_TRANSFER_AMOUNT = new BigInteger("60000000000");
+  private static final long SUDT_ISSUE_SUM_AMOUNT = 1000000000000L;
+  private static final long SUDT_TRANSFER_AMOUNT = 60000000000L;
 
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
@@ -54,7 +52,7 @@ public class SUDTExample {
   public static void main(String[] args) throws Exception {
     System.out.println(
         "Before transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)).divide(UnitCKB).toString(10)
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
 
     System.out.println("Issue SUDT tx hash: " + issue());
@@ -65,7 +63,7 @@ public class SUDTExample {
     System.out.println("Transfer SUDT tx hash: " + transfer());
   }
 
-  private static BigInteger getBalance(String address) throws IOException {
+  private static long getBalance(String address) throws IOException {
     return new IndexerCollector(api, ckbIndexerApi).getCapacity(address);
   }
 
@@ -86,7 +84,7 @@ public class SUDTExample {
     txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1024);
+    long feeRate = 1024;
 
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
@@ -94,9 +92,9 @@ public class SUDTExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
-          new BigInteger(collectResult.changeCapacity);
+          collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
     }
 
@@ -142,7 +140,7 @@ public class SUDTExample {
     txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
-    BigInteger feeRate = BigInteger.valueOf(1500);
+    long feeRate = 1500;
 
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
@@ -151,9 +149,9 @@ public class SUDTExample {
             SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, sudtType);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (Numeric.toBigInt(collectResult.changeCapacity).compareTo(MIN_CKB) >= 0) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
-          new BigInteger(collectResult.changeCapacity);
+          collectResult.changeCapacity;
       cellOutputs.get(cellOutputs.size() - 1).type = sudtType;
       txBuilder.setOutputs(cellOutputs);
     }
@@ -161,7 +159,7 @@ public class SUDTExample {
     txBuilder.setOutputsData(
         Arrays.asList(
             new UInt128((SUDT_TRANSFER_AMOUNT)).toBytes(),
-            new UInt128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toBytes()));
+            new UInt128(SUDT_ISSUE_SUM_AMOUNT - SUDT_TRANSFER_AMOUNT).toBytes()));
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
