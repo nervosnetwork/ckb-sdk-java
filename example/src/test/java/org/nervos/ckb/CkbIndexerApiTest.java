@@ -28,7 +28,7 @@ public class CkbIndexerApiTest {
   public void testGetCellCapacity() throws IOException {
     SearchKey searchKey = newSearchKey();
     CkbIndexerCellsCapacity cellsCapacity = service.getCellsCapacity(searchKey);
-    Assertions.assertTrue(cellsCapacity.capacity > 0);
+    Assertions.assertTrue(Long.compareUnsigned(cellsCapacity.capacity, 0) > 0);
   }
 
   private SearchKey newSearchKey() {

@@ -164,7 +164,7 @@ CollectResult collectResult = txUtils.collectInputs(SendAddresses, txBuilder.bui
 List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
 txBuilder.addOutputs(cellOutputs);
 // Charge back (if inputs capacity - fee > outputs capacity)
-if (collectResult.changeCapacity > 0) {
+if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
     txBuilder.setOutputs(cellOutputs);
 }

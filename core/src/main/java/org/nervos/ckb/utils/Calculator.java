@@ -19,8 +19,8 @@ public class Calculator {
 
   private static long calculateTransactionFee(long transactionSize, long feeRate) {
     long base = transactionSize * feeRate;
-    long fee = base / RADIO;
-    if (fee * feeRate < base) {
+    long fee = Long.divideUnsigned(base, RADIO);
+    if (Long.compareUnsigned(fee * feeRate, base) < 0) {
       return fee + 1;
     }
     return fee;

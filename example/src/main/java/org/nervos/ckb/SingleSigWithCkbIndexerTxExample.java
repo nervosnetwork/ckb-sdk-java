@@ -62,7 +62,7 @@ public class SingleSigWithCkbIndexerTxExample {
 
     System.out.println(
         "Before transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)) / UnitCKB
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
 
     byte[] hash = sendCapacity(receivers, SendAddresses.get(0));
@@ -73,7 +73,7 @@ public class SingleSigWithCkbIndexerTxExample {
 
     System.out.println(
         "After transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)) / UnitCKB
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
   }
 
@@ -100,7 +100,7 @@ public class SingleSigWithCkbIndexerTxExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (collectResult.changeCapacity > 0) {
+      if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
           collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);

@@ -84,8 +84,8 @@ public class NervosDaoExample {
   }
 
   private static long getBalance(String address) throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(address) / UnitCKB;
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(address), UnitCKB);
   }
 
   private static Transaction generateDepositingToDaoTx(long capacity) throws IOException {

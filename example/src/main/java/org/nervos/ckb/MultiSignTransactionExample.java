@@ -90,12 +90,12 @@ public class MultiSignTransactionExample {
   }
 
   public static long getMultiSigBalance() throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(configuration.address()) / UnitCKB;
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(configuration.address()), UnitCKB);
   }
 
   public static long getBalance(String address) throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi).getCapacity(address) / UnitCKB;
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi).getCapacity(address), UnitCKB);
   }
 
   public static Transaction generateTx(

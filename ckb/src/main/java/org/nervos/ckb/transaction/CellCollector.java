@@ -43,7 +43,7 @@ public class CellCollector {
 
     for (int i = 0; i < tx.outputs.size() - 1; i++) {
       long size = tx.outputs.get(i).occupiedCapacity(new byte[] {});
-      if (tx.outputs.get(i).capacity < size) {
+      if (Long.compareUnsigned(tx.outputs.get(i).capacity, size) < 0) {
         throw new IOException("Cell output byte size must not be bigger than capacity");
       }
     }
@@ -70,7 +70,7 @@ public class CellCollector {
     CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
     boolean haveChangeOutput = false;
     //  If the last cellOutput's capacity is not zero,  it means there is no changeOutput
-    if (changeOutput.capacity == 0) {
+    if (Long.compareUnsigned(changeOutput.capacity, 0) == 0) {
       haveChangeOutput = true;
     }
 
@@ -83,7 +83,6 @@ public class CellCollector {
       TransactionInput transactionInput = iterator.next();
       if (transactionInput == null) break;
       CellInput cellInput = transactionInput.input;
-//      inputsCapacity = inputsCapacity.add(transactionInput.capacity);
       inputsCapacity += transactionInput.capacity;
       List<CellInput> cellInputList = lockInputsMap.get(transactionInput.lockHash);
       cellInputList.add(cellInput);
@@ -93,7 +92,7 @@ public class CellCollector {
       transaction.witnesses = witnesses;
       long sumNeedCapacity =
           calSumNeedCapacity(feeRate, transaction, changeOutput, haveChangeOutput, needCapacity);
-      if (inputsCapacity > sumNeedCapacity) {
+      if (Long.compareUnsigned(inputsCapacity, sumNeedCapacity) > 0) {
         // update witness of group first element
         int witnessIndex = 0;
         for (byte[] hash : lockHashes) {
@@ -106,13 +105,13 @@ public class CellCollector {
         // calculate sum need capacity again
         sumNeedCapacity =
             calSumNeedCapacity(feeRate, transaction, changeOutput, haveChangeOutput, needCapacity);
-        if (inputsCapacity > sumNeedCapacity) {
+        if (Long.compareUnsigned(inputsCapacity, sumNeedCapacity) > 0) {
           break;
         }
       }
     }
 
-    if (inputsCapacity < (needCapacity + calculateTxFee(transaction, feeRate))) {
+    if (Long.compareUnsigned(inputsCapacity, needCapacity + calculateTxFee(transaction, feeRate)) < 0) {
       throw new IOException(
           "Capacity not enough, please check inputs capacity and change output capacity!");
     }

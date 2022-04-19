@@ -124,8 +124,8 @@ public class MultiKeySingleSigTxExample {
   }
 
   private static long getBalance(String address) throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(address) / UnitCKB;
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(address), UnitCKB);
   }
 
   private static byte[] sendCapacity(

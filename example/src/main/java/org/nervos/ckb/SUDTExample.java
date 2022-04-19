@@ -52,7 +52,7 @@ public class SUDTExample {
   public static void main(String[] args) throws Exception {
     System.out.println(
         "Before transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)) / UnitCKB
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
 
     System.out.println("Issue SUDT tx hash: " + issue());
@@ -92,7 +92,7 @@ public class SUDTExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (collectResult.changeCapacity >= MIN_CKB) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
           collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
@@ -149,7 +149,7 @@ public class SUDTExample {
             SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, sudtType);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (collectResult.changeCapacity >= MIN_CKB) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
           collectResult.changeCapacity;
       cellOutputs.get(cellOutputs.size() - 1).type = sudtType;

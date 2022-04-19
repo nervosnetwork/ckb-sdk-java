@@ -58,13 +58,13 @@ public class SendToMultiSigAddressTxExample {
   }
 
   private static long getBalance() throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(TestAddress) / UnitCKB;
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(TestAddress), UnitCKB);
   }
 
   private static long getMultiSigBalance() throws IOException {
-    return new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(MultiSigAddress) / UnitCKB;
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
+        .getCapacity(MultiSigAddress), UnitCKB);
   }
 
   private static byte[] sendCapacity(List<Receiver> receivers, String changeAddress)

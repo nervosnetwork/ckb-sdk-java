@@ -69,7 +69,7 @@ public class ACPTransactionExample {
   public static void main(String[] args) throws Exception {
     System.out.println(
         "Before transferring, first sender's balance: "
-            + getBalance(SendAddresses.get(0)) / (UnitCKB)
+            + Long.divideUnsigned(getBalance(SendAddresses.get(0)), UnitCKB)
             + " CKB");
 
     byte[] acpHash = createACPCell();
@@ -113,7 +113,7 @@ public class ACPTransactionExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (collectResult.changeCapacity >= MIN_CKB) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
 
@@ -185,7 +185,7 @@ public class ACPTransactionExample {
             SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, sudtType);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-    if (collectResult.changeCapacity >= MIN_SUDT_CKB) {
+      if (Long.compareUnsigned(collectResult.changeCapacity, MIN_SUDT_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
     } else {
