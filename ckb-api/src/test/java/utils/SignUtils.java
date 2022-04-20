@@ -1,7 +1,6 @@
 package utils;
 
 import constant.AddressWithKeyHolder;
-import java.util.List;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.mercury.model.resp.MercuryScriptGroup;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
@@ -9,7 +8,8 @@ import org.nervos.mercury.model.resp.signature.HashAlgorithmEnum;
 import org.nervos.mercury.model.resp.signature.SignAlgorithmEnum;
 import org.nervos.mercury.signature.TransactionSigner;
 
-/** @author zjh @Created Date: 2021/7/23 @Description: @Modify by: */
+import java.util.List;
+
 public class SignUtils {
   public static Transaction sign(TransactionCompletionResponse s) {
     List<MercuryScriptGroup> scriptGroups = s.getScriptGroup();

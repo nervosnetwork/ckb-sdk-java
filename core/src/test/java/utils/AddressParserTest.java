@@ -1,7 +1,5 @@
 package utils;
 
-import static utils.TestUtils.createScript;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -11,7 +9,8 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import static utils.TestUtils.createScript;
+
 public class AddressParserTest {
 
   @Test

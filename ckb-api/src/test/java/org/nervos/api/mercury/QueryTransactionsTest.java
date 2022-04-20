@@ -15,7 +15,6 @@ import org.nervos.mercury.model.resp.TransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
 
-/** @author zjh @Created Date: 2021/7/26 @Description: @Modify by: */
 public class QueryTransactionsTest {
 
   @Test

@@ -6,7 +6,6 @@ import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Bech32Test {
 
   @Test

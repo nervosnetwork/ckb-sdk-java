@@ -1,13 +1,13 @@
 package type;
 
-import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+
 public class ScriptTest {
 
   @Test

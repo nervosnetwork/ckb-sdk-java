@@ -1,15 +1,13 @@
 package type;
 
-import static utils.TestUtils.createScript;
-
-import java.math.BigInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import static utils.TestUtils.createScript;
+
 public class CellOutputTest {
 
   @Test

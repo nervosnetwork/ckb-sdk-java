@@ -1,11 +1,5 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
@@ -18,7 +12,13 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Utils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
+
 public class TransferAllBalanceWithCkbIndexerExample {
 
   private static Api api;

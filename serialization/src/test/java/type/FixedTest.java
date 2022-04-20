@@ -7,9 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.fixed.*;
 import org.nervos.ckb.utils.Numeric;
 
-/**
- * Copyright © 2019 Nervos Foundation. All rights reserved.
- */
 public class FixedTest {
 
   @Test

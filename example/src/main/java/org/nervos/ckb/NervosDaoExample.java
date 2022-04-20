@@ -1,13 +1,5 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
@@ -29,7 +21,15 @@ import org.nervos.ckb.utils.EpochUtils;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
+
 public class NervosDaoExample {
   private static final byte[] NERVOS_DAO_DATA = Numeric.hexStringToByteArray("0x0000000000000000");
   private static final int DAO_LOCK_PERIOD_EPOCHS = 180;

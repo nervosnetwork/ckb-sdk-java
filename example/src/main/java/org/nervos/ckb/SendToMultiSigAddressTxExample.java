@@ -14,7 +14,6 @@ import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Utils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class SendToMultiSigAddressTxExample {
 
   private static Api api;

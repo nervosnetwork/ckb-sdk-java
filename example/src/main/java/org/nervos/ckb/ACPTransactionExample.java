@@ -1,12 +1,5 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
@@ -25,7 +18,14 @@ import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressGenerator;
 import org.nervos.ckb.utils.address.AddressParser;
 
-/** Copyright © 2021 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
+
 // ACP RFC:
 // https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0026-anyone-can-pay/0026-anyone-can-pay.md
 // Before running this example, please run SUDTExample to issue a SUDT with the sender address

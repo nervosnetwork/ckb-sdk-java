@@ -6,7 +6,6 @@ import org.nervos.ckb.transaction.LockUtils;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class LockUtilsTest {
 
   @Test

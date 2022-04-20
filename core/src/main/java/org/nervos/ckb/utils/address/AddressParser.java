@@ -6,7 +6,6 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressParser extends AddressBaseOperator {
 
   private static String parsePayload(String address) {

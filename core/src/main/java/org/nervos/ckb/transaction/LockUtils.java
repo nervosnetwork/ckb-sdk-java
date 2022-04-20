@@ -8,7 +8,6 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class LockUtils {
 
   public static Script generateLockScriptWithPrivateKey(String privateKey, byte[] codeHash) {

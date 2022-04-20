@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.nervos.ckb.exceptions.AddressFormatException;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 class AddressBaseOperator {
   static final String TYPE_SHORT = "01"; // short version for locks with popular code_hash
   static final String TYPE_FULL_DATA = "02"; // full version with hash_type = "Data"

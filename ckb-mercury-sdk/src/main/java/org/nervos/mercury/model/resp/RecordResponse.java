@@ -1,22 +1,12 @@
 package org.nervos.mercury.model.resp;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
+import org.nervos.ckb.utils.Numeric;
+import org.nervos.mercury.model.common.AssetInfo;
 
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 
-import org.nervos.ckb.utils.Numeric;
-import org.nervos.mercury.model.common.AssetInfo;
-
-/**
- * @author zjh @Created Date: 2021/7/20 @Description: @Modify by:
- */
 public class RecordResponse
     implements JsonSerializer<RecordResponse>, JsonDeserializer<RecordResponse> {
 

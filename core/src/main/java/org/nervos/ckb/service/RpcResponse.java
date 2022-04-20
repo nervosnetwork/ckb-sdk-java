@@ -1,6 +1,5 @@
 package org.nervos.ckb.service;
 
-/** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class RpcResponse<T> {
   public long id;
   public String jsonrpc;

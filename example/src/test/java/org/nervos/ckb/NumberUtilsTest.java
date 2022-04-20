@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.indexer.NumberUtils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NumberUtilsTest {
 
   @Test

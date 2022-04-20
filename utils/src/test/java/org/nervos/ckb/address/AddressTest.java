@@ -7,7 +7,6 @@ import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class AddressTest {
 
   @Test

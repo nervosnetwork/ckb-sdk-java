@@ -24,7 +24,6 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressGenerator;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class MultiSignTransactionExample {
 
   private static Api api;

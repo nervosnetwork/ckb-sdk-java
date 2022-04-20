@@ -1,9 +1,5 @@
 package org.nervos.ckb.indexer;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
 import org.nervos.ckb.transaction.CollectResult;
@@ -13,7 +9,10 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class IndexerCollector {
 
   private Api api;

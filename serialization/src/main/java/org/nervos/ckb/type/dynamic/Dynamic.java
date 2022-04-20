@@ -4,7 +4,6 @@ import java.util.List;
 import org.nervos.ckb.type.base.Type;
 import org.nervos.ckb.type.fixed.UInt32;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Dynamic<T extends Type> implements Type<List<T>> {
   private List<T> value;
 

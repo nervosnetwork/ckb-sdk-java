@@ -3,7 +3,6 @@ package org.nervos.ckb.type;
 import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
 import static org.nervos.ckb.utils.MoleculeConverter.packUint32;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class OutPoint {
   public byte[] txHash;
 

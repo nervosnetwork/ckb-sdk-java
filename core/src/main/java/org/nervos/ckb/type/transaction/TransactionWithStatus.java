@@ -2,7 +2,6 @@ package org.nervos.ckb.type.transaction;
 
 import com.google.gson.annotations.SerializedName;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class TransactionWithStatus {
   public TxStatus txStatus;
   public Transaction transaction;

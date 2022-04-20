@@ -14,9 +14,6 @@ import org.nervos.ckb.type.fixed.Byte1;
 import org.nervos.ckb.type.fixed.Byte32;
 import org.nervos.ckb.utils.Numeric;
 
-/**
- * Copyright © 2019 Nervos Foundation. All rights reserved.
- */
 public class TableTest {
 
   @Test

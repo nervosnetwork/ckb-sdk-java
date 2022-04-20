@@ -18,9 +18,6 @@ import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
 
-/**
- * @author zjh @Created Date: 2021/7/26 @Description: @Modify by:
- */
 public class QueryTransactionsTest {
 
   Gson g = new Gson();

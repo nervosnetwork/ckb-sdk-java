@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.address.AddressTools;
 
-/** @author zjh @Created Date: 2021/7/24 @Description: @Modify by: */
 public class RegisterAddressTest {
 
   @Test

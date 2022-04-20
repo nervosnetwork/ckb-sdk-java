@@ -3,7 +3,6 @@ package org.nervos.ckb.indexer;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class NumberUtils {
 
   public static List<Integer> regionToList(int start, int length) {

@@ -3,7 +3,6 @@ package org.nervos.ckb.utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class UtilsTest {
 
   @Test

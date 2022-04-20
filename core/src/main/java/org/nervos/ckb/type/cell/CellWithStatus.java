@@ -2,7 +2,6 @@ package org.nervos.ckb.type.cell;
 
 import com.google.gson.annotations.SerializedName;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellWithStatus {
 
   public CellInfo cell;

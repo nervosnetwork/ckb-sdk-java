@@ -3,7 +3,6 @@ package org.nervos.ckb.transaction;
 import java.io.IOException;
 import org.nervos.ckb.type.transaction.Transaction;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
 
   private Transaction transaction;

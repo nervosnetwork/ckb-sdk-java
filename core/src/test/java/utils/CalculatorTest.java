@@ -18,7 +18,6 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CalculatorTest {
 

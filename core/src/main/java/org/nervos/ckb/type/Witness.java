@@ -2,7 +2,6 @@ package org.nervos.ckb.type;
 
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 // The Witness class here corresponds to the WitnessArgs of CKB
 public class Witness {
 

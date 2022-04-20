@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.EpochUtils;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2020 Nervos Foundation. All rights reserved. */
 public class EpochUtilsTest {
 
   @Test

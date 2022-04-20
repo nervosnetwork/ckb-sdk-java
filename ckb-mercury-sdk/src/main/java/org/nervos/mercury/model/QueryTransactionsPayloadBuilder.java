@@ -12,9 +12,6 @@ import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 
-/**
- * @author zjh @Created Date: 2021/7/26 @Description: @Modify by:
- */
 public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
 
   public QueryTransactionsPayloadBuilder() {

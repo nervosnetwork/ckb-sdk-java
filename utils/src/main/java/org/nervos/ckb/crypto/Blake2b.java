@@ -3,7 +3,6 @@ package org.nervos.ckb.crypto;
 import org.bouncycastle.crypto.digests.Blake2bDigest;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Blake2b {
 
   private Blake2bDigest blake2bDigest;

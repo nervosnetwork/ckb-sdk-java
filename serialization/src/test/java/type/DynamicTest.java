@@ -16,9 +16,6 @@ import org.nervos.ckb.type.fixed.Empty;
 import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.utils.Numeric;
 
-/**
- * Copyright © 2019 Nervos Foundation. All rights reserved.
- */
 public class DynamicTest {
 
   @Test

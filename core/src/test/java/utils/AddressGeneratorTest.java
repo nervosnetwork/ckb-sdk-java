@@ -8,7 +8,6 @@ import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressGenerator;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressGeneratorTest {
 
   @Test

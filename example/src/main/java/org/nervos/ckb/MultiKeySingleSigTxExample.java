@@ -16,7 +16,6 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Utils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class MultiKeySingleSigTxExample {
 
   private static final String TestAddress =

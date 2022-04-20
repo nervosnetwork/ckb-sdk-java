@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Blake2bTest {
 
   @Test

@@ -5,9 +5,6 @@ import org.nervos.mercury.model.req.item.Item;
 
 import java.util.Set;
 
-/**
- * @author zjh @Created Date: 2021/7/26 @Description: @Modify by:
- */
 public class QueryTransactionsPayload {
   public Item item;
   public Set<AssetInfo> assetInfos;
