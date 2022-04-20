@@ -60,20 +60,6 @@ allprojects {
 
 }
 
-subprojects {
-    apply plugin: 'java'
-
-    task installGitHooks(type: Copy) {
-        from new File(rootProject.rootDir, 'config/pre-commit')
-        into {
-            new File(rootProject.rootDir, '.git/hooks')
-        }
-        fileMode 0755
-    }
-
-    build.dependsOn installGitHooks
-}
-
 configure(subprojects.findAll { it.name != 'tests' }) {
     // Required for Maven Nexus repository
     apply plugin: 'maven'
