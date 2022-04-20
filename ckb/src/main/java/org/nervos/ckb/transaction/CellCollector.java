@@ -1,19 +1,19 @@
 package org.nervos.ckb.transaction;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.cell.CellWithStatus;
 import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.utils.*;
+import org.nervos.ckb.utils.Calculator;
+import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+import java.util.*;
+
 public class CellCollector {
 
   private Api api;
@@ -42,7 +42,7 @@ public class CellCollector {
     final List<CellInput> cellInputs = new ArrayList<>();
 
     for (int i = 0; i < tx.outputs.size() - 1; i++) {
-      long size = tx.outputs.get(i).occupiedCapacity(new byte[] {});
+      long size = tx.outputs.get(i).occupiedCapacity(new byte[]{});
       if (Long.compareUnsigned(tx.outputs.get(i).capacity, size) < 0) {
         throw new IOException("Cell output byte size must not be bigger than capacity");
       }
@@ -122,7 +122,7 @@ public class CellCollector {
     }
 
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    List<byte[]> lockHashList = Arrays.asList(lockHashes.toArray(new byte[][] {}));
+    List<byte[]> lockHashList = Arrays.asList(lockHashes.toArray(new byte[][]{}));
     for (Map.Entry<byte[], List<CellInput>> entry : lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(

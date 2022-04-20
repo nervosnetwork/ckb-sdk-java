@@ -2,7 +2,7 @@ name: On PR target
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, edited]
+    types: [ opened, reopened, synchronize, edited ]
 
 jobs:
   #  lint_pr_title:

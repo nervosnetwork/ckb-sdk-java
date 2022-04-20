@@ -1,12 +1,5 @@
 package type;
 
-import static utils.TestUtils.createScript;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.OutPoint;
@@ -18,7 +11,14 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static utils.TestUtils.createScript;
+
 class TransactionTest {
 
   @Test
@@ -47,7 +47,7 @@ class TransactionTest {
                             "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"),
                         1),
                     CellDep.DepType.DEP_GROUP)),
-            Collections.singletonList(new byte[] {}),
+            Collections.singletonList(new byte[]{}),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
@@ -55,7 +55,7 @@ class TransactionTest {
                             "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"),
                         0))),
             cellOutputs,
-            Arrays.asList(new byte[] {}, new byte[] {}),
+            Arrays.asList(new byte[]{}, new byte[]{}),
             Collections.singletonList(new Witness()));
 
     BigInteger privateKey =
@@ -105,10 +105,10 @@ class TransactionTest {
                             "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"),
                         1),
                     CellDep.DepType.DEP_GROUP)),
-            Collections.singletonList(new byte[] {}),
+            Collections.singletonList(new byte[]{}),
             cellInputs,
             cellOutputs,
-            Collections.singletonList(new byte[] {}),
+            Collections.singletonList(new byte[]{}),
             witnesses);
 
     BigInteger privateKey =
@@ -149,7 +149,7 @@ class TransactionTest {
                             "0xbffab7ee0a050e2cb882de066d3dbf3afdd8932d6a26eda44f06e4b23f0f4b5a"),
                         1),
                     CellDep.DepType.DEP_GROUP)),
-            Collections.singletonList(new byte[] {}),
+            Collections.singletonList(new byte[]{}),
             Collections.singletonList(
                 new CellInput(
                     new OutPoint(
@@ -157,7 +157,7 @@ class TransactionTest {
                             "0xa80a8e01d45b10e1cbc8a2557c62ba40edbdc36cd63a31fc717006ca7b157b50"),
                         0))),
             cellOutputs,
-            Collections.singletonList(new byte[] {}),
+            Collections.singletonList(new byte[]{}),
             Collections.emptyList());
 
     BigInteger privateKey =
@@ -207,7 +207,7 @@ class TransactionTest {
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE))),
-            Arrays.asList(new byte[] {}, new byte[] {}),
+            Arrays.asList(new byte[]{}, new byte[]{}),
             Collections.singletonList(
                 "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900"));
 

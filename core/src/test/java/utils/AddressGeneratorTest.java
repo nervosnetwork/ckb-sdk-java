@@ -1,14 +1,13 @@
 package utils;
 
-import static utils.TestUtils.createScript;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressGenerator;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import static utils.TestUtils.createScript;
+
 public class AddressGeneratorTest {
 
   @Test

@@ -1,8 +1,9 @@
 package org.nervos.ckb.utils;
 
+import org.nervos.ckb.newtype.concrete.*;
+
 import java.math.BigInteger;
 import java.util.List;
-import org.nervos.ckb.newtype.concrete.*;
 
 public class MoleculeConverter {
   public static byte[] toByteArrayLittleEndianUnsigned(BigInteger in, int length) {

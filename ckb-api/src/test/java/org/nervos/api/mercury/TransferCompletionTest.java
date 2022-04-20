@@ -2,23 +2,19 @@ package org.nervos.api.mercury;
 
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.From;
-import org.nervos.mercury.model.req.Mode;
-import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.To;
-import org.nervos.mercury.model.req.ToInfo;
+import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 public class TransferCompletionTest {
 

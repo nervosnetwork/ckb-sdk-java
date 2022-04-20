@@ -1,12 +1,5 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
@@ -25,7 +18,14 @@ import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressGenerator;
 import org.nervos.ckb.utils.address.AddressParser;
 
-/** Copyright © 2021 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
+
 // ACP RFC:
 // https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0026-anyone-can-pay/0026-anyone-can-pay.md
 // Before running this example, please run SUDTExample to issue a SUDT with the sender address
@@ -117,7 +117,7 @@ public class ACPTransactionExample {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
 
-      outputsData.add(new byte[] {});
+      outputsData.add(new byte[]{});
       txBuilder.setOutputsData(outputsData);
     }
 
@@ -185,7 +185,7 @@ public class ACPTransactionExample {
             SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, sudtType);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-      if (Long.compareUnsigned(collectResult.changeCapacity, MIN_SUDT_CKB) >= 0) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_SUDT_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
     } else {

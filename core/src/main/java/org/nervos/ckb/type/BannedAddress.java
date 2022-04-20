@@ -10,7 +10,8 @@ public class BannedAddress {
   public boolean absolute;
   public String reason;
 
-  public BannedAddress() {}
+  public BannedAddress() {
+  }
 
   public BannedAddress(
       String address, Command command, long banTime, boolean absolute, String reason) {

@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.fixed.Byte32;
 import org.nervos.ckb.utils.Numeric;
 
-/**
- * Copyright © 2019 Nervos Foundation. All rights reserved.
- */
 public class Byte32Test {
 
   @Test
@@ -40,7 +37,7 @@ public class Byte32Test {
               0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
               0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
               0x01, 0x01, 0x01, 0x01,
-          };
+              };
           Byte32 byte32 = new Byte32(bytes);
           byte32.toBytes();
         });

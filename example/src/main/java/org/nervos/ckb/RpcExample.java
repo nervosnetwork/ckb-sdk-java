@@ -1,14 +1,14 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
 import com.google.gson.Gson;
-import java.io.IOException;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.Block;
 import org.nervos.ckb.type.BlockchainInfo;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+
+import static org.nervos.ckb.utils.Const.NODE_URL;
+
 public class RpcExample {
 
   private static Api api;

@@ -1,8 +1,5 @@
 package org.nervos.ckb.transaction;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.type.cell.CellDep;
@@ -10,7 +7,10 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class TransactionBuilder {
 
   private List<CellInput> cellInputs = new ArrayList<>();
@@ -94,7 +94,7 @@ public class TransactionBuilder {
   public Transaction buildTx() {
     if (cellOutputsData.size() == 0) {
       for (int i = 0; i < cellOutputs.size(); i++) {
-        cellOutputsData.add(new byte[] {});
+        cellOutputsData.add(new byte[]{});
       }
     }
 

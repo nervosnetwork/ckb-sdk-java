@@ -1,8 +1,5 @@
 package org.nervos.mercury;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.nervos.indexer.CkbIndexerApi;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.payload.*;
@@ -10,6 +7,9 @@ import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 import org.nervos.mercury.model.resp.info.MercurySyncState;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface MercuryApi extends CkbIndexerApi {
 

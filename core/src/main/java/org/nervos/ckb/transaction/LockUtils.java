@@ -1,6 +1,5 @@
 package org.nervos.ckb.transaction;
 
-import java.util.Arrays;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.type.Script;
@@ -8,7 +7,8 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.Arrays;
+
 public class LockUtils {
 
   public static Script generateLockScriptWithPrivateKey(String privateKey, byte[] codeHash) {

@@ -1,16 +1,17 @@
 package org.nervos.ckb.type.transaction;
 
-import static org.nervos.ckb.utils.MoleculeConverter.packBytesVec;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.nervos.ckb.utils.MoleculeConverter.packBytesVec;
 
 public class Transaction {
   public int version;
@@ -22,7 +23,8 @@ public class Transaction {
   public List<byte[]> outputsData;
   public List<byte[]> witnesses;
 
-  public Transaction() {}
+  public Transaction() {
+  }
 
   public Transaction(
       int version,

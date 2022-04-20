@@ -1,14 +1,15 @@
 package org.nervos.ckb.type.cell;
 
-import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
-
 import org.nervos.ckb.type.OutPoint;
+
+import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
 
 public class CellInput {
   public OutPoint previousOutput;
   public long since;
 
-  public CellInput() {}
+  public CellInput() {
+  }
 
   public CellInput(OutPoint previousOutput, long since) {
     this.previousOutput = previousOutput;

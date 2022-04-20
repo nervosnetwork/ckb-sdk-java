@@ -1,11 +1,12 @@
 package org.nervos.ckb.newtype.concrete;
 
-import java.util.Arrays;
-import java.util.Objects;
-import javax.annotation.Nonnull;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
 import org.nervos.ckb.newtype.base.Struct;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Objects;
 
 public final class OutPoint extends Struct {
   public static int SIZE = 36;
@@ -16,7 +17,8 @@ public final class OutPoint extends Struct {
 
   private Uint32 index;
 
-  private OutPoint() {}
+  private OutPoint() {
+  }
 
   @Nonnull
   public Byte32 getTxHash() {

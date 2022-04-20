@@ -1,12 +1,7 @@
 package org.nervos.mercury.model.common;
 
-import com.google.gson.annotations.SerializedName;
-
 public class AssetInfo {
-  @SerializedName("asset_type")
   public AssetType assetType;
-
-  @SerializedName("udt_hash")
   public byte[] udtHash;
 
   private AssetInfo(AssetType assetType, byte[] udtHash) {

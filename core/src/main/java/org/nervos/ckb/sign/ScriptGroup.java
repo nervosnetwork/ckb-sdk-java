@@ -1,21 +1,15 @@
 package org.nervos.ckb.sign;
 
-import com.google.gson.annotations.SerializedName;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScriptGroup {
   private Script script;
-
-  @SerializedName("script_type")
   private ScriptType scriptType;
-
-  @SerializedName("input_indices")
   private List<Integer> inputIndices;
-
-  @SerializedName("output_indices")
   private List<Integer> outputIndices;
 
   public Script getScript() {

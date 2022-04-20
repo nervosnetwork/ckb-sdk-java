@@ -1,12 +1,13 @@
 package org.nervos.ckb;
 
-import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
+
+import java.io.IOException;
 
 public class CkbIndexerApiTest {
   CkbIndexerApi service = new CkbIndexerApi("https://testnet.ckb.dev/indexer");

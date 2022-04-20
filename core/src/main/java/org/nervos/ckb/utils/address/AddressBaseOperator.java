@@ -1,11 +1,11 @@
 package org.nervos.ckb.utils.address;
 
 import com.google.common.primitives.Bytes;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.exceptions.AddressFormatException;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.ArrayList;
+import java.util.List;
+
 class AddressBaseOperator {
   static final String TYPE_SHORT = "01"; // short version for locks with popular code_hash
   static final String TYPE_FULL_DATA = "02"; // full version with hash_type = "Data"

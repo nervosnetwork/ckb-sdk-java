@@ -1,8 +1,8 @@
 package org.nervos.ckb.type;
 
-import static org.nervos.ckb.utils.MoleculeConverter.packUint128;
-
 import java.math.BigInteger;
+
+import static org.nervos.ckb.utils.MoleculeConverter.packUint128;
 
 public class Header {
   public byte[] dao;

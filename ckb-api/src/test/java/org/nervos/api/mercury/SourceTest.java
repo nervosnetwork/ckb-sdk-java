@@ -3,25 +3,21 @@ package org.nervos.api.mercury;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.From;
-import org.nervos.mercury.model.req.Mode;
-import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.To;
-import org.nervos.mercury.model.req.ToInfo;
+import org.nervos.mercury.model.req.*;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class SourceTest {
   private String senderAddress = AddressWithKeyHolder.testAddress1();

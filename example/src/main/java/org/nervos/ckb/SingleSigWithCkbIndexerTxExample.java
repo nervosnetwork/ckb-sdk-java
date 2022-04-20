@@ -1,12 +1,5 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
@@ -19,7 +12,14 @@ import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Utils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
+
 public class SingleSigWithCkbIndexerTxExample {
 
   private static Api api;
@@ -100,7 +100,7 @@ public class SingleSigWithCkbIndexerTxExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-      if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
           collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);

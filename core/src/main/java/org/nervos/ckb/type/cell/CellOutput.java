@@ -1,17 +1,17 @@
 package org.nervos.ckb.type.cell;
 
-import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
-
-import java.math.BigInteger;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Utils;
+
+import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
 
 public class CellOutput {
   public long capacity;
   public Script type;
   public Script lock;
 
-  public CellOutput() {}
+  public CellOutput() {
+  }
 
   public CellOutput(long capacity, Script lock) {
     this.capacity = capacity;

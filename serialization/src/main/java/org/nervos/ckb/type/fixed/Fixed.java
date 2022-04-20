@@ -1,10 +1,10 @@
 package org.nervos.ckb.type.fixed;
 
-import java.util.List;
 import org.nervos.ckb.type.base.FixedType;
 import org.nervos.ckb.type.base.Type;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.List;
+
 public class Fixed<T extends FixedType> implements Type<List<T>> {
 
   private List<T> value;

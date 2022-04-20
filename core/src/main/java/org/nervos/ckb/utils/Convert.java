@@ -1,14 +1,14 @@
 package org.nervos.ckb.utils;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Convert {
 
   public static OutPoint parseOutPoint(OutPoint outPoint) {

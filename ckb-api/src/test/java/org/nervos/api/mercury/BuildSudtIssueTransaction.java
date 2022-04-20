@@ -2,10 +2,6 @@ package org.nervos.api.mercury;
 
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -20,6 +16,11 @@ import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class BuildSudtIssueTransaction {
 

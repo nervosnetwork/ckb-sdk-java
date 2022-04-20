@@ -1,14 +1,11 @@
-
 ## Development
 
 ### Code Lint
-We
-use [Google Java Code Format](https://google.github.io/styleguide/javaguide.html#s4.5-line-wrapping)
-and
-follow [Google Checkstyle](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)
-for development.
 
-Before building task `./gradlew build`, task `verifyGoogleJavaFormat` will be executed ahead to check code style. If you run into `verifyGoogleJavaFormat FAILED` please run `./gradlew goJF` to lint code.
+We use [checkstyle](https://github.com/checkstyle/checkstyle)
+with [Google java Style](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml) to
+lint our code. Code lint is not compulsory before your commit or pull request, but it is highly recommended. You could
+run `./gradlew checkstyle` to check the code style.
 
 ### New commit
 We add hook [pre-commit](./config/pre-commit) to run `./graldew build` before each commit to make sure code won't be broken. It takes a bit time and please be patient.

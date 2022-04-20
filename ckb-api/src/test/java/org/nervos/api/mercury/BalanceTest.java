@@ -1,11 +1,8 @@
 package org.nervos.api.mercury;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
-import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.Numeric;
@@ -13,6 +10,10 @@ import org.nervos.mercury.model.GetBalancePayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.GetBalanceResponse;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BalanceTest {
   @Test

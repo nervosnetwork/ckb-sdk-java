@@ -1,8 +1,8 @@
 package org.nervos.mercury.model.req;
 
-import java.util.List;
-
 import org.nervos.mercury.model.req.item.Item;
+
+import java.util.List;
 
 public class From {
 

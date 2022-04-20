@@ -1,10 +1,5 @@
 package org.nervos.ckb.indexer;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import org.nervos.ckb.transaction.TransactionInput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
@@ -12,6 +7,11 @@ import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParser;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   private static final int PAGE_SIZE = 50;

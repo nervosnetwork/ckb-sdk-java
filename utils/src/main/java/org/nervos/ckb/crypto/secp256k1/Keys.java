@@ -1,10 +1,11 @@
 package org.nervos.ckb.crypto.secp256k1;
 
-import static org.nervos.ckb.crypto.secp256k1.SecureRandomUtils.secureRandom;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import static org.nervos.ckb.crypto.secp256k1.SecureRandomUtils.secureRandom;
 
 /*
  * Copyright 2019 Web3 Labs Ltd.
@@ -36,7 +37,8 @@ public class Keys {
     }
   }
 
-  private Keys() {}
+  private Keys() {
+  }
 
   /**
    * Create a keypair using SECP-256k1 curve.

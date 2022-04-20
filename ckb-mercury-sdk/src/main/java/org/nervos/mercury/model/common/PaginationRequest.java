@@ -8,8 +8,6 @@ public class PaginationRequest {
   public List<Integer> cursor;
   public Order order;
   public int limit;
-
-  @SerializedName("return_count")
   public boolean returnCount;
 
   public enum Order {

@@ -1,6 +1,7 @@
 package org.nervos.ckb.service.adapter;
 
 import com.google.gson.*;
+
 import java.lang.reflect.Type;
 
 public class LongTypeAdapter implements JsonDeserializer<Long>, JsonSerializer<Long> {

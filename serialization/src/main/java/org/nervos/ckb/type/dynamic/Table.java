@@ -1,12 +1,12 @@
 package org.nervos.ckb.type.dynamic;
 
-import java.util.Arrays;
-import java.util.List;
 import org.nervos.ckb.type.base.DynType;
 import org.nervos.ckb.type.base.Type;
 import org.nervos.ckb.type.fixed.UInt32;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.Arrays;
+import java.util.List;
+
 public class Table extends DynType<List<Type>> {
 
   private List<Type> value;

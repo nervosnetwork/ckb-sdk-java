@@ -1,16 +1,16 @@
 package utils;
 
 import com.google.gson.Gson;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressTools;
 
-/** @author zjh @Created Date: 2021/7/16 @Description: @Modify by: */
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 public class AddressToolsTest {
 
   @Test

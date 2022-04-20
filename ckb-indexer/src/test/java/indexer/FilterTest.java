@@ -1,7 +1,5 @@
 package indexer;
 
-import java.io.IOException;
-import java.math.BigInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
@@ -10,6 +8,8 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellsResponse;
+
+import java.io.IOException;
 
 public class FilterTest {
   @Test

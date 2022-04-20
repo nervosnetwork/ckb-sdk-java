@@ -1,10 +1,6 @@
 package org.nervos.ckb.utils.address;
 
 import com.google.common.primitives.Bytes;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.util.Arrays;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.address.Network;
@@ -15,7 +11,11 @@ import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 
-/** @author zjh @Created Date: 2021/7/15 @Description: @Modify by: */
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.Arrays;
+
 public class AddressTools {
 
   public static final String MAINNET_CHEQUE_CODE_HASH =

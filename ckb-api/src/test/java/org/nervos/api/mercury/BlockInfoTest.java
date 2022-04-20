@@ -1,13 +1,13 @@
 package org.nervos.api.mercury;
 
 import constant.ApiFactory;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.mercury.model.GetBlockInfoPayloadBuilder;
 import org.nervos.mercury.model.resp.BlockInfoResponse;
 
-/** @author zjh @Created Date: 2021/7/20 @Description: @Modify by: */
+import java.io.IOException;
+
 public class BlockInfoTest {
 
   @Test

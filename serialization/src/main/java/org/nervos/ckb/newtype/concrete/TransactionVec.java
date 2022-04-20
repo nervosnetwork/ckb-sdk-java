@@ -1,19 +1,21 @@
 package org.nervos.ckb.newtype.concrete;
 
-import java.util.Arrays;
-import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.nervos.ckb.newtype.base.DynamicVector;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Objects;
 
 public final class TransactionVec extends DynamicVector {
   public static Class ITEM_TYPE = Transaction.class;
 
   private Transaction[] items;
 
-  private TransactionVec() {}
+  private TransactionVec() {
+  }
 
   @Nonnull
   public Transaction get(int i) {

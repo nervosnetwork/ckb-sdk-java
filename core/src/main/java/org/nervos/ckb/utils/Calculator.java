@@ -1,11 +1,7 @@
 package org.nervos.ckb.utils;
 
-import java.math.BigInteger;
-
-import org.nervos.ckb.type.RawHeader;
 import org.nervos.ckb.type.transaction.Transaction;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class Calculator {
   // 4 bytes for the tx offset cost with molecule vector (transactions)
   private static final int SERIALIZED_TX_OFFSET_BYTE_SIZE = 4;

@@ -3,7 +3,6 @@ package org.nervos.api.mercury;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
-import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.transaction.Transaction;

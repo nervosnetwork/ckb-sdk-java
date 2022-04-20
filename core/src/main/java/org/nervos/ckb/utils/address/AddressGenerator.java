@@ -1,8 +1,6 @@
 package org.nervos.ckb.utils.address;
 
 import com.google.common.primitives.Bytes;
-import java.util.Arrays;
-import java.util.List;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.type.Script;
@@ -10,7 +8,9 @@ import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Bech32m;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.Arrays;
+import java.util.List;
+
 public class AddressGenerator extends AddressBaseOperator {
   private static final List<String> codeHashes =
       Arrays.asList(

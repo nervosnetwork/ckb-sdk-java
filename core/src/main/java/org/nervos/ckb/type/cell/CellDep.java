@@ -4,13 +4,11 @@ import com.google.gson.annotations.SerializedName;
 import org.nervos.ckb.type.OutPoint;
 
 public class CellDep {
-  @SerializedName("out_point")
   public OutPoint outPoint;
-
-  @SerializedName("dep_type")
   public DepType depType;
 
-  public CellDep() {}
+  public CellDep() {
+  }
 
   public CellDep(OutPoint outPoint, DepType depType) {
     this.outPoint = outPoint;

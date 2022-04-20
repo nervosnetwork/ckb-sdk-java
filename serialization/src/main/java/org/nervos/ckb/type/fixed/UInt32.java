@@ -3,7 +3,6 @@ package org.nervos.ckb.type.fixed;
 import org.nervos.ckb.type.base.FixedType;
 import org.nervos.ckb.utils.Numeric;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class UInt32 extends FixedType<Long> {
 
   public static final int BYTE_SIZE = 4;

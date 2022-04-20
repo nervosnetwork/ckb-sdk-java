@@ -1,12 +1,12 @@
 package org.nervos.mercury.model;
 
-import java.math.BigInteger;
-
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.req.To;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.SudtIssuePayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
+
+import java.math.BigInteger;
 
 public class SudtIssuePayloadBuilder extends SudtIssuePayload {
 

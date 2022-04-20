@@ -1,12 +1,11 @@
 package org.nervos.mercury.model.req.item;
 
 import com.google.common.primitives.Bytes;
-
-import java.util.Objects;
-
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressTools;
+
+import java.util.Objects;
 
 public class Identity {
   public static final String IDENTITY_FLAGS_CKB = "0x00";

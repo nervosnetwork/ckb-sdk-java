@@ -1,12 +1,13 @@
 package org.nervos.ckb.address;
 
 import com.google.common.primitives.Bytes;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright © 2018 Nervos Foundation. All rights reserved.

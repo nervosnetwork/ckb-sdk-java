@@ -1,23 +1,19 @@
 package org.nervos.ckb.type;
 
-import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
-import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
-
 import com.google.gson.annotations.SerializedName;
-import java.math.BigInteger;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Utils;
 
+import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
+import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
+
 public class Script {
-  @SerializedName("code_hash")
   public byte[] codeHash;
-
   public byte[] args;
-
-  @SerializedName("hash_type")
   public HashType hashType;
 
-  public Script() {}
+  public Script() {
+  }
 
   public Script(byte[] codeHash, byte[] args) {
     this(codeHash, args, HashType.DATA);

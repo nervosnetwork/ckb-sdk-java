@@ -1,16 +1,18 @@
 package org.nervos.ckb.crypto;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import org.bouncycastle.crypto.digests.Blake2bDigest;
 import org.nervos.ckb.utils.Numeric;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /** Cryptographic hash functions. */
 public class Hash {
   protected static final byte[] CKB_HASH_PERSONALIZATION =
       "ckb-default-hash".getBytes(StandardCharsets.UTF_8);
 
-  private Hash() {}
+  private Hash() {
+  }
 
   /**
    * Blake2b-256 hash function.
@@ -27,7 +29,7 @@ public class Hash {
   /**
    * Blake2b-256 hash function.
    *
-   * @param input binary encoded input data
+   * @param input  binary encoded input data
    * @param offset of start of data
    * @param length of data
    * @return hash value

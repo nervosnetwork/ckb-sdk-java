@@ -1,11 +1,11 @@
 package org.nervos.ckb;
 
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.indexer.NumberUtils;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.Arrays;
+
 public class NumberUtilsTest {
 
   @Test

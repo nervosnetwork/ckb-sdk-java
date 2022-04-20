@@ -1,9 +1,9 @@
 package org.nervos.ckb.type;
 
-import java.util.List;
 import org.nervos.ckb.type.transaction.Transaction;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
+import java.util.List;
+
 public class Block {
   public Header header;
 

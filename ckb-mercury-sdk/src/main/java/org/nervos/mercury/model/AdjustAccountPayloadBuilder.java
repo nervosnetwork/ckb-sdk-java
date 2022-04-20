@@ -1,12 +1,12 @@
 package org.nervos.mercury.model;
 
-import java.math.BigInteger;
-import java.util.HashSet;
-
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
+
+import java.math.BigInteger;
+import java.util.HashSet;
 
 public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
 

@@ -1,9 +1,9 @@
 package org.nervos.ckb.indexer;
 
-import java.util.List;
 import org.nervos.ckb.transaction.ScriptGroup;
 
-/** Copyright © 2019 Nervos Foundation. All rights reserved. */
+import java.util.List;
+
 public class ScriptGroupWithPrivateKeys {
 
   public ScriptGroup scriptGroup;

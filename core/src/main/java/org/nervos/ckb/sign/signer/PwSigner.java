@@ -1,8 +1,5 @@
 package org.nervos.ckb.sign.signer;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 import org.nervos.ckb.crypto.Keccak256;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
@@ -14,13 +11,18 @@ import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+
 public class PwSigner implements ScriptSigner {
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
   private static PwSigner INSTANCE;
 
-  private PwSigner() {}
+  private PwSigner() {
+  }
 
   public static PwSigner getInstance() {
     if (INSTANCE == null) {

@@ -1,8 +1,5 @@
 package org.nervos.ckb.utils;
 
-import java.math.BigInteger;
-
-/** Copyright © 2021 Nervos Foundation. All rights reserved. */
 public class Const {
   public static final String NODE_URL = "http://localhost:8114";
   public static final String CKB_INDEXER_URL = "http://localhost:8116";

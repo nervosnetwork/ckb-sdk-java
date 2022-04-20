@@ -1,32 +1,30 @@
 package sign;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.utils.Numeric;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
+
 public class SignerChecker {
   @SerializedName("raw_transaction")
   private TransactionWithScriptGroups transaction;
-
-  @SerializedName("expected_witnesses")
   private List<String> expectedWitnesses;
-
-  @SerializedName("contexts")
   private Set<Context> contexts;
 
-  private SignerChecker() {}
+  private SignerChecker() {
+  }
 
   private static SignerChecker fromFile(String fileName) {
     try (Reader reader = readTransactionJsonFile(fileName)) {

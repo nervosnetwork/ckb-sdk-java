@@ -1,6 +1,5 @@
 package org.nervos.ckb.utils;
 
-/** Copyright © 2018 Nervos Foundation. All rights reserved. */
 public class Strings {
   public static String zeros(int n) {
     return repeat('0', n);

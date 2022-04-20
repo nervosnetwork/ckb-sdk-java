@@ -1,19 +1,21 @@
 package org.nervos.ckb.utils;
 
 import com.google.common.primitives.Bytes;
+import org.nervos.ckb.exceptions.MessageDecodingException;
+import org.nervos.ckb.exceptions.MessageEncodingException;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
-import org.nervos.ckb.exceptions.MessageDecodingException;
-import org.nervos.ckb.exceptions.MessageEncodingException;
 
 /** Message codec functions. */
 public final class Numeric {
 
   private static final String HEX_PREFIX = "0x";
 
-  private Numeric() {}
+  private Numeric() {
+  }
 
   public static String encodeQuantity(BigInteger value) {
     if (value.signum() != -1) {
@@ -163,7 +165,7 @@ public final class Numeric {
     int len = cleanInput.length();
 
     if (len == 0) {
-      return new byte[] {};
+      return new byte[]{};
     }
 
     byte[] data;
@@ -205,8 +207,8 @@ public final class Numeric {
   public static String toHexString(String input) {
     try {
       return Numeric.containsHexPrefix(input)
-          ? input
-          : Numeric.toHexStringWithPrefix(new BigInteger(input));
+             ? input
+             : Numeric.toHexStringWithPrefix(new BigInteger(input));
     } catch (NumberFormatException e) {
       throw new NumberFormatException(
           "Input parameter format error, please input integer or hex string");
