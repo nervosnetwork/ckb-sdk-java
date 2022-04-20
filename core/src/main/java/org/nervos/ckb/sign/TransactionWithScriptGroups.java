@@ -1,17 +1,14 @@
 package org.nervos.ckb.sign;
 
-import com.google.gson.annotations.SerializedName;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.transaction.Transaction;
 
-public class TransactionWithScriptGroups {
-  @SerializedName("tx_view")
-  private Transaction txView;
+import java.util.ArrayList;
+import java.util.List;
 
-  @SerializedName("script_groups")
+public class TransactionWithScriptGroups {
+  private Transaction txView;
   private List<ScriptGroup> scriptGroups;
 
   public Transaction getTxView() {
