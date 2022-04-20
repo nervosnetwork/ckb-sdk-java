@@ -3,8 +3,6 @@ package org.nervos.api.mercury;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
-import java.io.IOException;
-import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.address.AddressTools;
@@ -14,6 +12,9 @@ import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class QueryTransactionsTest {
 

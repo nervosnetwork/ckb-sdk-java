@@ -1,10 +1,5 @@
 package org.nervos.ckb.crypto.secp256k1;
 
-import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
-
-import java.math.BigInteger;
-import java.security.SignatureException;
-import java.util.Arrays;
 import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.asn1.x9.X9IntegerConverter;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -18,6 +13,12 @@ import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
+
+import java.math.BigInteger;
+import java.security.SignatureException;
+import java.util.Arrays;
+
+import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
 
 /*
  * Copyright 2019 Web3 Labs Ltd.
@@ -93,8 +94,8 @@ public class Sign {
    * and if the output is null OR a key that is not the one you expect, you try again with the next
    * recId.
    *
-   * @param recId Which possible key to recover.
-   * @param sig the R and S components of the signature, wrapped.
+   * @param recId   Which possible key to recover.
+   * @param sig     the R and S components of the signature, wrapped.
    * @param message Hash of the data that was signed.
    * @return An ECKey containing only the public part, or null if recovery wasn't possible.
    */
@@ -169,11 +170,11 @@ public class Sign {
    * key that was used to sign it. This can then be compared to the expected public key to determine
    * if the signature was correct.
    *
-   * @param message RLP encoded message.
+   * @param message       RLP encoded message.
    * @param signatureData The message signature components
    * @return the public key used to sign the message
    * @throws SignatureException If the public key could not be recovered or if there was a signature
-   *     formatTx error.
+   *                            formatTx error.
    */
   public static BigInteger signedMessageToKey(byte[] message, SignatureData signatureData)
       throws SignatureException {

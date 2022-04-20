@@ -1,11 +1,12 @@
 package org.nervos.api.mercury;
 
 import constant.ApiFactory;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 import org.nervos.mercury.model.resp.info.MercurySyncState;
+
+import java.io.IOException;
 
 public class InfoTest {
 

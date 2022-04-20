@@ -1,10 +1,10 @@
 package org.nervos.mercury.model;
 
-import java.math.BigInteger;
-
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.DaoClaimPayload;
+
+import java.math.BigInteger;
 
 public class DaoClaimPayloadBuilder extends DaoClaimPayload {
 

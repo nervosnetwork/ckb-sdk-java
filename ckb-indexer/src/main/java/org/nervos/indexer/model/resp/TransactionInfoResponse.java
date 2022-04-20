@@ -8,6 +8,7 @@ public class TransactionInfoResponse {
   public IoType ioType;
   public byte[] txHash;
   public int txIndex;
+
   public enum IoType {
     @SerializedName("input")
     INPUT,

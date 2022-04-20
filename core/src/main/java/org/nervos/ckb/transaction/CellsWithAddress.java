@@ -1,7 +1,8 @@
 package org.nervos.ckb.transaction;
 
-import java.util.List;
 import org.nervos.ckb.type.cell.CellInput;
+
+import java.util.List;
 
 public class CellsWithAddress {
   public List<CellInput> inputs;

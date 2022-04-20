@@ -264,8 +264,8 @@ public class Api implements CkbRpcApi {
   /**
    * Batch RPC request
    *
-   * @param requests: A list of rpc method and parameters and the first element of each list must be
-   *     rpc method. Example: [["get_block_hash", "0x200"],["get_block_by_number", "0x300"]]
+   * @param requests A list of rpc method and parameters and the first element of each list must be
+   *                 rpc method. Example: [["get_block_hash", "0x200"],["get_block_by_number", "0x300"]]
    * @return A list of rpc response
    * @throws IOException Request or response error will throw exception
    */

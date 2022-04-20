@@ -1,9 +1,10 @@
 package org.nervos.ckb.utils.address;
 
 import com.google.common.primitives.Bytes;
+import org.nervos.ckb.exceptions.AddressFormatException;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.nervos.ckb.exceptions.AddressFormatException;
 
 class AddressBaseOperator {
   static final String TYPE_SHORT = "01"; // short version for locks with popular code_hash

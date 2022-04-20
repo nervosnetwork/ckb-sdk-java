@@ -1,7 +1,6 @@
 package org.nervos.api.mercury;
 
 import constant.ApiFactory;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.utils.Numeric;
@@ -9,6 +8,8 @@ import org.nervos.mercury.model.GetSpentTransactionPayloadBuilder;
 import org.nervos.mercury.model.resp.TransactionInfoResponse;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
+
+import java.io.IOException;
 
 public class GetSpentTransactionTest {
 

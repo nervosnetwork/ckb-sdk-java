@@ -11,7 +11,8 @@ public class AcpSigner implements ScriptSigner {
       Secp256k1Blake160SighashAllSigner.getInstance();
   private static AcpSigner INSTANCE;
 
-  private AcpSigner() {}
+  private AcpSigner() {
+  }
 
   public static AcpSigner getInstance() {
     if (INSTANCE == null) {

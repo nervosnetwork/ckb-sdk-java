@@ -1,8 +1,9 @@
 package org.nervos.ckb.transaction;
 
+import org.nervos.ckb.type.transaction.Transaction;
+
 import java.io.IOException;
 import java.util.List;
-import org.nervos.ckb.type.transaction.Transaction;
 
 public class Secp256k1MultisigAllBuilder {
 

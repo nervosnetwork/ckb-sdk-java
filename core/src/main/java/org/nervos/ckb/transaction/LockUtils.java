@@ -1,12 +1,13 @@
 package org.nervos.ckb.transaction;
 
-import java.util.Arrays;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
+
+import java.util.Arrays;
 
 public class LockUtils {
 

@@ -1,8 +1,9 @@
 package constant;
 
+import org.nervos.ckb.utils.Numeric;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.nervos.ckb.utils.Numeric;
 
 public class AddressWithKeyHolder {
 

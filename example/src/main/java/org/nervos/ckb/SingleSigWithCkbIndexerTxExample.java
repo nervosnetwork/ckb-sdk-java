@@ -100,7 +100,7 @@ public class SingleSigWithCkbIndexerTxExample {
         txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-      if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity =
           collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);

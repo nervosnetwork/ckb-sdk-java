@@ -1,16 +1,17 @@
 package org.nervos.ckb.crypto.secp256k1;
 
-import static org.nervos.ckb.crypto.secp256k1.Sign.CURVE;
-
-import java.math.BigInteger;
-import java.security.KeyPair;
-import java.util.Arrays;
-import java.util.Objects;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.math.ec.FixedPointCombMultiplier;
 import org.nervos.ckb.utils.Numeric;
+
+import java.math.BigInteger;
+import java.security.KeyPair;
+import java.util.Arrays;
+import java.util.Objects;
+
+import static org.nervos.ckb.crypto.secp256k1.Sign.CURVE;
 
 /*
  * Copyright 2019 Web3 Labs Ltd.

@@ -8,7 +8,8 @@ public class OutPoint {
 
   public int index;
 
-  public OutPoint() {}
+  public OutPoint() {
+  }
 
   public OutPoint(byte[] txHash, int index) {
     this.txHash = txHash;

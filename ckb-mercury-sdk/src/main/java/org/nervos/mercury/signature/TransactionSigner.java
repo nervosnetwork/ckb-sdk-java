@@ -1,12 +1,12 @@
 package org.nervos.mercury.signature;
 
-import java.nio.charset.StandardCharsets;
-
 import org.nervos.ckb.crypto.Keccak256;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.mercury.model.resp.MercuryScriptGroup;
+
+import java.nio.charset.StandardCharsets;
 
 public class TransactionSigner {
   private Transaction transaction;

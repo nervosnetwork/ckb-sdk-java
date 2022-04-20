@@ -1,11 +1,12 @@
 package org.nervos.ckb.newtype.concrete;
 
-import java.util.Arrays;
-import java.util.Objects;
-import javax.annotation.Nonnull;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
 import org.nervos.ckb.newtype.base.Struct;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Objects;
 
 public final class Header extends Struct {
   public static int SIZE = 208;
@@ -16,7 +17,8 @@ public final class Header extends Struct {
 
   private Uint128 nonce;
 
-  private Header() {}
+  private Header() {
+  }
 
   @Nonnull
   public RawHeader getRaw() {

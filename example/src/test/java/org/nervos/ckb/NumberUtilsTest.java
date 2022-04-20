@@ -1,9 +1,10 @@
 package org.nervos.ckb;
 
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.indexer.NumberUtils;
+
+import java.util.Arrays;
 
 public class NumberUtilsTest {
 

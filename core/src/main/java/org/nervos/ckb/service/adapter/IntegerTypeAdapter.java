@@ -1,8 +1,8 @@
 package org.nervos.ckb.service.adapter;
 
 import com.google.gson.*;
+
 import java.lang.reflect.Type;
-import java.util.Objects;
 
 public class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserializer<Integer> {
 

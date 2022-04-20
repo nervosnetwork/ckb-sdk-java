@@ -1,12 +1,5 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
@@ -15,6 +8,14 @@ import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Utils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
 
 public class MultiKeySingleSigTxExample {
 
@@ -123,8 +124,7 @@ public class MultiKeySingleSigTxExample {
   }
 
   private static long getBalance(String address) throws IOException {
-    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(address), UnitCKB);
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi).getCapacity(address), UnitCKB);
   }
 
   private static byte[] sendCapacity(

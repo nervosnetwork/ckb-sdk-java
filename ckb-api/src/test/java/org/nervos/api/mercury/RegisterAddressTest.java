@@ -2,11 +2,12 @@ package org.nervos.api.mercury;
 
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
+import org.junit.jupiter.api.Test;
+import org.nervos.ckb.utils.address.AddressTools;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.nervos.ckb.utils.address.AddressTools;
 
 public class RegisterAddressTest {
 

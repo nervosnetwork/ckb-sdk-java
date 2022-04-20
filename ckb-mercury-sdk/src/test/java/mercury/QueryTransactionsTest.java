@@ -1,9 +1,6 @@
 package mercury;
 
 import com.google.gson.Gson;
-
-import java.io.IOException;
-
 import mercury.constant.AddressWithKeyHolder;
 import mercury.constant.MercuryApiFactory;
 import mercury.constant.UdtHolder;
@@ -17,6 +14,8 @@ import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionWithRichStatus;
 import org.nervos.mercury.model.resp.TxView;
+
+import java.io.IOException;
 
 public class QueryTransactionsTest {
 

@@ -1,8 +1,5 @@
 package type;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.base.DynType;
@@ -15,6 +12,9 @@ import org.nervos.ckb.type.fixed.Byte32;
 import org.nervos.ckb.type.fixed.Empty;
 import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.utils.Numeric;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DynamicTest {
 

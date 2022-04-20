@@ -1,7 +1,6 @@
 package org.nervos.ckb.service.adapter;
 
 import com.google.gson.*;
-import org.nervos.ckb.utils.Numeric;
 
 import java.lang.reflect.Type;
 import java.math.BigInteger;

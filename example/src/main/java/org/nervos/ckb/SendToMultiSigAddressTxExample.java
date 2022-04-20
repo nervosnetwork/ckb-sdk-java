@@ -1,11 +1,5 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
@@ -13,6 +7,13 @@ import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Utils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
 
 public class SendToMultiSigAddressTxExample {
 
@@ -57,13 +58,11 @@ public class SendToMultiSigAddressTxExample {
   }
 
   private static long getBalance() throws IOException {
-    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(TestAddress), UnitCKB);
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi).getCapacity(TestAddress), UnitCKB);
   }
 
   private static long getMultiSigBalance() throws IOException {
-    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(MultiSigAddress), UnitCKB);
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi).getCapacity(MultiSigAddress), UnitCKB);
   }
 
   private static byte[] sendCapacity(List<Receiver> receivers, String changeAddress)

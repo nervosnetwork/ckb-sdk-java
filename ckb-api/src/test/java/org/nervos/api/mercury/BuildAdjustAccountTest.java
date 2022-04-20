@@ -3,12 +3,6 @@ package org.nervos.api.mercury;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -20,6 +14,13 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.Objects;
 
 public class BuildAdjustAccountTest {
 

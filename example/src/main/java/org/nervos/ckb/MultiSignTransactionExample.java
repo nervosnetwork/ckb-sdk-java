@@ -1,13 +1,6 @@
 package org.nervos.ckb;
 
-import static org.nervos.ckb.utils.Const.*;
-
 import com.google.common.primitives.Bytes;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.Sign;
@@ -23,6 +16,14 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressGenerator;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.nervos.ckb.utils.Const.*;
 
 public class MultiSignTransactionExample {
 
@@ -89,8 +90,7 @@ public class MultiSignTransactionExample {
   }
 
   public static long getMultiSigBalance() throws IOException {
-    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi)
-        .getCapacity(configuration.address()), UnitCKB);
+    return Long.divideUnsigned(new IndexerCollector(api, ckbIndexerApi).getCapacity(configuration.address()), UnitCKB);
   }
 
   public static long getBalance(String address) throws IOException {

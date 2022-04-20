@@ -1,7 +1,5 @@
 package org.nervos.ckb.sign.signer;
 
-import java.util.Arrays;
-import java.util.List;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
@@ -14,13 +12,17 @@ import org.nervos.ckb.type.fixed.UInt64;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
   private static final int WITNESS_OFFSET_IN_BYTE = 20;
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
   private static Secp256k1Blake160SighashAllSigner INSTANCE;
 
-  private Secp256k1Blake160SighashAllSigner() {}
+  private Secp256k1Blake160SighashAllSigner() {
+  }
 
   public static Secp256k1Blake160SighashAllSigner getInstance() {
     if (INSTANCE == null) {

@@ -1,7 +1,5 @@
 package org.nervos.ckb.indexer;
 
-import java.math.BigInteger;
-
 public class Receiver {
   public String address;
   public long capacity;

@@ -1,6 +1,5 @@
 package org.nervos.ckb.sign;
 
-import java.util.*;
 import org.nervos.ckb.sign.signer.AcpSigner;
 import org.nervos.ckb.sign.signer.PwSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
@@ -8,6 +7,8 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
+
+import java.util.*;
 
 public class TransactionSigner {
   private Map<Key, ScriptSigner> scriptSignerMap;

@@ -1,11 +1,12 @@
 package org.nervos.ckb.type.transaction;
 
-import static org.nervos.ckb.utils.MoleculeConverter.*;
-
-import java.util.List;
 import org.nervos.ckb.type.cell.CellDep;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
+
+import java.util.List;
+
+import static org.nervos.ckb.utils.MoleculeConverter.*;
 
 public class RawTransaction {
   public int version;

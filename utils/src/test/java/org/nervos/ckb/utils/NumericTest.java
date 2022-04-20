@@ -1,25 +1,26 @@
 package org.nervos.ckb.utils;
 
-import static org.nervos.ckb.utils.Numeric.asByte;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.exceptions.MessageDecodingException;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import static org.nervos.ckb.utils.Numeric.asByte;
+
 public class NumericTest {
 
   private static final byte[] HEX_RANGE_ARRAY =
-      new byte[] {
-        asByte(0x0, 0x1),
-        asByte(0x2, 0x3),
-        asByte(0x4, 0x5),
-        asByte(0x6, 0x7),
-        asByte(0x8, 0x9),
-        asByte(0xa, 0xb),
-        asByte(0xc, 0xd),
-        asByte(0xe, 0xf)
+      new byte[]{
+          asByte(0x0, 0x1),
+          asByte(0x2, 0x3),
+          asByte(0x4, 0x5),
+          asByte(0x6, 0x7),
+          asByte(0x8, 0x9),
+          asByte(0xa, 0xb),
+          asByte(0xc, 0xd),
+          asByte(0xe, 0xf)
       };
 
   private static final String HEX_RANGE_STRING = "0x0123456789abcdef";
@@ -92,30 +93,30 @@ public class NumericTest {
 
   @Test
   public void testToBytesPadded() {
-    Assertions.assertArrayEquals(Numeric.toBytesPadded(BigInteger.TEN, 1), new byte[] {0xa});
+    Assertions.assertArrayEquals(Numeric.toBytesPadded(BigInteger.TEN, 1), new byte[]{0xa});
 
     Assertions.assertArrayEquals(
-        Numeric.toBytesPadded(BigInteger.TEN, 8), new byte[] {0, 0, 0, 0, 0, 0, 0, 0xa});
+        Numeric.toBytesPadded(BigInteger.TEN, 8), new byte[]{0, 0, 0, 0, 0, 0, 0, 0xa});
 
     Assertions.assertArrayEquals(
         Numeric.toBytesPadded(BigInteger.valueOf(Integer.MAX_VALUE), 4),
-        new byte[] {0x7f, (byte) 0xff, (byte) 0xff, (byte) 0xff});
+        new byte[]{0x7f, (byte) 0xff, (byte) 0xff, (byte) 0xff});
   }
 
   @Test
   public void testHexStringToByteArray() {
-    Assertions.assertArrayEquals(Numeric.hexStringToByteArray(""), new byte[] {});
-    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0"), new byte[] {0});
-    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("1"), new byte[] {0x1});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray(""), new byte[]{});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0"), new byte[]{0});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("1"), new byte[]{0x1});
     Assertions.assertArrayEquals(Numeric.hexStringToByteArray(HEX_RANGE_STRING), HEX_RANGE_ARRAY);
 
-    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0x123"), new byte[] {0x1, 0x23});
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0x123"), new byte[]{0x1, 0x23});
   }
 
   @Test
   public void testToHexString() {
-    Assertions.assertEquals(Numeric.toHexString(new byte[] {}), "0x");
-    Assertions.assertEquals(Numeric.toHexString(new byte[] {0x1}), "0x01");
+    Assertions.assertEquals(Numeric.toHexString(new byte[]{}), "0x");
+    Assertions.assertEquals(Numeric.toHexString(new byte[]{0x1}), "0x01");
     Assertions.assertEquals(Numeric.toHexString(HEX_RANGE_ARRAY), HEX_RANGE_STRING);
   }
 

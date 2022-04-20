@@ -1,10 +1,6 @@
 package utils;
 
 import com.google.gson.Gson;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.service.GsonFactory;
@@ -12,6 +8,11 @@ import org.nervos.ckb.type.Header;
 import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class MoleculeSerializationTest {
   @Test

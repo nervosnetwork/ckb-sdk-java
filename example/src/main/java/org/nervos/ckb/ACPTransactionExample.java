@@ -117,7 +117,7 @@ public class ACPTransactionExample {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
 
-      outputsData.add(new byte[] {});
+      outputsData.add(new byte[]{});
       txBuilder.setOutputsData(outputsData);
     }
 
@@ -185,7 +185,7 @@ public class ACPTransactionExample {
             SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2, sudtType);
 
     // update change cell output capacity after collecting cells if there is changeOutput
-      if (Long.compareUnsigned(collectResult.changeCapacity, MIN_SUDT_CKB) >= 0) {
+    if (Long.compareUnsigned(collectResult.changeCapacity, MIN_SUDT_CKB) >= 0) {
       cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
       txBuilder.setOutputs(cellOutputs);
     } else {

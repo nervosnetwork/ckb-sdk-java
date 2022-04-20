@@ -7,7 +7,8 @@ public class CellDep {
   public OutPoint outPoint;
   public DepType depType;
 
-  public CellDep() {}
+  public CellDep() {
+  }
 
   public CellDep(OutPoint outPoint, DepType depType) {
     this.outPoint = outPoint;

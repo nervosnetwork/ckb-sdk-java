@@ -1,8 +1,9 @@
 package org.nervos.ckb.service.adapter;
 
 import com.google.gson.*;
-import java.lang.reflect.Type;
 import org.nervos.ckb.utils.Numeric;
+
+import java.lang.reflect.Type;
 
 public class ByteArrayTypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
 

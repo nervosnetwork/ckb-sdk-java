@@ -94,7 +94,7 @@ public class TransactionBuilder {
   public Transaction buildTx() {
     if (cellOutputsData.size() == 0) {
       for (int i = 0; i < cellOutputs.size(); i++) {
-        cellOutputsData.add(new byte[] {});
+        cellOutputsData.add(new byte[]{});
       }
     }
 

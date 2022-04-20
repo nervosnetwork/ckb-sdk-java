@@ -2,12 +2,6 @@ package org.nervos.mercury;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.DefaultIndexerApi;
@@ -22,6 +16,11 @@ import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
 import org.nervos.mercury.model.resp.info.MercuryInfo;
 import org.nervos.mercury.model.resp.info.MercurySyncState;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   private Gson g =

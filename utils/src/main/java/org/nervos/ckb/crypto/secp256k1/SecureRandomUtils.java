@@ -40,5 +40,6 @@ final class SecureRandomUtils {
     return isAndroid == 1;
   }
 
-  private SecureRandomUtils() {}
+  private SecureRandomUtils() {
+  }
 }

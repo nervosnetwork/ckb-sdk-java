@@ -4,11 +4,12 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.ToNumberPolicy;
-import java.math.BigInteger;
 import org.nervos.ckb.service.adapter.BigIntegerTypeAdapter;
 import org.nervos.ckb.service.adapter.ByteArrayTypeAdapter;
 import org.nervos.ckb.service.adapter.IntegerTypeAdapter;
 import org.nervos.ckb.service.adapter.LongTypeAdapter;
+
+import java.math.BigInteger;
 
 public class GsonFactory {
   public static Gson create() {

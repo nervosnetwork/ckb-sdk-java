@@ -1,7 +1,8 @@
 package org.nervos.ckb.indexer;
 
-import java.util.List;
 import org.nervos.ckb.transaction.ScriptGroup;
+
+import java.util.List;
 
 public class ScriptGroupWithPrivateKeys {
 

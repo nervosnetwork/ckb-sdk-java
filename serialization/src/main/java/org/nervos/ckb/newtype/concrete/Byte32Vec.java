@@ -1,12 +1,13 @@
 package org.nervos.ckb.newtype.concrete;
 
-import java.util.Arrays;
-import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.nervos.ckb.newtype.base.FixedVector;
 import org.nervos.ckb.newtype.base.MoleculeException;
 import org.nervos.ckb.newtype.base.MoleculeUtils;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Objects;
 
 public final class Byte32Vec extends FixedVector {
   public static int ITEM_SIZE = Byte32.SIZE;
@@ -15,7 +16,8 @@ public final class Byte32Vec extends FixedVector {
 
   private Byte32[] items;
 
-  private Byte32Vec() {}
+  private Byte32Vec() {
+  }
 
   @Override
   public int getItemSize() {

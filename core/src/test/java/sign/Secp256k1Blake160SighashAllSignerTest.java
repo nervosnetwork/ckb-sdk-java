@@ -1,10 +1,11 @@
 package sign;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
 import org.nervos.ckb.utils.Numeric;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Secp256k1Blake160SighashAllSignerTest {
 

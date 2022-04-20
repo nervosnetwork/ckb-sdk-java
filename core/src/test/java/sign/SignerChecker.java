@@ -23,7 +23,8 @@ public class SignerChecker {
   private List<String> expectedWitnesses;
   private Set<Context> contexts;
 
-  private SignerChecker() {}
+  private SignerChecker() {
+  }
 
   private static SignerChecker fromFile(String fileName) {
     try (Reader reader = readTransactionJsonFile(fileName)) {

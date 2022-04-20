@@ -14,15 +14,15 @@ public class Witness {
   public byte[] outputType;
 
   public Witness() {
-    this.lock = new byte[] {};
-    this.inputType = new byte[] {};
-    this.outputType = new byte[] {};
+    this.lock = new byte[]{};
+    this.inputType = new byte[]{};
+    this.outputType = new byte[]{};
   }
 
   public Witness(byte[] lock) {
     this.lock = lock;
-    this.inputType = new byte[] {};
-    this.outputType = new byte[] {};
+    this.inputType = new byte[]{};
+    this.outputType = new byte[]{};
   }
 
   public Witness(byte[] lock, byte[] inputType, byte[] outputType) {

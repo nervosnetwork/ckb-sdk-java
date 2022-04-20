@@ -2,8 +2,6 @@ package org.nervos.api.mercury;
 
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
-import java.io.IOException;
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
@@ -15,6 +13,9 @@ import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 public class DaoTest {
 

@@ -1,10 +1,11 @@
 package org.nervos.ckb.newtype.concrete;
 
-import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.nervos.ckb.newtype.base.Array;
 import org.nervos.ckb.newtype.base.MoleculeException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Objects;
 
 public final class Uint256 extends Array {
   public static Class ITEM_TYPE = byte.class;
@@ -17,7 +18,8 @@ public final class Uint256 extends Array {
 
   private byte[] items;
 
-  private Uint256() {}
+  private Uint256() {
+  }
 
   @Nonnull
   public byte get(int i) {

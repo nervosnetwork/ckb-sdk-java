@@ -1,9 +1,9 @@
 package org.nervos.ckb.utils;
 
-import static org.nervos.ckb.utils.Strings.*;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.nervos.ckb.utils.Strings.*;
 
 public class StringsTest {
 

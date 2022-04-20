@@ -1,8 +1,9 @@
 package org.nervos.ckb.type.fixed;
 
-import java.util.List;
 import org.nervos.ckb.type.base.FixedType;
 import org.nervos.ckb.type.base.Type;
+
+import java.util.List;
 
 public class Fixed<T extends FixedType> implements Type<List<T>> {
 

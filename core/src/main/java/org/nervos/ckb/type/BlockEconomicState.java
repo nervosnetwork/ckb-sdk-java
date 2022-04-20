@@ -1,7 +1,5 @@
 package org.nervos.ckb.type;
 
-import com.google.gson.annotations.SerializedName;
-
 public class BlockEconomicState {
   public byte[] finalizedAt;
   public Issuance issuance;

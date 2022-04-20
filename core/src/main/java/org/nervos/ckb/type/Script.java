@@ -12,7 +12,8 @@ public class Script {
   public byte[] args;
   public HashType hashType;
 
-  public Script() {}
+  public Script() {
+  }
 
   public Script(byte[] codeHash, byte[] args) {
     this(codeHash, args, HashType.DATA);

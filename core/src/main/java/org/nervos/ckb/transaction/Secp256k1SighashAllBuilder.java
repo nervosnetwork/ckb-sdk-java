@@ -1,7 +1,8 @@
 package org.nervos.ckb.transaction;
 
-import java.io.IOException;
 import org.nervos.ckb.type.transaction.Transaction;
+
+import java.io.IOException;
 
 public class Secp256k1SighashAllBuilder implements DefaultSigHashAllBuilder {
 
