@@ -7,8 +7,9 @@ import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.fixed.UInt64;
+import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 
 import java.nio.charset.StandardCharsets;
@@ -52,7 +53,7 @@ public class PwSigner implements ScriptSigner {
     List<byte[]> witnesses = transaction.witnesses;
     for (int i : scriptGroup.getInputIndices()) {
       byte[] witness = witnesses.get(i);
-      keccak256.update(new UInt64(witness.length).toBytes());
+      keccak256.update(MoleculeConverter.packUint64(witness.length).toByteArray());
       keccak256.update(witness);
     }
 
@@ -62,22 +63,9 @@ public class PwSigner implements ScriptSigner {
     byte[] signature = ethereumPersonalSign(digest, ecKeyPair);
 
     int index = scriptGroup.getInputIndices().get(0);
-    // TODO: need parsing from witnessArgs but not replace in place
-    byte[] witness = witnesses.get(index);
-    byte[] finalWitness = new byte[witnesses.get(index).length + SIGNATURE_LENGTH_IN_BYTE];
-    int pos = 0;
-    System.arraycopy(witness, 0, finalWitness, 0, WITNESS_OFFSET_IN_BYTE);
-    pos += WITNESS_OFFSET_IN_BYTE;
-    System.arraycopy(signature, 0, finalWitness, pos, SIGNATURE_LENGTH_IN_BYTE);
-    pos += SIGNATURE_LENGTH_IN_BYTE;
-    System.arraycopy(
-        witness,
-        WITNESS_OFFSET_IN_BYTE,
-        finalWitness,
-        pos,
-        witness.length - WITNESS_OFFSET_IN_BYTE);
-
-    witnesses.set(index, finalWitness);
+    WitnessArgs witnessArgs = WitnessArgs.unpack(witnesses.get(index));
+    witnessArgs.setLock(signature);
+    witnesses.set(index, witnessArgs.pack().toByteArray());
     return true;
   }
 
