@@ -199,4 +199,12 @@ public class NumericTest {
     String littleEndian = Numeric.littleEndian(71);
     Assertions.assertEquals("0x4700000000000000", littleEndian);
   }
+
+  @Test
+  public void testByte() {
+    Assertions.assertEquals(asByte(0x0, 0x0), (byte) 0x0);
+    Assertions.assertEquals(asByte(0x1, 0x0), (byte) 0x10);
+    Assertions.assertEquals(asByte(0xf, 0xf), (byte) 0xff);
+    Assertions.assertEquals(asByte(0xc, 0x5), (byte) 0xc5);
+  }
 }

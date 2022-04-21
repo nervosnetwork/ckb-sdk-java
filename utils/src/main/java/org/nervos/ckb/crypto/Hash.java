@@ -1,7 +1,6 @@
 package org.nervos.ckb.crypto;
 
 import org.bouncycastle.crypto.digests.Blake2bDigest;
-import org.nervos.ckb.utils.Numeric;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -12,18 +11,6 @@ public class Hash {
       "ckb-default-hash".getBytes(StandardCharsets.UTF_8);
 
   private Hash() {
-  }
-
-  /**
-   * Blake2b-256 hash function.
-   *
-   * @param hexInput hex encoded input data with optional 0x prefix
-   * @return hash value as hex encoded string
-   */
-  public static String blake2b(String hexInput) {
-    byte[] bytes = Numeric.hexStringToByteArray(hexInput);
-    byte[] result = blake2b(bytes);
-    return Numeric.toHexString(result);
   }
 
   /**
@@ -50,20 +37,6 @@ public class Hash {
    */
   public static byte[] blake2b(byte[] input) {
     return blake2b(input, 0, input.length);
-  }
-
-  /**
-   * Blake2b-256 hash function that operates on a UTF-8 encoded String.
-   *
-   * @param utf8String UTF-8 encoded string
-   * @return hash value as hex encoded string
-   */
-  public static String blake2bString(String utf8String) {
-    return Numeric.toHexString(blake2b(utf8String.getBytes(StandardCharsets.UTF_8)));
-  }
-
-  public static String blake160(String hexInput) {
-    return Numeric.cleanHexPrefix(Hash.blake2b(hexInput)).substring(0, 40);
   }
 
   public static byte[] blake160(byte[] input) {

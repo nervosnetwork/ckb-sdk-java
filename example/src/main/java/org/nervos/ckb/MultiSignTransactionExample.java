@@ -30,7 +30,7 @@ public class MultiSignTransactionExample {
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
   private static List<String> privateKeys;
-  private static List<String> publicKeys;
+  private static List<byte[]> publicKeys;
   private static Configuration configuration;
   private static SystemScriptCell systemMultiSigCell;
 
@@ -45,9 +45,9 @@ public class MultiSignTransactionExample {
 
     publicKeys =
         Arrays.asList(
-            "32edb83018b57ddeb9bcc7287c5cc5da57e6e0289d31c9e98cb361e88678d6288",
-            "33aeb3fdbfaac72e9e34c55884a401ee87115302c146dd9e314677d826375dc8f",
-            "29a685b8206550ea1b600e347f18fd6115bffe582089d3567bec7eba57d04df01");
+            Numeric.hexStringToByteArray("32edb83018b57ddeb9bcc7287c5cc5da57e6e0289d31c9e98cb361e88678d6288"),
+            Numeric.hexStringToByteArray("33aeb3fdbfaac72e9e34c55884a401ee87115302c146dd9e314677d826375dc8f"),
+            Numeric.hexStringToByteArray("29a685b8206550ea1b600e347f18fd6115bffe582089d3567bec7eba57d04df01"));
   }
 
   public static void main(String[] args) throws Exception {
@@ -121,7 +121,7 @@ public class MultiSignTransactionExample {
             Collections.singletonList(configuration.address()),
             txBuilder.buildTx(),
             feeRate,
-            configuration.serialize().length() + configuration.threshold * Sign.SIGN_LENGTH * 2);
+            configuration.serialize().length * 2 + configuration.threshold * Sign.SIGN_LENGTH * 2);
 
     // update change cell output capacity after collecting cells
     cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
@@ -142,7 +142,7 @@ public class MultiSignTransactionExample {
 
     Secp256k1MultisigAllBuilder signBuilder =
         new Secp256k1MultisigAllBuilder(
-            txBuilder.buildTx(), Numeric.hexStringToByteArray(configuration.serialize()));
+            txBuilder.buildTx(), configuration.serialize());
 
     for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
       signBuilder.sign(
@@ -161,16 +161,16 @@ public class MultiSignTransactionExample {
   public static Script generateLock() {
     return new Script(
         systemMultiSigCell.cellHash,
-        Numeric.hexStringToByteArray(Numeric.prependHexPrefix(configuration.blake160())),
+        configuration.blake160(),
         Script.HashType.TYPE);
   }
 
   static class Configuration {
     int requireN;
     int threshold;
-    List<String> publicKeys;
+    List<byte[]> publicKeys;
 
-    Configuration(int requireN, int threshold, List<String> publicKeys) throws IOException {
+    Configuration(int requireN, int threshold, List<byte[]> publicKeys) throws IOException {
       if (requireN < 0 || requireN > 255) {
         throw new IOException("requireN should be less than 256");
       }
@@ -185,21 +185,19 @@ public class MultiSignTransactionExample {
       this.publicKeys = publicKeys;
     }
 
-    String serialize() {
-      StringBuilder multiSigBuffer = new StringBuilder();
+    private byte[] serialize() {
       List<Byte> bytes = new ArrayList<>();
       bytes.addAll(Numeric.intToBytes(0));
       bytes.addAll(Numeric.intToBytes(requireN));
       bytes.addAll(Numeric.intToBytes(threshold));
       bytes.addAll(Numeric.intToBytes(publicKeys.size()));
-      multiSigBuffer.append(Numeric.toHexStringNoPrefix(Bytes.toArray(bytes)));
-      for (String publicKey : publicKeys) {
-        multiSigBuffer.append(Hash.blake160(publicKey));
+      for (byte[] publicKey : publicKeys) {
+        bytes.addAll(Bytes.asList(Hash.blake2b(publicKey)));
       }
-      return multiSigBuffer.toString();
+      return Bytes.toArray(bytes);
     }
 
-    public String blake160() {
+    public byte[] blake160() {
       return Hash.blake160(serialize());
     }
 
@@ -207,7 +205,7 @@ public class MultiSignTransactionExample {
       Script script =
           new Script(
               SystemContract.getSystemMultiSigCell(api).cellHash,
-              Numeric.hexStringToByteArray(blake160()),
+              blake160(),
               Script.HashType.TYPE);
       return AddressGenerator.generate(Network.TESTNET, script);
     }

@@ -1,7 +1,6 @@
 package org.nervos.ckb.crypto;
 
 import org.bouncycastle.crypto.digests.Blake2bDigest;
-import org.nervos.ckb.utils.Numeric;
 
 public class Blake2b {
 
@@ -23,9 +22,5 @@ public class Blake2b {
       blake2bDigest.doFinal(out, 0);
     }
     return out;
-  }
-
-  public String doFinalString() {
-    return Numeric.toHexString(doFinalBytes());
   }
 }

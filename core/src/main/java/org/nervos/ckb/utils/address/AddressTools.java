@@ -122,7 +122,8 @@ public class AddressTools {
     if (!AddressUtils.validatePublicKeyHex(publicKey, true)) {
       throw new IllegalArgumentException("Not a valid compressed public key in hex");
     }
-    byte[] blake160 = Numeric.hexStringToByteArray(Hash.blake160(publicKey));
+    byte[] publicKeyBytes = Numeric.hexStringToByteArray(publicKey);
+    byte[] blake160 = Hash.blake160(publicKeyBytes);
     AddressUtils utils = new AddressUtils(network, CodeHashType.BLAKE160);
     return utils.generate(blake160);
   }

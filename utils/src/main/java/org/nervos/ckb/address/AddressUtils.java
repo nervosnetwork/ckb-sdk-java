@@ -55,13 +55,6 @@ public class AddressUtils {
     }
   }
 
-  public String generateFromPublicKey(String publicKey) throws AddressFormatException {
-    if (!validatePublicKeyHex(publicKey, true)) {
-      throw new IllegalArgumentException("Not a valid compressed public key in hex");
-    }
-    return generate(Numeric.hexStringToByteArray(Hash.blake160(publicKey)));
-  }
-
   public String generateFromPublicKey(byte[] publicKey) throws AddressFormatException {
     return generate(Hash.blake160(publicKey));
   }

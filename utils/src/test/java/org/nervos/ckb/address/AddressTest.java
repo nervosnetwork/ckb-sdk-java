@@ -2,19 +2,11 @@ package org.nervos.ckb.address;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Numeric;
 
 public class AddressTest {
-
-  @Test
-  public void testPublicKeyHash() {
-    String hash =
-        Hash.blake160("0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
-    Assertions.assertEquals("36c329ed630d6ce750712a477543672adab57f4c", hash);
-  }
 
   @Test
   public void testAddressAscii() {
@@ -60,26 +52,6 @@ public class AddressTest {
     AddressUtils utils = new AddressUtils(Network.MAINNET, CodeHashType.BLAKE160);
     String actual = utils.generate(args);
     Assertions.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void testPublicKeyHashToAddressTestnet() {
-    AddressUtils utils = new AddressUtils(Network.TESTNET);
-    Assertions.assertEquals(
-        "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83",
-        utils.generateFromPublicKey(
-            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
-  }
-
-  @Test
-  public void testPublicKeyHashToAddressMainnet() {
-    System.out.println(
-        "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01".length());
-    AddressUtils utils = new AddressUtils(Network.MAINNET);
-    Assertions.assertEquals(
-        "ckb1qyqrdsefa43s6m882pcj53m4gdnj4k440axqdt9rtd",
-        utils.generateFromPublicKey(
-            "0x024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01"));
   }
 
   @Test
