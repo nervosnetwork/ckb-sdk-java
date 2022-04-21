@@ -59,7 +59,7 @@ public class PwSigner implements ScriptSigner {
 
     byte[] digest = keccak256.doFinalBytes();
 
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+    ECKeyPair ecKeyPair = ECKeyPair.create(privateKey);
     byte[] signature = ethereumPersonalSign(digest, ecKeyPair);
 
     int index = scriptGroup.getInputIndices().get(0);
@@ -90,8 +90,9 @@ public class PwSigner implements ScriptSigner {
     }
     String scriptArgsHex = Numeric.toHexString(scriptArgs);
     Keccak256 keccak256 = new Keccak256();
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
-    keccak256.update(ecKeyPair.getPublicKeyBytes());
+    ECKeyPair ecKeyPair = ECKeyPair.create(privateKey);
+    byte[] encodedPublicKey = ecKeyPair.getEncodedPublicKey(false);
+    keccak256.update(Arrays.copyOfRange(encodedPublicKey, 1, encodedPublicKey.length));
     byte[] publicKeyHash = keccak256.doFinalBytes();
 
     byte[] ethereumAddress =

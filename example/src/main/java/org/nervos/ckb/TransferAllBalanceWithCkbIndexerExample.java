@@ -44,7 +44,7 @@ public class TransferAllBalanceWithCkbIndexerExample {
   public static void main(String[] args) throws Exception {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     for (int i = 0; i < SendAddresses.size() - 1; i++) {
-      String testPublicKey = ECKeyPair.publicKeyFromPrivate(SendPrivateKeys.get(i));
+      byte[] testPublicKey = ECKeyPair.create(SendPrivateKeys.get(i)).getEncodedPublicKey(true);
       String address = SendAddresses.get(i);
       if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
         System.out.println("Private key and address " + address + " are not matched");

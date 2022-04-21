@@ -15,7 +15,6 @@ import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.utils.Numeric;
 
 import java.math.BigInteger;
-import java.security.SignatureException;
 import java.util.Arrays;
 
 import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
@@ -50,7 +49,7 @@ public class Sign {
   }
 
   public static SignatureData signMessage(byte[] message, ECKeyPair keyPair, boolean isHash) {
-    BigInteger publicKey = keyPair.getPublicKey();
+    ECKeyPair.Point publicKey = keyPair.getPublicKey();
 
     byte[] messageHash = isHash ? Hash.blake2b(message) : message;
 
@@ -58,7 +57,7 @@ public class Sign {
     // Now we have to work backwards to figure out the recId needed to recover the signature.
     int recId = -1;
     for (int i = 0; i < 4; i++) {
-      BigInteger k = recoverFromSignature(i, sig, messageHash);
+      ECKeyPair.Point k = recoverFromSignature(i, sig, messageHash);
       if (k != null && k.equals(publicKey)) {
         recId = i;
         break;
@@ -99,7 +98,7 @@ public class Sign {
    * @param message Hash of the data that was signed.
    * @return An ECKey containing only the public part, or null if recovery wasn't possible.
    */
-  private static BigInteger recoverFromSignature(int recId, ECDSASignature sig, byte[] message) {
+  private static ECKeyPair.Point recoverFromSignature(int recId, ECDSASignature sig, byte[] message) {
     verifyPrecondition(recId >= 0, "recId must be positive");
     verifyPrecondition(sig.r.signum() >= 0, "r must be positive");
     verifyPrecondition(sig.s.signum() >= 0, "s must be positive");
@@ -154,7 +153,7 @@ public class Sign {
 
     byte[] qBytes = q.getEncoded(false);
     // We remove the prefix
-    return new BigInteger(1, Arrays.copyOfRange(qBytes, 1, qBytes.length));
+    return ECKeyPair.Point.decode(qBytes);
   }
 
   /** Decompress a compressed public key (x co-ord and low-bit of y-coord). */
@@ -163,45 +162,6 @@ public class Sign {
     byte[] compEnc = x9.integerToBytes(xBN, 1 + x9.getByteLength(CURVE.getCurve()));
     compEnc[0] = (byte) (yBit ? 0x03 : 0x02);
     return CURVE.getCurve().decodePoint(compEnc);
-  }
-
-  /**
-   * Given an arbitrary piece of text and an message signature encoded in bytes, returns the public
-   * key that was used to sign it. This can then be compared to the expected public key to determine
-   * if the signature was correct.
-   *
-   * @param message       RLP encoded message.
-   * @param signatureData The message signature components
-   * @return the public key used to sign the message
-   * @throws SignatureException If the public key could not be recovered or if there was a signature
-   *                            formatTx error.
-   */
-  public static BigInteger signedMessageToKey(byte[] message, SignatureData signatureData)
-      throws SignatureException {
-
-    byte[] r = signatureData.getR();
-    byte[] s = signatureData.getS();
-    verifyPrecondition(r != null && r.length == 32, "r must be 32 bytes");
-    verifyPrecondition(s != null && s.length == 32, "s must be 32 bytes");
-
-    int header = signatureData.getV() & 0xFF;
-    // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
-    //                  0x1D = second key with even y, 0x1E = second key with odd y
-    if (header > 7) {
-      throw new SignatureException("Header byte out of range: " + header);
-    }
-
-    ECDSASignature sig =
-        new ECDSASignature(
-            new BigInteger(1, signatureData.getR()), new BigInteger(1, signatureData.getS()));
-
-    byte[] messageHash = Hash.blake2b(message);
-    int recId = header;
-    BigInteger key = recoverFromSignature(recId, sig, messageHash);
-    if (key == null) {
-      throw new SignatureException("Could not recover public key from signature");
-    }
-    return key;
   }
 
   /**

@@ -46,7 +46,7 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
 
   public boolean signScriptGroup(
       Transaction transaction, ScriptGroup scriptGroup, String privateKey) {
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, false);
+    ECKeyPair ecKeyPair = ECKeyPair.create(privateKey);
 
     byte[] txHash = transaction.computeHash();
     List<byte[]> witnesses = transaction.witnesses;
@@ -80,8 +80,8 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
       return false;
     }
     String scriptArgsHex = Numeric.toHexString(scriptArgs);
-    ECKeyPair ecKeyPair = ECKeyPair.createWithPrivateKey(privateKey, true);
-    byte[] publicKeyHash = Hash.blake160(ecKeyPair.getPublicKeyBytes());
+    ECKeyPair ecKeyPair = ECKeyPair.create(privateKey);
+    byte[] publicKeyHash = Hash.blake160(ecKeyPair.getEncodedPublicKey(true));
     byte[] scriptArgsBytes = Numeric.hexStringToByteArray(scriptArgsHex);
     return Arrays.equals(scriptArgsBytes, publicKeyHash);
   }
