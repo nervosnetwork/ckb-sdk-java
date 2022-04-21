@@ -3,8 +3,8 @@ package org.nervos.ckb.type;
 import com.google.gson.annotations.SerializedName;
 
 public enum ScriptType {
-  @SerializedName("lock")
+  @SerializedName("LOCK")
   LOCK,
-  @SerializedName("type")
+  @SerializedName("TYPE")
   TYPE
 }

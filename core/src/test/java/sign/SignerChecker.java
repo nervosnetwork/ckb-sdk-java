@@ -2,6 +2,7 @@ package sign;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
@@ -28,7 +29,7 @@ public class SignerChecker {
 
   private static SignerChecker fromFile(String fileName) {
     try (Reader reader = readTransactionJsonFile(fileName)) {
-      Gson gson = new Gson();
+      Gson gson = GsonFactory.create();
       return gson.fromJson(reader, SignerChecker.class);
     } catch (IOException ex) {
       ex.printStackTrace();

@@ -79,7 +79,7 @@ public class TransactionSigner {
     for (int i = 0; i < scriptGroups.size(); i++) {
       ScriptGroup group = scriptGroups.get(i);
       if (!isValidScriptGroup(group)) {
-        continue;
+        throw new IllegalArgumentException("invalid script group at index " + i);
       }
 
       Script script = group.getScript();
@@ -141,15 +141,19 @@ public class TransactionSigner {
     public boolean equals(Object o) {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
+
       Key key = (Key) o;
-      return codeHash.equals(key.codeHash)
-          && hashType.equals(key.hashType)
-          && scriptType == key.scriptType;
+      if (!Arrays.equals(codeHash, key.codeHash)) return false;
+      if (hashType != key.hashType) return false;
+      return scriptType == key.scriptType;
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(codeHash, hashType, scriptType);
+      int result = Arrays.hashCode(codeHash);
+      result = 31 * result + hashType.hashCode();
+      result = 31 * result + scriptType.hashCode();
+      return result;
     }
   }
 }
