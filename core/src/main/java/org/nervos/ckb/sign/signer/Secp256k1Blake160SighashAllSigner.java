@@ -8,8 +8,9 @@ import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.fixed.UInt64;
+import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 
 import java.util.Arrays;
@@ -54,12 +55,12 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
 
     for (int i : scriptGroup.getInputIndices()) {
       byte[] witness = witnesses.get(i);
-      blake2b.update(new UInt64(witness.length).toBytes());
+      blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
       blake2b.update(witness);
     }
     for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
       byte[] witness = witnesses.get(i);
-      blake2b.update(new UInt64(witness.length).toBytes());
+      blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
       blake2b.update(witness);
     }
 
@@ -67,22 +68,9 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
     byte[] signature = Sign.signMessage(message, ecKeyPair).getSignature();
 
     int index = scriptGroup.getInputIndices().get(0);
-    // TODO: need parsing from witnessArgs but not replace in place
-    byte[] witness = witnesses.get(index);
-    byte[] finalWitness = new byte[witnesses.get(index).length + SIGNATURE_LENGTH_IN_BYTE];
-    int pos = 0;
-    System.arraycopy(witness, 0, finalWitness, 0, WITNESS_OFFSET_IN_BYTE);
-    pos += WITNESS_OFFSET_IN_BYTE;
-    System.arraycopy(signature, 0, finalWitness, pos, SIGNATURE_LENGTH_IN_BYTE);
-    pos += SIGNATURE_LENGTH_IN_BYTE;
-    System.arraycopy(
-        witness,
-        WITNESS_OFFSET_IN_BYTE,
-        finalWitness,
-        pos,
-        witness.length - WITNESS_OFFSET_IN_BYTE);
-
-    witnesses.set(index, finalWitness);
+    WitnessArgs witnessArgs = WitnessArgs.unpack(witnesses.get(index));
+    witnessArgs.setLock(signature);
+    witnesses.set(index, witnessArgs.pack().toByteArray());
     return true;
   }
 
