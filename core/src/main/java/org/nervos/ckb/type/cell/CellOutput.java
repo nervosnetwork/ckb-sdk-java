@@ -38,8 +38,8 @@ public class CellOutput {
     return byteSize;
   }
 
-  public org.nervos.ckb.newtype.concrete.CellOutput pack() {
-    return org.nervos.ckb.newtype.concrete.CellOutput.builder()
+  public org.nervos.ckb.type.concrete.CellOutput pack() {
+    return org.nervos.ckb.type.concrete.CellOutput.builder()
         .setLock(lock.pack())
         .setType(type == null ? null : type.pack())
         .setCapacity(packUint64(capacity))

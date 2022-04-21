@@ -1,6 +1,6 @@
 package org.nervos.ckb.utils;
 
-import org.nervos.ckb.newtype.concrete.*;
+import org.nervos.ckb.type.concrete.*;
 
 import java.math.BigInteger;
 import java.util.List;

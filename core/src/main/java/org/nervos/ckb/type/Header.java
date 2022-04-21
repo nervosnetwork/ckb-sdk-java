@@ -34,8 +34,8 @@ public class Header {
     return rawHeader;
   }
 
-  public org.nervos.ckb.newtype.concrete.Header pack() {
-    return org.nervos.ckb.newtype.concrete.Header.builder()
+  public org.nervos.ckb.type.concrete.Header pack() {
+    return org.nervos.ckb.type.concrete.Header.builder()
         .setRaw(getRawHeader().pack())
         .setNonce(packUint128(nonce))
         .build();

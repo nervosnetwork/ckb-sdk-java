@@ -16,8 +16,8 @@ public class RawTransaction {
   public List<CellOutput> outputs;
   public List<byte[]> outputsData;
 
-  public org.nervos.ckb.newtype.concrete.RawTransaction pack() {
-    return org.nervos.ckb.newtype.concrete.RawTransaction.builder()
+  public org.nervos.ckb.type.concrete.RawTransaction pack() {
+    return org.nervos.ckb.type.concrete.RawTransaction.builder()
         .setVersion(packUint32(version))
         .setCellDeps(packCellDepVec(cellDeps))
         .setHeaderDeps(packByte32Vec(headerDeps))

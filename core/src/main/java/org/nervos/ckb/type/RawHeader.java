@@ -15,9 +15,9 @@ public class RawHeader {
   public byte[] extraHash;
   public int version;
 
-  public org.nervos.ckb.newtype.concrete.RawHeader pack() {
-    org.nervos.ckb.newtype.concrete.RawHeader header =
-        org.nervos.ckb.newtype.concrete.RawHeader.builder()
+  public org.nervos.ckb.type.concrete.RawHeader pack() {
+    org.nervos.ckb.type.concrete.RawHeader header =
+        org.nervos.ckb.type.concrete.RawHeader.builder()
             .setVersion(packUint32(version))
             .setCompactTarget(packUint32(compactTarget))
             .setTimestamp(packUint64(timestamp))

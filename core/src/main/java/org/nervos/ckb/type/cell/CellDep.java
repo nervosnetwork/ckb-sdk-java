@@ -20,8 +20,8 @@ public class CellDep {
     this.depType = DepType.CODE;
   }
 
-  public org.nervos.ckb.newtype.concrete.CellDep pack() {
-    return org.nervos.ckb.newtype.concrete.CellDep.builder()
+  public org.nervos.ckb.type.concrete.CellDep pack() {
+    return org.nervos.ckb.type.concrete.CellDep.builder()
         .setOutPoint(outPoint.pack())
         .setDepType(depType.pack())
         .build();

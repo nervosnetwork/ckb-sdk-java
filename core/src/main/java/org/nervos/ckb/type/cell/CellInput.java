@@ -20,8 +20,8 @@ public class CellInput {
     this(previousOutput, 0);
   }
 
-  public org.nervos.ckb.newtype.concrete.CellInput pack() {
-    return org.nervos.ckb.newtype.concrete.CellInput.builder()
+  public org.nervos.ckb.type.concrete.CellInput pack() {
+    return org.nervos.ckb.type.concrete.CellInput.builder()
         .setSince(packUint64(since))
         .setPreviousOutput(previousOutput.pack())
         .build();

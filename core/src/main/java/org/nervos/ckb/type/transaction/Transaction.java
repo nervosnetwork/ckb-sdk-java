@@ -93,8 +93,8 @@ public class Transaction {
     return rawTransaction;
   }
 
-  public org.nervos.ckb.newtype.concrete.Transaction pack() {
-    return org.nervos.ckb.newtype.concrete.Transaction.builder()
+  public org.nervos.ckb.type.concrete.Transaction pack() {
+    return org.nervos.ckb.type.concrete.Transaction.builder()
         .setRaw(getRawTransaction().pack())
         .setWitnesses(packBytesVec(witnesses))
         .build();
