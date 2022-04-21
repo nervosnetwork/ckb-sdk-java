@@ -277,6 +277,8 @@ public class NervosDaoExample {
             Collections.singletonList(new byte[]{}),
             Collections.singletonList(new Witness(new byte[0], NERVOS_DAO_DATA, new byte[0])));
 
-    return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));
+    // TODO: fix tx sign
+    //    return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));
+    return null;
   }
 }
