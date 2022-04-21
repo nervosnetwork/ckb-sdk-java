@@ -7,8 +7,6 @@ import org.nervos.ckb.utils.Numeric;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
-import java.util.Arrays;
-import java.util.Objects;
 
 import static org.nervos.ckb.crypto.secp256k1.Sign.CURVE;
 
@@ -72,69 +70,21 @@ public class ECKeyPair {
     return create(Numeric.toBigInt(privateKey));
   }
 
-  // TODO: remove
-  public static String publicKeyFromPrivate(String privateKeyHex) {
-    return '0' + publicKeyFromPrivate(Numeric.toBigInt(privateKeyHex), true).toString(16);
-  }
-
-  /**
-   * Returns public key from the given private key.
-   *
-   * @param privateKey the private key to derive the public key from
-   * @return BigInteger encoded public key
-   */
-  // TODO: remove
-  public static BigInteger publicKeyFromPrivate(BigInteger privateKey, boolean compressed) {
-    ECPoint point = publicPointFromPrivate(privateKey);
-
-    byte[] encoded = point.getEncoded(compressed);
-    return new BigInteger(1, Arrays.copyOfRange(encoded, compressed ? 0 : 1, encoded.length));
-  }
-
-  /** Returns public key point from the given private key. */
-  // TODO: remove
-  private static ECPoint publicPointFromPrivate(BigInteger privateKey) {
-    if (privateKey.bitLength() > CURVE.getN().bitLength()) {
-      privateKey = privateKey.mod(CURVE.getN());
-    }
-    return new FixedPointCombMultiplier().multiply(CURVE.getG(), privateKey);
-  }
-
-  // See: https://stackoverflow.com/questions/4407779/biginteger-to-byte
-  // TODO: remove
-  public byte[] getPublicKeyBytes() {
-    //    byte[] array = publicKey.toByteArray();
-    byte[] array = new byte[10];
-    if (array[0] == 0) {
-      byte[] tmp = new byte[array.length - 1];
-      System.arraycopy(array, 1, tmp, 0, tmp.length);
-      array = tmp;
-    }
-    return array;
-  }
-
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
     ECKeyPair ecKeyPair = (ECKeyPair) o;
 
-    if (!Objects.equals(privateKey, ecKeyPair.privateKey)) {
-      return false;
-    }
-
-    return Objects.equals(publicKey, ecKeyPair.publicKey);
+    if (!privateKey.equals(ecKeyPair.privateKey)) return false;
+    return publicKey.equals(ecKeyPair.publicKey);
   }
 
   @Override
   public int hashCode() {
-    int result = privateKey != null ? privateKey.hashCode() : 0;
-    result = 31 * result + (publicKey != null ? publicKey.hashCode() : 0);
+    int result = privateKey.hashCode();
+    result = 31 * result + publicKey.hashCode();
     return result;
   }
 

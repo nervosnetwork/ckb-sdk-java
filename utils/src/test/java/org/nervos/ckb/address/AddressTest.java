@@ -86,7 +86,7 @@ public class AddressTest {
   public void testPrivateKeyHashToAddressTestnet() {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     String privateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-    String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey);
+    byte[] publicKey = ECKeyPair.create(privateKey).getEncodedPublicKey(true);
     Assertions.assertEquals(
         "ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83", utils.generateFromPublicKey(publicKey));
   }

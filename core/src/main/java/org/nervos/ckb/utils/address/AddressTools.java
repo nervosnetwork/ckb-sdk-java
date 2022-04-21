@@ -41,8 +41,8 @@ public class AddressTools {
     ECKeyPair ecKeyPair = Keys.createEcKeyPair();
 
     String privateKey = Numeric.toHexStringNoPrefix(ecKeyPair.getPrivateKey());
-    String publicKey = ECKeyPair.publicKeyFromPrivate(privateKey);
-    byte[] blake160 = Numeric.hexStringToByteArray(Hash.blake160(publicKey));
+    byte[] publicKey = ECKeyPair.create(privateKey).getEncodedPublicKey(true);
+    byte[] blake160 = Hash.blake160(publicKey);
 
     AddressUtils utils = new AddressUtils(network, CodeHashType.BLAKE160);
     String addresss = utils.generate(blake160);

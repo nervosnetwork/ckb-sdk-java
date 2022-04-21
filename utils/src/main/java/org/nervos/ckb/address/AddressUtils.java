@@ -62,6 +62,10 @@ public class AddressUtils {
     return generate(Numeric.hexStringToByteArray(Hash.blake160(publicKey)));
   }
 
+  public String generateFromPublicKey(byte[] publicKey) throws AddressFormatException {
+    return generate(Hash.blake160(publicKey));
+  }
+
   public static boolean validatePublicKeyHex(String publicKey, boolean compressed) {
     publicKey = Numeric.cleanHexPrefix(publicKey);
     if (publicKey.matches("^[0-9a-fA-F]+") == false) {
