@@ -1,5 +1,6 @@
 package org.nervos.ckb;
 
+import com.google.common.primitives.Bytes;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
@@ -167,7 +168,7 @@ public class ACPTransactionExample {
     txBuilder.addOutputs(cellOutputs);
 
     byte[] SUDTAmountBytes = api.getLiveCell(acpOutPoint, true).cell.data.content;
-    // TODO: reverse SUDTAmountBytes (little endian)
+    Bytes.reverse(SUDTAmountBytes);
     BigInteger acpOutputSUDTAmount = Numeric.toBigInt(SUDTAmountBytes).add(sudtAmount);
 
     List<byte[]> outputsData = new ArrayList<>();
@@ -204,9 +205,8 @@ public class ACPTransactionExample {
         //        String cellData =
         //            Numeric.toHexStringNoPrefix();
         if (cellData.length < 32) continue;
-
         SUDTAmountBytes = Arrays.copyOfRange(cellData, 0, 32);
-        // TODO: reverse SUDTAmountBytes (little endian)
+        Bytes.reverse(SUDTAmountBytes);
         inputSUDTAmount =
             inputSUDTAmount.add(Numeric.toBigInt(SUDTAmountBytes)); // sudt amount: 16bytes
       }
