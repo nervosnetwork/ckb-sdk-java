@@ -3,13 +3,7 @@ package utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.WitnessArgs;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 

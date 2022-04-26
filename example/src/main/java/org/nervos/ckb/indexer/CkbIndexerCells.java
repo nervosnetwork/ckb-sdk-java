@@ -1,7 +1,7 @@
 package org.nervos.ckb.indexer;
 
+import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.cell.CellOutput;
 
 import java.util.List;
 

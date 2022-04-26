@@ -57,7 +57,7 @@ public class MoleculeConverter {
     return Byte32Vec.builder().add(arr).build();
   }
 
-  public static CellInputVec packCellInputVec(List<org.nervos.ckb.type.cell.CellInput> in) {
+  public static CellInputVec packCellInputVec(List<org.nervos.ckb.type.CellInput> in) {
     CellInput[] arr = new CellInput[in.size()];
     for (int i = 0; i < in.size(); i++) {
       arr[i] = in.get(i).pack();
@@ -65,7 +65,7 @@ public class MoleculeConverter {
     return CellInputVec.builder().add(arr).build();
   }
 
-  public static CellOutputVec packCellOutputVec(List<org.nervos.ckb.type.cell.CellOutput> in) {
+  public static CellOutputVec packCellOutputVec(List<org.nervos.ckb.type.CellOutput> in) {
     CellOutput[] arr = new CellOutput[in.size()];
     for (int i = 0; i < in.size(); i++) {
       arr[i] = in.get(i).pack();
@@ -73,7 +73,7 @@ public class MoleculeConverter {
     return CellOutputVec.builder().add(arr).build();
   }
 
-  public static CellDepVec packCellDepVec(List<org.nervos.ckb.type.cell.CellDep> in) {
+  public static CellDepVec packCellDepVec(List<org.nervos.ckb.type.CellDep> in) {
     CellDep[] arr = new CellDep[in.size()];
     for (int i = 0; i < in.size(); i++) {
       arr[i] = in.get(i).pack();

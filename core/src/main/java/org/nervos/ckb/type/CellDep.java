@@ -1,7 +1,6 @@
-package org.nervos.ckb.type.cell;
+package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
-import org.nervos.ckb.type.OutPoint;
 
 public class CellDep {
   public OutPoint outPoint;

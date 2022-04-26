@@ -3,9 +3,9 @@ package org.nervos.ckb.indexer;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
 import org.nervos.ckb.transaction.CollectResult;
+import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 

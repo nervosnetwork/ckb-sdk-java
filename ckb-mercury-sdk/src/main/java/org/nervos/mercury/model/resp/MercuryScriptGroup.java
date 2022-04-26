@@ -1,6 +1,6 @@
 package org.nervos.mercury.model.resp;
 
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.mercury.model.resp.signature.SignatureAction;
 
 import java.util.ArrayList;

@@ -1,8 +1,4 @@
-package org.nervos.ckb.type.transaction;
-
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
+package org.nervos.ckb.type;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 
 public class AcpSigner implements ScriptSigner {
   private Secp256k1Blake160SighashAllSigner secp256K1Blake160SighashAllSigner =

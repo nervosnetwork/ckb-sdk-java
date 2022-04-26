@@ -1,6 +1,6 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.type.cell.CellInput;
+import org.nervos.ckb.type.CellInput;
 
 import java.util.List;
 

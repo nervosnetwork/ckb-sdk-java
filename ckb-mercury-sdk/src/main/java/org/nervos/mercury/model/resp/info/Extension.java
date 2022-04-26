@@ -1,7 +1,7 @@
 package org.nervos.mercury.model.resp.info;
 
+import org.nervos.ckb.type.CellDep;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.cell.CellDep;
 
 import java.util.List;
 

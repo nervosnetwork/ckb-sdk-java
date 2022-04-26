@@ -1,6 +1,6 @@
 package org.nervos.ckb.utils;
 
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 
 public class Calculator {
   // 4 bytes for the tx offset cost with molecule vector (transactions)

@@ -1,6 +1,4 @@
-package org.nervos.ckb.type.cell;
-
-import org.nervos.ckb.type.OutPoint;
+package org.nervos.ckb.type;
 
 import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
 

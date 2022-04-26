@@ -4,7 +4,7 @@ import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import constant.UdtHolder;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.TransferPayloadBuilder;

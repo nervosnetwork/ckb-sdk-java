@@ -7,8 +7,8 @@ import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.WitnessArgs;
-import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.MoleculeConverter;
 
 import java.nio.charset.StandardCharsets;

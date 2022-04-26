@@ -1,4 +1,4 @@
-package org.nervos.ckb.type.cell;
+package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -23,6 +23,6 @@ public class CellWithStatus {
     @SerializedName("dead")
     DEAD,
     @SerializedName("unknown")
-    UNKNOWN;
+    UNKNOWN
   }
 }

@@ -1,11 +1,6 @@
-package org.nervos.ckb.type.transaction;
+package org.nervos.ckb.type;
 
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
 
 import java.util.ArrayList;
 import java.util.List;

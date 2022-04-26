@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.type.Header;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.WitnessArgs;
-import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 import java.io.IOException;

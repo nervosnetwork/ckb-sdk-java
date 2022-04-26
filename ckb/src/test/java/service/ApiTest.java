@@ -9,9 +9,6 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.param.OutputsValidator;
-import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
 import java.io.IOException;

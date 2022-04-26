@@ -2,10 +2,10 @@ package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.CellDep;
+import org.nervos.ckb.type.CellInput;
+import org.nervos.ckb.type.CellOutput;
+import org.nervos.ckb.type.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collections;

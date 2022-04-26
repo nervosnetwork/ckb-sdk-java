@@ -1,6 +1,6 @@
 package utils;
 
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 public class SignUtils {

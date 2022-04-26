@@ -2,7 +2,7 @@ package org.nervos.ckb.sign;
 
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;

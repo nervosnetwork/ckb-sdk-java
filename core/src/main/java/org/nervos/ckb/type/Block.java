@@ -1,7 +1,5 @@
 package org.nervos.ckb.type;
 
-import org.nervos.ckb.type.transaction.Transaction;
-
 import java.util.List;
 
 public class Block {

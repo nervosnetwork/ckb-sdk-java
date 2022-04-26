@@ -3,7 +3,7 @@ package org.nervos.api.mercury;
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.mercury.model.DaoClaimPayloadBuilder;
 import org.nervos.mercury.model.DaoDepositPayloadBuilder;

@@ -1,11 +1,7 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressParseResult;

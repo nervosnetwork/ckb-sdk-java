@@ -1,4 +1,4 @@
-package org.nervos.ckb.type.transaction;
+package org.nervos.ckb.type;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -21,6 +21,6 @@ public class TransactionWithStatus {
     @SerializedName("unknown")
     UNKNOWN,
     @SerializedName("rejected")
-    REJECTED;
+    REJECTED
   }
 }

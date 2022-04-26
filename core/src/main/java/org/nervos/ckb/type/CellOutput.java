@@ -1,6 +1,5 @@
-package org.nervos.ckb.type.cell;
+package org.nervos.ckb.type;
 
-import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Utils;
 
 import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
