@@ -24,15 +24,15 @@ import static org.nervos.ckb.crypto.secp256k1.Sign.CURVE;
  *
  * https://github.com/web3j/web3j/blob/master/crypto/src/main/java/org/web3j/crypto/ECKeyPair.java
  */
-
 public class ECKeyPair {
   public static final int PRIVATE_KEY_SIZE = 32;
   private final BigInteger privateKey;
-  private final Point publicKey;
+  private final BigInteger publicKey;
 
   public ECKeyPair(BigInteger privateKey) {
     this.privateKey = privateKey;
-    this.publicKey = Point.fromPrivateKey(privateKey);
+    byte[] encoded = publicKeyFromPrivate(privateKey, true);
+    this.publicKey = new BigInteger(1, encoded);
   }
 
   public BigInteger getPrivateKey() {
@@ -44,15 +44,15 @@ public class ECKeyPair {
     return encoded;
   }
 
-  public Point getPublicKey() {
+  public BigInteger getPublicKey() {
     return publicKey;
   }
 
   public byte[] getEncodedPublicKey(boolean compressed) {
-    return publicKey.encode(compressed);
+    return publicKeyFromPrivate(privateKey, compressed);
   }
 
-  public static ECKeyPair createWithKeyPair(KeyPair keyPair) {
+  public static ECKeyPair create(KeyPair keyPair) {
     BCECPrivateKey privateKey = (BCECPrivateKey) keyPair.getPrivate();
     BigInteger privateKeyValue = privateKey.getD();
     return new ECKeyPair(privateKeyValue);
@@ -70,15 +70,34 @@ public class ECKeyPair {
     return create(Numeric.toBigInt(privateKey));
   }
 
+  /**
+   * Returns public key from the given private key.
+   *
+   * @param privateKey the private key to derive the public key from
+   * @return byte array encoded public key
+   */
+  public static byte[] publicKeyFromPrivate(BigInteger privateKey, boolean compressed) {
+    ECPoint point = publicPointFromPrivate(privateKey);
+    return point.getEncoded(compressed);
+  }
+
+  /** Returns public key point from the given private key. */
+  private static ECPoint publicPointFromPrivate(BigInteger privateKey) {
+    if (privateKey.bitLength() > CURVE.getN().bitLength()) {
+      privateKey = privateKey.mod(CURVE.getN());
+    }
+    return new FixedPointCombMultiplier().multiply(CURVE.getG(), privateKey);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ECKeyPair ecKeyPair = (ECKeyPair) o;
+    ECKeyPair keyPair = (ECKeyPair) o;
 
-    if (!privateKey.equals(ecKeyPair.privateKey)) return false;
-    return publicKey.equals(ecKeyPair.publicKey);
+    if (!privateKey.equals(keyPair.privateKey)) return false;
+    return publicKey.equals(keyPair.publicKey);
   }
 
   @Override
@@ -87,80 +106,4 @@ public class ECKeyPair {
     result = 31 * result + publicKey.hashCode();
     return result;
   }
-
-  public static class Point {
-    ECPoint point;
-
-    public Point(BigInteger x, BigInteger y) {
-      this.point = CURVE.getCurve().createPoint(x, y);
-    }
-
-    public Point(ECPoint point) {
-      this.point = point;
-    }
-
-    public ECPoint getECPoint() {
-      return point;
-    }
-
-    /**
-     * Encode the point itself to byte array representation.
-     *
-     * @param compressed whether the returned byte array is uncompressed (0x04 prefix) or compressed (0x02 or 0x03 prefix) form.
-     * @return the encoded byte array
-     */
-    public byte[] encode(boolean compressed) {
-      return point.getEncoded(compressed);
-    }
-
-    /**
-     * Encode byte array to Point.
-     *
-     * @param encoded compressed or uncompressed byte array representing the point.
-     * @return the decoded Point.
-     */
-    public static Point decode(byte[] encoded) {
-      ECPoint point = CURVE.getCurve().decodePoint(encoded);
-      return new Point(point);
-    }
-
-    /**
-     * Returns public key from the given private key.
-     *
-     * @param privateKey the private key to derive the public key from
-     * @return Point public key
-     */
-    public static Point fromPrivateKey(BigInteger privateKey) {
-      /*
-       * TODO: FixedPointCombMultiplier currently doesn't support scalars longer than the group
-       * order, but that could change in future versions.
-       */
-      if (privateKey.bitLength() > CURVE.getN().bitLength()) {
-        privateKey = privateKey.mod(CURVE.getN());
-      }
-      ECPoint point = new FixedPointCombMultiplier().multiply(CURVE.getG(), privateKey);
-      return new Point(point);
-    }
-
-    @Override
-    public String toString() {
-      return Numeric.toHexString(encode(false));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-
-      Point point1 = (Point) o;
-
-      return point.equals(point1.point);
-    }
-
-    @Override
-    public int hashCode() {
-      return point.hashCode();
-    }
-  }
-
 }

@@ -49,7 +49,7 @@ public class Sign {
   }
 
   public static SignatureData signMessage(byte[] message, ECKeyPair keyPair, boolean isHash) {
-    ECKeyPair.Point publicKey = keyPair.getPublicKey();
+    BigInteger publicKey = keyPair.getPublicKey();
 
     byte[] messageHash = isHash ? Hash.blake2b(message) : message;
 
@@ -57,7 +57,7 @@ public class Sign {
     // Now we have to work backwards to figure out the recId needed to recover the signature.
     int recId = -1;
     for (int i = 0; i < 4; i++) {
-      ECKeyPair.Point k = recoverFromSignature(i, sig, messageHash);
+      BigInteger k = recoverFromSignature(i, sig, messageHash);
       if (k != null && k.equals(publicKey)) {
         recId = i;
         break;
@@ -98,7 +98,7 @@ public class Sign {
    * @param message Hash of the data that was signed.
    * @return An ECKey containing only the public part, or null if recovery wasn't possible.
    */
-  private static ECKeyPair.Point recoverFromSignature(int recId, ECDSASignature sig, byte[] message) {
+  private static BigInteger recoverFromSignature(int recId, ECDSASignature sig, byte[] message) {
     verifyPrecondition(recId >= 0, "recId must be positive");
     verifyPrecondition(sig.r.signum() >= 0, "r must be positive");
     verifyPrecondition(sig.s.signum() >= 0, "s must be positive");
@@ -151,9 +151,8 @@ public class Sign {
     BigInteger eInvrInv = rInv.multiply(eInv).mod(n);
     ECPoint q = ECAlgorithms.sumOfTwoMultiplies(CURVE.getG(), eInvrInv, R, srInv);
 
-    byte[] qBytes = q.getEncoded(false);
-    // We remove the prefix
-    return ECKeyPair.Point.decode(qBytes);
+    byte[] qBytes = q.getEncoded(true);
+    return new BigInteger(1, qBytes);
   }
 
   /** Decompress a compressed public key (x co-ord and low-bit of y-coord). */
