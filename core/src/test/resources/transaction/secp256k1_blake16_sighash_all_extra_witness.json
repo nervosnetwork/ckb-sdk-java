@@ -75,7 +75,7 @@
           "args": "0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b",
           "hash_type": "type"
         },
-        "script_type": "LOCK",
+        "script_type": "lock",
         "input_indices": [
           0
         ],
