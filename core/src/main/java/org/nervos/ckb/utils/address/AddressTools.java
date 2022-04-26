@@ -4,7 +4,7 @@ import com.google.common.primitives.Bytes;
 import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.CodeHashType;
 import org.nervos.ckb.address.Network;
-import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Keys;
 import org.nervos.ckb.exceptions.AddressFormatException;
@@ -42,7 +42,7 @@ public class AddressTools {
 
     String privateKey = Numeric.toHexStringNoPrefix(ecKeyPair.getPrivateKey());
     byte[] publicKey = ECKeyPair.create(privateKey).getEncodedPublicKey(true);
-    byte[] blake160 = Hash.blake160(publicKey);
+    byte[] blake160 = Arrays.copyOfRange(Blake2b.digest(publicKey), 0, 20);
 
     AddressUtils utils = new AddressUtils(network, CodeHashType.BLAKE160);
     String addresss = utils.generate(blake160);
@@ -123,9 +123,10 @@ public class AddressTools {
       throw new IllegalArgumentException("Not a valid compressed public key in hex");
     }
     byte[] publicKeyBytes = Numeric.hexStringToByteArray(publicKey);
-    byte[] blake160 = Hash.blake160(publicKeyBytes);
+    byte[] hash = Blake2b.digest(publicKeyBytes);
+    hash = Arrays.copyOfRange(hash, 0, 20);
     AddressUtils utils = new AddressUtils(network, CodeHashType.BLAKE160);
-    return utils.generate(blake160);
+    return utils.generate(hash);
   }
 
   /**

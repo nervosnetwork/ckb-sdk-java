@@ -11,7 +11,7 @@ import org.bouncycastle.crypto.signers.HMacDSAKCalculator;
 import org.bouncycastle.math.ec.ECAlgorithms;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
-import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Numeric;
 
 import java.math.BigInteger;
@@ -51,7 +51,7 @@ public class Sign {
   public static SignatureData signMessage(byte[] message, ECKeyPair keyPair, boolean isHash) {
     BigInteger publicKey = keyPair.getPublicKey();
 
-    byte[] messageHash = isHash ? Hash.blake2b(message) : message;
+    byte[] messageHash = isHash ? Blake2b.digest(message) : message;
 
     ECDSASignature sig = sign(keyPair, messageHash);
     // Now we have to work backwards to figure out the recId needed to recover the signature.

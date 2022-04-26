@@ -1,7 +1,6 @@
 package org.nervos.ckb.sign.signer;
 
 import org.nervos.ckb.crypto.Blake2b;
-import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.sign.Context;
@@ -76,7 +75,8 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
     if (scriptArgs == null || keyPair == null) {
       return false;
     }
-    byte[] publicKeyHash = Hash.blake160(keyPair.getEncodedPublicKey(true));
-    return Arrays.equals(scriptArgs, publicKeyHash);
+    byte[] hash = Blake2b.digest(keyPair.getEncodedPublicKey(true));
+    hash = Arrays.copyOfRange(hash, 0, 20);
+    return Arrays.equals(scriptArgs, hash);
   }
 }

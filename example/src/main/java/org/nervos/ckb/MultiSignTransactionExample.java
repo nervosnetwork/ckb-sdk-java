@@ -2,7 +2,7 @@ package org.nervos.ckb;
 
 import com.google.common.primitives.Bytes;
 import org.nervos.ckb.address.Network;
-import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
@@ -192,13 +192,13 @@ public class MultiSignTransactionExample {
       bytes.addAll(Numeric.intToBytes(threshold));
       bytes.addAll(Numeric.intToBytes(publicKeys.size()));
       for (byte[] publicKey : publicKeys) {
-        bytes.addAll(Bytes.asList(Hash.blake2b(publicKey)));
+        bytes.addAll(Bytes.asList(Blake2b.digest(publicKey)));
       }
       return Bytes.toArray(bytes);
     }
 
     public byte[] blake160() {
-      return Hash.blake160(serialize());
+      return Arrays.copyOfRange(Blake2b.digest(serialize()), 0, 20);
     }
 
     public String address() throws IOException {

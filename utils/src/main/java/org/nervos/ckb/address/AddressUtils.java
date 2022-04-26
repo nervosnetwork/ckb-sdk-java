@@ -1,12 +1,13 @@
 package org.nervos.ckb.address;
 
 import com.google.common.primitives.Bytes;
-import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,7 +57,7 @@ public class AddressUtils {
   }
 
   public String generateFromPublicKey(byte[] publicKey) throws AddressFormatException {
-    return generate(Hash.blake160(publicKey));
+    return generate(Arrays.copyOfRange(Blake2b.digest(publicKey), 0, 20));
   }
 
   public static boolean validatePublicKeyHex(String publicKey, boolean compressed) {
