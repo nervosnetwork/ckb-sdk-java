@@ -15,6 +15,6 @@ public class Blake2bTest {
 
     Assertions.assertArrayEquals(
         Numeric.hexStringToByteArray("0xabfa2c08d62f6f567d088d6ba41d3bbbb9a45c241a8e3789ef39700060b5cee2"),
-        blake2b.doFinalBytes());
+        blake2b.doFinal());
   }
 }

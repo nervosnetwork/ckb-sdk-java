@@ -28,7 +28,7 @@ public class Script {
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
     blake2b.update(this.pack().toByteArray());
-    return blake2b.doFinalBytes();
+    return blake2b.doFinal();
   }
 
   public long occupiedCapacity() {

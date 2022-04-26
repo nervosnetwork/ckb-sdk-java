@@ -60,7 +60,7 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
       blake2b.update(witness);
     }
 
-    byte[] message = blake2b.doFinalBytes();
+    byte[] message = blake2b.doFinal();
     byte[] signature = Sign.signMessage(message, keyPair).getSignature();
 
     int index = scriptGroup.getInputIndices().get(0);

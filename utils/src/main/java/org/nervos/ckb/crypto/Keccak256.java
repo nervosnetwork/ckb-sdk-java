@@ -16,7 +16,7 @@ public class Keccak256 {
     }
   }
 
-  public byte[] doFinalBytes() {
+  public byte[] doFinal() {
     byte[] out = new byte[32];
     if (digest256 != null) {
       out = digest256.digest();
