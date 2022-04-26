@@ -12,7 +12,6 @@ import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Convert;
 import org.nervos.ckb.utils.Numeric;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,7 +72,7 @@ public class CovertTest {
   public void testParseTransaction() {
     Transaction transaction = Convert.parseTransaction(tx);
     Assertions.assertEquals(transaction.cellDeps.get(0).outPoint.index, 1);
-    Assertions.assertEquals(transaction.inputs.get(0).since, BigInteger.ZERO);
-    Assertions.assertEquals(transaction.outputs.get(0).capacity, Numeric.toBigInt("0x174876e800"));
+    Assertions.assertEquals(transaction.inputs.get(0).since, 0);
+    Assertions.assertEquals(transaction.outputs.get(0).capacity, 0x174876e800L);
   }
 }
