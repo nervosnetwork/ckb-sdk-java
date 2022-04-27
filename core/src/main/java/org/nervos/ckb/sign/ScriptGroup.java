@@ -9,8 +9,8 @@ import java.util.List;
 public class ScriptGroup {
   private Script script;
   private ScriptType scriptType;
-  private List<Integer> inputIndices;
-  private List<Integer> outputIndices;
+  private List<Integer> inputIndices = new ArrayList<>();
+  private List<Integer> outputIndices = new ArrayList<>();
 
   public Script getScript() {
     return script;

@@ -1,7 +1,11 @@
 package sign;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
+import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
@@ -26,9 +30,24 @@ public class SignerChecker {
   private SignerChecker() {
   }
 
+  private static Gson getGson() {
+
+    JsonDeserializer typeAdapter = (JsonDeserializer<Context>) (json, typeOfT, context) -> {
+      JsonObject obj = json.getAsJsonObject();
+      ECKeyPair keyPair = ECKeyPair.create(obj.get("private_key").getAsString());
+      Context c = new Context(keyPair);
+      return c;
+    };
+    Gson gson = GsonFactory.create()
+        .newBuilder()
+        .registerTypeAdapter(Context.class, typeAdapter)
+        .create();
+    return gson;
+  }
+
   private static SignerChecker fromFile(String fileName) {
     try (Reader reader = readTransactionJsonFile(fileName)) {
-      Gson gson = new Gson();
+      Gson gson = getGson();
       return gson.fromJson(reader, SignerChecker.class);
     } catch (IOException ex) {
       ex.printStackTrace();

@@ -4,7 +4,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.type.Block;
 import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 
 import java.io.IOException;
 import java.util.List;

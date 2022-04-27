@@ -1,24 +1,34 @@
 package org.nervos.ckb.sign;
 
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
+
 public class Context {
-  private String privateKey;
+  private ECKeyPair keyPair;
   private Object payload;
 
   public Context(String privateKey) {
-    this(privateKey, null);
+    this(ECKeyPair.create(privateKey), null);
   }
 
-  public Context(String privateKey, Object payload) {
-    this.privateKey = privateKey;
+  public Context(byte[] privateKey) {
+    this(ECKeyPair.create(privateKey), null);
+  }
+
+  public Context(ECKeyPair keyPair) {
+    this(keyPair, null);
+  }
+
+  public Context(ECKeyPair keyPair, Object payload) {
+    this.keyPair = keyPair;
     this.payload = payload;
   }
 
-  public String getPrivateKey() {
-    return privateKey;
+  public ECKeyPair getKeyPair() {
+    return keyPair;
   }
 
-  public void setPrivateKey(String ecPrivateKey) {
-    this.privateKey = ecPrivateKey;
+  public void setKeyPair(ECKeyPair ecPrivateKey) {
+    this.keyPair = ecPrivateKey;
   }
 
   public Object getPayload() {

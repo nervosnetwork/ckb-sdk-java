@@ -73,6 +73,6 @@ public class Keys {
   public static ECKeyPair createEcKeyPair(SecureRandom random)
       throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
     KeyPair keyPair = createSecp256k1KeyPair(random);
-    return ECKeyPair.createWithKeyPair(keyPair);
+    return ECKeyPair.create(keyPair);
   }
 }

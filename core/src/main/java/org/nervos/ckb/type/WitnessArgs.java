@@ -53,8 +53,8 @@ public class WitnessArgs {
     return result;
   }
 
-  public org.nervos.ckb.newtype.concrete.WitnessArgs pack() {
-    return org.nervos.ckb.newtype.concrete.WitnessArgs.builder()
+  public org.nervos.ckb.type.concrete.WitnessArgs pack() {
+    return org.nervos.ckb.type.concrete.WitnessArgs.builder()
         .setLock(getLock() != null ? packBytes(getLock()) : null)
         .setInputType(getInputType() != null ? packBytes(getInputType()) : null)
         .setOutputType(getOutputType() != null ? packBytes(getOutputType()) : null)
@@ -62,8 +62,8 @@ public class WitnessArgs {
   }
 
   public static WitnessArgs unpack(byte[] in) {
-    org.nervos.ckb.newtype.concrete.WitnessArgs moleculeWitnessArgs =
-        org.nervos.ckb.newtype.concrete.WitnessArgs.builder(in).build();
+    org.nervos.ckb.type.concrete.WitnessArgs moleculeWitnessArgs =
+        org.nervos.ckb.type.concrete.WitnessArgs.builder(in).build();
 
     WitnessArgs witnessArgs = new WitnessArgs();
     witnessArgs.setLock(

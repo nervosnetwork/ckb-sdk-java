@@ -15,7 +15,7 @@ public class SignTest {
   @BeforeAll
   public void init() {
     String privateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
-    ecKeyPair = ECKeyPair.createWithPrivateKey(Numeric.toBigInt(privateKey), false);
+    ecKeyPair = ECKeyPair.create(privateKey);
     message =
         Numeric.hexStringToByteArray(
             "403676bd85716a1e16b415093cee88c07d7cf2c2199aaf82320d354cb571f0d9");
@@ -25,10 +25,10 @@ public class SignTest {
   public void compressedPublicKeyTest() {
     String privateKey = "e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3";
     String publicKey =
-        Numeric.toHexStringNoPrefix(
-            ECKeyPair.publicKeyFromPrivate(Numeric.toBigInt(privateKey), true));
+        Numeric.toHexStringNoPrefix(ECKeyPair.create(privateKey)
+                                        .getEncodedPublicKey(true));
     Assertions.assertEquals(
-        "24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01", publicKey);
+        "024a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01", publicKey);
   }
 
   @Test

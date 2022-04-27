@@ -3,17 +3,10 @@ package utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.WitnessArgs;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Numeric;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -49,7 +42,7 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -59,7 +52,7 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                    Long.valueOf("59e1416a5000", 16),
+                    0x59e1416a5000L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -98,7 +91,7 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -108,7 +101,7 @@ public class CalculatorTest {
                         "0x",
                         Script.HashType.DATA)),
                 new CellOutput(
-                    Long.valueOf("59e1416a5000", 16),
+                    0x59e1416a5000L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -118,7 +111,7 @@ public class CalculatorTest {
                 Numeric.hexStringToByteArray(
                     "0x82df73581bcd08cb9aa270128d15e79996229ce8ea9e4f985b49fbf36762c5c37936caf3ea3784ee326f60b8992924fcf496f9503c907982525a3436f01ab32900")));
     Assertions.assertEquals(
-        Calculator.calculateTransactionFee(tx, 900), BigInteger.valueOf(483));
+        Calculator.calculateTransactionFee(tx, 900), 483);
   }
 
   @Test
@@ -142,7 +135,7 @@ public class CalculatorTest {
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -173,13 +166,13 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -215,7 +208,7 @@ public class CalculatorTest {
                         1))),
             Collections.singletonList(
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
@@ -251,13 +244,13 @@ public class CalculatorTest {
                         1))),
             Arrays.asList(
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",
                         Script.HashType.TYPE)),
                 new CellOutput(
-                    Long.valueOf("174876e800", 16),
+                    0x174876e800L,
                     createScript(
                         "0x68d5438ac952d2f584abf879527946a537e82c7f3c1cbf6d8ebf9767437d8e88",
                         "0x59a27ef3ba84f061517d13f42cf44ed020610061",

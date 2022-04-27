@@ -6,23 +6,15 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.system.SystemContract;
 import org.nervos.ckb.system.type.SystemScriptCell;
 import org.nervos.ckb.transaction.*;
-import org.nervos.ckb.type.Block;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.fixed.UInt64;
-import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.type.transaction.TransactionWithStatus;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.EpochUtils;
+import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 
 import java.io.IOException;
-import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -159,10 +151,10 @@ public class NervosDaoExample {
       throw new IOException("Transaction is not committed yet!");
     }
     Block depositBlock = api.getBlock(transactionWithStatus.txStatus.blockHash);
-    BigInteger depositBlockNumber = BigInteger.valueOf(depositBlock.header.number);
+    long depositBlockNumber = depositBlock.header.number;
     CellOutput cellOutput = cellWithStatus.cell.output;
 
-    byte[] outputData = new UInt64(depositBlockNumber).toBytes();
+    byte[] outputData = MoleculeConverter.packUint64(depositBlockNumber).toByteArray();
 
     Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
     CellOutput changeOutput = new CellOutput(0, lock);
@@ -229,7 +221,9 @@ public class NervosDaoExample {
       throw new IOException("Transaction is not committed yet!");
     }
 
-    int depositBlockNumber = new UInt64(cellWithStatus.cell.data.content).getValue().intValue();
+    ByteBuffer bb = ByteBuffer.wrap(cellWithStatus.cell.data.content);
+    long depositBlockNumber = bb.order(ByteOrder.LITTLE_ENDIAN).getLong();
+
     Block depositBlock = api.getBlockByNumber(depositBlockNumber);
     EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlock.header.epoch);
 
@@ -277,6 +271,8 @@ public class NervosDaoExample {
             Collections.singletonList(new byte[]{}),
             Collections.singletonList(new Witness(new byte[0], NERVOS_DAO_DATA, new byte[0])));
 
-    return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));
+    // TODO: fix tx sign
+    //    return tx.sign(Numeric.toBigInt(DaoTestPrivateKey));
+    return null;
   }
 }

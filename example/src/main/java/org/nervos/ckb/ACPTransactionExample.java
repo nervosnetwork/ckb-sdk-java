@@ -1,18 +1,13 @@
 package org.nervos.ckb;
 
+import com.google.common.primitives.Bytes;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.fixed.UInt128;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.*;
+import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressGenerator;
@@ -21,6 +16,7 @@ import org.nervos.ckb.utils.address.AddressParser;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -98,7 +94,7 @@ public class ACPTransactionExample {
     txBuilder.addOutputs(cellOutputs);
 
     List<byte[]> outputsData = new ArrayList<>();
-    outputsData.add(new UInt128(0L).toBytes());
+    outputsData.add(MoleculeConverter.packUint128(BigInteger.ZERO).toByteArray());
     txBuilder.setOutputsData(outputsData);
 
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DepType.DEP_GROUP));
@@ -165,11 +161,12 @@ public class ACPTransactionExample {
     cellOutputs.get(1).type = sudtType;
     txBuilder.addOutputs(cellOutputs);
 
+    byte[] SUDTAmountBytes = api.getLiveCell(acpOutPoint, true).cell.data.content;
+    Bytes.reverse(SUDTAmountBytes);
+    BigInteger acpOutputSUDTAmount = Numeric.toBigInt(SUDTAmountBytes).add(sudtAmount);
+
     List<byte[]> outputsData = new ArrayList<>();
-    String acpInputSUDTAmount =
-        Numeric.toHexStringNoPrefix(api.getLiveCell(acpOutPoint, true).cell.data.content);
-    BigInteger acpOutputSUDTAmount = new UInt128(acpInputSUDTAmount).getValue().add(sudtAmount);
-    outputsData.add(new UInt128(acpOutputSUDTAmount).toBytes());
+    outputsData.add(MoleculeConverter.packUint128(acpOutputSUDTAmount).toByteArray());
     txBuilder.setOutputsData(outputsData);
 
     txBuilder.addCellDep(new CellDep(new OutPoint(ACP_TX_HASH, 0), CellDep.DepType.DEP_GROUP));
@@ -198,12 +195,12 @@ public class ACPTransactionExample {
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
         OutPoint outPoint = cellsWithAddress.inputs.get(i).previousOutput;
-        String cellData =
-            Numeric.toHexStringNoPrefix(api.getLiveCell(outPoint, true).cell.data.content);
-        if (cellData.length() < 32) continue;
+        byte[] cellData = api.getLiveCell(outPoint, true).cell.data.content;
+        if (cellData.length < 32) continue;
+        SUDTAmountBytes = Arrays.copyOfRange(cellData, 0, 32);
+        Bytes.reverse(SUDTAmountBytes);
         inputSUDTAmount =
-            inputSUDTAmount.add(
-                new UInt128(cellData.substring(0, 32)).getValue()); // sudt amount: 16bytes
+            inputSUDTAmount.add(Numeric.toBigInt(SUDTAmountBytes)); // sudt amount: 16bytes
       }
       if (cellsWithAddress.inputs.size() > 0) {
         scriptGroupWithPrivateKeysList.add(
@@ -218,7 +215,7 @@ public class ACPTransactionExample {
     txBuilder.addWitness("0x");
     txBuilder.addInput(new CellInput(acpOutPoint));
 
-    byte[] changeCellData = new UInt128(inputSUDTAmount.subtract(sudtAmount)).toBytes();
+    byte[] changeCellData = MoleculeConverter.packUint128(inputSUDTAmount.subtract(sudtAmount)).toByteArray();
     outputsData.add(changeCellData);
     txBuilder.setOutputsData(outputsData);
 

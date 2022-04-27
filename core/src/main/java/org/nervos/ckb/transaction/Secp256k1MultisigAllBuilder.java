@@ -1,6 +1,6 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.Transaction;
 
 import java.io.IOException;
 import java.util.List;

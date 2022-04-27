@@ -1,6 +1,6 @@
 package org.nervos.mercury.model.resp;
 
-import org.nervos.ckb.type.transaction.TransactionWithStatus;
+import org.nervos.ckb.type.TransactionWithStatus;
 
 public class GetTransactionInfoResponse {
   public TransactionInfoResponse transaction;

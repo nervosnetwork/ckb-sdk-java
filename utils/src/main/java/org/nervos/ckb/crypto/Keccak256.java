@@ -1,7 +1,6 @@
 package org.nervos.ckb.crypto;
 
 import org.bouncycastle.jcajce.provider.digest.Keccak;
-import org.nervos.ckb.utils.Numeric;
 
 public class Keccak256 {
 
@@ -17,15 +16,11 @@ public class Keccak256 {
     }
   }
 
-  public byte[] doFinalBytes() {
+  public byte[] doFinal() {
     byte[] out = new byte[32];
     if (digest256 != null) {
       out = digest256.digest();
     }
     return out;
-  }
-
-  public String doFinalString() {
-    return Numeric.toHexString(doFinalBytes());
   }
 }

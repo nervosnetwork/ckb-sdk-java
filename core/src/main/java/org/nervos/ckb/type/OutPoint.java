@@ -16,8 +16,8 @@ public class OutPoint {
     this.index = index;
   }
 
-  public org.nervos.ckb.newtype.concrete.OutPoint pack() {
-    return org.nervos.ckb.newtype.concrete.OutPoint.builder()
+  public org.nervos.ckb.type.concrete.OutPoint pack() {
+    return org.nervos.ckb.type.concrete.OutPoint.builder()
         .setIndex(packUint32(index))
         .setTxHash(packByte32(txHash))
         .build();

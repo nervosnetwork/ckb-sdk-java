@@ -1,10 +1,10 @@
 package org.nervos.ckb.indexer;
 
 import org.nervos.ckb.transaction.TransactionInput;
+import org.nervos.ckb.type.CellInput;
+import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
-import org.nervos.ckb.type.cell.CellInput;
-import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParser;
 

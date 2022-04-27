@@ -7,9 +7,9 @@ import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
+import org.nervos.ckb.type.CellOutput;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.transaction.Transaction;
 import org.nervos.ckb.utils.Utils;
 
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class SingleSigWithCkbIndexerTxExample {
   public static void main(String[] args) throws Exception {
     AddressUtils utils = new AddressUtils(Network.TESTNET);
     for (int i = 0; i < SendAddresses.size() - 1; i++) {
-      String testPublicKey = ECKeyPair.publicKeyFromPrivate(SendPrivateKeys.get(i));
+      byte[] testPublicKey = ECKeyPair.create(SendPrivateKeys.get(i)).getEncodedPublicKey(true);
       String address = SendAddresses.get(i);
       if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
         System.out.println("Private key and address " + address + " are not matched");

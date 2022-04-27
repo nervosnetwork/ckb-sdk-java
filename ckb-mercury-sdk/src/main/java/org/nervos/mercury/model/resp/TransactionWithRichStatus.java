@@ -1,7 +1,7 @@
 package org.nervos.mercury.model.resp;
 
-import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.type.transaction.TransactionWithStatus;
+import org.nervos.ckb.type.Transaction;
+import org.nervos.ckb.type.TransactionWithStatus;
 
 public class TransactionWithRichStatus {
   public Transaction transaction;

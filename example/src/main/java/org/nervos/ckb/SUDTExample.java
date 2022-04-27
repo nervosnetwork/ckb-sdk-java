@@ -4,17 +4,13 @@ import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Witness;
-import org.nervos.ckb.type.cell.CellDep;
-import org.nervos.ckb.type.cell.CellOutput;
-import org.nervos.ckb.type.fixed.UInt128;
-import org.nervos.ckb.type.transaction.Transaction;
+import org.nervos.ckb.type.*;
+import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressParser;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,8 +21,8 @@ import static org.nervos.ckb.utils.Const.*;
 // SUDT RFC:
 // https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0025-simple-udt/0025-simple-udt.md
 public class SUDTExample {
-  private static final long SUDT_ISSUE_SUM_AMOUNT = 1000000000000L;
-  private static final long SUDT_TRANSFER_AMOUNT = 60000000000L;
+  private static final BigInteger SUDT_ISSUE_SUM_AMOUNT = BigInteger.valueOf(1000000000000L);
+  private static final BigInteger SUDT_TRANSFER_AMOUNT = BigInteger.valueOf(60000000000L);
 
   private static Api api;
   private static CkbIndexerApi ckbIndexerApi;
@@ -80,7 +76,8 @@ public class SUDTExample {
     txBuilder.addOutputs(cellOutputs);
 
     txBuilder.setOutputsData(
-        Arrays.asList(new UInt128(SUDT_ISSUE_SUM_AMOUNT).toBytes(), new byte[]{}));
+        Arrays.asList(MoleculeConverter.packUint128(SUDT_ISSUE_SUM_AMOUNT).toByteArray(),
+                      new byte[]{}));
     txBuilder.addCellDep(new CellDep(new OutPoint(SUDT_TX_HASH, 0), CellDep.DepType.CODE));
 
     // You can get fee rate by rpc or set a simple number
@@ -158,8 +155,8 @@ public class SUDTExample {
 
     txBuilder.setOutputsData(
         Arrays.asList(
-            new UInt128((SUDT_TRANSFER_AMOUNT)).toBytes(),
-            new UInt128(SUDT_ISSUE_SUM_AMOUNT - SUDT_TRANSFER_AMOUNT).toBytes()));
+            MoleculeConverter.packUint128(SUDT_TRANSFER_AMOUNT).toByteArray(),
+            MoleculeConverter.packUint128(SUDT_ISSUE_SUM_AMOUNT.subtract(SUDT_TRANSFER_AMOUNT)).toByteArray()));
 
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {

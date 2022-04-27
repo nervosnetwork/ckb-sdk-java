@@ -11,11 +11,10 @@ import org.bouncycastle.crypto.signers.HMacDSAKCalculator;
 import org.bouncycastle.math.ec.ECAlgorithms;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
-import org.nervos.ckb.crypto.Hash;
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Numeric;
 
 import java.math.BigInteger;
-import java.security.SignatureException;
 import java.util.Arrays;
 
 import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
@@ -52,7 +51,7 @@ public class Sign {
   public static SignatureData signMessage(byte[] message, ECKeyPair keyPair, boolean isHash) {
     BigInteger publicKey = keyPair.getPublicKey();
 
-    byte[] messageHash = isHash ? Hash.blake2b(message) : message;
+    byte[] messageHash = isHash ? Blake2b.digest(message) : message;
 
     ECDSASignature sig = sign(keyPair, messageHash);
     // Now we have to work backwards to figure out the recId needed to recover the signature.
@@ -152,9 +151,8 @@ public class Sign {
     BigInteger eInvrInv = rInv.multiply(eInv).mod(n);
     ECPoint q = ECAlgorithms.sumOfTwoMultiplies(CURVE.getG(), eInvrInv, R, srInv);
 
-    byte[] qBytes = q.getEncoded(false);
-    // We remove the prefix
-    return new BigInteger(1, Arrays.copyOfRange(qBytes, 1, qBytes.length));
+    byte[] qBytes = q.getEncoded(true);
+    return new BigInteger(1, qBytes);
   }
 
   /** Decompress a compressed public key (x co-ord and low-bit of y-coord). */
@@ -163,45 +161,6 @@ public class Sign {
     byte[] compEnc = x9.integerToBytes(xBN, 1 + x9.getByteLength(CURVE.getCurve()));
     compEnc[0] = (byte) (yBit ? 0x03 : 0x02);
     return CURVE.getCurve().decodePoint(compEnc);
-  }
-
-  /**
-   * Given an arbitrary piece of text and an message signature encoded in bytes, returns the public
-   * key that was used to sign it. This can then be compared to the expected public key to determine
-   * if the signature was correct.
-   *
-   * @param message       RLP encoded message.
-   * @param signatureData The message signature components
-   * @return the public key used to sign the message
-   * @throws SignatureException If the public key could not be recovered or if there was a signature
-   *                            formatTx error.
-   */
-  public static BigInteger signedMessageToKey(byte[] message, SignatureData signatureData)
-      throws SignatureException {
-
-    byte[] r = signatureData.getR();
-    byte[] s = signatureData.getS();
-    verifyPrecondition(r != null && r.length == 32, "r must be 32 bytes");
-    verifyPrecondition(s != null && s.length == 32, "s must be 32 bytes");
-
-    int header = signatureData.getV() & 0xFF;
-    // The header byte: 0x1B = first key with even y, 0x1C = first key with odd y,
-    //                  0x1D = second key with even y, 0x1E = second key with odd y
-    if (header > 7) {
-      throw new SignatureException("Header byte out of range: " + header);
-    }
-
-    ECDSASignature sig =
-        new ECDSASignature(
-            new BigInteger(1, signatureData.getR()), new BigInteger(1, signatureData.getS()));
-
-    byte[] messageHash = Hash.blake2b(message);
-    int recId = header;
-    BigInteger key = recoverFromSignature(recId, sig, messageHash);
-    if (key == null) {
-      throw new SignatureException("Could not recover public key from signature");
-    }
-    return key;
   }
 
   /**

@@ -2,8 +2,8 @@ package type;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.utils.Numeric;
 
 import static utils.TestUtils.createScript;

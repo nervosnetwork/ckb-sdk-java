@@ -3,10 +3,6 @@ package org.nervos.ckb.service;
 import com.google.gson.reflect.TypeToken;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.param.OutputsValidator;
-import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.type.transaction.TransactionWithStatus;
 import org.nervos.ckb.utils.Convert;
 
 import java.io.IOException;

@@ -28,7 +28,7 @@ public class Script {
   public byte[] computeHash() {
     Blake2b blake2b = new Blake2b();
     blake2b.update(this.pack().toByteArray());
-    return blake2b.doFinalBytes();
+    return blake2b.doFinal();
   }
 
   public long occupiedCapacity() {
@@ -42,8 +42,8 @@ public class Script {
     return Utils.ckbToShannon(byteSize);
   }
 
-  public org.nervos.ckb.newtype.concrete.Script pack() {
-    return org.nervos.ckb.newtype.concrete.Script.builder()
+  public org.nervos.ckb.type.concrete.Script pack() {
+    return org.nervos.ckb.type.concrete.Script.builder()
         .setCodeHash(packByte32(codeHash))
         .setArgs(packBytes(args))
         .setHashType(hashType.pack())

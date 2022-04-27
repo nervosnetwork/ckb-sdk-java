@@ -2,10 +2,6 @@ package org.nervos.ckb;
 
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.type.cell.CellWithStatus;
-import org.nervos.ckb.type.param.OutputsValidator;
-import org.nervos.ckb.type.transaction.Transaction;
-import org.nervos.ckb.type.transaction.TransactionWithStatus;
 
 import java.io.IOException;
 import java.util.List;
