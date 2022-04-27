@@ -196,8 +196,6 @@ public class ACPTransactionExample {
         txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
         OutPoint outPoint = cellsWithAddress.inputs.get(i).previousOutput;
         byte[] cellData = api.getLiveCell(outPoint, true).cell.data.content;
-        //        String cellData =
-        //            Numeric.toHexStringNoPrefix();
         if (cellData.length < 32) continue;
         SUDTAmountBytes = Arrays.copyOfRange(cellData, 0, 32);
         Bytes.reverse(SUDTAmountBytes);
