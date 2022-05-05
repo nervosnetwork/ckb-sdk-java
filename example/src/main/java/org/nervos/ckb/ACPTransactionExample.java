@@ -11,7 +11,6 @@ import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.Address;
-import org.nervos.ckb.utils.address.AddressGenerator;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -55,7 +54,7 @@ public class ACPTransactionExample {
     receiverScript.codeHash = ACP_CODE_HASH;
     receiverScript.args =
         Numeric.hexStringToByteArray(receiverScript.args + ACP_CKB_MINIMUM + ACP_SUDT_MINIMUM);
-    receiverAcpAddress = AddressGenerator.generate(Network.TESTNET, receiverScript);
+    receiverAcpAddress = new Address(receiverScript, Network.TESTNET).encode();
 
     Script senderScript = Address.decode(SendAddresses.get(0)).getScript();
     byte[] sendLockHash = senderScript.computeHash();
