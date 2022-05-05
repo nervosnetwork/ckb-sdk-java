@@ -63,19 +63,19 @@ public class Address {
     }
   }
 
-  static final String SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH =
-      "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8";
-  static final String SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH =
-      "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8";
-  static final String ANY_CAN_PAY_CODE_HASH_MAINNET =
-      "0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354";
-  static final String ANY_CAN_PAY_CODE_HASH_TESTNET =
-      "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356";
+  static final byte[] SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH =
+      Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8");
+  static final byte[] SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH =
+      Numeric.hexStringToByteArray("0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8");
+  static final byte[] ANY_CAN_PAY_CODE_HASH_MAINNET =
+      Numeric.hexStringToByteArray("0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354");
+  static final byte[] ANY_CAN_PAY_CODE_HASH_TESTNET =
+      Numeric.hexStringToByteArray("0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356");
 
   private static Address decodeShort(byte[] payload, Network network) {
     byte codeHashIndex = payload[1];
-    
-    String codeHash;
+
+    byte[] codeHash;
     if (codeHashIndex == 0x00) {
       codeHash = SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
     } else if (codeHashIndex == 0x01) {
@@ -91,7 +91,7 @@ public class Address {
     }
     byte[] args = Arrays.copyOfRange(payload, 2, payload.length);
 
-    Script script = new Script(Numeric.hexStringToByteArray(codeHash), args, Script.HashType.TYPE);
+    Script script = new Script(codeHash, args, Script.HashType.TYPE);
     return new Address(script, network);
   }
 
@@ -123,7 +123,24 @@ public class Address {
   }
 
   public String encodeShort() {
-    return null;
+    byte[] payload = new byte[2 + script.args.length];
+    byte codeHashIndex;
+    byte[] codeHash = script.codeHash;
+    if (Arrays.equals(codeHash, SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH)) {
+      codeHashIndex = 0x00;
+    } else if (Arrays.equals(codeHash, SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH)) {
+      codeHashIndex = 0x01;
+    } else if ((network == Network.MAINNET && Arrays.equals(codeHash, ANY_CAN_PAY_CODE_HASH_MAINNET)
+        || (network == Network.TESTNET && Arrays.equals(codeHash, ANY_CAN_PAY_CODE_HASH_TESTNET)))) {
+      codeHashIndex = 0x02;
+    } else {
+      throw new AddressFormatException("Encoding to short address for given script is unsupported");
+    }
+    payload[0] = 0x01;
+    payload[1] = codeHashIndex;
+    System.arraycopy(script.args, 0, payload, 2, script.args.length);
+    payload = convertBits(payload, 0, payload.length, 8, 5, true);
+    return Bech32.encode(Bech32.Encoding.BECH32, hrp(network), payload);
   }
 
   public String encodeFullBech32() {
@@ -142,6 +159,18 @@ public class Address {
         return Network.TESTNET;
       default:
         throw new AddressFormatException("Invalid hrp");
+    }
+  }
+
+  private static String hrp(Network network) {
+    Objects.requireNonNull(network);
+    switch (network) {
+      case MAINNET:
+        return "ckb";
+      case TESTNET:
+        return "ckt";
+      default:
+        throw new AddressFormatException("Unknown network");
     }
   }
 
