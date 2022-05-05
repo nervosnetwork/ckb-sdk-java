@@ -108,6 +108,11 @@ public class Address {
     return new Address(script, network);
   }
 
+  @Override
+  public String toString() {
+    return encode();
+  }
+
   public String encode() {
     return encodeFullBech32m();
   }
