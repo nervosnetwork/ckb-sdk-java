@@ -110,9 +110,12 @@ public class Address {
     return new Address(script, network);
   }
 
-
   private static Address decodeLongBech32m(byte[] payload, Network network) {
-    return null;
+    byte[] codeHash = Arrays.copyOfRange(payload, 1, 33);
+    Script.HashType hashType = Script.HashType.unpack(payload[33]);
+    byte[] args = Arrays.copyOfRange(payload, 34, payload.length);
+    Script script = new Script(codeHash, args, hashType);
+    return new Address(script, network);
   }
 
   private static Network network(String hrp) {
