@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.utils.Utils;
 
+import java.util.Arrays;
+
 import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
 import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
 
@@ -48,6 +50,26 @@ public class Script {
         .setArgs(packBytes(args))
         .setHashType(hashType.pack())
         .build();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Script script = (Script) o;
+
+    if (!Arrays.equals(codeHash, script.codeHash)) return false;
+    if (!Arrays.equals(args, script.args)) return false;
+    return hashType == script.hashType;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Arrays.hashCode(codeHash);
+    result = 31 * result + Arrays.hashCode(args);
+    result = 31 * result + hashType.hashCode();
+    return result;
   }
 
   public enum HashType {

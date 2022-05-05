@@ -224,4 +224,22 @@ public class Address {
     }
     return out.toByteArray();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Address address = (Address) o;
+
+    if (!script.equals(address.script)) return false;
+    return network == address.network;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = script.hashCode();
+    result = 31 * result + network.hashCode();
+    return result;
+  }
 }
