@@ -144,7 +144,20 @@ public class Address {
   }
 
   public String encodeFullBech32() {
-    return null;
+    byte[] payload = new byte[1 + script.codeHash.length + script.args.length];
+    if (script.hashType == Script.HashType.TYPE) {
+      payload[0] = 0x04;
+    } else if (script.hashType == Script.HashType.DATA) {
+      payload[1] = 0x02;
+    } else {
+      throw new AddressFormatException("Unknown script hash type");
+    }
+    int pos = 1;
+    System.arraycopy(script.codeHash, 0, payload, pos, script.codeHash.length);
+    pos += script.codeHash.length;
+    System.arraycopy(script.args, 0, payload, pos, script.args.length);
+    payload = convertBits(payload, 0, payload.length, 8, 5, true);
+    return Bech32.encode(Bech32.Encoding.BECH32, hrp(network), payload);
   }
 
   public String encodeFullBech32m() {
