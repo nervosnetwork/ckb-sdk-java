@@ -96,8 +96,20 @@ public class Address {
   }
 
   private static Address decodeLongBech32(byte[] payload, Network network) {
-    return null;
+    Script.HashType hashType;
+    if (payload[0] == 0x04) {
+      hashType = Script.HashType.TYPE;
+    } else if (payload[0] == 0x02) {
+      hashType = Script.HashType.DATA;
+    } else {
+      throw new AddressFormatException("Unknown script hash type");
+    }
+    byte[] codeHash = Arrays.copyOfRange(payload, 1, 33);
+    byte[] args = Arrays.copyOfRange(payload, 33, payload.length);
+    Script script = new Script(codeHash, args, hashType);
+    return new Address(script, network);
   }
+
 
   private static Address decodeLongBech32m(byte[] payload, Network network) {
     return null;
