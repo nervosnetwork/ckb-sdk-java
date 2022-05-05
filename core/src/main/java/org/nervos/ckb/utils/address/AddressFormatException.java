@@ -1,4 +1,4 @@
-package org.nervos.ckb.address;
+package org.nervos.ckb.utils.address;
 
 public class AddressFormatException extends IllegalArgumentException {
   public AddressFormatException() {

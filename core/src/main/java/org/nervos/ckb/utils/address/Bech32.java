@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.nervos.ckb.address;
+package org.nervos.ckb.utils.address;
 
 import java.util.Arrays;
 import java.util.Locale;
