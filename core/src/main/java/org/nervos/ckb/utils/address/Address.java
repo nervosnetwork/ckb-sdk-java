@@ -2,8 +2,10 @@ package org.nervos.ckb.utils.address;
 
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.utils.Numeric;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Address {
@@ -61,8 +63,36 @@ public class Address {
     }
   }
 
+  static final String SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH =
+      "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8";
+  static final String SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH =
+      "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8";
+  static final String ANY_CAN_PAY_CODE_HASH_MAINNET =
+      "0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354";
+  static final String ANY_CAN_PAY_CODE_HASH_TESTNET =
+      "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356";
+
   private static Address decodeShort(byte[] payload, Network network) {
-    return null;
+    byte codeHashIndex = payload[1];
+    
+    String codeHash;
+    if (codeHashIndex == 0x00) {
+      codeHash = SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
+    } else if (codeHashIndex == 0x01) {
+      codeHash = SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH;
+    } else if (codeHashIndex == 0x02) {
+      if (network == Network.MAINNET) {
+        codeHash = ANY_CAN_PAY_CODE_HASH_MAINNET;
+      } else {
+        codeHash = ANY_CAN_PAY_CODE_HASH_TESTNET;
+      }
+    } else {
+      throw new AddressFormatException("Unknown code hash index");
+    }
+    byte[] args = Arrays.copyOfRange(payload, 2, payload.length);
+
+    Script script = new Script(Numeric.hexStringToByteArray(codeHash), args, Script.HashType.TYPE);
+    return new Address(script, network);
   }
 
   private static Address decodeLongBech32(byte[] payload, Network network) {
