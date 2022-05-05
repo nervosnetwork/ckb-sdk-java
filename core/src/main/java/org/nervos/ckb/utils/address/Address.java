@@ -39,6 +39,40 @@ public class Address {
 
   }
 
+  public static Address decode(String address) {
+    Network network = network(address.substring(0, 3));
+    return decode(address, network);
+  }
+
+  private static Address decode(String address, Network network) {
+    Objects.requireNonNull(address);
+    byte[] payload = Bech32.decode(address).data;
+    payload = convertBits(payload, 0, payload.length, 5, 8, false);
+    switch (payload[0]) {
+      case 0x00:
+        return decodeLongBech32m(payload, network);
+      case 0x01:
+        return decodeShort(payload, network);
+      case 0x02:
+      case 0x04:
+        return decodeLongBech32(payload, network);
+      default:
+        throw new AddressFormatException("Unknown format type");
+    }
+  }
+
+  private static Address decodeShort(byte[] payload, Network network) {
+    return null;
+  }
+
+  private static Address decodeLongBech32(byte[] payload, Network network) {
+    return null;
+  }
+
+  private static Address decodeLongBech32m(byte[] payload, Network network) {
+    return null;
+  }
+
   private static Network network(String hrp) {
     switch (hrp) {
       case "ckb":
