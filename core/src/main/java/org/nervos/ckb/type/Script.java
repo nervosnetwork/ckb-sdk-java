@@ -70,10 +70,14 @@ public class Script {
   }
 
   public static Script generateSecp256K1Blake160SignhashAllScript(ECKeyPair keyPair) {
+    byte[] publicKey = keyPair.getEncodedPublicKey(true);
+    return generateSecp256K1Blake160SignhashAllScript(publicKey);
+  }
+
+  public static Script generateSecp256K1Blake160SignhashAllScript(byte[] publicKey) {
     // CKB uses encoded public keys of compressed form (with prefix 0x04)
     // See https://en.bitcoin.it/wiki/Elliptic_Curve_Digital_Signature_Algorithm for details
-    byte[] publicKeyBytes = keyPair.getEncodedPublicKey(true);
-    byte[] hash = Blake2b.digest(publicKeyBytes);
+    byte[] hash = Blake2b.digest(publicKey);
     hash = Arrays.copyOfRange(hash, 0, 20);
     Script scrip = new Script(
         SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH,
