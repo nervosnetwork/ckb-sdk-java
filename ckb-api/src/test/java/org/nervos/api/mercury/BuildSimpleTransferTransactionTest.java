@@ -5,8 +5,11 @@ import constant.ApiFactory;
 import constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
+import org.nervos.ckb.crypto.secp256k1.Keys;
+import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
+import org.nervos.ckb.utils.address.Address;
 import org.nervos.ckb.utils.address.AddressTools;
 import org.nervos.mercury.model.SimpleTransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
@@ -19,12 +22,12 @@ public class BuildSimpleTransferTransactionTest {
   @Test
   void testCkbInsufficientBalanceToPayTheFee1() {
     try {
-      AddressTools.AddressGenerateResult from = AddressTools.generateShortAddress(Network.TESTNET);
-      AddressTools.AddressGenerateResult to = AddressTools.generateShortAddress(Network.TESTNET);
+      Address from = new Address(Script.generateSecp256K1Blake160SignhashAllScript(Keys.createEcKeyPair()), Network.TESTNET);
+      Address to = new Address(Script.generateSecp256K1Blake160SignhashAllScript(Keys.createEcKeyPair()), Network.TESTNET);
 
       SimpleTransferPayloadBuilder builder = new SimpleTransferPayloadBuilder();
-      builder.addFrom(from.address);
-      builder.addTo(new ToInfo(to.address, AmountUtils.ckbToShannon(100)));
+      builder.addFrom(from.encode());
+      builder.addTo(new ToInfo(to.encode(), AmountUtils.ckbToShannon(100)));
       builder.assetInfo(AssetInfo.newCkbAsset());
 
       ApiFactory.getApi().buildSimpleTransferTransaction(builder.build());
@@ -38,10 +41,10 @@ public class BuildSimpleTransferTransactionTest {
   @Test
   void testCkbInsufficientBalanceToPayTheFee2() {
     try {
-      AddressTools.AddressGenerateResult from = AddressTools.generateShortAddress(Network.TESTNET);
+      Address from = new Address(Script.generateSecp256K1Blake160SignhashAllScript(Keys.createEcKeyPair()), Network.TESTNET);
 
       SimpleTransferPayloadBuilder builder = new SimpleTransferPayloadBuilder();
-      builder.addFrom(from.address);
+      builder.addFrom(from.encode());
       builder.addTo(new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100)));
       builder.assetInfo(AssetInfo.newCkbAsset());
 
@@ -79,11 +82,11 @@ public class BuildSimpleTransferTransactionTest {
   void testSourceByChequeCell() {
 
     try {
-      AddressTools.AddressGenerateResult to = AddressTools.generateShortAddress(Network.TESTNET);
+      Address to = new Address(Script.generateSecp256K1Blake160SignhashAllScript(Keys.createEcKeyPair()), Network.TESTNET);
 
       SimpleTransferPayloadBuilder builder = new SimpleTransferPayloadBuilder();
       builder.addFrom(AddressWithKeyHolder.testAddress2());
-      builder.addTo(new ToInfo(to.address, 20));
+      builder.addTo(new ToInfo(to.encode(), 20));
       builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       TransactionCompletionResponse transactionCompletionResponse =
@@ -126,7 +129,7 @@ public class BuildSimpleTransferTransactionTest {
     builder.addFrom(AddressWithKeyHolder.testAddress1());
     builder.addTo(
         new ToInfo(
-            AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()),
+            AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()).encode(),
             20));
     builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 

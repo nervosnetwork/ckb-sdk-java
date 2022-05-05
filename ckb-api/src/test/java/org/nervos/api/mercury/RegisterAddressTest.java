@@ -18,7 +18,7 @@ public class RegisterAddressTest {
           ApiFactory.getApi()
               .registerAddresses(
                   Arrays.asList(
-                      AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress0())));
+                      AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress0()).encode()));
       System.out.println(scriptHashes);
     } catch (IOException e) {
       e.printStackTrace();

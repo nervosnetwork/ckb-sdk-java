@@ -227,11 +227,11 @@ public class QueryTransactionsTest {
   }
 
   private String getAcpAddress() {
-    return AddressTools.generateAcpAddress(AddressWithKeyHolder.queryTransactionAddress());
+    return AddressTools.generateAcpAddress(AddressWithKeyHolder.queryTransactionAddress()).encode();
   }
 
   private String getChequeAddress() {
     return AddressTools.generateChequeAddress(
-        AddressWithKeyHolder.testAddress0(), AddressWithKeyHolder.queryTransactionAddress());
+        AddressWithKeyHolder.testAddress0(), AddressWithKeyHolder.queryTransactionAddress()).encode();
   }
 }

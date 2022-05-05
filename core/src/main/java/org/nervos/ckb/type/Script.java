@@ -20,6 +20,10 @@ public class Script {
       Numeric.hexStringToByteArray("0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354");
   public static final byte[] ANY_CAN_PAY_CODE_HASH_TESTNET =
       Numeric.hexStringToByteArray("0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356");
+  public static final byte[] CHEQUE_CODE_HASH_MAINNET =
+      Numeric.hexStringToByteArray("0xe4d4ecc6e5f9a059bf2f7a82cca292083aebc0c421566a52484fe2ec51a9fb0c");
+  public static final byte[] CHEQUE_CODE_HASH_TESTNET =
+      Numeric.hexStringToByteArray("0x60d5f39efce409c587cb9ea359cefdead650ca128f0bd9cb3855348f98c70d5b");
 
   public byte[] codeHash;
   public byte[] args;

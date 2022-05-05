@@ -120,7 +120,7 @@ public class ModeTest {
         To.newTo(
             Arrays.asList(
                 new ToInfo(
-                    AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()),
+                    AddressTools.generateAcpAddress(AddressWithKeyHolder.testAddress4()).encode(),
                     100)),
             Mode.HOLD_BY_TO));
 
