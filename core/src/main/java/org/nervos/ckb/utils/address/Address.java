@@ -118,6 +118,22 @@ public class Address {
     return new Address(script, network);
   }
 
+  public String encode() {
+    return encodeFullBech32m();
+  }
+
+  public String encodeShort() {
+    return null;
+  }
+
+  public String encodeFullBech32() {
+    return null;
+  }
+
+  public String encodeFullBech32m() {
+    return null;
+  }
+
   private static Network network(String hrp) {
     switch (hrp) {
       case "ckb":
