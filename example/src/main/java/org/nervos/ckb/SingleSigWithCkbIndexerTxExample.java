@@ -1,6 +1,5 @@
 package org.nervos.ckb;
 
-import org.nervos.ckb.address.AddressUtils;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
@@ -8,15 +7,14 @@ import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.CellOutput;
+import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.utils.Utils;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.nervos.ckb.utils.Const.*;
 
@@ -42,11 +40,11 @@ public class SingleSigWithCkbIndexerTxExample {
   }
 
   public static void main(String[] args) throws Exception {
-    AddressUtils utils = new AddressUtils(Network.TESTNET);
     for (int i = 0; i < SendAddresses.size() - 1; i++) {
-      byte[] testPublicKey = ECKeyPair.create(SendPrivateKeys.get(i)).getEncodedPublicKey(true);
-      String address = SendAddresses.get(i);
-      if (!address.equals(utils.generateFromPublicKey(testPublicKey))) {
+      ECKeyPair keyPair = ECKeyPair.create(SendPrivateKeys.get(i));
+      Address address = new Address(Script.generateSecp256K1Blake160SignhashAllScript(keyPair),
+                                    Network.TESTNET);
+      if (Objects.equals(address, Address.decode(ReceiveAddresses.get(i)))) {
         System.out.println("Private key and address " + address + " are not matched");
         return;
       }
