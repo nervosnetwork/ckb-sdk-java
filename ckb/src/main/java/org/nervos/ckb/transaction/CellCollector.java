@@ -4,8 +4,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Calculator;
 import org.nervos.ckb.utils.Utils;
-import org.nervos.ckb.utils.address.AddressParseResult;
-import org.nervos.ckb.utils.address.AddressParser;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,8 +27,8 @@ public class CellCollector {
 
     Set<byte[]> lockHashes = new LinkedHashSet<>();
     for (String address : addresses) {
-      AddressParseResult addressParseResult = AddressParser.parse(address);
-      lockHashes.add(addressParseResult.script.computeHash());
+      Script script = Address.decode(address).getScript();
+      lockHashes.add(script.computeHash());
     }
     Map<byte[], List<CellInput>> lockInputsMap = new HashMap<>();
     for (byte[] lockHash : lockHashes) {

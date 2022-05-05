@@ -7,7 +7,7 @@ import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Utils;
-import org.nervos.ckb.utils.address.AddressParser;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -40,7 +40,7 @@ public class SUDTExample {
     api = new Api(NODE_URL, false);
     ckbIndexerApi = new CkbIndexerApi(CKB_INDEXER_URL, true);
 
-    Script senderScript = AddressParser.parse(SendAddresses.get(0)).script;
+    Script senderScript = Address.decode(SendAddresses.get(0)).getScript();
     byte[] sendLockHash = senderScript.computeHash();
     sudtType = new Script(SUDT_CODE_HASH, sendLockHash, Script.HashType.TYPE);
   }

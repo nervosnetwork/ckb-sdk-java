@@ -3,8 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.utils.address.AddressParseResult;
-import org.nervos.ckb.utils.address.AddressParser;
+import org.nervos.ckb.utils.address.Address;
 
 import java.util.Arrays;
 
@@ -17,8 +16,7 @@ public class LockUtils {
   }
 
   public static Script generateLockScriptWithAddress(String address) {
-    AddressParseResult addressParseResult = AddressParser.parse(address);
-    return addressParseResult.script;
+    return Address.decode(address).getScript();
   }
 
   public static byte[] generateLockHashWithAddress(String address) {
