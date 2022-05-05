@@ -2,7 +2,6 @@ package org.nervos.ckb.utils.address;
 
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.utils.Numeric;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
@@ -63,28 +62,19 @@ public class Address {
     }
   }
 
-  static final byte[] SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH =
-      Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8");
-  static final byte[] SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH =
-      Numeric.hexStringToByteArray("0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8");
-  static final byte[] ANY_CAN_PAY_CODE_HASH_MAINNET =
-      Numeric.hexStringToByteArray("0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354");
-  static final byte[] ANY_CAN_PAY_CODE_HASH_TESTNET =
-      Numeric.hexStringToByteArray("0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356");
-
   private static Address decodeShort(byte[] payload, Network network) {
     byte codeHashIndex = payload[1];
 
     byte[] codeHash;
     if (codeHashIndex == 0x00) {
-      codeHash = SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
+      codeHash = Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
     } else if (codeHashIndex == 0x01) {
-      codeHash = SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH;
+      codeHash = Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH;
     } else if (codeHashIndex == 0x02) {
       if (network == Network.MAINNET) {
-        codeHash = ANY_CAN_PAY_CODE_HASH_MAINNET;
+        codeHash = Script.ANY_CAN_PAY_CODE_HASH_MAINNET;
       } else {
-        codeHash = ANY_CAN_PAY_CODE_HASH_TESTNET;
+        codeHash = Script.ANY_CAN_PAY_CODE_HASH_TESTNET;
       }
     } else {
       throw new AddressFormatException("Unknown code hash index");
@@ -126,12 +116,12 @@ public class Address {
     byte[] payload = new byte[2 + script.args.length];
     byte codeHashIndex;
     byte[] codeHash = script.codeHash;
-    if (Arrays.equals(codeHash, SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH)) {
+    if (Arrays.equals(codeHash, Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH)) {
       codeHashIndex = 0x00;
-    } else if (Arrays.equals(codeHash, SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH)) {
+    } else if (Arrays.equals(codeHash, Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH)) {
       codeHashIndex = 0x01;
-    } else if ((network == Network.MAINNET && Arrays.equals(codeHash, ANY_CAN_PAY_CODE_HASH_MAINNET)
-        || (network == Network.TESTNET && Arrays.equals(codeHash, ANY_CAN_PAY_CODE_HASH_TESTNET)))) {
+    } else if ((network == Network.MAINNET && Arrays.equals(codeHash, Script.ANY_CAN_PAY_CODE_HASH_MAINNET)
+        || (network == Network.TESTNET && Arrays.equals(codeHash, Script.ANY_CAN_PAY_CODE_HASH_TESTNET)))) {
       codeHashIndex = 0x02;
     } else {
       throw new AddressFormatException("Encoding to short address for given script is unsupported");

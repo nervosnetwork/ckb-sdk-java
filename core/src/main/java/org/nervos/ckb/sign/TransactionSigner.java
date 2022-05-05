@@ -19,14 +19,11 @@ public class TransactionSigner {
     TESTNET_TRANSACTION_SIGNER = new TransactionSigner();
     // We can register more ScriptSigner for builtin script
     TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
-        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-        Secp256k1Blake160SighashAllSigner.getInstance());
+        Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance());
     TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
-        "0x3419a1c09eb2567f6552ee7a8ecffd64155cffe0f1796e6e61ec088d740c1356",
-        AcpSigner.getInstance());
+        Script.ANY_CAN_PAY_CODE_HASH_TESTNET, AcpSigner.getInstance());
     TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
-        "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63",
-        PwSigner.getInstance());
+        Script.PW_LOCK_CODE_HASH_TESTNET, PwSigner.getInstance());
     TESTNET_TRANSACTION_SIGNER.scriptSignerMap =
         Collections.unmodifiableMap(TESTNET_TRANSACTION_SIGNER.scriptSignerMap);
   }

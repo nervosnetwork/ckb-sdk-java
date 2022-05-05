@@ -24,6 +24,8 @@ public class Script {
       Numeric.hexStringToByteArray("0xe4d4ecc6e5f9a059bf2f7a82cca292083aebc0c421566a52484fe2ec51a9fb0c");
   public static final byte[] CHEQUE_CODE_HASH_TESTNET =
       Numeric.hexStringToByteArray("0x60d5f39efce409c587cb9ea359cefdead650ca128f0bd9cb3855348f98c70d5b");
+  public static final byte[] PW_LOCK_CODE_HASH_TESTNET =
+      Numeric.hexStringToByteArray("0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63");
 
   public byte[] codeHash;
   public byte[] args;
@@ -67,10 +69,10 @@ public class Script {
         .build();
   }
 
-  public static Script generateSecp256K1Blake160SignhashAllScript(ECKeyPair publicKey) {
+  public static Script generateSecp256K1Blake160SignhashAllScript(ECKeyPair keyPair) {
     // CKB uses encoded public keys of compressed form (with prefix 0x04)
     // See https://en.bitcoin.it/wiki/Elliptic_Curve_Digital_Signature_Algorithm for details
-    byte[] publicKeyBytes = publicKey.getEncodedPublicKey(true);
+    byte[] publicKeyBytes = keyPair.getEncodedPublicKey(true);
     byte[] hash = Blake2b.digest(publicKeyBytes);
     hash = Arrays.copyOfRange(hash, 0, 20);
     Script scrip = new Script(
