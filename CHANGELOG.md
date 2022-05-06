@@ -1,3 +1,8 @@
+# 1.0.1 (2022-05-06)
+
+## 🐛 Bug Fixes
+
+- fix: close OK http client (#544) @fjchen7
 # 1.0.0 (2022-03-17)
 
 ## Breaking Changes
