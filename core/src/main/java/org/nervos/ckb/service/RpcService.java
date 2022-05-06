@@ -46,29 +46,7 @@ public class RpcService {
   }
 
   public <T> T post(@NotNull String method, List params, Type cls) throws IOException {
-    RequestParams requestParams = new RequestParams(method, params);
-    RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
-    Request request = new Request.Builder().url(url).post(body).build();
-    Response response = client.newCall(request).execute();
-    if (response.isSuccessful()) {
-      String responseBody = Objects.requireNonNull(response.body()).string();
-      RpcResponse rpcResponse =
-          gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
-
-      if (rpcResponse.error != null) {
-        throw new IOException(
-            "RpcService method " + method + " error " + gson.toJson(rpcResponse.error));
-      }
-
-      JsonElement jsonElement =
-          new JsonParser().parse(responseBody).getAsJsonObject().get("result");
-      if (jsonElement.isJsonObject()) {
-        return gson.fromJson(jsonElement.getAsJsonObject(), cls);
-      }
-      return gson.fromJson(jsonElement, cls);
-    } else {
-      throw new IOException("RpcService method " + method + " error code " + response.code());
-    }
+    return post(method, params, cls, gson);
   }
 
   public <T> T post(@NotNull String method, List params, Type cls, Gson gson) throws IOException {
@@ -76,8 +54,8 @@ public class RpcService {
     RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
     Request request = new Request.Builder().url(url).post(body).build();
     Response response = client.newCall(request).execute();
+    String responseBody = Objects.requireNonNull(response.body()).string();
     if (response.isSuccessful()) {
-      String responseBody = Objects.requireNonNull(response.body()).string();
       RpcResponse rpcResponse =
           gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
 
@@ -114,8 +92,8 @@ public class RpcService {
               @Override
               public void onResponse(@NotNull Call call, @NotNull Response response)
                   throws IOException {
+                String responseBody = Objects.requireNonNull(response.body()).string();
                 if (response.isSuccessful()) {
-                  String responseBody = Objects.requireNonNull(response.body()).string();
                   RpcResponse<T> rpcResponse =
                       gson.fromJson(responseBody, new TypeToken<RpcResponse<T>>() {}.getType());
                   if (rpcResponse.error != null) {
@@ -153,8 +131,8 @@ public class RpcService {
     RequestBody body = RequestBody.create(gson.toJson(paramsList), JSON_MEDIA_TYPE);
     Request request = new Request.Builder().url(url).post(body).build();
     Response response = client.newCall(request).execute();
+    String responseBody = Objects.requireNonNull(response.body()).string();
     if (response.isSuccessful()) {
-      String responseBody = Objects.requireNonNull(response.body()).string();
       return gson.fromJson(responseBody, new TypeToken<List<RpcResponse>>() {}.getType());
     } else {
       throw new IOException("RpcService error code " + response.code());
