@@ -56,7 +56,6 @@ public class RpcService {
     Request request = new Request.Builder().url(url).post(body).build();
     Response response = client.newCall(request).execute();
     String responseBody = Objects.requireNonNull(response.body()).string();
-    response.close();
     if (response.isSuccessful()) {
       RpcResponse rpcResponse =
           gson.fromJson(responseBody, new TypeToken<RpcResponse>() {}.getType());
@@ -95,7 +94,6 @@ public class RpcService {
               public void onResponse(@NotNull Call call, @NotNull Response response)
                   throws IOException {
                 String responseBody = Objects.requireNonNull(response.body()).string();
-                response.close();
                 if (response.isSuccessful()) {
                   RpcResponse<T> rpcResponse =
                       gson.fromJson(responseBody, new TypeToken<RpcResponse<T>>() {}.getType());
@@ -135,7 +133,6 @@ public class RpcService {
     Request request = new Request.Builder().url(url).post(body).build();
     Response response = client.newCall(request).execute();
     String responseBody = Objects.requireNonNull(response.body()).string();
-    response.close();
     if (response.isSuccessful()) {
       return gson.fromJson(responseBody, new TypeToken<List<RpcResponse>>() {}.getType());
     } else {
