@@ -5,7 +5,7 @@ import constant.ApiFactory;
 import constant.UdtHolder;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.utils.address.AddressTools;
+import org.nervos.ckb.utils.address.Address;
 import org.nervos.mercury.model.QueryTransactionsPayloadBuilder;
 import org.nervos.mercury.model.common.*;
 import org.nervos.mercury.model.req.item.ItemFactory;
@@ -155,7 +155,7 @@ public class QueryTransactionsTest {
   void testQueryTransactionsWithFromBlockAndToBlock() {
     try {
 
-      Script script = AddressTools.parse(AddressWithKeyHolder.queryTransactionAddress()).script;
+      Script script = Address.decode(AddressWithKeyHolder.queryTransactionAddress()).getScript();
       System.out.println(script.computeHash());
 
       QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();

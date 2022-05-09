@@ -3,7 +3,6 @@ package org.nervos.mercury.model.req.item;
 import com.google.common.primitives.Bytes;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.address.AddressTools;
 
 import java.util.Objects;
 
@@ -31,7 +30,7 @@ public class Identity {
   }
 
   public static Identity toIdentityByAddress(String address) {
-    Script script = AddressTools.parse(address).script;
+    Script script = org.nervos.ckb.utils.address.Address.decode(address).getScript();
     return new Identity(Identity.IDENTITY_FLAGS_CKB, script.args);
   }
 }

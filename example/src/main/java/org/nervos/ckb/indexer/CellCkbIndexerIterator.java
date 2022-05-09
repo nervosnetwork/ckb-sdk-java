@@ -6,7 +6,7 @@ import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.address.AddressParser;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
       do {
         if (type != null) {
           String address = addresses.get(addressIndex);
-          Script lock = AddressParser.parse(address).script;
+          Script lock = Address.decode(address).getScript();
           byte[] lockHash = lock.computeHash();
           transactionInputs =
               fetchTransactionInputsByType(
@@ -78,7 +78,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
         } else {
           transactionInputs =
               fetchTransactionInputsByLock(
-                  new SearchKey(AddressParser.parse(addresses.get(addressIndex)).script));
+                  new SearchKey(Address.decode(addresses.get(addressIndex)).getScript()));
         }
         if (transactionInputs == null || transactionInputs.size() == 0) {
           afterCursor = null;

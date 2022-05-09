@@ -11,6 +11,7 @@ import org.nervos.ckb.utils.EpochUtils;
 import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -156,7 +157,7 @@ public class NervosDaoExample {
 
     byte[] outputData = MoleculeConverter.packUint64(depositBlockNumber).toByteArray();
 
-    Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
+    Script lock = Address.decode(DaoTestAddress).getScript();
     CellOutput changeOutput = new CellOutput(0, lock);
 
     List<CellOutput> cellOutputs = Arrays.asList(cellOutput, changeOutput);
@@ -211,7 +212,7 @@ public class NervosDaoExample {
 
   private static Transaction generateClaimingFromDaoTx(
       OutPoint depositOutPoint, OutPoint withdrawingOutPoint, long fee) throws IOException {
-    Script lock = LockUtils.generateLockScriptWithAddress(DaoTestAddress);
+    Script lock = Address.decode(DaoTestAddress).getScript();
     CellWithStatus cellWithStatus = api.getLiveCell(withdrawingOutPoint, true);
     if (!(CellWithStatus.Status.LIVE == cellWithStatus.status)) {
       throw new IOException("Cell is not yet live!");

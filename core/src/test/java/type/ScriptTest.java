@@ -3,10 +3,13 @@ package type;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.crypto.Blake2b;
+import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 public class ScriptTest {
 
@@ -30,5 +33,13 @@ public class ScriptTest {
             Numeric.hexStringToByteArray("0x36c329ed630d6ce750712a477543672adab57f4c"),
             Script.HashType.TYPE);
     Assertions.assertEquals(5300000000L, script.occupiedCapacity());
+  }
+
+  @Test
+  void createSecp256k1Blake160SighashAll() {
+    Address address = Address.decode("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq07fzlmn6p52hsqv24gaufdqdqfcj223ug92c4sg");
+
+    ECKeyPair keyPair = ECKeyPair.create(new BigInteger("94792549824565121718037239626101186211400998112465652044858772198875205375860"));
+    Assertions.assertEquals(address.getScript(), Script.generateSecp256K1Blake160SignhashAllScript(keyPair));
   }
 }

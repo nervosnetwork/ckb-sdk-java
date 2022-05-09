@@ -134,7 +134,7 @@ You can leverage this client to call any RPC APIs provided by CKB, CKB-indexer o
 Block block = ckbApi.getBlock("0x77fdd22f6ae8a717de9ae2b128834e9b2a1424378b5fc95606ba017aab5fed75");
 ```
 
-For more details about RPC APIs, please check: 
+For more details about RPC APIs, please check:
 - [CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 - [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
 - [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
@@ -208,20 +208,18 @@ for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPriv
 
 // Send transaction
 Transaction tx = signBuilder.buildTx();
-ckbApi.sendTransaction(tx);;
+ckbApi.sendTransaction(tx);
 ```
 
 ### Generate a new address
 In CKB world, a lock script can be represented as an address. `secp256k1_blake160` is the most common used address and here we show how to generate it.
 
 ```java
-import org.nervos.ckb.utils.address.AddressTools;
-
 // Generate a new address randomly
-AddressTools.AddressGenerateResult address = AddressTools.generateAddress(Network.TESTNET);
-System.out.println("address info - address: " + address.address
-    + ", lockArgs: " + address.lockArgs
-    + ", private key: " + address.privateKey);
+ECKeyPair keyPair = Keys.createEcKeyPair();
+Script script = Script.generateSecp256K1Blake160SignhashAllScript(keyPair));
+Address address = new Address(script, Network.TESTNET);
+System.out.println(address.encode());
 ```
 
 For more details please about CKB address refer to [CKB rfc 0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md).
@@ -229,35 +227,25 @@ For more details please about CKB address refer to [CKB rfc 0021](https://github
 ### Convert public key to address
 
 Convert elliptic curve public key to an address (`secp256k1_blake160`)
+
 ```java
-// The public key sent is an elliptic curve public key of compressed format - a 65-length hex (not counting hex prefix 0x).
-String address = AddressTools.convertPublicKeyToAddress(
-    Network.TESTNET, "0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+// The public key sent is an elliptic curve public key of compressed format - a 65-length hex (not include hex prefix 0x).
+byte[] publicKey = Numeric.hexStringToByteArray("0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
+Script script = Script.generateSecp256K1Blake160SignhashAllScript(publicKey);
+Address address = new Address(script, Network.TESTNET);
+System.out.println(address.encode());
 ```
 
-### Convert short/bech32 address to bech32m address
-Short address and bech32 address are deprecated. The standard address format is bech32m-encoded long address, which can be got from the short address or bech32 address as the following snippet code.
+### Parse address
+
+Short address and full bech32 address are deprecated. The standard address encoded way is bech32m. You can parse address
+from an encoded string address and then get its network, script and encoded string of other format.
 
 ```java
-String address = AddressTools.convertToBech32mFullAddress("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
-```
-
-### Parse and validate address
-
-```java
-import org.nervos.ckb.utils.address.AddressParseResult;
-import org.nervos.ckb.utils.address.AddressTools;
-
-// validate address
-AddressParseResult parseResult = AddressParser.parse("ckt1qg8mxsu48mncexvxkzgaa7mz2g25uza4zpz062relhjmyuc52ps3zn47dugwyk5e6mgxvlf5ukx7k3uyq9wlkkmegke");
-System.out.println("address info - network: " + parseResult.network + ", script: " + parseResult.script + ", type: " + parseResult.type);
-
-// `AddressFormatException` will be thrown if you are parsing invalid address
-try {
-    AddressParseResult parseResult = AddressParser.parse("ckt1qyqz9r9w9gkf5799a497jx07kltx6qqgxv8qn492h3");
-} catch (AddressFormatException e) {
-    System.out.println("invalid address");
-}
+Address address = Address.decode("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
+Script script = address.getScript();
+Network network = address.getNetwork();
+System.out.println(address.encode());
 ```
 
 ## Contributing

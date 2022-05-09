@@ -15,7 +15,7 @@ import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
-import org.nervos.ckb.utils.address.AddressGenerator;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -207,7 +207,7 @@ public class MultiSignTransactionExample {
               SystemContract.getSystemMultiSigCell(api).cellHash,
               blake160(),
               Script.HashType.TYPE);
-      return AddressGenerator.generate(Network.TESTNET, script);
+      return new Address(script, Network.TESTNET).encode();
     }
   }
 }
