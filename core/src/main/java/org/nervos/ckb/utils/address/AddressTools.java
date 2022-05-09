@@ -19,9 +19,9 @@ public class AddressTools {
     return new Address(script, secp256k1AddressObj.getNetwork());
   }
 
-  public static Address generateChequeAddress(String _senderAddress, String _receiverAddress) {
-    Address senderAddress = Address.decode(_senderAddress);
-    Address receiverAddress = Address.decode(_receiverAddress);
+  public static Address generateChequeAddress(String encodedSenderAddress, String encodeReceiverAddress) {
+    Address senderAddress = Address.decode(encodedSenderAddress);
+    Address receiverAddress = Address.decode(encodeReceiverAddress);
 
     byte[] args = Bytes.concat(
         Arrays.copyOfRange(receiverAddress.script.computeHash(), 0, 20),

@@ -229,8 +229,7 @@ For more details please about CKB address refer to [CKB rfc 0021](https://github
 Convert elliptic curve public key to an address (`secp256k1_blake160`)
 
 ```java
-// The public key sent is an elliptic curve public key of compressed format - a 65-length hex (not includes hex prefix 
-0x).
+// The public key sent is an elliptic curve public key of compressed format - a 65-length hex (not include hex prefix 0x).
 byte[] publicKey = Numeric.hexStringToByteArray("0x24a501efd328e062c8675f2365970728c859c592beeefd6be8ead3d901330bc01");
 Script script = Script.generateSecp256K1Blake160SignhashAllScript(publicKey);
 Address address = new Address(script, Network.TESTNET);
@@ -243,10 +242,10 @@ Short address and full bech32 address are deprecated. The standard address encod
 from an encoded string address and then get its network, script and encoded string of other format.
 
 ```java
-Address address=Address.decode("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
+Address address = Address.decode("ckt1qyqxgp7za7dajm5wzjkye52asc8fxvvqy9eqlhp82g");
 Script script = address.getScript();
 Network network = address.getNetwork();
-System.out.println(address.encodeFullBech32m());
+System.out.println(address.encode());
 ```
 
 ## Contributing

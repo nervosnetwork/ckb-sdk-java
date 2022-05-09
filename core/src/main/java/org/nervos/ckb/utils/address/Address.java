@@ -117,6 +117,7 @@ public class Address {
     return encodeFullBech32m();
   }
 
+  @Deprecated
   public String encodeShort() {
     byte[] payload = new byte[2 + script.args.length];
     byte codeHashIndex;
@@ -138,6 +139,7 @@ public class Address {
     return Bech32.encode(Bech32.Encoding.BECH32, hrp(network), payload);
   }
 
+  @Deprecated
   public String encodeFullBech32() {
     byte[] payload = new byte[1 + script.codeHash.length + script.args.length];
     if (script.hashType == Script.HashType.TYPE) {
