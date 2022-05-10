@@ -5,6 +5,8 @@ import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.sign.Context;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.MoleculeConverter;
@@ -14,11 +16,9 @@ import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 import static org.nervos.ckb.utils.Const.*;
 
 // ACP RFC:
@@ -116,31 +116,38 @@ public class ACPTransactionExample {
       txBuilder.setOutputsData(outputsData);
     }
 
+    List<org.nervos.ckb.sign.ScriptGroup> scriptGroups = new ArrayList<>();
+    Set<Context> contexts = new HashSet<>();
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
       for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
-        txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
+        if (i == 0) {
+          WitnessArgs witnessArgs = new WitnessArgs(65);
+          txBuilder.addWitness(witnessArgs.pack().toByteArray());
+        } else {
+          txBuilder.addWitness(new byte[]{});
+        }
       }
       if (cellsWithAddress.inputs.size() > 0) {
-        scriptGroupWithPrivateKeysList.add(
-            new ScriptGroupWithPrivateKeys(
-                new ScriptGroup(
-                    NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size())),
-                Collections.singletonList(
-                    SendPrivateKeys.get(SendAddresses.indexOf(cellsWithAddress.address)))));
+        Address address = Address.decode(cellsWithAddress.address);
+        org.nervos.ckb.sign.ScriptGroup scriptGroup = new org.nervos.ckb.sign.ScriptGroup();
+        scriptGroup.setScript(address.getScript());
+        scriptGroup.setScriptType(ScriptType.LOCK);
+        scriptGroup.setInputIndices(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size()));
+
+        scriptGroups.add(scriptGroup);
+        contexts.add(new Context(SendPrivateKeys.get(SendAddresses.indexOf(cellsWithAddress.address))));
         startIndex += cellsWithAddress.inputs.size();
       }
     }
 
-    Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(txBuilder.buildTx());
+    TransactionWithScriptGroups transactionWithScriptGroups = new TransactionWithScriptGroups();
+    transactionWithScriptGroups.setTxView(txBuilder.buildTx());
+    transactionWithScriptGroups.setScriptGroups(scriptGroups);
 
-    for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
-      signBuilder.sign(
-          scriptGroupWithPrivateKeys.scriptGroup, scriptGroupWithPrivateKeys.privateKeys.get(0));
-    }
-    Transaction tx = signBuilder.buildTx();
-    return api.sendTransaction(tx);
+    TESTNET_TRANSACTION_SIGNER.signTransaction(transactionWithScriptGroups, contexts);
+    return api.sendTransaction(transactionWithScriptGroups.getTxView());
   }
 
   private static byte[] transfer(OutPoint acpOutPoint, BigInteger sudtAmount) throws IOException {
