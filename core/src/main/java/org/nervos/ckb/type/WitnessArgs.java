@@ -9,6 +9,18 @@ public class WitnessArgs {
   private byte[] inputType;
   private byte[] outputType;
 
+
+  public WitnessArgs() {
+  }
+
+  public WitnessArgs(int lockLength) {
+    this.lock = new byte[lockLength];
+  }
+
+  public WitnessArgs(byte[] lock) {
+    setLock(lock);
+  }
+
   public byte[] getLock() {
     return lock;
   }
