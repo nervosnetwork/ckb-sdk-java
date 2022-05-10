@@ -6,9 +6,9 @@ public class TransactionInput {
 
   public CellInput input;
   public long capacity;
-  public String lockHash;
+  public byte[] lockHash;
 
-  public TransactionInput(CellInput input, long capacity, String lockHash) {
+  public TransactionInput(CellInput input, long capacity, byte[] lockHash) {
     this.input = input;
     this.capacity = capacity;
     this.lockHash = lockHash;

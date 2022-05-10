@@ -5,7 +5,6 @@ import org.nervos.ckb.type.CellInput;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
-import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
@@ -73,7 +72,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
           byte[] lockHash = lock.computeHash();
           transactionInputs =
               fetchTransactionInputsByType(
-                  Numeric.toHexString(lockHash),
+                  lockHash,
                   new SearchKey(lock, ScriptType.LOCK, new SearchKey.Filter(type)));
         } else {
           transactionInputs =
@@ -115,8 +114,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
       CellInput cellInput = new CellInput(liveCell.outPoint);
       long capacity = liveCell.output.capacity;
       transactionInputs.add(
-          new TransactionInput(
-              cellInput, capacity, Numeric.toHexString(searchKey.script.computeHash())));
+          new TransactionInput(cellInput, capacity, searchKey.script.computeHash()));
     }
     if (liveCells.size() == 0) {
       transactionInputs.clear();
@@ -125,7 +123,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
   }
 
   private List<TransactionInput> fetchTransactionInputsByType(
-      String lockHash, SearchKey searchKey) {
+      byte[] lockHash, SearchKey searchKey) {
     List<CkbIndexerCells.Cell> liveCells = new ArrayList<>();
     try {
       CkbIndexerCells response = indexerApi.getCells(searchKey, order, limit, afterCursor);

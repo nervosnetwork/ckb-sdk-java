@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction;
 
+import com.google.common.primitives.Bytes;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Calculator;
@@ -25,13 +26,13 @@ public class CellCollector {
       Iterator<TransactionInput> iterator)
       throws IOException {
 
-    Set<byte[]> lockHashes = new LinkedHashSet<>();
+    List<List<Byte>> lockHashes = new ArrayList<>();
     for (String address : addresses) {
       Script script = Address.decode(address).getScript();
-      lockHashes.add(script.computeHash());
+      lockHashes.add(Bytes.asList(script.computeHash()));
     }
-    Map<byte[], List<CellInput>> lockInputsMap = new HashMap<>();
-    for (byte[] lockHash : lockHashes) {
+    Map<List<Byte>, List<CellInput>> lockInputsMap = new HashMap<>();
+    for (List<Byte> lockHash : lockHashes) {
       lockInputsMap.put(lockHash, new ArrayList<>());
     }
     final List<CellInput> cellInputs = new ArrayList<>();
@@ -60,7 +61,7 @@ public class CellCollector {
       CellWithStatus cellWithStatus = api.getLiveCell(cellInput.previousOutput, false);
       initialLength += cellWithStatus.cell.output.capacity;
     }
-    final List witnesses = new ArrayList<>();
+    final List<byte[]> witnesses = new ArrayList<>();
 
     CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
     boolean haveChangeOutput = false;
@@ -79,10 +80,10 @@ public class CellCollector {
       if (transactionInput == null) break;
       CellInput cellInput = transactionInput.input;
       inputsCapacity += transactionInput.capacity;
-      List<CellInput> cellInputList = lockInputsMap.get(transactionInput.lockHash);
+      List<CellInput> cellInputList = lockInputsMap.get(Bytes.asList(transactionInput.lockHash));
       cellInputList.add(cellInput);
       cellInputs.add(cellInput);
-      witnesses.add("0x");
+      witnesses.add(new byte[]{});
       transaction.inputs = cellInputs;
       transaction.witnesses = witnesses;
       long sumNeedCapacity =
@@ -90,9 +91,10 @@ public class CellCollector {
       if (Long.compareUnsigned(inputsCapacity, sumNeedCapacity) > 0) {
         // update witness of group first element
         int witnessIndex = 0;
-        for (byte[] hash : lockHashes) {
+        for (List<Byte> hash : lockHashes) {
           if (lockInputsMap.get(hash).size() == 0) continue;
-          witnesses.set(witnessIndex, new Witness(new byte[initialLength]));
+          WitnessArgs witnessArgs = new WitnessArgs(initialLength);
+          witnesses.set(witnessIndex, witnessArgs.pack().toByteArray());
           witnessIndex += lockInputsMap.get(hash).size();
         }
 
@@ -117,11 +119,10 @@ public class CellCollector {
     }
 
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    List<byte[]> lockHashList = Arrays.asList(lockHashes.toArray(new byte[][]{}));
-    for (Map.Entry<byte[], List<CellInput>> entry : lockInputsMap.entrySet()) {
+    for (Map.Entry<List<Byte>, List<CellInput>> entry : lockInputsMap.entrySet()) {
       cellsWithAddresses.add(
           new CellsWithAddress(
-              entry.getValue(), addresses.get(lockHashList.indexOf(entry.getKey()))));
+              entry.getValue(), addresses.get(lockHashes.indexOf(entry.getKey()))));
     }
     if (tx.inputs != null && tx.inputs.size() > 0) {
       cellsWithAddresses.get(0).inputs.addAll(0, tx.inputs);
