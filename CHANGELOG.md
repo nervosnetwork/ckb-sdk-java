@@ -1,3 +1,8 @@
+# 1.0.1 (2022-05-06)
+
+## 🐛 Bug Fixes
+
+- fix: close OK http client (#544)
 # 1.0.0 (2022-03-17)
 
 ## Breaking Changes
@@ -13,38 +18,38 @@
 
 ## 🚀 Features
 
-- feat: add method for legacy address conversion (#514) @fjchen7
+- feat: add method for legacy address conversion (#514)
 
 ## 🐛 Bug Fixes
 
-- fix: improve address validation (#515) @fjchen7
-- fix: fix PR labler not permission (#516) @fjchen7
+- fix: improve address validation (#515)
+- fix: fix PR labler not permission (#516)
 
 ## 🧰 Maintenance
 
-- chore: fix release github action (#513) @fjchen7
+- chore: fix release github action (#513)
 
 ## 0.101.1 (2021-12-01)
 
 ## 🚀 Features
 
-- feat: adopt full address by default (#506) @fjchen7
-- feat: add enum Freeze in extraFilter (#508) @fjchen7
-- feat(mercury): support `build_sudt_issue_transaction` (#501) @handsome0hell
-- feat(mercury): add build\_sudt\_issue\_transaction test (#502) @rev-chaos
+- feat: adopt full address by default (#506)
+- feat: add enum Freeze in extraFilter (#508)
+- feat(mercury): support `build_sudt_issue_transaction` (#501)
+- feat(mercury): add build\_sudt\_issue\_transaction test (#502)
 
 ## 🐛 Bug Fixes
 
-- fix: replace short address with bech32m full address in test (#511) @fjchen7
+- fix: replace short address with bech32m full address in test (#511)
 
 ## 🧰 Maintenance
 
-- chore: label PR based on title (#507) @fjchen7
-- chore: add CICD github actions (#505) @fjchen7
+- chore: label PR based on title (#507)
+- chore: add CICD github actions (#505)
 
 ## 📝 Document
 
-- docs: update README for default address (#510) @fjchen7
+- docs: update README for default address (#510)
 
 # [v0.101.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.101.1...v0.101.0-beta.1) (2021-12-01)
 ### Feature
