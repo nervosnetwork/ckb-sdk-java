@@ -1,16 +1,15 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.type.CellInput;
+import org.nervos.ckb.type.CellOutput;
 
 public class TransactionInput {
 
   public CellInput input;
-  public long capacity;
-  public byte[] lockHash;
+  public CellOutput output;
 
-  public TransactionInput(CellInput input, long capacity, byte[] lockHash) {
+  public TransactionInput(CellInput input, CellOutput output) {
     this.input = input;
-    this.capacity = capacity;
-    this.lockHash = lockHash;
+    this.output = output;
   }
 }
