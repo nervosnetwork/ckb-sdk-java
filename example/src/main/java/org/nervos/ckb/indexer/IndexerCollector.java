@@ -31,7 +31,7 @@ public class IndexerCollector {
             transaction,
             feeRate,
             initialLength,
-            new CellCkbIndexerIterator(indexerApi, addresses, true));
+            new CellCkbIndexerIterator(indexerApi, addresses));
   }
 
   public CollectResult collectInputs(
