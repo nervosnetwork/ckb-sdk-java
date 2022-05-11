@@ -5,10 +5,11 @@ import java.util.Arrays;
 import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
 
 public class WitnessArgs {
+  public static int SECP256K1_BLAKE160_WITNESS_BYTES_SIZE = 170;
+
   private byte[] lock;
   private byte[] inputType;
   private byte[] outputType;
-
 
   public WitnessArgs() {
   }

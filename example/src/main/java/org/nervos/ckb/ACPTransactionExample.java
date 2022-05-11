@@ -19,6 +19,7 @@ import java.math.BigInteger;
 import java.util.*;
 
 import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
+import static org.nervos.ckb.type.WitnessArgs.SECP256K1_BLAKE160_WITNESS_BYTES_SIZE;
 import static org.nervos.ckb.utils.Const.*;
 
 // ACP RFC:
@@ -105,7 +106,7 @@ public class ACPTransactionExample {
     // initial_length = 2 * secp256k1_signature_byte.length
     // collectInputsWithIndexer method uses indexer rpc to collect cells quickly
     CollectResult collectResult =
-        txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
+        txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, SECP256K1_BLAKE160_WITNESS_BYTES_SIZE);
 
     // update change cell output capacity after collecting cells if there is changeOutput
     if (Long.compareUnsigned(collectResult.changeCapacity, MIN_CKB) >= 0) {

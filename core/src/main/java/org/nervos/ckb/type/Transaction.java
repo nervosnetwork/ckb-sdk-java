@@ -26,43 +26,9 @@ public class Transaction {
       List<byte[]> headerDeps,
       List<CellInput> cellInputs,
       List<CellOutput> cellOutputs,
-      List<byte[]> outputsData) {
-    this.version = version;
-    this.cellDeps = cellDeps;
-    this.headerDeps = headerDeps;
-    this.inputs = cellInputs;
-    this.outputs = cellOutputs;
-    this.outputsData = outputsData;
-  }
-
-  public Transaction(
-      int version,
-      List<CellDep> cellDeps,
-      List<byte[]> headerDeps,
-      List<CellInput> cellInputs,
-      List<CellOutput> cellOutputs,
       List<byte[]> outputsData,
       List witnesses) {
     this.version = version;
-    this.cellDeps = cellDeps;
-    this.headerDeps = headerDeps;
-    this.inputs = cellInputs;
-    this.outputs = cellOutputs;
-    this.outputsData = outputsData;
-    this.witnesses = witnesses;
-  }
-
-  public Transaction(
-      int version,
-      byte[] hash,
-      List<CellDep> cellDeps,
-      List<byte[]> headerDeps,
-      List<CellInput> cellInputs,
-      List<CellOutput> cellOutputs,
-      List<byte[]> outputsData,
-      List witnesses) {
-    this.version = version;
-    this.hash = hash;
     this.cellDeps = cellDeps;
     this.headerDeps = headerDeps;
     this.inputs = cellInputs;
