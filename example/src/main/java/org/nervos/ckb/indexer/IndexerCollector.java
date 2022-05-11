@@ -23,14 +23,13 @@ public class IndexerCollector {
   }
 
   public CollectResult collectInputs(
-      List<String> addresses, Transaction transaction, long feeRate, int initialLength)
-      throws IOException {
+      List<String> addresses, Transaction transaction, long feeRate, int witnessPlaceHolderLength) {
     return new CellCollector(api)
         .collectInputs(
             addresses,
             transaction,
             feeRate,
-            initialLength,
+            witnessPlaceHolderLength,
             new CellCkbIndexerIterator(indexerApi, addresses));
   }
 
@@ -38,15 +37,14 @@ public class IndexerCollector {
       List<String> addresses,
       Transaction transaction,
       long feeRate,
-      int initialLength,
-      Script type)
-      throws IOException {
+      int witnessPlaceHolderLength,
+      Script type) {
     return new CellCollector(api)
         .collectInputs(
             addresses,
             transaction,
             feeRate,
-            initialLength,
+            witnessPlaceHolderLength,
             new CellCkbIndexerIterator(indexerApi, addresses, type));
   }
 

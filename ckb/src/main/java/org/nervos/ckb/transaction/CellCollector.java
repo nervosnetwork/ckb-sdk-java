@@ -1,13 +1,13 @@
 package org.nervos.ckb.transaction;
 
-import com.google.common.primitives.Bytes;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.type.*;
+import org.nervos.ckb.type.CellInput;
+import org.nervos.ckb.type.CellOutput;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.Calculator;
-import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.Address;
 
-import java.io.IOException;
 import java.util.*;
 
 public class CellCollector {
@@ -22,26 +22,29 @@ public class CellCollector {
       List<String> addresses,
       Transaction tx,
       long feeRate,
-      int initialLength,
-      Iterator<TransactionInput> iterator)
-      throws IOException {
+      int witnessPlaceHolderLength,
+      Iterator<TransactionInput> iterator) {
 
-    List<List<Byte>> lockHashes = new ArrayList<>();
-    for (String address : addresses) {
-      Script script = Address.decode(address).getScript();
-      lockHashes.add(Bytes.asList(script.computeHash()));
+    int normalOutputSize = tx.outputs.size();
+    // If the last cellOutput's capacity is 0, then we take it as the output to receive change.
+    // Otherwise, do not calculate change.
+    CellOutput lastOutput = tx.outputs.get(tx.outputs.size() - 1);
+    byte[] lastOutputData = tx.outputsData.get(tx.outputs.size() - 1);
+    boolean haveChangeOutput = false;
+    if (Long.compareUnsigned(lastOutput.capacity, 0) == 0) {
+      haveChangeOutput = true;
+      normalOutputSize -= 1;
     }
-    Map<List<Byte>, List<CellInput>> lockInputsMap = new HashMap<>();
-    for (List<Byte> lockHash : lockHashes) {
-      lockInputsMap.put(lockHash, new ArrayList<>());
-    }
-    final List<CellInput> cellInputs = new ArrayList<>();
 
-    for (int i = 0; i < tx.outputs.size() - 1; i++) {
-      long size = tx.outputs.get(i).occupiedCapacity(new byte[]{});
-      if (Long.compareUnsigned(tx.outputs.get(i).capacity, size) < 0) {
-        throw new IOException("Cell output byte size must not be bigger than capacity");
+    long outputCapacity = 0;
+    // Capacity check for non-change output cells.
+    for (int i = 0; i < normalOutputSize; i++) {
+      CellOutput output = tx.outputs.get(i);
+      long size = output.occupiedCapacity(tx.outputsData.get(i));
+      if (Long.compareUnsigned(output.capacity, size) < 0) {
+        throw new RuntimeException("Cell output byte size must not be bigger than capacity");
       }
+      outputCapacity += output.capacity;
     }
 
     Transaction transaction =
@@ -49,109 +52,68 @@ public class CellCollector {
             0,
             tx.cellDeps,
             tx.headerDeps,
-            tx.inputs,
+            new ArrayList<>(),
             tx.outputs,
             tx.outputsData,
-            Collections.emptyList());
+            new ArrayList());
+
+    Map<Script, List<CellInput>> lockScriptInputsMap = new HashMap<>();
+    Map<Script, String> scriptAddressMap = new HashMap<>();
+    for (String address : addresses) {
+      lockScriptInputsMap.put(Address.decode(address).getScript(), new ArrayList<>());
+      scriptAddressMap.put(Address.decode(address).getScript(), address);
+    }
 
     long inputsCapacity = 0;
-    for (CellInput cellInput : tx.inputs) {
-      cellInputs.add(cellInput);
-
-      CellWithStatus cellWithStatus = api.getLiveCell(cellInput.previousOutput, false);
-      initialLength += cellWithStatus.cell.output.capacity;
-    }
-    final List<byte[]> witnesses = new ArrayList<>();
-
-    CellOutput changeOutput = tx.outputs.get(tx.outputs.size() - 1);
-    boolean haveChangeOutput = false;
-    //  If the last cellOutput's capacity is not zero,  it means there is no changeOutput
-    if (Long.compareUnsigned(changeOutput.capacity, 0) == 0) {
-      haveChangeOutput = true;
-    }
-
-    long needCapacity = 0;
-    for (CellOutput cellOutput : tx.outputs) {
-      needCapacity += cellOutput.capacity;
-    }
-
+    long changeCapacity = 0;
+    boolean capacityEnough = false;
     while (iterator.hasNext()) {
       TransactionInput transactionInput = iterator.next();
-      if (transactionInput == null) break;
-      CellInput cellInput = transactionInput.input;
-      inputsCapacity += transactionInput.capacity;
-      List<CellInput> cellInputList = lockInputsMap.get(Bytes.asList(transactionInput.lockHash));
-      cellInputList.add(cellInput);
-      cellInputs.add(cellInput);
-      witnesses.add(new byte[]{});
-      transaction.inputs = cellInputs;
-      transaction.witnesses = witnesses;
-      long sumNeedCapacity =
-          calSumNeedCapacity(feeRate, transaction, changeOutput, haveChangeOutput, needCapacity);
-      if (Long.compareUnsigned(inputsCapacity, sumNeedCapacity) > 0) {
-        // update witness of group first element
-        int witnessIndex = 0;
-        for (List<Byte> hash : lockHashes) {
-          if (lockInputsMap.get(hash).size() == 0) continue;
-          WitnessArgs witnessArgs = new WitnessArgs(initialLength);
-          witnesses.set(witnessIndex, witnessArgs.pack().toByteArray());
-          witnessIndex += lockInputsMap.get(hash).size();
-        }
+      List<CellInput> cellInputList = lockScriptInputsMap.get(transactionInput.output.lock);
+      transaction.inputs.add(transactionInput.input);
+      byte[] witness = new byte[0];
+      // Put witness placeholder for the first one in input group
+      if (cellInputList.isEmpty()) {
+        witness = new byte[witnessPlaceHolderLength];
+      }
+      transaction.witnesses.add(witness);
+      cellInputList.add(transactionInput.input);
 
-        transaction.witnesses = witnesses;
-        // calculate sum need capacity again
-        sumNeedCapacity =
-            calSumNeedCapacity(feeRate, transaction, changeOutput, haveChangeOutput, needCapacity);
-        if (Long.compareUnsigned(inputsCapacity, sumNeedCapacity) > 0) {
+      inputsCapacity += transactionInput.output.capacity;
+      long usedCapacity = outputCapacity + calculateTxFee(transaction, feeRate);
+      // End input collection in two cases:
+      // #1 inputCapacity is greater than usedCapacity when change is not needed.
+      // #2 inputCapacity is greater than usedCapacity and the changeCapacity is greater than the
+      // last output's (the output to receive change) occupied size when change is needed.
+      if (Long.compareUnsigned(inputsCapacity, usedCapacity) >= 0) {
+        if (haveChangeOutput) {
+          changeCapacity = inputsCapacity - usedCapacity;
+          long size = lastOutput.occupiedCapacity(lastOutputData);
+          if (Long.compareUnsigned(changeCapacity, size) >= 0) {
+            capacityEnough = true;
+            break;
+          }
+        } else {
+          capacityEnough = true;
           break;
         }
       }
     }
 
-    if (Long.compareUnsigned(inputsCapacity, needCapacity + calculateTxFee(transaction, feeRate)) < 0) {
-      throw new IOException(
-          "Capacity not enough, please check inputs capacity and change output capacity!");
-    }
-
-    long changeCapacity = 0;
-    if (haveChangeOutput) {
-      changeCapacity = inputsCapacity - (needCapacity + calculateTxFee(transaction, feeRate));
+    if (!capacityEnough) {
+      throw new RuntimeException("Capacity is not enough.");
     }
 
     List<CellsWithAddress> cellsWithAddresses = new ArrayList<>();
-    for (Map.Entry<List<Byte>, List<CellInput>> entry : lockInputsMap.entrySet()) {
+    for (Map.Entry<Script, List<CellInput>> entry : lockScriptInputsMap.entrySet()) {
       cellsWithAddresses.add(
-          new CellsWithAddress(
-              entry.getValue(), addresses.get(lockHashes.indexOf(entry.getKey()))));
+          new CellsWithAddress(entry.getValue(), scriptAddressMap.get(entry.getKey())));
     }
-    if (tx.inputs != null && tx.inputs.size() > 0) {
-      cellsWithAddresses.get(0).inputs.addAll(0, tx.inputs);
-    }
-    //  if there is no changeOutput then changeCapacity will be zero
+
     return new CollectResult(cellsWithAddresses, changeCapacity);
-  }
-
-  private long calSumNeedCapacity(
-      long feeRate,
-      Transaction transaction,
-      CellOutput changeOutput,
-      boolean haveChangeOutput,
-      long needCapacity) {
-
-    long sum = needCapacity;
-    if (haveChangeOutput) {
-      sum = sum + calculateTxFee(transaction, feeRate) + calculateOutputSize(changeOutput);
-    } else {
-      sum = sum + calculateTxFee(transaction, feeRate);
-    }
-    return sum;
   }
 
   private long calculateTxFee(Transaction transaction, long feeRate) {
     return Calculator.calculateTransactionFee(transaction, feeRate);
-  }
-
-  private long calculateOutputSize(CellOutput cellOutput) {
-    return Utils.ckbToShannon(cellOutput.pack().getSize());
   }
 }
