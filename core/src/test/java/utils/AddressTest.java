@@ -1,7 +1,7 @@
 package utils;
 
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.address.Network;
+import org.nervos.ckb.Network;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;

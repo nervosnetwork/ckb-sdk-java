@@ -1,4 +1,4 @@
-package org.nervos.ckb.address;
+package org.nervos.ckb;
 
 public enum Network {
   MAINNET,

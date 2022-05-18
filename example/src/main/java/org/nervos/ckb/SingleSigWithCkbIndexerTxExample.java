@@ -1,6 +1,5 @@
 package org.nervos.ckb;
 
-import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;

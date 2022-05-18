@@ -1,7 +1,7 @@
 package org.nervos.ckb.utils.address;
 
 import com.google.common.primitives.Bytes;
-import org.nervos.ckb.address.Network;
+import org.nervos.ckb.Network;
 import org.nervos.ckb.type.Script;
 
 import java.util.Arrays;

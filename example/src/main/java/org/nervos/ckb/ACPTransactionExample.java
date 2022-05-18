@@ -1,7 +1,6 @@
 package org.nervos.ckb;
 
 import com.google.common.primitives.Bytes;
-import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
