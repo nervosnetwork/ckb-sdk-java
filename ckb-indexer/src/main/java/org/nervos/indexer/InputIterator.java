@@ -13,10 +13,7 @@ import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class InputIterator implements Iterator<TransactionInput> {
   private List<TransactionInput> transactionInputs = new ArrayList<>();
@@ -49,11 +46,11 @@ public class InputIterator implements Iterator<TransactionInput> {
 
 
   public InputIterator(String address) {
-    this(getDefaultIndexerApi(Address.decode(address).getNetwork()), List.of(address));
+    this(getDefaultIndexerApi(Address.decode(address).getNetwork()), Arrays.asList(address));
   }
   
   public InputIterator(CkbIndexerApi api, String address) {
-    this(api, List.of(address));
+    this(api, Arrays.asList(address));
   }
 
   public InputIterator(CkbIndexerApi api, List<String> addresses) {
