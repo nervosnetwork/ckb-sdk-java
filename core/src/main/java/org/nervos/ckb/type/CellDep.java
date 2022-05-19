@@ -26,6 +26,24 @@ public class CellDep {
         .build();
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    CellDep cellDep = (CellDep) o;
+
+    if (!outPoint.equals(cellDep.outPoint)) return false;
+    return depType == cellDep.depType;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = outPoint.hashCode();
+    result = 31 * result + depType.hashCode();
+    return result;
+  }
+
   public enum DepType {
     @SerializedName("code")
     CODE(0x00),
