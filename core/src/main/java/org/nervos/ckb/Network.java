@@ -7,10 +7,9 @@ import org.nervos.ckb.sign.SystemContract;
 import org.nervos.ckb.type.Script;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,16 +24,18 @@ public enum Network {
 
   static {
     try {
-      MAINNET.loadSystemContracts("/mainnet.json");
-      TESTNET.loadSystemContracts("/testnet.json");
+      MAINNET.loadSystemContracts("mainnet.json");
+      TESTNET.loadSystemContracts("testnet.json");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
   private void loadSystemContracts(String path) throws IOException {
-    Reader reader = Files.newBufferedReader(
-        Paths.get(Network.class.getResource(path).getPath()));
+    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    InputStream inputStream = classLoader.getResourceAsStream(path);
+    Reader reader = new java.io.InputStreamReader(inputStream);
+
     Gson gson = GsonFactory.create();
     Type type = new TypeToken<Map<SystemContract.Type, SystemContract>>() {}.getType();
 
