@@ -16,7 +16,7 @@ public class AddressParser extends AddressBaseOperator {
     if (data.length == 0) {
       return null;
     }
-    Bech32.Bech32Data bech32Data = new Bech32.Bech32Data(parsed.hrp, data);
+    Bech32.Bech32Data bech32Data = new Bech32.Bech32Data(parsed.encoding, parsed.hrp, data);
     return Numeric.toHexStringNoPrefix(bech32Data.data);
   }
 
