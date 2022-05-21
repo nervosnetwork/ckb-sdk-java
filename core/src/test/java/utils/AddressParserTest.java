@@ -291,4 +291,21 @@ public class AddressParserTest {
             });
     Assertions.assertTrue(exception.getMessage().contains("Invalid full address payload length"));
   }
+
+  @Test
+  void testInvalidAddressParsing() {
+    // These invalid addresses come form https://github.com/nervosnetwork/ckb-sdk-rust/pull/7/files
+    // INVALID bech32 encoding
+    Assertions.assertThrows(AddressFormatException.class, () -> AddressParser.parse("ckb1qyqylv479ewscx3ms620sv34pgeuz6zagaaqh0knz7"));
+    // INVALID data length
+    Assertions.assertThrows(AddressFormatException.class, () -> AddressParser.parse("ckb1qyqylv479ewscx3ms620sv34pgeuz6zagaarxdzvx03"));
+    // INVALID code hash index
+    Assertions.assertThrows(AddressFormatException.class, () -> AddressParser.parse("ckb1qyg5lv479ewscx3ms620sv34pgeuz6zagaaqajch0c"));
+    // INVALID bech32m encoding
+    Assertions.assertThrows(AddressFormatException.class, () -> AddressParser.parse("ckb1q2da0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsnajhch96rq68wrqn2tmhm"));
+    // Invalid ckb2021 format full address
+    Assertions.assertThrows(AddressFormatException.class, () -> AddressParser.parse("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq20k2lzuhgvrgacv4tmr88"));
+    Assertions.assertThrows(AddressFormatException.class, () -> AddressParser.parse("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqz0k2lzuhgvrgacvhcym08"));
+    Assertions.assertThrows(AddressFormatException.class, () -> AddressParser.parse("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqj0k2lzuhgvrgacvnhnzl8"));
+  }
 }
