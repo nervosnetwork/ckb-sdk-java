@@ -50,7 +50,7 @@ public class AddressParser extends AddressBaseOperator {
         case CODE_HASH_IDX_ANYONE_CAN_PAY:
           if (data.length < 22 || data.length > 24) {
             throw new AddressFormatException("payload bytes length of anyone-can-pay "
-                                                 + "short address should between 22 and 24");
+                                                 + "short address should be between 22 and 24");
           }
           String codeHash =
               Numeric.prependHexPrefix(
@@ -86,7 +86,7 @@ public class AddressParser extends AddressBaseOperator {
 
     if (TYPE_FULL_WITH_BECH32M.equals(type)) {
       if (parsed.encoding != Bech32.Encoding.BECH32M) {
-        throw new AddressFormatException("payload header 0x01 should have encoding BECH32M");
+        throw new AddressFormatException("payload header 0x00 should have encoding BECH32M");
       }
       String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
       String hashType = Serializer.deserializeHashType(payload.substring(66, 68));
