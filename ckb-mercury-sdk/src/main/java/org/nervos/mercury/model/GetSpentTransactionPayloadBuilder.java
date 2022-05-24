@@ -1,7 +1,7 @@
 package org.nervos.mercury.model;
 
 import org.nervos.ckb.type.OutPoint;
-import org.nervos.mercury.model.common.ViewType;
+import org.nervos.mercury.model.common.StructureType;
 import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 
 public class GetSpentTransactionPayloadBuilder extends GetSpentTransactionPayload {
@@ -10,8 +10,8 @@ public class GetSpentTransactionPayloadBuilder extends GetSpentTransactionPayloa
     this.outpoint = outpoint;
   }
 
-  public void structureType(ViewType viewType) {
-    this.structureType = viewType;
+  public void structureType(StructureType structureType) {
+    this.structureType = structureType;
   }
 
   public GetSpentTransactionPayload build() {

@@ -7,7 +7,7 @@ import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.DefaultIndexerApi;
 import org.nervos.mercury.model.common.AssetType;
 import org.nervos.mercury.model.common.PaginationResponse;
-import org.nervos.mercury.model.common.ViewType;
+import org.nervos.mercury.model.common.StructureType;
 import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.payload.*;
 import org.nervos.mercury.model.resp.*;
@@ -24,7 +24,6 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   private Gson g =
       GsonFactory.create()
           .newBuilder()
-          .registerTypeAdapter(Ownership.class, new Ownership.Deserializer())
           .registerTypeAdapter(RecordResponse.class, new RecordResponse())
           .create();
 
@@ -108,26 +107,26 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   }
 
   @Override
-  public PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
+  public PaginationResponse<TransactionWithRichStatus> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException {
-    payload.viewType = ViewType.NATIVE;
+    payload.structureType = StructureType.NATIVE;
 
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
-        new TypeToken<PaginationResponse<TxView<TransactionWithRichStatus>>>() {
+        new TypeToken<PaginationResponse<TransactionWithRichStatus>>() {
         }.getType(),
         this.g);
   }
 
   @Override
-  public PaginationResponse<TxView<TransactionInfoResponse>> queryTransactionsWithTransactionInfo(
+  public PaginationResponse<TransactionInfoResponse> queryTransactionsWithTransactionInfo(
       QueryTransactionsPayload payload) throws IOException {
-    payload.viewType = ViewType.DOUBLE_ENTRY;
+    payload.structureType = StructureType.DOUBLE_ENTRY;
     return this.rpcService.post(
         RpcMethods.QUERY_TRANSACTIONS,
         Arrays.asList(payload),
-        new TypeToken<PaginationResponse<TxView<TransactionInfoResponse>>>() {
+        new TypeToken<PaginationResponse<TransactionInfoResponse>>() {
         }.getType(),
         this.g);
   }
@@ -180,7 +179,7 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   @Override
   public TxView<TransactionWithRichStatus> getSpentTransactionWithTransactionView(
       GetSpentTransactionPayload payload) throws IOException {
-    payload.structureType = ViewType.NATIVE;
+    payload.structureType = StructureType.NATIVE;
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION,
         Arrays.asList(payload),
@@ -192,7 +191,7 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   @Override
   public TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
       GetSpentTransactionPayload payload) throws IOException {
-    payload.structureType = ViewType.DOUBLE_ENTRY;
+    payload.structureType = StructureType.DOUBLE_ENTRY;
 
     return this.rpcService.post(
         RpcMethods.GET_SPENT_TRANSACTION,

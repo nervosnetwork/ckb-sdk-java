@@ -1,16 +1,13 @@
 package org.nervos.mercury.model;
 
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.common.ExtraFilterType;
+import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationRequest;
 import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
 
 public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
 
@@ -22,7 +19,7 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.pagination.returnCount = Boolean.FALSE;
   }
 
-  public void item(Item item) {
+  public void setItem(Item item) {
     this.item = item;
   }
 
@@ -30,35 +27,31 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.assetInfos.add(info);
   }
 
-  public void range(Range range) {
+  public void setRange(Range range) {
     this.blockRange = range;
   }
 
-  public void limit(int limit) {
+  public void setLimit(int limit) {
     this.pagination.limit = limit;
   }
 
-  public void cursor(List<Integer> cursor) {
+  public void setCursor(byte[] cursor) {
     this.pagination.cursor = cursor;
   }
 
-  public void order(PaginationRequest.Order order) {
+  public void setOrder(PaginationRequest.Order order) {
     this.pagination.order = order;
   }
 
-  public void returnCount(Boolean returnCount) {
+  public void setReturnCount(Boolean returnCount) {
     this.pagination.returnCount = returnCount;
   }
 
-  public void extraFilter(ExtraFilterType extraFilterType) {
-    this.extraFilterType = extraFilterType;
+  public void setExtra(ExtraFilter.Type extra) {
+    this.extra = extra;
   }
 
   public QueryTransactionsPayload build() {
-    if (Objects.isNull(this.pagination.cursor) && Objects.equals(this.pagination.order, "desc")) {
-      pagination.cursor = Arrays.asList(127, 255, 255, 255, 255, 255, 255, 254);
-    }
-
     return this;
   }
 }

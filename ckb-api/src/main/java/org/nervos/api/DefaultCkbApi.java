@@ -334,13 +334,13 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
+  public PaginationResponse<TransactionWithRichStatus> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException {
     return this.mercuryApi.queryTransactionsWithTransactionView(payload);
   }
 
   @Override
-  public PaginationResponse<TxView<TransactionInfoResponse>> queryTransactionsWithTransactionInfo(
+  public PaginationResponse<TransactionInfoResponse> queryTransactionsWithTransactionInfo(
       QueryTransactionsPayload payload) throws IOException {
     return this.mercuryApi.queryTransactionsWithTransactionInfo(payload);
   }

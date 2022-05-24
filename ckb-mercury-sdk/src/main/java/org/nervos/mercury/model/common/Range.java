@@ -1,10 +1,10 @@
 package org.nervos.mercury.model.common;
 
 public class Range {
-  public Integer from;
-  public Integer to;
+  public long from;
+  public long to;
 
-  public Range(Integer from, Integer to) {
+  public Range(long from, long to) {
     this.from = from;
     this.to = to;
   }

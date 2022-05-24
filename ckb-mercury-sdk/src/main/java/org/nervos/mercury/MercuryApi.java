@@ -30,10 +30,10 @@ public interface MercuryApi extends CkbIndexerApi {
 
   List<byte[]> registerAddresses(List<String> normalAddresses) throws IOException;
 
-  PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
+  PaginationResponse<TransactionWithRichStatus> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException;
 
-  PaginationResponse<TxView<TransactionInfoResponse>> queryTransactionsWithTransactionInfo(
+  PaginationResponse<TransactionInfoResponse> queryTransactionsWithTransactionInfo(
       QueryTransactionsPayload payload) throws IOException;
 
   DBInfo getDbInfo() throws IOException;

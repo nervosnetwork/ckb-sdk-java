@@ -8,10 +8,10 @@ import java.util.Set;
 public class QueryTransactionsPayload {
   public Item item;
   public Set<AssetInfo> assetInfos;
-  public ExtraFilterType extraFilterType;
+  public ExtraFilter.Type extra;
   public Range blockRange;
   public PaginationRequest pagination;
-  public ViewType viewType;
+  public StructureType structureType;
 
   protected QueryTransactionsPayload() {
   }
