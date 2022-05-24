@@ -5,7 +5,6 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 
 public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
@@ -15,7 +14,7 @@ public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
     this.from = new HashSet<>(2, 1);
   }
 
-  public void item(Item item) {
+  public void setItem(Item item) {
     this.item = item;
   }
 
@@ -23,19 +22,19 @@ public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
     this.from.add(from);
   }
 
-  public void assetInfo(AssetInfo assetInfo) {
+  public void setAssetInfo(AssetInfo assetInfo) {
     this.assetInfo = assetInfo;
   }
 
-  public void accountNumber(BigInteger accountNumber) {
+  public void setAccountNumber(Integer accountNumber) {
     this.accountNumber = accountNumber;
   }
 
-  public void extraCkb(long extraCkb) {
+  public void setExtraCkb(Long extraCkb) {
     this.extraCkb = extraCkb;
   }
 
-  public void feeRate(BigInteger feeRate) {
+  public void setFeeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

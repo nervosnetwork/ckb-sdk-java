@@ -6,8 +6,6 @@ import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.SudtIssuePayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
-import java.math.BigInteger;
-
 public class SudtIssuePayloadBuilder extends SudtIssuePayload {
 
   public SudtIssuePayloadBuilder() {
@@ -30,7 +28,7 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
     this.change = address;
   }
 
-  public void feeRate(BigInteger feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

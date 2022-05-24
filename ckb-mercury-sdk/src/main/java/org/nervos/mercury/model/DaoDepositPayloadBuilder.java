@@ -4,8 +4,6 @@ import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.req.From;
 import org.nervos.mercury.model.req.payload.DaoDepositPayload;
 
-import java.math.BigInteger;
-
 public class DaoDepositPayloadBuilder extends DaoDepositPayload {
   public DaoDepositPayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
@@ -23,7 +21,7 @@ public class DaoDepositPayloadBuilder extends DaoDepositPayload {
     this.amount = amount;
   }
 
-  public void feeRate(BigInteger feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

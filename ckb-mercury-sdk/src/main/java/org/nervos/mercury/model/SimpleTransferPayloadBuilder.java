@@ -6,7 +6,6 @@ import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
@@ -32,7 +31,7 @@ public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
     this.change = address;
   }
 
-  public void feeRate(BigInteger feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

@@ -4,7 +4,6 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public class SimpleTransferPayload {
@@ -13,7 +12,7 @@ public class SimpleTransferPayload {
   public List<ToInfo> to;
   public String payFee;
   public String change;
-  public BigInteger feeRate;
+  public Long feeRate;
   public SinceConfig since;
 
   protected SimpleTransferPayload() {

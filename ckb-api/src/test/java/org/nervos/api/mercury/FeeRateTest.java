@@ -13,7 +13,6 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Arrays;
 
 public class FeeRateTest {
@@ -62,7 +61,7 @@ public class FeeRateTest {
             Arrays.asList(
                 new ToInfo(AddressWithKeyHolder.testAddress4(), AmountUtils.ckbToShannon(100))),
             Mode.HOLD_BY_FROM)); // unit: CKB, 1 CKB = 10^8 Shannon
-    builder.feeRate(new BigInteger("10000"));
+    builder.feeRate(1000L);
 
     try {
       TransactionCompletionResponse s =

@@ -18,7 +18,6 @@ import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 import utils.SignUtils;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -70,9 +69,9 @@ public class BuildSudtIssueTransaction {
 
     // 4. ensure receiver has one acp cell of this UDT
     AdjustAccountPayloadBuilder account_builder = new AdjustAccountPayloadBuilder();
-    account_builder.item(ItemFactory.newAddressItem(receiver_address));
-    account_builder.assetInfo(AssetInfo.newUdtAsset(udt_hash));
-    account_builder.accountNumber(BigInteger.ONE);
+    account_builder.setItem(ItemFactory.newAddressItem(receiver_address));
+    account_builder.setAssetInfo(AssetInfo.newUdtAsset(udt_hash));
+    account_builder.setAccountNumber(1);
 
     try {
       TransactionCompletionResponse s =
