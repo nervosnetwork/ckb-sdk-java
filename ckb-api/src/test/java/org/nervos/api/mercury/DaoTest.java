@@ -110,20 +110,12 @@ public class DaoTest {
   }
 
   @Test
-  public void testClaim() {
+  public void testBuildDaoClaim() throws IOException {
     DaoClaimPayloadBuilder builder = new DaoClaimPayloadBuilder();
-    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
-
-    TransactionCompletionResponse transactionCompletionResponse = null;
-    try {
-      transactionCompletionResponse = ApiFactory.getApi().buildDaoClaimTransaction(builder.build());
-
-      Transaction signTx = SignUtils.sign(transactionCompletionResponse);
-      byte[] txHash = ApiFactory.getApi().sendTransaction(signTx);
-
-      System.out.println(txHash);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    builder.setFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    TransactionCompletionResponse tx =
+        ApiFactory.getApi().buildDaoClaimTransaction(builder.build());
+    Assertions.assertNotNull(tx.txView);
+    Assertions.assertNotNull(tx.scriptGroups);
   }
 }
