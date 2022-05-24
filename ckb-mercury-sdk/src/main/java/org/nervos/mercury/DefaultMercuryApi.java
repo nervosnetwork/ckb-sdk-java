@@ -6,11 +6,9 @@ import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.DefaultIndexerApi;
 import org.nervos.mercury.model.common.AssetType;
-import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.ViewType;
 import org.nervos.mercury.model.req.Source;
-import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.*;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
@@ -28,8 +26,6 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
           .newBuilder()
           .registerTypeAdapter(Ownership.class, new Ownership.Deserializer())
           .registerTypeAdapter(RecordResponse.class, new RecordResponse())
-          .registerTypeAdapter(ExtraFilter.class, new ExtraFilter())
-          .registerTypeAdapter(Item.class, new Item.Serializer())
           .create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {

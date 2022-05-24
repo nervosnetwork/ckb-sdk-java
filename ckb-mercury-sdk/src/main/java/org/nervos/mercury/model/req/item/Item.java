@@ -4,9 +4,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import org.nervos.ckb.type.OutPoint;
 
+@JsonAdapter(Item.Serializer.class)
 public class Item {
   Type type;
   Object value;
@@ -34,10 +36,8 @@ public class Item {
       JsonElement value;
       switch (src.type) {
         case IDENTITY:
-          value = context.serialize(((Identity) src.value).identity, String.class);
-          break;
         case ADDRESS:
-          value = context.serialize(((Address) src.value).address, String.class);
+          value = context.serialize(src.value, String.class);
           break;
         case OUT_POINT:
           value = context.serialize(src.value, OutPoint.class);

@@ -58,7 +58,7 @@ public class SourceTest {
     try {
 
       GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-      builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.getPubKeyByAddress(addr)));
+      builder.setItem(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.getPubKeyByAddress(addr)));
       builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
       return ApiFactory.getApi().getBalance(builder.build());
