@@ -10,15 +10,15 @@ public class DaoWithdrawPayloadBuilder extends DaoWithdrawPayload {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
   }
 
-  public void from(Item item) {
+  public void setFrom(Item item) {
     this.from = item;
   }
 
-  public void payFee(String address) {
+  public void setPayFee(String address) {
     this.payFee = address;
   }
 
-  public void feeRate(Long feeRate) {
+  public void setFeeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

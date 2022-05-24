@@ -2,6 +2,7 @@ package org.nervos.api.mercury;
 
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.AmountUtils;
@@ -96,23 +97,16 @@ public class DaoTest {
   }
 
   @Test
-  public void testWithdraw() {
+  public void testBuildDaoWithdraw() throws IOException {
     DaoWithdrawPayloadBuilder builder = new DaoWithdrawPayloadBuilder();
-    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
-    builder.payFee(AddressWithKeyHolder.testAddress1());
+    builder.setFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.setPayFee(AddressWithKeyHolder.testAddress1());
+    builder.setFeeRate(1200L);
 
-    TransactionCompletionResponse transactionCompletionResponse = null;
-    try {
-      transactionCompletionResponse =
-          ApiFactory.getApi().buildDaoWithdrawTransaction(builder.build());
-
-      Transaction signTx = SignUtils.sign(transactionCompletionResponse);
-      byte[] txHash = ApiFactory.getApi().sendTransaction(signTx);
-
-      System.out.println(txHash);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    TransactionCompletionResponse tx =
+        ApiFactory.getApi().buildDaoWithdrawTransaction(builder.build());
+    Assertions.assertNotNull(tx.txView);
+    Assertions.assertNotNull(tx.scriptGroups);
   }
 
   @Test
