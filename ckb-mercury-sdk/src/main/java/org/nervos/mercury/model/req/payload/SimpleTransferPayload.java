@@ -10,8 +10,6 @@ public class SimpleTransferPayload {
   public AssetInfo assetInfo;
   public List<String> from;
   public List<ToInfo> to;
-  public String payFee;
-  public String change;
   public Long feeRate;
   public SinceConfig since;
 
