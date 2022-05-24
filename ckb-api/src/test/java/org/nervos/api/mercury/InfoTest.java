@@ -2,41 +2,23 @@ package org.nervos.api.mercury;
 
 import constant.ApiFactory;
 import org.junit.jupiter.api.Test;
-import org.nervos.mercury.model.resp.info.DBInfo;
-import org.nervos.mercury.model.resp.info.MercuryInfo;
-import org.nervos.mercury.model.resp.info.MercurySyncState;
 
 import java.io.IOException;
 
 public class InfoTest {
 
   @Test
-  public void testDbInfo() {
-    DBInfo dbInfo = null;
-    try {
-      dbInfo = ApiFactory.getApi().getDbInfo();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public void testDbInfo() throws IOException {
+    ApiFactory.getApi().getDbInfo();
   }
 
   @Test
-  public void testMercuryInfo() {
-    MercuryInfo mercuryInfo = null;
-    try {
-      mercuryInfo = ApiFactory.getApi().getMercuryInfo();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public void testMercuryInfo() throws IOException {
+    ApiFactory.getApi().getMercuryInfo();
   }
 
   @Test
-  public void testSyncState() {
-    MercurySyncState mercurySyncState = null;
-    try {
-      mercurySyncState = ApiFactory.getApi().getSyncState();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public void testSyncState() throws IOException {
+    ApiFactory.getApi().getSyncState();
   }
 }
