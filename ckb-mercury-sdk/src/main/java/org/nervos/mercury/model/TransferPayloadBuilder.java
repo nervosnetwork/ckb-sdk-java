@@ -2,10 +2,12 @@ package org.nervos.mercury.model;
 
 import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.req.From;
-import org.nervos.mercury.model.req.To;
+import org.nervos.mercury.model.req.ToInfo;
+import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
+
+import java.util.ArrayList;
 
 public class TransferPayloadBuilder extends TransferPayload {
 
@@ -14,31 +16,34 @@ public class TransferPayloadBuilder extends TransferPayload {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
   }
 
-  public void from(From from) {
-    this.from = from;
+  public void addFrom(Item from) {
+    if (this.from == null) {
+      this.from = new ArrayList<>();
+    }
+    this.from.add(from);
   }
 
-  public void assetInfo(AssetInfo assetInfo) {
+  public void setAssetInfo(AssetInfo assetInfo) {
     this.assetInfo = assetInfo;
   }
 
-  public void to(To to) {
-    this.to = to;
+  public void addTo(String address, long amount) {
+    if (this.to == null) {
+      this.to = new ArrayList<>();
+    }
+    ToInfo toInfo = new ToInfo(address, amount);
+    this.to.add(toInfo);
   }
 
-  public void payFee(String address) {
-    this.payFee = address;
+  public void setPayFee(CapacityProvider payFee) {
+    this.payFee = payFee;
   }
 
-  public void change(String address) {
-    this.change = address;
-  }
-
-  public void feeRate(Long feeRate) {
+  public void setFeeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 
-  public void since(SinceConfig since) {
+  public void setSince(SinceConfig since) {
     this.since = since;
   }
 

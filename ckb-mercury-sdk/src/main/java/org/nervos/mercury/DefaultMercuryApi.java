@@ -5,10 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.DefaultIndexerApi;
-import org.nervos.mercury.model.common.AssetType;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.StructureType;
-import org.nervos.mercury.model.req.Source;
 import org.nervos.mercury.model.req.payload.*;
 import org.nervos.mercury.model.resp.*;
 import org.nervos.mercury.model.resp.info.DBInfo;
@@ -18,7 +16,6 @@ import org.nervos.mercury.model.resp.info.MercurySyncState;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   private Gson g =
@@ -48,12 +45,6 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   @Override
   public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
       throws IOException {
-
-    if (Objects.equals(payload.assetInfo.assetType, AssetType.CKB)
-        && Objects.equals(payload.from.source, Source.CLAIMABLE)) {
-      throw new RuntimeException("The transaction does not support ckb");
-    }
-
     return this.rpcService.post(
         RpcMethods.BUILD_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
