@@ -1,11 +1,11 @@
-package mercury.constant;
+package constant;
 
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 
-public class MercuryApiFactory {
+public class ApiFactory {
 
-  private static String MERCURY_URL = "http://127.0.0.1:8116";
+  private static String MERCURY_URL = "https://mercury-testnet.ckbapp.dev/";
 
   private static MercuryApi API = new DefaultMercuryApi(MERCURY_URL, false);
 

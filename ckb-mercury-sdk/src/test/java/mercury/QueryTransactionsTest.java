@@ -1,4 +1,4 @@
-package org.nervos.api.mercury;
+package mercury;
 
 import constant.AddressWithKeyHolder;
 import constant.ApiFactory;

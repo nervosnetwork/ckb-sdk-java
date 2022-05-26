@@ -1,4 +1,4 @@
-package org.nervos.api.mercury;
+package mercury;
 
 import constant.ApiFactory;
 import org.junit.jupiter.api.Test;
