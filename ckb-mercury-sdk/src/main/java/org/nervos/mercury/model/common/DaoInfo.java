@@ -5,6 +5,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DaoInfo {
@@ -39,7 +40,9 @@ public class DaoInfo {
         if (obj.get("value") instanceof JsonArray) {
           daoState.value = context.deserialize(obj.get("value"), new TypeToken<List<Long>>() {}.getType());
         } else {
-          daoState.value = context.deserialize(obj.get("value"), Long.class);
+          Long value = context.deserialize(obj.get("value"), Long.class);
+          daoState.value = new ArrayList<>();
+          daoState.value.add(value);
         }
         return daoState;
       }
