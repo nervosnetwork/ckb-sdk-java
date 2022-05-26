@@ -4,6 +4,7 @@ import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.payload.CapacityProvider;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 

@@ -1,6 +1,5 @@
 package org.nervos.mercury.model.req.payload;
 
-import com.google.gson.annotations.SerializedName;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.item.Item;
@@ -17,10 +16,4 @@ public class TransferPayload {
   public Long feeRate = 1000L;
   public SinceConfig since;
 
-  public enum CapacityProvider {
-    @SerializedName("From")
-    FROM,
-    @SerializedName("To")
-    TO
-  }
 }
