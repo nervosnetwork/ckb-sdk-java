@@ -9,25 +9,19 @@ import org.nervos.ckb.utils.Serializer;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class AddressParser extends AddressBaseOperator {
-
-  private static String parsePayload(String address) {
+  public static AddressParseResult parse(String address) throws AddressFormatException {
     Bech32.Bech32Data parsed = Bech32.decode(address);
     byte[] data = convertBits(com.google.common.primitives.Bytes.asList(parsed.data), 5, 8, false);
-    if (data.length == 0) {
-      return null;
-    }
-    Bech32.Bech32Data bech32Data = new Bech32.Bech32Data(parsed.hrp, data);
-    return Numeric.toHexStringNoPrefix(bech32Data.data);
-  }
-
-  public static AddressParseResult parse(String address) throws AddressFormatException {
-    String payload = parsePayload(address);
+    String payload = Numeric.toHexStringNoPrefix(data);
     if (payload == null) {
       throw new AddressFormatException("Address bech32 decode fail");
     }
     String type = payload.substring(0, 2);
     Network network = parseNetwork(address);
     if (TYPE_SHORT.equals(type)) {
+      if (parsed.encoding != Bech32.Encoding.BECH32) {
+        throw new AddressFormatException("payload header 0x01 should have encoding BECH32");
+      }
       String codeHashIndex = payload.substring(2, 4);
       String args = Numeric.prependHexPrefix(payload.substring(4));
       if (!codeHashIndex.equals(CODE_HASH_IDX_ANYONE_CAN_PAY)
@@ -36,16 +30,28 @@ public class AddressParser extends AddressBaseOperator {
       }
       switch (codeHashIndex) {
         case CODE_HASH_IDX_BLAKE160:
+          if (data.length != 22) {
+            throw new AddressFormatException("payload bytes length of secp256k1-sighash-all "
+                                                 + "short address should be 22");
+          }
           return new AddressParseResult(
               network,
               new Script(Numeric.prependHexPrefix(SECP_BLAKE160_CODE_HASH), args, Script.TYPE),
               AddressParseResult.Type.SHORT);
         case CODE_HASH_IDX_MULTISIG:
+          if (data.length != 22) {
+            throw new AddressFormatException("payload bytes length of secp256k1-multisig-all "
+                                                 + "short address should be 22");
+          }
           return new AddressParseResult(
               network,
               new Script(Numeric.prependHexPrefix(MULTISIG_CODE_HASH), args, Script.TYPE),
               AddressParseResult.Type.SHORT);
         case CODE_HASH_IDX_ANYONE_CAN_PAY:
+          if (data.length < 22 || data.length > 24) {
+            throw new AddressFormatException("payload bytes length of anyone-can-pay "
+                                                 + "short address should be between 22 and 24");
+          }
           String codeHash =
               Numeric.prependHexPrefix(
                   network == Network.MAINNET ? ACP_MAINNET_CODE_HASH : ACP_TESTNET_CODE_HASH);
@@ -61,11 +67,17 @@ public class AddressParser extends AddressBaseOperator {
     }
 
     if (TYPE_FULL_DATA.equals(type)) {
+      if (parsed.encoding != Bech32.Encoding.BECH32) {
+        throw new AddressFormatException("payload header 0x02 should have encoding BECH32");
+      }
       String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
       String args = Numeric.prependHexPrefix(payload.substring(66));
       return new AddressParseResult(
           network, new Script(codeHash, args, Script.DATA), AddressParseResult.Type.FULL);
     } else if (TYPE_FULL_TYPE.equals(type)) {
+      if (parsed.encoding != Bech32.Encoding.BECH32) {
+        throw new AddressFormatException("payload header 0x04 should have encoding BECH32");
+      }
       String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
       String args = Numeric.prependHexPrefix(payload.substring(66));
       return new AddressParseResult(
@@ -73,6 +85,9 @@ public class AddressParser extends AddressBaseOperator {
     }
 
     if (TYPE_FULL_WITH_BECH32M.equals(type)) {
+      if (parsed.encoding != Bech32.Encoding.BECH32M) {
+        throw new AddressFormatException("payload header 0x00 should have encoding BECH32M");
+      }
       String codeHash = Numeric.prependHexPrefix(payload.substring(2, 66));
       String hashType = Serializer.deserializeHashType(payload.substring(66, 68));
       String args = Numeric.prependHexPrefix(payload.substring(68));

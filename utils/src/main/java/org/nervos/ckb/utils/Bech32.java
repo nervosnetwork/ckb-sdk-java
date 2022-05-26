@@ -17,9 +17,10 @@
 package org.nervos.ckb.utils;
 
 import com.google.common.primitives.Bytes;
+import org.nervos.ckb.exceptions.AddressFormatException;
+
 import java.util.Arrays;
 import java.util.Locale;
-import org.nervos.ckb.exceptions.AddressFormatException;
 
 /*
  * Copyright 2018 Coinomi Ltd
@@ -45,21 +46,25 @@ public class Bech32 {
 
   /** The Bech32 character set for decoding. */
   private static final byte[] CHARSET_REV = {
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    15, -1, 10, 17, 21, 20, 26, 30, 7, 5, -1, -1, -1, -1, -1, -1,
-    -1, 29, -1, 24, 13, 25, 9, 8, 23, -1, 18, 22, 31, 27, 19, -1,
-    1, 0, 3, 16, 11, 28, 12, 14, 6, 4, 2, -1, -1, -1, -1, -1,
-    -1, 29, -1, 24, 13, 25, 9, 8, 23, -1, 18, 22, 31, 27, 19, -1,
-    1, 0, 3, 16, 11, 28, 12, 14, 6, 4, 2, -1, -1, -1, -1, -1
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+      15, -1, 10, 17, 21, 20, 26, 30, 7, 5, -1, -1, -1, -1, -1, -1,
+      -1, 29, -1, 24, 13, 25, 9, 8, 23, -1, 18, 22, 31, 27, 19, -1,
+      1, 0, 3, 16, 11, 28, 12, 14, 6, 4, 2, -1, -1, -1, -1, -1,
+      -1, 29, -1, 24, 13, 25, 9, 8, 23, -1, 18, 22, 31, 27, 19, -1,
+      1, 0, 3, 16, 11, 28, 12, 14, 6, 4, 2, -1, -1, -1, -1, -1
   };
 
+  public enum Encoding {BECH32, BECH32M}
+
   public static class Bech32Data {
+    public final Encoding encoding;
     public final String hrp;
     public final byte[] data;
 
-    public Bech32Data(final String hrp, final byte[] data) {
+    public Bech32Data(final Encoding encoding, final String hrp, final byte[] data) {
+      this.encoding = encoding;
       this.hrp = hrp;
       this.data = data;
     }
@@ -173,11 +178,14 @@ public class Bech32 {
     }
     String hrp = str.substring(0, pos).toLowerCase(Locale.ROOT);
     int polymod = polymod(Bytes.concat(expandHrp(hrp), values));
+    Encoding encoding;
     if (polymod == 1) {
+      encoding = Encoding.BECH32;
       if (!verifyChecksum(hrp, values)) throw new AddressFormatException.InvalidChecksum();
     } else {
+      encoding = Encoding.BECH32M;
       if (!Bech32m.verifyChecksum(hrp, values)) throw new AddressFormatException.InvalidChecksum();
     }
-    return new Bech32Data(hrp, Arrays.copyOfRange(values, 0, values.length - 6));
+    return new Bech32Data(encoding, hrp, Arrays.copyOfRange(values, 0, values.length - 6));
   }
 }

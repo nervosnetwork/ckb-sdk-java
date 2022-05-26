@@ -1,12 +1,14 @@
 package org.nervos.ckb.address;
 
 import com.google.common.primitives.Bytes;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.crypto.Hash;
 import org.nervos.ckb.exceptions.AddressFormatException;
 import org.nervos.ckb.utils.Bech32;
 import org.nervos.ckb.utils.Numeric;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Copyright © 2018 Nervos Foundation. All rights reserved.
@@ -99,7 +101,7 @@ public class AddressUtils {
     if (data.length == 0) {
       return null;
     }
-    Bech32.Bech32Data bech32Data = new Bech32.Bech32Data(parsed.hrp, data);
+    Bech32.Bech32Data bech32Data = new Bech32.Bech32Data(parsed.encoding, parsed.hrp, data);
     return Numeric.toHexStringNoPrefix(bech32Data.data);
   }
 
@@ -113,12 +115,16 @@ public class AddressUtils {
   }
 
   public static String parse(String address) throws AddressFormatException {
-    String payload = parsePrefix(address);
-    String prefixCodeHash = payload.substring(TYPE.length());
-    if (prefixCodeHash.startsWith(CODE_HASH_IDX_BLAKE160)) {
-      return payload.substring((TYPE + CODE_HASH_IDX_BLAKE160).length());
+    Bech32.Bech32Data parsed = Bech32.decode(address);
+    byte[] data = convertBits(Bytes.asList(parsed.data), 5, 8, false);
+    if (data[0] != 0x01) {
+      throw new AddressFormatException("Only support to parse short address");
     }
-    return payload.substring((TYPE + CODE_HASH_IDX_MULTISIG).length());
+    if (parsed.encoding != Bech32.Encoding.BECH32) {
+      throw new AddressFormatException("Short address should be encoded with bech32");
+    }
+    byte[] args = Arrays.copyOfRange(data, 2, data.length);
+    return Numeric.toHexStringNoPrefix(args);
   }
 
   private String prefix() {
