@@ -18,11 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
-  private Gson g =
-      GsonFactory.create()
-          .newBuilder()
-          .registerTypeAdapter(RecordResponse.class, new RecordResponse())
-          .create();
+  private Gson g = GsonFactory.create();
 
   public DefaultMercuryApi(String mercuryUrl, boolean isDebug) {
     super(mercuryUrl, isDebug);
