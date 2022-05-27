@@ -1,3 +1,9 @@
+# 1.0.2 (2022-05-27)
+
+## 🚀 Features
+
+- feat: check address strictly (#550)
+
 # 1.0.1 (2022-05-06)
 
 ## 🐛 Bug Fixes
