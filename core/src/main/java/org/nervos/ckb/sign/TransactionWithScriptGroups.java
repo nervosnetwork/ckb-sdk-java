@@ -57,7 +57,7 @@ public class TransactionWithScriptGroups {
     public Builder addLockScriptGroup(Script script, int... inputIndices) {
       ScriptGroup scriptGroup =
           ScriptGroup.builder()
-              .setScriptType(ScriptType.LOCK)
+              .setGroupType(ScriptType.LOCK)
               .setScript(script)
               .addInputIndices(inputIndices)
               .build();

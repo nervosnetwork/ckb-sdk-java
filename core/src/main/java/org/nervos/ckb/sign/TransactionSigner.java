@@ -81,7 +81,7 @@ public class TransactionSigner {
 
       Script script = group.getScript();
       ScriptSigner signer =
-          scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getScriptType()));
+          scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getGroupType()));
       if (signer != null) {
         for (Context context : contexts) {
           if (signer.signTransaction(tx, group, context)) {
@@ -104,7 +104,7 @@ public class TransactionSigner {
   private boolean isValidScriptGroup(ScriptGroup scriptGroup) {
     if (scriptGroup == null
         || scriptGroup.getScript() == null
-        || scriptGroup.getScriptType() == null) {
+        || scriptGroup.getGroupType() == null) {
       return false;
     }
 
@@ -113,7 +113,7 @@ public class TransactionSigner {
     boolean isEmptyOutputIndices =
         (scriptGroup.getOutputIndices() == null || scriptGroup.getOutputIndices().isEmpty());
 
-    ScriptType scriptType = scriptGroup.getScriptType();
+    ScriptType scriptType = scriptGroup.getGroupType();
     if (scriptType == ScriptType.LOCK) {
       return !isEmptyInputIndices;
     } else if (scriptType == ScriptType.TYPE) {
