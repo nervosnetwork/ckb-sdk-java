@@ -1,8 +1,6 @@
 package org.nervos.mercury.model.req.item;
 
 import org.bouncycastle.util.encoders.Hex;
-import org.nervos.ckb.Network;
-import org.nervos.ckb.sign.SystemContract;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.utils.Numeric;
 
@@ -24,20 +22,11 @@ public class ItemFactory {
     return newIdentityItemByCkb(Numeric.hexStringToByteArray(pubKey));
   }
 
-  public static Item newIdentityItemByAddress(String address) {
+  public static Item newIdentityItemBySecp256k1Blake160SignhashAllAddress(String address) {
     org.nervos.ckb.utils.address.Address addr = org.nervos.ckb.utils.address.Address.decode(address);
-    Network network = addr.getNetwork();
-    SystemContract.Type type = network.getSystemContractType(addr.getScript());
     byte[] content = new byte[21];
-    if (type == SystemContract.Type.SECP256K1_BLAKE160_SIGHASH_ALL) {
-      content[0] = 0x00;
-      System.arraycopy(addr.getScript(), 1, content, 1, 20);
-    } else if (type == SystemContract.Type.SECP256K1_BLAKE160_MULTISIG_ALL) {
-      content[0] = 0x06;
-      System.arraycopy(addr.getScript(), 1, content, 1, 20);
-    } else {
-      throw new IllegalArgumentException("Unsupported address type");
-    }
+    content[0] = 0x00;
+    System.arraycopy(addr.getScript(), 1, content, 1, 20);
     return new Item(Item.Type.IDENTITY, Hex.toHexString(content));
   }
 
