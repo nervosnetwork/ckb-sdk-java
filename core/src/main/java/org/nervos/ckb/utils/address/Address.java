@@ -41,21 +41,29 @@ public class Address {
   }
 
   public static Address decode(String address) {
-    Network network = network(address.substring(0, 3));
-    return decode(address, network);
-  }
-
-  private static Address decode(String address, Network network) {
     Objects.requireNonNull(address);
-    byte[] payload = Bech32.decode(address).data;
+    Bech32.Bech32Data bech32Data = Bech32.decode(address);
+    Bech32.Encoding encoding = bech32Data.encoding;
+    Network network = network(bech32Data.hrp);
+
+    byte[] payload = bech32Data.data;
     payload = convertBits(payload, 0, payload.length, 5, 8, false);
     switch (payload[0]) {
       case 0x00:
+        if (encoding != Bech32.Encoding.BECH32M) {
+          throw new AddressFormatException("Payload header 0x00 must have encoding bech32");
+        }
         return decodeLongBech32m(payload, network);
       case 0x01:
+        if (encoding != Bech32.Encoding.BECH32) {
+          throw new AddressFormatException("Payload header 0x01 must have encoding bech32");
+        }
         return decodeShort(payload, network);
       case 0x02:
       case 0x04:
+        if (encoding != Bech32.Encoding.BECH32) {
+          throw new AddressFormatException("Payload header 0x02 or 0x04 must have encoding bech32m");
+        }
         return decodeLongBech32(payload, network);
       default:
         throw new AddressFormatException("Unknown format type");
@@ -66,11 +74,21 @@ public class Address {
     byte codeHashIndex = payload[1];
 
     byte[] codeHash;
+    byte[] args = Arrays.copyOfRange(payload, 2, payload.length);
     if (codeHashIndex == 0x00) {
+      if (args.length != 20) {
+        throw new AddressFormatException("Invalid args length " + args.length);
+      }
       codeHash = Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
     } else if (codeHashIndex == 0x01) {
+      if (args.length != 20) {
+        throw new AddressFormatException("Invalid args length " + args.length);
+      }
       codeHash = Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH;
     } else if (codeHashIndex == 0x02) {
+      if (args.length < 20 || args.length > 22) {
+        throw new AddressFormatException("Invalid args length " + args.length);
+      }
       if (network == Network.MAINNET) {
         codeHash = Script.ANY_CAN_PAY_CODE_HASH_MAINNET;
       } else {
@@ -79,7 +97,6 @@ public class Address {
     } else {
       throw new AddressFormatException("Unknown code hash index");
     }
-    byte[] args = Arrays.copyOfRange(payload, 2, payload.length);
 
     Script script = new Script(codeHash, args, Script.HashType.TYPE);
     return new Address(script, network);
@@ -101,6 +118,9 @@ public class Address {
   }
 
   private static Address decodeLongBech32m(byte[] payload, Network network) {
+    if (payload[0] != 0x00) {
+      throw new AddressFormatException("Invalid payload header 0x" + payload[0]);
+    }
     byte[] codeHash = Arrays.copyOfRange(payload, 1, 33);
     Script.HashType hashType = Script.HashType.unpack(payload[33]);
     byte[] args = Arrays.copyOfRange(payload, 34, payload.length);
