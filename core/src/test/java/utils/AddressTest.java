@@ -5,8 +5,10 @@ import org.nervos.ckb.address.Network;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
+import org.nervos.ckb.utils.address.AddressFormatException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AddressTest {
   /**
@@ -80,5 +82,23 @@ public class AddressTest {
     assertEquals(new Address(script4, Network.MAINNET), actual);
     actual = Address.decode("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq9nnw7qkdnnclfkg59uzn8umtfd2kwxceqz6hep8");
     assertEquals(new Address(script4, Network.TESTNET), actual);
+  }
+
+
+  @Test
+  void testInvalidDecode() {
+    // These invalid addresses come form https://github.com/nervosnetwork/ckb-sdk-rust/pull/7/files
+    // INVALID bech32 encoding
+    assertThrows(AddressFormatException.class, () -> Address.decode("ckb1qyqylv479ewscx3ms620sv34pgeuz6zagaaqh0knz7"));
+    // INVALID data length
+    assertThrows(AddressFormatException.class, () -> Address.decode("ckb1qyqylv479ewscx3ms620sv34pgeuz6zagaarxdzvx03"));
+    // INVALID code hash index
+    assertThrows(AddressFormatException.class, () -> Address.decode("ckb1qyg5lv479ewscx3ms620sv34pgeuz6zagaaqajch0c"));
+    // INVALID bech32m encoding
+    assertThrows(AddressFormatException.class, () -> Address.decode("ckb1q2da0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsnajhch96rq68wrqn2tmhm"));
+    // Invalid ckb2021 format full address
+    assertThrows(AddressFormatException.class, () -> Address.decode("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq20k2lzuhgvrgacv4tmr88"));
+    assertThrows(AddressFormatException.class, () -> Address.decode("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqz0k2lzuhgvrgacvhcym08"));
+    assertThrows(AddressFormatException.class, () -> Address.decode("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqj0k2lzuhgvrgacvnhnzl8"));
   }
 }
