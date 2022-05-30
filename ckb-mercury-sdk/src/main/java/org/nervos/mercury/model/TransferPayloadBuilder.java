@@ -24,7 +24,7 @@ public class TransferPayloadBuilder extends TransferPayload {
     this.from.add(from);
   }
 
-  public void setAssetInfo(AssetInfo assetInfo) {
+  public void assetInfo(AssetInfo assetInfo) {
     this.assetInfo = assetInfo;
   }
 
@@ -36,15 +36,15 @@ public class TransferPayloadBuilder extends TransferPayload {
     this.to.add(toInfo);
   }
 
-  public void setPayFee(CapacityProvider payFee) {
+  public void payFee(CapacityProvider payFee) {
     this.payFee = payFee;
   }
 
-  public void setFeeRate(Long feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 
-  public void setSince(SinceConfig since) {
+  public void since(SinceConfig since) {
     this.since = since;
   }
 

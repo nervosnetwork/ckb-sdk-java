@@ -19,7 +19,7 @@ public class BalanceTest {
   @Test
   void getCkbBalance() throws IOException {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.setItem(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
     builder.addAssetInfo(AssetInfo.newCkbAsset());
 
     GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());
@@ -29,7 +29,7 @@ public class BalanceTest {
   @Test
   void getSudtBalance() throws IOException {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.setItem(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
     builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());
@@ -40,7 +40,7 @@ public class BalanceTest {
   @Test
   void getAllBalance() throws IOException {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.setItem(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
 
     GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());
     assertNotNull(balance, "Balance is not empty");
@@ -50,7 +50,7 @@ public class BalanceTest {
   @Test
   void getBalanceByAddress() throws IOException {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.setItem(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress4()));
+    builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress4()));
     builder.addAssetInfo(AssetInfo.newCkbAsset());
 
     GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());
@@ -60,7 +60,7 @@ public class BalanceTest {
   @Test
   void getBalanceByIdentity() throws IOException {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.setItem(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey4()));
     builder.addAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
 
     GetBalanceResponse balance = ApiFactory.getApi().getBalance(builder.build());
@@ -70,7 +70,7 @@ public class BalanceTest {
   @Test
   void getBalanceByRecordByScriptByChequeCellSender() throws IOException {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.setItem(
+    builder.item(
         ItemFactory.newOutPointItem(
             Numeric.hexStringToByteArray(
                 "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"),
@@ -84,7 +84,7 @@ public class BalanceTest {
   @Test
   void getBalanceByRecordByScriptChequeCellReceiver() throws IOException {
     GetBalancePayloadBuilder builder = new GetBalancePayloadBuilder();
-    builder.setItem(
+    builder.item(
         ItemFactory.newOutPointItem(
             Numeric.hexStringToByteArray(
                 "0x52b1cf0ad857d53e1a3552944c1acf268f6a6aea8e8fc85fe8febcb8127d56f0"),

@@ -19,7 +19,7 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.pagination.returnCount = Boolean.FALSE;
   }
 
-  public void setItem(Item item) {
+  public void item(Item item) {
     this.item = item;
   }
 
@@ -27,27 +27,27 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.assetInfos.add(info);
   }
 
-  public void setRange(Range range) {
+  public void range(Range range) {
     this.blockRange = range;
   }
 
-  public void setLimit(int limit) {
+  public void limit(int limit) {
     this.pagination.limit = limit;
   }
 
-  public void setCursor(byte[] cursor) {
+  public void cursor(byte[] cursor) {
     this.pagination.cursor = cursor;
   }
 
-  public void setOrder(PaginationRequest.Order order) {
+  public void order(PaginationRequest.Order order) {
     this.pagination.order = order;
   }
 
-  public void setReturnCount(Boolean returnCount) {
+  public void returnCount(Boolean returnCount) {
     this.pagination.returnCount = returnCount;
   }
 
-  public void setExtra(ExtraFilter.Type extra) {
+  public void extra(ExtraFilter.Type extra) {
     this.extra = extra;
   }
 

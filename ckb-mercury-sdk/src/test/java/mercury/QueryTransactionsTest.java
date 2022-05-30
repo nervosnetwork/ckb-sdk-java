@@ -19,11 +19,11 @@ public class QueryTransactionsTest {
   @Test
   void testQueryTransactionsView() throws IOException {
     QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-    builder.setItem(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
+    builder.item(ItemFactory.newAddressItem(AddressWithKeyHolder.queryTransactionAddress()));
     builder.addAssetInfo(AssetInfo.newCkbAsset());
-    builder.setLimit(2);
-    builder.setOrder(PaginationRequest.Order.ASC);
-    builder.setRange(new Range(2778100L, 3636218L));
+    builder.limit(2);
+    builder.order(PaginationRequest.Order.ASC);
+    builder.range(new Range(2778100L, 3636218L));
     PaginationResponse<TransactionWithRichStatus> resp1 =
         ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
     Assertions.assertEquals(2, resp1.response.size());
@@ -41,19 +41,19 @@ public class QueryTransactionsTest {
   @Test
   void testQueryTransactionsWithPage() throws IOException {
     QueryTransactionsPayloadBuilder builder = new QueryTransactionsPayloadBuilder();
-    builder.setItem(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-    builder.setLimit(1);
-    builder.setReturnCount(true);
+    builder.item(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
+    builder.limit(1);
+    builder.returnCount(true);
     PaginationResponse<TransactionWithRichStatus> resp =
         ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
     Assertions.assertEquals(1, resp.response.size());
 
     QueryTransactionsPayloadBuilder builder2 = new QueryTransactionsPayloadBuilder();
-    builder2.setItem(
+    builder2.item(
         ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.queryTransactionPubKey()));
-    builder2.setLimit(2);
-    builder2.setReturnCount(true);
-    builder2.setCursor(resp.nextCursor);
+    builder2.limit(2);
+    builder2.returnCount(true);
+    builder2.cursor(resp.nextCursor);
     resp = ApiFactory.getApi().queryTransactionsWithTransactionView(builder2.build());
     Assertions.assertEquals(2, resp.response.size());
   }

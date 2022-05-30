@@ -12,7 +12,7 @@ public class GetBalancePayloadBuilder extends GetBalancePayload {
     this.assetInfos = new HashSet<>(2, 1);
   }
 
-  public void setItem(Item item) {
+  public void item(Item item) {
     this.item = item;
   }
 
@@ -23,7 +23,7 @@ public class GetBalancePayloadBuilder extends GetBalancePayload {
     this.assetInfos.add(info);
   }
 
-  public void setTipBlockNumber(Long blockNum) {
+  public void tipBlockNumber(Long blockNum) {
     this.tipBlockNumber = blockNum;
   }
 

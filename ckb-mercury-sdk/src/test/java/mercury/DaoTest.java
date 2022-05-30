@@ -17,10 +17,10 @@ public class DaoTest {
   @Test
   public void testBuildDaoDeposit() throws IOException {
     DaoDepositPayloadBuilder builder = new DaoDepositPayloadBuilder();
-    builder.setFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
-    builder.setTo(AddressWithKeyHolder.testAddress1());
-    builder.setAmount(20000000000L);
-    builder.setFeeRate(1200L);
+    builder.addFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.to(AddressWithKeyHolder.testAddress1());
+    builder.amount(20000000000L);
+    builder.feeRate(1200L);
 
     TransactionWithScriptGroups tx =
         ApiFactory.getApi().buildDaoDepositTransaction(builder.build());
@@ -31,9 +31,9 @@ public class DaoTest {
   @Test
   public void testBuildDaoWithdraw() throws IOException {
     DaoWithdrawPayloadBuilder builder = new DaoWithdrawPayloadBuilder();
-    builder.setFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
-    builder.setPayFee(AddressWithKeyHolder.testAddress1());
-    builder.setFeeRate(1200L);
+    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.payFee(AddressWithKeyHolder.testAddress1());
+    builder.feeRate(1200L);
 
     TransactionWithScriptGroups tx =
         ApiFactory.getApi().buildDaoWithdrawTransaction(builder.build());
@@ -44,7 +44,7 @@ public class DaoTest {
   @Test
   public void testBuildDaoClaim() throws IOException {
     DaoClaimPayloadBuilder builder = new DaoClaimPayloadBuilder();
-    builder.setFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     TransactionWithScriptGroups tx =
         ApiFactory.getApi().buildDaoClaimTransaction(builder.build());
     Assertions.assertNotNull(tx.txView);

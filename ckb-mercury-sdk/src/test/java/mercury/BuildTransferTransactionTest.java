@@ -16,12 +16,12 @@ public class BuildTransferTransactionTest {
   @Test
   void testBuildTransferTransaction() throws IOException {
     TransferPayloadBuilder builder = new TransferPayloadBuilder();
-    builder.setAssetInfo(AssetInfo.newCkbAsset());
+    builder.assetInfo(AssetInfo.newCkbAsset());
     builder.addFrom(ItemFactory.newAddressItem("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqfqyerlanzmnkxtmd9ww9n7gr66k8jt4tclm9jnk"));
     builder.addTo("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf"
         , 100);
-    builder.setPayFee(CapacityProvider.FROM);
-    builder.setFeeRate(1100L);
+    builder.payFee(CapacityProvider.FROM);
+    builder.feeRate(1100L);
 
     TransactionWithScriptGroups s =
         ApiFactory.getApi().buildTransferTransaction(builder.build());

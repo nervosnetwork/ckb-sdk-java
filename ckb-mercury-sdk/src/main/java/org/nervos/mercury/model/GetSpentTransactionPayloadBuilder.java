@@ -6,11 +6,11 @@ import org.nervos.mercury.model.req.payload.GetSpentTransactionPayload;
 
 public class GetSpentTransactionPayloadBuilder extends GetSpentTransactionPayload {
 
-  public void setOutpoint(OutPoint outpoint) {
+  public void outpoint(OutPoint outpoint) {
     this.outpoint = outpoint;
   }
 
-  public void setStructureType(StructureType structureType) {
+  public void structureType(StructureType structureType) {
     this.structureType = structureType;
   }
 

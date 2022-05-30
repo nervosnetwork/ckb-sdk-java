@@ -14,7 +14,7 @@ public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
     this.from = new HashSet<>(2, 1);
   }
 
-  public void setItem(Item item) {
+  public void item(Item item) {
     this.item = item;
   }
 
@@ -22,19 +22,19 @@ public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
     this.from.add(from);
   }
 
-  public void setAssetInfo(AssetInfo assetInfo) {
+  public void assetInfo(AssetInfo assetInfo) {
     this.assetInfo = assetInfo;
   }
 
-  public void setAccountNumber(Integer accountNumber) {
+  public void accountNumber(Integer accountNumber) {
     this.accountNumber = accountNumber;
   }
 
-  public void setExtraCkb(Long extraCkb) {
+  public void extraCkb(Long extraCkb) {
     this.extraCkb = extraCkb;
   }
 
-  public void setFeeRate(Long feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

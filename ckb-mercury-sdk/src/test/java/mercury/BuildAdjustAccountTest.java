@@ -33,11 +33,11 @@ public class BuildAdjustAccountTest {
     AddressWithKeyHolder.put(newAddress.encode(), Numeric.toHexString(keyPair.getEncodedPrivateKey()));
 
     AdjustAccountPayloadBuilder builder = new AdjustAccountPayloadBuilder();
-    builder.setItem(ItemFactory.newIdentityItemByCkb(Numeric.toHexString(newAddress.getScript().args)));
-    builder.setAssetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
+    builder.item(ItemFactory.newIdentityItemByCkb(Numeric.toHexString(newAddress.getScript().args)));
+    builder.assetInfo(AssetInfo.newUdtAsset(UdtHolder.UDT_HASH));
     builder.addFrom(ItemFactory.newIdentityItemByCkb(AddressWithKeyHolder.testPubKey3()));
-    builder.setAccountNumber(1);
-    builder.setExtraCkb(AmountUtils.ckbToShannon(200));
+    builder.accountNumber(1);
+    builder.extraCkb(AmountUtils.ckbToShannon(200));
 
     TransactionWithScriptGroups s =
         ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());

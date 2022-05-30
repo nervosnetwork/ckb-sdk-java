@@ -15,7 +15,7 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
   }
 
-  public void setOwner(String owner) {
+  public void owner(String owner) {
     this.owner = owner;
   }
 
@@ -26,19 +26,19 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
     this.to.add(new ToInfo(address, amount));
   }
 
-  public void setPayFee(Item item) {
+  public void payFee(Item item) {
     this.payFee = item;
   }
 
-  public void setFeeRate(Long feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 
-  public void setOutputCapacityProvider(CapacityProvider outputCapacityProvider) {
+  public void outputCapacityProvider(CapacityProvider outputCapacityProvider) {
     this.outputCapacityProvider = outputCapacityProvider;
   }
 
-  public void setSince(SinceConfig since) {
+  public void since(SinceConfig since) {
     this.since = since;
   }
 

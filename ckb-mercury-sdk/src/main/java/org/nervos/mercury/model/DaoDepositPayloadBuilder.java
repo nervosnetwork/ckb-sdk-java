@@ -11,22 +11,22 @@ public class DaoDepositPayloadBuilder extends DaoDepositPayload {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
   }
 
-  public void setFrom(Item from) {
+  public void addFrom(Item from) {
     if (this.from == null) {
       this.from = new ArrayList<>();
     }
     this.from.add(from);
   }
 
-  public void setTo(String to) {
+  public void to(String to) {
     this.to = to;
   }
 
-  public void setAmount(long amount) {
+  public void amount(long amount) {
     this.amount = amount;
   }
 
-  public void setFeeRate(Long feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

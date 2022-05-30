@@ -15,7 +15,7 @@ public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
     this.to = new ArrayList<>(1);
   }
 
-  public void setAssetInfo(AssetInfo assetInfo) {
+  public void assetInfo(AssetInfo assetInfo) {
     this.assetInfo = assetInfo;
   }
 
@@ -28,11 +28,11 @@ public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
     this.to.add(toInfo);
   }
 
-  public void setFeeRate(Long feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 
-  public void setSince(SinceConfig since) {
+  public void since(SinceConfig since) {
     this.since = since;
   }
 

@@ -10,15 +10,15 @@ public class DaoClaimPayloadBuilder extends DaoClaimPayload {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
   }
 
-  public void setFrom(Item item) {
+  public void from(Item item) {
     this.from = item;
   }
 
-  public void setTo(String address) {
+  public void to(String address) {
     this.to = address;
   }
 
-  public void setFeeRate(Long feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 

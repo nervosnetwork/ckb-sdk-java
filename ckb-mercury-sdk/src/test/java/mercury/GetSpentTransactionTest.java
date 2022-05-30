@@ -17,7 +17,7 @@ public class GetSpentTransactionTest {
   @Test
   public void testGetSpentTransactionView() throws IOException {
     GetSpentTransactionPayloadBuilder builder = new GetSpentTransactionPayloadBuilder();
-    builder.setOutpoint(
+    builder.outpoint(
         new OutPoint(
             Numeric.hexStringToByteArray(
                 "0xb2e952a30656b68044e1d5eed69f1967347248967785449260e3942443cbeece"),
@@ -31,7 +31,7 @@ public class GetSpentTransactionTest {
   @Test
   public void testGetSpentTransactionInfo() throws IOException {
     GetSpentTransactionPayloadBuilder builder = new GetSpentTransactionPayloadBuilder();
-    builder.setOutpoint(
+    builder.outpoint(
         new OutPoint(
             Numeric.hexStringToByteArray(
                 "0xb2e952a30656b68044e1d5eed69f1967347248967785449260e3942443cbeece"),
