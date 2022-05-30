@@ -24,10 +24,12 @@ public class DaoInfo {
         JsonObject obj = new JsonObject();
         obj.add("type", context.serialize(src.type, Type.class));
         List<Long> value = src.value;
-        if (value.size() == 1) {
+        if (src.type == Type.WITHDRAW) {
+          obj.add("value", context.serialize(value, new TypeToken<List<Long>>() {}.getType()));
+        } else if (src.type == Type.DEPOSIT) {
           obj.add("value", context.serialize(value.get(0), Long.class));
         } else {
-          obj.add("value", context.serialize(value, new TypeToken<List<Long>>() {}.getType()));
+          throw new JsonParseException("Invalid type: " + src.type);
         }
         return obj;
       }
@@ -37,12 +39,14 @@ public class DaoInfo {
         JsonObject obj = json.getAsJsonObject();
         DaoState daoState = new DaoState();
         daoState.type = context.deserialize(obj.get("type"), Type.class);
-        if (obj.get("value") instanceof JsonArray) {
+        if (daoState.type == Type.WITHDRAW) {
           daoState.value = context.deserialize(obj.get("value"), new TypeToken<List<Long>>() {}.getType());
-        } else {
+        } else if (daoState.type == Type.DEPOSIT) {
           Long value = context.deserialize(obj.get("value"), Long.class);
           daoState.value = new ArrayList<>();
           daoState.value.add(value);
+        } else {
+          throw new JsonParseException("Invalid dao state type");
         }
         return daoState;
       }
