@@ -27,9 +27,15 @@ public class QueryTransactionsTest {
     PaginationResponse<TransactionWithRichStatus> resp1 =
         ApiFactory.getApi().queryTransactionsWithTransactionView(builder.build());
     Assertions.assertEquals(2, resp1.response.size());
+    Assertions.assertNotNull(resp1.response.get(0).value.transaction);
+    Assertions.assertNotNull(resp1.response.get(0).value.txStatus);
+    Assertions.assertNotNull(resp1.response.get(0).type);
     PaginationResponse<TransactionInfoResponse> resp2 =
         ApiFactory.getApi().queryTransactionsWithTransactionInfo(builder.build());
     Assertions.assertEquals(2, resp2.response.size());
+    Assertions.assertNotNull(resp2.response.get(0).value.burn);
+    Assertions.assertNotNull(resp2.response.get(0).value.records);
+    Assertions.assertNotNull(resp2.response.get(0).type);
   }
 
   @Test
