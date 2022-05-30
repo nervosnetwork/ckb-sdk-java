@@ -1,23 +1,20 @@
 package org.nervos.mercury.model;
 
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.common.ExtraFilterType;
+import org.nervos.mercury.model.common.ExtraFilter;
 import org.nervos.mercury.model.common.PaginationRequest;
 import org.nervos.mercury.model.common.Range;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
 
 public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
 
   public QueryTransactionsPayloadBuilder() {
     this.assetInfos = new HashSet<>(2, 1);
     this.pagination = new PaginationRequest();
-    this.pagination.limit = 50;
+    this.pagination.limit = 50L;
     this.pagination.order = PaginationRequest.Order.DESC;
     this.pagination.returnCount = Boolean.FALSE;
   }
@@ -34,11 +31,11 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.blockRange = range;
   }
 
-  public void limit(int limit) {
+  public void limit(Long limit) {
     this.pagination.limit = limit;
   }
 
-  public void cursor(List<Integer> cursor) {
+  public void cursor(Long cursor) {
     this.pagination.cursor = cursor;
   }
 
@@ -50,15 +47,11 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.pagination.returnCount = returnCount;
   }
 
-  public void extraFilter(ExtraFilterType extraFilterType) {
-    this.extraFilterType = extraFilterType;
+  public void extra(ExtraFilter.Type extra) {
+    this.extra = extra;
   }
 
   public QueryTransactionsPayload build() {
-    if (Objects.isNull(this.pagination.cursor) && Objects.equals(this.pagination.order, "desc")) {
-      pagination.cursor = Arrays.asList(127, 255, 255, 255, 255, 255, 255, 254);
-    }
-
     return this;
   }
 }

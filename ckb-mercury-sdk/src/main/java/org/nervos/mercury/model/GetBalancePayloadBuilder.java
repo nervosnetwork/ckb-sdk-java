@@ -4,7 +4,6 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.GetBalancePayload;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 
 public class GetBalancePayloadBuilder extends GetBalancePayload {
@@ -18,10 +17,13 @@ public class GetBalancePayloadBuilder extends GetBalancePayload {
   }
 
   public void addAssetInfo(AssetInfo info) {
+    if (this.assetInfos == null) {
+      this.assetInfos = new HashSet<>();
+    }
     this.assetInfos.add(info);
   }
 
-  public void tipBlockNumber(BigInteger blockNum) {
+  public void tipBlockNumber(Long blockNum) {
     this.tipBlockNumber = blockNum;
   }
 

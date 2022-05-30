@@ -7,7 +7,7 @@ public class TransactionWithRichStatus {
   public Transaction transaction;
   public TxRichStatus txStatus;
 
-  public class TxRichStatus {
+  public static class TxRichStatus {
     public TransactionWithStatus.Status status;
     public byte[] blockHash;
     public String reason;

@@ -2,18 +2,16 @@ package org.nervos.mercury.model.common;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class PaginationRequest {
-  public List<Integer> cursor;
+  public Long cursor;
   public Order order;
-  public int limit;
+  public Long limit;
   public boolean returnCount;
 
   public enum Order {
-    @SerializedName("ASC")
+    @SerializedName(value = "asc", alternate = "Asc")
     ASC,
-    @SerializedName("Desc")
-    DESC;
+    @SerializedName(value = "desc", alternate = "Desc")
+    DESC
   }
 }

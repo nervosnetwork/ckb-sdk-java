@@ -1,12 +1,14 @@
 package org.nervos.mercury.model;
 
 import org.nervos.mercury.FeeConstant;
-import org.nervos.mercury.model.req.To;
+import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.payload.CapacityProvider;
 import org.nervos.mercury.model.req.payload.SudtIssuePayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class SudtIssuePayloadBuilder extends SudtIssuePayload {
 
@@ -18,20 +20,23 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
     this.owner = owner;
   }
 
-  public void to(To to) {
-    this.to = to;
+  public void addTo(String address, BigInteger amount) {
+    if (this.to == null) {
+      this.to = new ArrayList<>();
+    }
+    this.to.add(new ToInfo(address, amount));
   }
 
   public void payFee(Item item) {
     this.payFee = item;
   }
 
-  public void change(String address) {
-    this.change = address;
+  public void feeRate(Long feeRate) {
+    this.feeRate = feeRate;
   }
 
-  public void feeRate(BigInteger feeRate) {
-    this.feeRate = feeRate;
+  public void outputCapacityProvider(CapacityProvider outputCapacityProvider) {
+    this.outputCapacityProvider = outputCapacityProvider;
   }
 
   public void since(SinceConfig since) {
@@ -39,8 +44,6 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
   }
 
   public SudtIssuePayload build() {
-    assert !(this.to == null) : "items not null";
-
     return this;
   }
 }

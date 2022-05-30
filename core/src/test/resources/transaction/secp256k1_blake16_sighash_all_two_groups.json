@@ -91,7 +91,7 @@
           "args": "0xaf0b41c627807fbddcee75afa174d5a7e5135ebd",
           "hash_type": "type"
         },
-        "script_type": "lock",
+        "group_type": "lock",
         "input_indices": [
           0
         ],
@@ -103,7 +103,7 @@
           "args": "0xa3b8598e1d53e6c5e89e8acb6b4c34d3adb13f2b",
           "hash_type": "type"
         },
-        "script_type": "lock",
+        "group_type": "lock",
         "input_indices": [
           1,
           2

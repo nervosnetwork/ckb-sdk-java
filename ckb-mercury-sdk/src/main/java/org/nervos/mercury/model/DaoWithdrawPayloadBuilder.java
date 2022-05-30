@@ -4,8 +4,6 @@ import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.DaoWithdrawPayload;
 
-import java.math.BigInteger;
-
 public class DaoWithdrawPayloadBuilder extends DaoWithdrawPayload {
 
   public DaoWithdrawPayloadBuilder() {
@@ -20,8 +18,8 @@ public class DaoWithdrawPayloadBuilder extends DaoWithdrawPayload {
     this.payFee = address;
   }
 
-  public void feeRate(BigInteger address) {
-    this.feeRate = address;
+  public void feeRate(Long feeRate) {
+    this.feeRate = feeRate;
   }
 
   public DaoWithdrawPayload build() {

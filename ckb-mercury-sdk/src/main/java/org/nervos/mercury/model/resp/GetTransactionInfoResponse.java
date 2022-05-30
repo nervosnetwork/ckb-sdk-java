@@ -5,5 +5,4 @@ import org.nervos.ckb.type.TransactionWithStatus;
 public class GetTransactionInfoResponse {
   public TransactionInfoResponse transaction;
   public TransactionWithStatus.Status status;
-  public Integer rejectReason;
 }

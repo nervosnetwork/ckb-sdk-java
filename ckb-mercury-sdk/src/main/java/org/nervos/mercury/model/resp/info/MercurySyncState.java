@@ -18,8 +18,8 @@ public class MercurySyncState {
   }
 
   class SyncInfo {
-    public int current;
-    public int target;
+    public long current;
+    public long target;
     public String progress;
   }
 }

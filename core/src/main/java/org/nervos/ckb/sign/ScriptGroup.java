@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ScriptGroup {
   private Script script;
-  private ScriptType scriptType;
+  private ScriptType groupType;
   private List<Integer> inputIndices = new ArrayList<>();
   private List<Integer> outputIndices = new ArrayList<>();
 
@@ -20,12 +20,12 @@ public class ScriptGroup {
     this.script = script;
   }
 
-  public ScriptType getScriptType() {
-    return scriptType;
+  public ScriptType getGroupType() {
+    return groupType;
   }
 
-  public void setScriptType(ScriptType scriptType) {
-    this.scriptType = scriptType;
+  public void setGroupType(ScriptType groupType) {
+    this.groupType = groupType;
   }
 
   public List<Integer> getInputIndices() {
@@ -50,7 +50,7 @@ public class ScriptGroup {
 
   public static final class Builder {
     private Script script;
-    private ScriptType scriptType;
+    private ScriptType groupType;
     private List<Integer> inputIndices;
     private List<Integer> outputIndices;
 
@@ -78,8 +78,8 @@ public class ScriptGroup {
       return setScript(script);
     }
 
-    public Builder setScriptType(ScriptType scriptType) {
-      this.scriptType = scriptType;
+    public Builder setGroupType(ScriptType groupType) {
+      this.groupType = groupType;
       return this;
     }
 
@@ -110,7 +110,7 @@ public class ScriptGroup {
     public ScriptGroup build() {
       ScriptGroup scriptGroup = new ScriptGroup();
       scriptGroup.setScript(script);
-      scriptGroup.setScriptType(scriptType);
+      scriptGroup.setGroupType(groupType);
       scriptGroup.setInputIndices(inputIndices);
       scriptGroup.setOutputIndices(outputIndices);
       return scriptGroup;

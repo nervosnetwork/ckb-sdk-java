@@ -4,6 +4,7 @@ import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.service.RpcService;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.type.*;
 import org.nervos.indexer.CkbIndexerApi;
 import org.nervos.indexer.DefaultIndexerApi;
@@ -301,19 +302,24 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
+  public AccountInfo getAccountInfo(AccountInfoPayload payload) throws IOException {
+    return this.mercuryApi.getAccountInfo(payload);
+  }
+
+  @Override
+  public TransactionWithScriptGroups buildTransferTransaction(TransferPayload payload)
       throws IOException {
     return this.mercuryApi.buildTransferTransaction(payload);
   }
 
   @Override
-  public TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
+  public TransactionWithScriptGroups buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException {
     return this.mercuryApi.buildAdjustAccountTransaction(payload);
   }
 
   @Override
-  public TransactionCompletionResponse buildSimpleTransferTransaction(SimpleTransferPayload payload)
+  public TransactionWithScriptGroups buildSimpleTransferTransaction(SimpleTransferPayload payload)
       throws IOException {
     return this.mercuryApi.buildSimpleTransferTransaction(payload);
   }
@@ -334,13 +340,13 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public PaginationResponse<TxView<TransactionWithRichStatus>> queryTransactionsWithTransactionView(
+  public PaginationResponse<TransactionWithRichStatus> queryTransactionsWithTransactionView(
       QueryTransactionsPayload payload) throws IOException {
     return this.mercuryApi.queryTransactionsWithTransactionView(payload);
   }
 
   @Override
-  public PaginationResponse<TxView<TransactionInfoResponse>> queryTransactionsWithTransactionInfo(
+  public PaginationResponse<TransactionInfoResponse> queryTransactionsWithTransactionInfo(
       QueryTransactionsPayload payload) throws IOException {
     return this.mercuryApi.queryTransactionsWithTransactionInfo(payload);
   }
@@ -373,25 +379,25 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildDaoDepositTransaction(DaoDepositPayload payload)
+  public TransactionWithScriptGroups buildDaoDepositTransaction(DaoDepositPayload payload)
       throws IOException {
     return this.mercuryApi.buildDaoDepositTransaction(payload);
   }
 
   @Override
-  public TransactionCompletionResponse buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
+  public TransactionWithScriptGroups buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
       throws IOException {
     return this.mercuryApi.buildDaoWithdrawTransaction(payload);
   }
 
   @Override
-  public TransactionCompletionResponse buildDaoClaimTransaction(DaoClaimPayload payload)
+  public TransactionWithScriptGroups buildDaoClaimTransaction(DaoClaimPayload payload)
       throws IOException {
     return this.mercuryApi.buildDaoClaimTransaction(payload);
   }
 
   @Override
-  public TransactionCompletionResponse buildSudtIssueTransaction(SudtIssuePayload payload)
+  public TransactionWithScriptGroups buildSudtIssueTransaction(SudtIssuePayload payload)
       throws IOException {
     return this.mercuryApi.buildSudtIssueTransaction(payload);
   }

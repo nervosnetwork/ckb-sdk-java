@@ -24,24 +24,17 @@ public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
     this.from.add(address);
   }
 
-  public void addTo(ToInfo to) {
-    this.to.add(to);
+  public void addTo(String address, BigInteger amount) {
+    ToInfo toInfo = new ToInfo(address, amount);
+    this.to.add(toInfo);
   }
 
-  public void change(String address) {
-    this.change = address;
-  }
-
-  public void feeRate(BigInteger feeRate) {
+  public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
 
   public void since(SinceConfig since) {
     this.since = since;
-  }
-
-  public void payFee(String address) {
-    this.payFee = address;
   }
 
   public SimpleTransferPayload build() {

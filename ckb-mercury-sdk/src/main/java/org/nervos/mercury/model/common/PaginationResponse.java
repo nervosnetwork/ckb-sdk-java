@@ -1,10 +1,11 @@
 package org.nervos.mercury.model.common;
 
-import java.math.BigInteger;
+import org.nervos.mercury.model.resp.TxView;
+
 import java.util.List;
 
 public class PaginationResponse<T> {
-  public List<T> response;
-  public BigInteger count;
-  public List<Integer> nextCursor;
+  public List<TxView<T>> response;
+  public Long count;
+  public Long nextCursor;
 }

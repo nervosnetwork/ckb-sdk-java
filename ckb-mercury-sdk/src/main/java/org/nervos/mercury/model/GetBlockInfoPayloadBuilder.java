@@ -4,7 +4,7 @@ import org.nervos.mercury.model.req.payload.GetBlockInfoPayload;
 
 public class GetBlockInfoPayloadBuilder extends GetBlockInfoPayload {
 
-  public void blockNumber(int blockNumber) {
+  public void blockNumber(Long blockNumber) {
     this.blockNumber = blockNumber;
   }
 

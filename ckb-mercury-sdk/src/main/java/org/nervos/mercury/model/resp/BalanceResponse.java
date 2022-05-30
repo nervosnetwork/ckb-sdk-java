@@ -5,10 +5,9 @@ import org.nervos.mercury.model.common.AssetInfo;
 import java.math.BigInteger;
 
 public class BalanceResponse {
-  public Ownership ownership;
+  public String ownership;
   public AssetInfo assetInfo;
   public BigInteger occupied;
   public BigInteger free;
-  public BigInteger claimable;
   public BigInteger frozen;
 }

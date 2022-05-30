@@ -4,5 +4,5 @@ import java.util.List;
 
 public class GetBalanceResponse {
   public List<BalanceResponse> balances;
-  public int tipBlockNumber;
+  public long tipBlockNumber;
 }

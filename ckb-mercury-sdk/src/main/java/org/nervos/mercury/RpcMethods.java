@@ -2,6 +2,7 @@ package org.nervos.mercury;
 
 public interface RpcMethods {
   String GET_BALANCE = "get_balance";
+  String GET_ACCOUNT_INFO = "get_account_info";
   String BUILD_TRANSFER_TRANSACTION = "build_transfer_transaction";
   String BUILD_SIMPLE_TRANSFER_TRANSACTION = "build_simple_transfer_transaction";
   String BUILD_ADJUST_ACCOUNT_TRANSACTION = "build_adjust_account_transaction";

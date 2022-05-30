@@ -4,6 +4,6 @@ public class DBInfo {
   public String version;
   public DBDriver db;
   public int connSize;
-  public int centerId;
-  public int machineId;
+  public long centerId;
+  public long machineId;
 }
