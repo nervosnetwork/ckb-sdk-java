@@ -16,6 +16,8 @@ public interface MercuryApi extends CkbIndexerApi {
 
   GetBalanceResponse getBalance(GetBalancePayload payload) throws IOException;
 
+  AccountInfo getAccountInfo(AccountInfoPayload payload) throws IOException;
+
   TransactionWithScriptGroups buildTransferTransaction(TransferPayload payload)
       throws IOException;
 

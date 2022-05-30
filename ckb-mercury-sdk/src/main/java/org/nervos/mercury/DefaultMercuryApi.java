@@ -40,6 +40,15 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   }
 
   @Override
+  public AccountInfo getAccountInfo(AccountInfoPayload payload) throws IOException {
+    AccountInfo resp =
+        this.rpcService.post(
+            RpcMethods.GET_ACCOUNT_INFO, Arrays.asList(payload), AccountInfo.class, this.g);
+
+    return resp;
+  }
+
+  @Override
   public TransactionWithScriptGroups buildTransferTransaction(TransferPayload payload)
       throws IOException {
     return this.rpcService.post(

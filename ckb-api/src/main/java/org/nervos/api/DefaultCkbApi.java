@@ -302,6 +302,11 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
+  public AccountInfo getAccountInfo(AccountInfoPayload payload) throws IOException {
+    return this.mercuryApi.getAccountInfo(payload);
+  }
+
+  @Override
   public TransactionWithScriptGroups buildTransferTransaction(TransferPayload payload)
       throws IOException {
     return this.mercuryApi.buildTransferTransaction(payload);
