@@ -3,15 +3,15 @@ package org.nervos.mercury.model.common;
 import com.google.gson.annotations.SerializedName;
 
 public class PaginationRequest {
-  public byte[] cursor;
+  public Long cursor;
   public Order order;
-  public int limit;
+  public Long limit;
   public boolean returnCount;
 
   public enum Order {
-    @SerializedName("asc")
+    @SerializedName(value = "asc", alternate = "Asc")
     ASC,
-    @SerializedName("desc")
+    @SerializedName(value = "desc", alternate = "Desc")
     DESC
   }
 }

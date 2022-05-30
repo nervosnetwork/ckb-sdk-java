@@ -14,7 +14,7 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
   public QueryTransactionsPayloadBuilder() {
     this.assetInfos = new HashSet<>(2, 1);
     this.pagination = new PaginationRequest();
-    this.pagination.limit = 50;
+    this.pagination.limit = 50L;
     this.pagination.order = PaginationRequest.Order.DESC;
     this.pagination.returnCount = Boolean.FALSE;
   }
@@ -31,11 +31,11 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
     this.blockRange = range;
   }
 
-  public void limit(int limit) {
+  public void limit(Long limit) {
     this.pagination.limit = limit;
   }
 
-  public void cursor(byte[] cursor) {
+  public void cursor(Long cursor) {
     this.pagination.cursor = cursor;
   }
 

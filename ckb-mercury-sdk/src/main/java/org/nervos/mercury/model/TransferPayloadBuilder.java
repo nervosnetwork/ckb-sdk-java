@@ -8,6 +8,7 @@ import org.nervos.mercury.model.req.payload.CapacityProvider;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class TransferPayloadBuilder extends TransferPayload {
@@ -28,7 +29,7 @@ public class TransferPayloadBuilder extends TransferPayload {
     this.assetInfo = assetInfo;
   }
 
-  public void addTo(String address, long amount) {
+  public void addTo(String address, BigInteger amount) {
     if (this.to == null) {
       this.to = new ArrayList<>();
     }

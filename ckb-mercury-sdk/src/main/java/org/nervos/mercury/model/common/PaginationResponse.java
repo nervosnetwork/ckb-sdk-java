@@ -7,5 +7,5 @@ import java.util.List;
 public class PaginationResponse<T> {
   public List<TxView<T>> response;
   public Long count;
-  public byte[] nextCursor;
+  public Long nextCursor;
 }

@@ -6,6 +6,7 @@ import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.payload.SimpleTransferPayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
@@ -23,7 +24,7 @@ public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
     this.from.add(address);
   }
 
-  public void addTo(String address, long amount) {
+  public void addTo(String address, BigInteger amount) {
     ToInfo toInfo = new ToInfo(address, amount);
     this.to.add(toInfo);
   }

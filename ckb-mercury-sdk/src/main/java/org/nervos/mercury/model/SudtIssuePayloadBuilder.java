@@ -7,6 +7,7 @@ import org.nervos.mercury.model.req.payload.CapacityProvider;
 import org.nervos.mercury.model.req.payload.SudtIssuePayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class SudtIssuePayloadBuilder extends SudtIssuePayload {
@@ -19,7 +20,7 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
     this.owner = owner;
   }
 
-  public void addTo(String address, long amount) {
+  public void addTo(String address, BigInteger amount) {
     if (this.to == null) {
       this.to = new ArrayList<>();
     }
