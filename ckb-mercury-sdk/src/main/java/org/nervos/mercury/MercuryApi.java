@@ -1,5 +1,6 @@
 package org.nervos.mercury;
 
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.indexer.CkbIndexerApi;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.req.payload.*;
@@ -15,13 +16,13 @@ public interface MercuryApi extends CkbIndexerApi {
 
   GetBalanceResponse getBalance(GetBalancePayload payload) throws IOException;
 
-  TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
+  TransactionWithScriptGroups buildTransferTransaction(TransferPayload payload)
       throws IOException;
 
-  TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
+  TransactionWithScriptGroups buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException;
 
-  TransactionCompletionResponse buildSimpleTransferTransaction(SimpleTransferPayload payload)
+  TransactionWithScriptGroups buildSimpleTransferTransaction(SimpleTransferPayload payload)
       throws IOException;
 
   GetTransactionInfoResponse getTransactionInfo(byte[] txHash) throws IOException;
@@ -42,13 +43,13 @@ public interface MercuryApi extends CkbIndexerApi {
 
   MercurySyncState getSyncState() throws IOException;
 
-  TransactionCompletionResponse buildDaoDepositTransaction(DaoDepositPayload payload)
+  TransactionWithScriptGroups buildDaoDepositTransaction(DaoDepositPayload payload)
       throws IOException;
 
-  TransactionCompletionResponse buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
+  TransactionWithScriptGroups buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
       throws IOException;
 
-  TransactionCompletionResponse buildDaoClaimTransaction(DaoClaimPayload payload)
+  TransactionWithScriptGroups buildDaoClaimTransaction(DaoClaimPayload payload)
       throws IOException;
 
   TxView<TransactionWithRichStatus> getSpentTransactionWithTransactionView(
@@ -57,6 +58,6 @@ public interface MercuryApi extends CkbIndexerApi {
   TxView<TransactionInfoResponse> getSpentTransactionWithTransactionInfo(
       GetSpentTransactionPayload payload) throws IOException;
 
-  TransactionCompletionResponse buildSudtIssueTransaction(SudtIssuePayload payload)
+  TransactionWithScriptGroups buildSudtIssueTransaction(SudtIssuePayload payload)
       throws IOException;
 }

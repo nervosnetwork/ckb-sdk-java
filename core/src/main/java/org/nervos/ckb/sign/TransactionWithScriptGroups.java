@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionWithScriptGroups {
-  private Transaction txView;
-  private List<ScriptGroup> scriptGroups;
+  public Transaction txView;
+  public List<ScriptGroup> scriptGroups;
 
   public Transaction getTxView() {
     return txView;

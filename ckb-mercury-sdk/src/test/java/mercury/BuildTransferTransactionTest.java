@@ -3,11 +3,11 @@ package mercury;
 import constant.ApiFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
 import org.nervos.mercury.model.req.payload.CapacityProvider;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 import java.io.IOException;
 
@@ -23,9 +23,14 @@ public class BuildTransferTransactionTest {
     builder.setPayFee(CapacityProvider.FROM);
     builder.setFeeRate(1100L);
 
-    TransactionCompletionResponse s =
+    TransactionWithScriptGroups s =
         ApiFactory.getApi().buildTransferTransaction(builder.build());
     Assertions.assertNotNull(s.txView);
     Assertions.assertNotNull(s.scriptGroups);
+    Assertions.assertNotNull(s.scriptGroups.get(0).getGroupType());
+    Assertions.assertNotNull(s.scriptGroups.get(0).getScript());
+    Assertions.assertNotNull(s.scriptGroups.get(0).getOutputIndices());
+    Assertions.assertNotNull(s.scriptGroups.get(0).getInputIndices());
   }
+
 }

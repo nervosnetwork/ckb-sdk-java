@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Keys;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.AmountUtils;
 import org.nervos.ckb.utils.Numeric;
@@ -15,7 +16,6 @@ import org.nervos.ckb.utils.address.Address;
 import org.nervos.mercury.model.AdjustAccountPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -39,7 +39,7 @@ public class BuildAdjustAccountTest {
     builder.setAccountNumber(1);
     builder.setExtraCkb(AmountUtils.ckbToShannon(200));
 
-    TransactionCompletionResponse s =
+    TransactionWithScriptGroups s =
         ApiFactory.getApi().buildAdjustAccountTransaction(builder.build());
 
     Assertions.assertNotNull(s.txView);

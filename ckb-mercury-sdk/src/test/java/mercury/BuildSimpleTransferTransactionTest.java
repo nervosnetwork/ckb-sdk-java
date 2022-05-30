@@ -3,9 +3,9 @@ package mercury;
 import constant.ApiFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.mercury.model.SimpleTransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.resp.TransactionCompletionResponse;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class BuildSimpleTransferTransactionTest {
         , 10000000000L);
     builder.setFeeRate(500L);
 
-    TransactionCompletionResponse s =
+    TransactionWithScriptGroups s =
         ApiFactory.getApi().buildSimpleTransferTransaction(builder.build());
     Assertions.assertNotNull(s.txView);
     Assertions.assertNotNull(s.scriptGroups);

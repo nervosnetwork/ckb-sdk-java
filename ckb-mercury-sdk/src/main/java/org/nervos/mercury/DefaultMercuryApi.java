@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcService;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.indexer.DefaultIndexerApi;
 import org.nervos.mercury.model.common.PaginationResponse;
 import org.nervos.mercury.model.common.StructureType;
@@ -39,32 +40,32 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildTransferTransaction(TransferPayload payload)
+  public TransactionWithScriptGroups buildTransferTransaction(TransferPayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class,
+        TransactionWithScriptGroups.class,
         this.g);
   }
 
   @Override
-  public TransactionCompletionResponse buildSimpleTransferTransaction(SimpleTransferPayload payload)
+  public TransactionWithScriptGroups buildSimpleTransferTransaction(SimpleTransferPayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_SIMPLE_TRANSFER_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class,
+        TransactionWithScriptGroups.class,
         this.g);
   }
 
   @Override
-  public TransactionCompletionResponse buildAdjustAccountTransaction(AdjustAccountPayload payload)
+  public TransactionWithScriptGroups buildAdjustAccountTransaction(AdjustAccountPayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_ADJUST_ACCOUNT_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class,
+        TransactionWithScriptGroups.class,
         this.g);
   }
 
@@ -134,32 +135,32 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildDaoDepositTransaction(DaoDepositPayload payload)
+  public TransactionWithScriptGroups buildDaoDepositTransaction(DaoDepositPayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_DAO_DEPOSIT_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class,
+        TransactionWithScriptGroups.class,
         this.g);
   }
 
   @Override
-  public TransactionCompletionResponse buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
+  public TransactionWithScriptGroups buildDaoWithdrawTransaction(DaoWithdrawPayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_DAO_WITHDRAW_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class,
+        TransactionWithScriptGroups.class,
         this.g);
   }
 
   @Override
-  public TransactionCompletionResponse buildDaoClaimTransaction(DaoClaimPayload payload)
+  public TransactionWithScriptGroups buildDaoClaimTransaction(DaoClaimPayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_DAO_CLAIM_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class,
+        TransactionWithScriptGroups.class,
         this.g);
   }
 
@@ -189,12 +190,12 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
   }
 
   @Override
-  public TransactionCompletionResponse buildSudtIssueTransaction(SudtIssuePayload payload)
+  public TransactionWithScriptGroups buildSudtIssueTransaction(SudtIssuePayload payload)
       throws IOException {
     return this.rpcService.post(
         RpcMethods.BUILD_SUDT_ISSUE_TRANSACTION,
         Arrays.asList(payload),
-        TransactionCompletionResponse.class,
+        TransactionWithScriptGroups.class,
         this.g);
   }
 }
