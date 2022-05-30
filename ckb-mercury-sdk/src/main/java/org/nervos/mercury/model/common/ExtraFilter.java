@@ -9,9 +9,9 @@ public class ExtraFilter {
   public enum Type {
     @SerializedName("Dao")
     DAO,
-    @SerializedName("CellBase")
+    @SerializedName("Cellbase")
     CELL_BASE,
-    @SerializedName("Freeze")
-    FREEZE,
+    @SerializedName("Frozen")
+    FROZEN,
   }
 }

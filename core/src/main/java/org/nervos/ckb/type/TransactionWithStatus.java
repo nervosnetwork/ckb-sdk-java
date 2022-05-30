@@ -12,15 +12,15 @@ public class TransactionWithStatus {
   }
 
   public enum Status {
-    @SerializedName("pending")
+    @SerializedName(value = "pending", alternate = "Pending")
     PENDING,
-    @SerializedName("proposed")
+    @SerializedName(value = "proposed", alternate = "Proposed")
     PROPOSED,
-    @SerializedName("committed")
+    @SerializedName(value = "committed", alternate = "Committed")
     COMMITTED,
-    @SerializedName("unknown")
+    @SerializedName(value = "unknown", alternate = "Unknown")
     UNKNOWN,
-    @SerializedName("rejected")
+    @SerializedName(value = "rejected", alternate = "Rejected")
     REJECTED
   }
 }
