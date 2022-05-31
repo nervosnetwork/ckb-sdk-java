@@ -125,7 +125,8 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     private int threshold;
     private List<byte[]> keysHashes;
 
-    public MultisigScript() {}
+    private MultisigScript() {
+    }
 
     public MultisigScript(int version, int firstN, int threshold, List<byte[]> keysHashes) {
       if (keysHashes.size() == 0) {
@@ -151,32 +152,16 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       this(0, 0, threshold, keysHashes);
     }
 
-    /**
-     * The format version
-     */
     public int getVersion() {
       return version;
     }
 
-    /**
-     * The first R items in public key list whose signatures must be provided for.
-     */
     public int getFirstN() {
       return firstN;
     }
 
-    /**
-     * signature threshold
-     */
     public int getThreshold() {
       return threshold;
-    }
-
-    /**
-     * Size of public key list
-     */
-    public int getKeySize() {
-      return keysHashes.size();
     }
 
     public List<byte[]> getKeysHashes() {
