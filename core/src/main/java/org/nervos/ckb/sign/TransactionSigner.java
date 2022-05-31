@@ -1,7 +1,9 @@
 package org.nervos.ckb.sign;
 
+import org.nervos.ckb.address.Network;
 import org.nervos.ckb.sign.signer.AcpSigner;
 import org.nervos.ckb.sign.signer.PwSigner;
+import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
@@ -12,20 +14,29 @@ import java.util.*;
 
 public class TransactionSigner {
   private Map<Key, ScriptSigner> scriptSignerMap;
-  public static TransactionSigner TESTNET_TRANSACTION_SIGNER;
-  public static TransactionSigner MAINNET_TRANSACTION_SIGNER;
+  private static TransactionSigner TESTNET_TRANSACTION_SIGNER;
+  private static TransactionSigner MAINNET_TRANSACTION_SIGNER;
 
   static {
-    TESTNET_TRANSACTION_SIGNER = new TransactionSigner();
-    // We can register more ScriptSigner for builtin script
-    TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
-        Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance());
-    TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
-        Script.ANY_CAN_PAY_CODE_HASH_TESTNET, AcpSigner.getInstance());
-    TESTNET_TRANSACTION_SIGNER.registerLockScriptSigner(
-        Script.PW_LOCK_CODE_HASH_TESTNET, PwSigner.getInstance());
-    TESTNET_TRANSACTION_SIGNER.scriptSignerMap =
-        Collections.unmodifiableMap(TESTNET_TRANSACTION_SIGNER.scriptSignerMap);
+    TESTNET_TRANSACTION_SIGNER = new TransactionSigner()
+        .registerLockScriptSigner(
+            Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+        .registerLockScriptSigner(
+            Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+        .registerLockScriptSigner(
+            Script.ANY_CAN_PAY_CODE_HASH_TESTNET, AcpSigner.getInstance())
+        .registerLockScriptSigner(
+            Script.PW_LOCK_CODE_HASH_TESTNET, PwSigner.getInstance());
+
+    MAINNET_TRANSACTION_SIGNER = new TransactionSigner()
+        .registerLockScriptSigner(
+            Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+        .registerLockScriptSigner(
+            Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+        .registerLockScriptSigner(
+            Script.ANY_CAN_PAY_CODE_HASH_MAINNET, AcpSigner.getInstance())
+        .registerLockScriptSigner(
+            Script.PW_LOCK_CODE_HASH_MAINNET, PwSigner.getInstance());
   }
 
   public TransactionSigner() {
@@ -40,6 +51,16 @@ public class TransactionSigner {
     scriptSignerMap = new HashMap<>();
     for (Map.Entry<Key, ScriptSigner> entry : s.scriptSignerMap.entrySet()) {
       scriptSignerMap.put(entry.getKey(), entry.getValue());
+    }
+  }
+
+  public static TransactionSigner getInstance(Network network) {
+    if (network == Network.TESTNET) {
+      return TESTNET_TRANSACTION_SIGNER;
+    } else if (network == Network.MAINNET) {
+      return MAINNET_TRANSACTION_SIGNER;
+    } else {
+      throw new IllegalArgumentException("Unsupported network: " + network);
     }
   }
 
