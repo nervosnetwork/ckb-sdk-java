@@ -2,24 +2,27 @@ package sign;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+import org.nervos.ckb.address.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
+import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.utils.Numeric;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 
 public class SignerChecker {
   @SerializedName("raw_transaction")
@@ -31,11 +34,22 @@ public class SignerChecker {
   }
 
   private static Gson getGson() {
-
     JsonDeserializer typeAdapter = (JsonDeserializer<Context>) (json, typeOfT, context) -> {
       JsonObject obj = json.getAsJsonObject();
       ECKeyPair keyPair = ECKeyPair.create(obj.get("private_key").getAsString());
       Context c = new Context(keyPair);
+      if (obj.get("multisig_script") != null) {
+        JsonObject obj2 = obj.get("multisig_script").getAsJsonObject();
+        int threshold = obj2.get("threshold").getAsInt();
+        int firstN = obj2.get("first_n").getAsInt();
+        List<byte[]> keyHashes = new ArrayList<>();
+        for (JsonElement e : obj2.get("key_hashes").getAsJsonArray()) {
+          keyHashes.add(Numeric.hexStringToByteArray(e.getAsString()));
+        }
+        Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript =
+            new Secp256k1Blake160MultisigAllSigner.MultisigScript(firstN, threshold, keyHashes);
+        c.setPayload(multisigScript);
+      }
       return c;
     };
     Gson gson = GsonFactory.create()
@@ -66,7 +80,8 @@ public class SignerChecker {
   }
 
   private void signAndCheck() {
-    Set<Integer> signedGroupsIndices = signTransaction(TESTNET_TRANSACTION_SIGNER);
+    TransactionSigner txSigner = TransactionSigner.getInstance(Network.TESTNET);
+    Set<Integer> signedGroupsIndices = signTransaction(txSigner);
     assertEquals(this.transaction.getScriptGroups().size(), signedGroupsIndices.size());
     for (int i = 0; i < this.transaction.getScriptGroups().size(); i++) {
       assertEquals(true, signedGroupsIndices.contains(i));
