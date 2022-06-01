@@ -23,7 +23,7 @@ public class Secp256k1Blake160MultisigAllSignerTest {
         multisigScript.encode());
     Assertions.assertArrayEquals(
         Numeric.hexStringToByteArray("0x35ed7b939b4ac9cb447b82340fd8f26d344f7a62"),
-        multisigScript.getArgs());
+        multisigScript.computeHash());
   }
 
   @Test

@@ -116,7 +116,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     if (scriptArgs == null || keyPair == null) {
       return false;
     }
-    return Arrays.equals(scriptArgs, multisigScript.getArgs());
+    return Arrays.equals(scriptArgs, multisigScript.computeHash());
   }
 
   public static class MultisigScript {
@@ -209,7 +209,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       return multisigScript;
     }
 
-    public byte[] getArgs() {
+    public byte[] computeHash() {
       byte[] hash = Blake2b.digest(encode());
       return Arrays.copyOfRange(hash, 0, 20);
     }
