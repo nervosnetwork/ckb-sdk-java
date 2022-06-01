@@ -5,13 +5,13 @@ import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.AdjustAccountPayload;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class AdjustAccountPayloadBuilder extends AdjustAccountPayload {
 
   public AdjustAccountPayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
-    this.from = new HashSet<>(2, 1);
+    this.from = new ArrayList<>();
   }
 
   public void item(Item item) {
