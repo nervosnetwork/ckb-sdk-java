@@ -129,6 +129,9 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     }
 
     public MultisigScript(int version, int firstN, int threshold, List<byte[]> keysHashes) {
+      if (firstN < 0) {
+        throw new IllegalArgumentException("FirstN must be greater than or equal to 0");
+      }
       if (keysHashes.size() == 0) {
         throw new IllegalArgumentException("Public key hashes must not be empty");
       }
