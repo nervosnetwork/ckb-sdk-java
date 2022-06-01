@@ -43,7 +43,7 @@ public class DaoTest {
   @Test
   public void testBuildDaoClaim() throws IOException {
     DaoClaimPayloadBuilder builder = new DaoClaimPayloadBuilder();
-    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.addFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     TransactionWithScriptGroups tx =
         ApiFactory.getApi().buildDaoClaimTransaction(builder.build());
     Assertions.assertNotNull(tx.txView);
