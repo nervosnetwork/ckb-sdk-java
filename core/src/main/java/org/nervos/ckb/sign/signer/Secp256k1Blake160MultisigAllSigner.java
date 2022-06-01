@@ -183,10 +183,14 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     }
 
     public static MultisigScript decode(byte[] in) {
+      if (in.length < 24) {
+        throw new IllegalArgumentException("bytes length should be greater than 24");
+      }
       if ((in.length - 4) % 20 != 0) {
         throw new IllegalArgumentException("Invalid bytes length");
       }
-      if ((in.length - 4) / 20 != in[3]) {
+      // round up
+      if ((in.length - 4 + 10) / 20 != in[3]) {
         throw new IllegalArgumentException("Invalid public key list size");
       }
       MultisigScript multisigScript = new MultisigScript();
