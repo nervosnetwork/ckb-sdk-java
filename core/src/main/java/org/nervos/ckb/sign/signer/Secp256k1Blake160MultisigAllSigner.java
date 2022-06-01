@@ -170,10 +170,10 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
 
     public byte[] encode() {
       byte[] out = new byte[4 + this.keysHashes.size() * 20];
-      out[0] = (byte) (this.version & 0xff);
-      out[1] = (byte) (this.firstN & 0xff);
-      out[2] = (byte) (this.threshold & 0xff);
-      out[3] = (byte) (this.keysHashes.size() & 0xff);
+      out[0] = (byte) this.version;
+      out[1] = (byte) this.firstN;
+      out[2] = (byte) this.threshold;
+      out[3] = (byte) this.keysHashes.size();
       int pos = 4;
       for (byte[] publicKeyHash : this.keysHashes) {
         System.arraycopy(publicKeyHash, 0, out, pos, 20);
