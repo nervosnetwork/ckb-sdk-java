@@ -8,9 +8,9 @@ import java.util.List;
 
 public class SudtIssuePayload {
   public String owner;
+  public List<Item> from;
   public List<ToInfo> to;
   public CapacityProvider outputCapacityProvider;
-  public Item payFee;
   public Long feeRate = 1000L;
   public SinceConfig since;
 
