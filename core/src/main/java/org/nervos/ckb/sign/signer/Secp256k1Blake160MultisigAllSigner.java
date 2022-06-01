@@ -40,12 +40,9 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       MultisigScript multisigScript = (MultisigScript) payload;
       if (isMatched(keyPair, script.args, multisigScript)) {
         return signScriptGroup(transaction, scriptGroup, keyPair, multisigScript);
-      } else {
-        return false;
       }
-    } else {
-      return false;
     }
+    return false;
   }
 
   public boolean signScriptGroup(
@@ -95,8 +92,8 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
   }
 
   private static boolean isEmptySignature(byte[] lock, int start) {
-    for (int i = 0; i < SIGNATURE_LENGTH_IN_BYTE; i++) {
-      if (lock[start + i] != 0) {
+    for (int i = start; i < start + SIGNATURE_LENGTH_IN_BYTE; i++) {
+      if (lock[i] != 0) {
         return false;
       }
     }
@@ -120,11 +117,11 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     }
 
     public MultisigScript(int version, int firstN, int threshold, List<byte[]> keysHashes) {
-      if (firstN < 0) {
-        throw new IllegalArgumentException("FirstN must be greater than or equal to 0");
+      if (firstN < 0 || firstN > 255) {
+        throw new IllegalArgumentException("firstN must be in range [0, 255]");
       }
-      if (keysHashes.size() == 0) {
-        throw new IllegalArgumentException("Public key hashes must not be empty");
+      if (keysHashes.size() == 0 || keysHashes.size() > 255) {
+        throw new IllegalArgumentException("keysHashes must be in range [1, 255]");
       }
       if (keysHashes.size() < threshold) {
         throw new IllegalArgumentException("Size of public key hashes must be greater than or equal to threshold");
@@ -183,8 +180,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       if ((in.length - 4) % 20 != 0) {
         throw new IllegalArgumentException("Invalid bytes length");
       }
-      // round up
-      if ((in.length - 4 + 10) / 20 != in[3]) {
+      if (in[3] * 20 + 4 != in.length) {
         throw new IllegalArgumentException("Invalid public key list size");
       }
       MultisigScript multisigScript = new MultisigScript();
