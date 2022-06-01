@@ -31,8 +31,7 @@ public class DaoTest {
   @Test
   public void testBuildDaoWithdraw() throws IOException {
     DaoWithdrawPayloadBuilder builder = new DaoWithdrawPayloadBuilder();
-    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
-    builder.payFee(AddressWithKeyHolder.testAddress1());
+    builder.addFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     builder.feeRate(1200L);
 
     TransactionWithScriptGroups tx =
