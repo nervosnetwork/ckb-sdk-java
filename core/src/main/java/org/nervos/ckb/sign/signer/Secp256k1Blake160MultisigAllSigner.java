@@ -57,7 +57,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
 
     int firstIndex = scriptGroup.getInputIndices().get(0);
     byte[] firstWitness = witnesses.get(firstIndex);
-    byte[] firstWitnessPlaceholder = recoverFirstWitnessPlaceHolder(firstWitness, multisigScript);
+    byte[] firstWitnessPlaceholder = multisigScript.witnessPlaceholder(firstWitness);
     witnesses.set(firstIndex, firstWitnessPlaceholder);
 
     for (int i : scriptGroup.getInputIndices()) {
@@ -77,15 +77,6 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     firstWitness = setSignatureToWitness(firstWitness, signature, multisigScript);
     witnesses.set(firstIndex, firstWitness);
     return true;
-  }
-
-  private static byte[] recoverFirstWitnessPlaceHolder(byte[] originalWitness, MultisigScript multisigScript) {
-    WitnessArgs witnessArgs = WitnessArgs.unpack(originalWitness);
-    byte[] header = multisigScript.encode();
-    byte[] lockPlaceHolder = new byte[header.length + SIGNATURE_LENGTH_IN_BYTE * multisigScript.getThreshold()];
-    System.arraycopy(header, 0, lockPlaceHolder, 0, header.length);
-    witnessArgs.setLock(lockPlaceHolder);
-    return witnessArgs.pack().toByteArray();
   }
 
   private static byte[] setSignatureToWitness(byte[] witness, byte[] signature, MultisigScript multisigScript) {
@@ -212,6 +203,20 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     public byte[] computeHash() {
       byte[] hash = Blake2b.digest(encode());
       return Arrays.copyOfRange(hash, 0, 20);
+    }
+
+    public byte[] witnessPlaceholder(byte[] originalWitness) {
+      WitnessArgs witnessArgs;
+      if (originalWitness == null) {
+        witnessArgs = new WitnessArgs();
+      } else {
+        witnessArgs = WitnessArgs.unpack(originalWitness);
+      }
+      byte[] header = this.encode();
+      byte[] lockPlaceholder = new byte[header.length + SIGNATURE_LENGTH_IN_BYTE * getThreshold()];
+      System.arraycopy(header, 0, lockPlaceholder, 0, header.length);
+      witnessArgs.setLock(lockPlaceholder);
+      return witnessArgs.pack().toByteArray();
     }
 
     @Override
