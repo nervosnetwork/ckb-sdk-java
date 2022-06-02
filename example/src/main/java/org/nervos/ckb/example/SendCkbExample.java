@@ -2,7 +2,6 @@ package org.nervos.ckb.example;
 
 import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
-import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
@@ -25,7 +24,6 @@ public class SendCkbExample {
         .setFeeRate(1000)
         .setChangeOutpoint(sender)
         .build();
-    System.out.println(GsonFactory.create().toJson(txWithGroups));
 
     TransactionSigner.getInstance(Network.TESTNET)
         .signTransaction(txWithGroups, "0x6c9ed03816e3111e49384b8d180174ad08e29feb1393ea1b51cef1c505d4e36a");
