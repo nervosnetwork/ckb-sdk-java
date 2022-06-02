@@ -1,14 +1,12 @@
 package org.nervos.ckb.transaction.scriptHandler;
 
 import org.nervos.ckb.Network;
-import org.nervos.ckb.type.CellDep;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.WitnessArgs;
+import org.nervos.ckb.sign.ScriptGroup;
+import org.nervos.ckb.transaction.AbstractTransactionBuilder;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
@@ -30,8 +28,7 @@ public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
     cellDeps = Arrays.asList(cellDep);
   }
 
-  @Override
-  public boolean isMatched(Script script) {
+  private boolean isMatched(Script script) {
     if (script == null) {
       return false;
     }
@@ -39,13 +36,11 @@ public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
     return Arrays.equals(script.codeHash, codeHash);
   }
 
-  @Override
-  public List<CellDep> getCellDeps() {
+  private List<CellDep> getCellDeps() {
     return cellDeps;
   }
 
-  @Override
-  public byte[] getWitnessPlaceholder(byte[] originalWitness) {
+  private byte[] getWitnessPlaceholder(byte[] originalWitness) {
     WitnessArgs witnessArgs;
     if (originalWitness == null || originalWitness.length == 0) {
       witnessArgs = new WitnessArgs();
@@ -54,5 +49,23 @@ public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
     }
     witnessArgs.setLock(new byte[65]);
     return witnessArgs.pack().toByteArray();
+  }
+
+  @Override
+  public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
+    if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
+      return false;
+    }
+    Transaction tx = txBuilder.getTx();
+    // set witness placeholder
+    int index = scriptGroup.getInputIndices().get(0);
+    byte[] witness = tx.witnesses.get(index);
+    witness = getWitnessPlaceholder(witness);
+    tx.witnesses.set(index, witness);
+    // add celldeps
+    Set<CellDep> cellDeps = new HashSet<>(tx.cellDeps);
+    cellDeps.addAll(getCellDeps());
+    tx.cellDeps = new ArrayList<>(cellDeps);
+    return true;
   }
 }
