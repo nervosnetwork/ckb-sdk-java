@@ -147,7 +147,7 @@ public class SmartTransactionBuilder {
     for (Map.Entry<Script, List<Integer>> entry : lockScriptGroup.entrySet()) {
       ScriptGroup scriptGroup = ScriptGroup.builder()
           .setScript(entry.getKey())
-          .setScriptType(ScriptType.LOCK)
+          .setGroupType(ScriptType.LOCK)
           .setInputIndices(entry.getValue())
           .setOutputIndices(new ArrayList<>())
           .build();

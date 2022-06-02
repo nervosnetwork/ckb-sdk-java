@@ -5,6 +5,7 @@ import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.indexer.*;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.Context;
+import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.*;
 import org.nervos.ckb.type.*;
@@ -17,7 +18,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
 
-import static org.nervos.ckb.sign.TransactionSigner.TESTNET_TRANSACTION_SIGNER;
 import static org.nervos.ckb.type.WitnessArgs.SECP256K1_BLAKE160_WITNESS_BYTES_SIZE;
 import static org.nervos.ckb.utils.Const.*;
 
@@ -133,7 +133,7 @@ public class ACPTransactionExample {
         Address address = Address.decode(cellsWithAddress.address);
         org.nervos.ckb.sign.ScriptGroup scriptGroup = new org.nervos.ckb.sign.ScriptGroup();
         scriptGroup.setScript(address.getScript());
-        scriptGroup.setScriptType(ScriptType.LOCK);
+        scriptGroup.setGroupType(ScriptType.LOCK);
         scriptGroup.setInputIndices(NumberUtils.regionToList(startIndex, cellsWithAddress.inputs.size()));
 
         scriptGroups.add(scriptGroup);
@@ -146,7 +146,7 @@ public class ACPTransactionExample {
     transactionWithScriptGroups.setTxView(txBuilder.buildTx());
     transactionWithScriptGroups.setScriptGroups(scriptGroups);
 
-    TESTNET_TRANSACTION_SIGNER.signTransaction(transactionWithScriptGroups, contexts);
+    TransactionSigner.getInstance(Network.TESTNET).signTransaction(transactionWithScriptGroups, contexts);
     return api.sendTransaction(transactionWithScriptGroups.getTxView());
   }
 

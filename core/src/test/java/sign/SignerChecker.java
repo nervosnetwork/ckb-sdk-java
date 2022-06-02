@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import org.nervos.ckb.address.Network;
+import org.nervos.ckb.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.sign.Context;

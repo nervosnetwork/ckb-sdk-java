@@ -1,6 +1,6 @@
 package org.nervos.ckb.sign;
 
-import org.nervos.ckb.address.Network;
+import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.signer.AcpSigner;
 import org.nervos.ckb.sign.signer.PwSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
