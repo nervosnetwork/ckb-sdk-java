@@ -24,6 +24,8 @@ public class Script {
       Numeric.hexStringToByteArray("0xe4d4ecc6e5f9a059bf2f7a82cca292083aebc0c421566a52484fe2ec51a9fb0c");
   public static final byte[] CHEQUE_CODE_HASH_TESTNET =
       Numeric.hexStringToByteArray("0x60d5f39efce409c587cb9ea359cefdead650ca128f0bd9cb3855348f98c70d5b");
+  public static final byte[] PW_LOCK_CODE_HASH_MAINNET =
+      Numeric.hexStringToByteArray("0xbf43c3602455798c1a61a596e0d95278864c552fafe231c063b3fabf97a8febc");
   public static final byte[] PW_LOCK_CODE_HASH_TESTNET =
       Numeric.hexStringToByteArray("0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63");
 

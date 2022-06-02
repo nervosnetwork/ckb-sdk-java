@@ -1,0 +1,84 @@
+{
+  "contexts": [
+    {
+      "private_key": "5271b0e474609ee280eb6ba07895718863a0eb8f114afd7217fa371fd48f6941",
+      "multisig_script": {
+        "threshold": 2,
+        "first_n": 0,
+        "key_hashes": [
+          "0x9b41c025515b00c24e2e2042df7b221af5c1891f",
+          "0xe732dcd15b7618eb1d7a11e6a68e4579b5be0114"
+        ]
+      }
+    }
+  ],
+  "raw_transaction": {
+    "tx_view": {
+      "version": "0x0",
+      "cell_deps": [
+        {
+          "dep_type": "dep_group",
+          "out_point": {
+            "tx_hash": "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37",
+            "index": "0x1"
+          }
+        }
+      ],
+      "hash": "0x8b9027c407ee95f043b158b4bb5fe685b2e6159723b48712d91ec733b3068a5c",
+      "header_deps": [],
+      "inputs": [
+        {
+          "previous_output": {
+            "tx_hash": "0xb8e52009fb4dc0d63dd2a0547909bb1d66dff83e14645c70b25222c1e04ec593",
+            "index": "0x0"
+          },
+          "since": "0x0"
+        }
+      ],
+      "outputs": [
+        {
+          "capacity": "0x2540be400",
+          "lock": {
+            "code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+            "args": "0x6cfd0e42b63a6fccf5eda9cef74d5fd0537fd55a",
+            "hash_type": "type"
+          }
+        },
+        {
+          "capacity": "0xe67aa34b00",
+          "lock": {
+            "code_hash": "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8",
+            "args": "0x35ed7b939b4ac9cb447b82340fd8f26d344f7a62",
+            "hash_type": "type"
+          }
+        }
+      ],
+      "outputs_data": [
+        "0x",
+        "0x"
+      ],
+      "witnesses": [
+        "0xc200000010000000c2000000c2000000ae000000000002029b41c025515b00c24e2e2042df7b221af5c1891fe732dcd15b7618eb1d7a11e6a68e4579b5be0114309f6a35043ee852c77d525ab8181115467db6161ab2f2916ce53af28d855c5d6d3ca6efeeb640cf2d5e54f6173dfe5e8b69e163e8a34b952cb1eb233247a100010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "0x1234"
+      ]
+    },
+    "script_groups": [
+      {
+        "script": {
+          "code_hash": "0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8",
+          "args": "0x35ed7b939b4ac9cb447b82340fd8f26d344f7a62",
+          "hash_type": "type"
+        },
+        "group_type": "lock",
+        "input_indices": [
+          0
+        ],
+        "output_indices": []
+      }
+    ]
+  },
+  "expected_witnesses": [
+    "0xc200000010000000c2000000c2000000ae000000000002029b41c025515b00c24e2e2042df7b221af5c1891fe732dcd15b7618eb1d7a11e6a68e4579b5be0114309f6a35043ee852c77d525ab8181115467db6161ab2f2916ce53af28d855c5d6d3ca6efeeb640cf2d5e54f6173dfe5e8b69e163e8a34b952cb1eb233247a10001bf990766e3efa8253c58330f4366bef09f49cbe4efa47b2b491541ad919c90c33ca6763c5780693efd0efea89c1645e8992520e8e551c1dec50fc41fac14b3a401",
+    "0x1234"
+  ]
+}
