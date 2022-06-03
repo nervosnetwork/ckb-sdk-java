@@ -4,7 +4,6 @@ import constant.ApiFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.utils.address.Address;
 import org.nervos.mercury.model.SudtIssuePayloadBuilder;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.item.ItemFactory;
@@ -22,7 +21,7 @@ public class BuildSudtIssueTransactionTest {
     builder.owner(secp256SigHashAddress);
     builder.addTo("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg6flmrtx8y8tuu6s3jf2ahv4l6sjw9hsc3t4tqv", BigInteger.valueOf(1));
     builder.outputCapacityProvider(CapacityProvider.FROM);
-    Item item = ItemFactory.newIdentityItemByCkb(Address.decode(secp256SigHashAddress).getScript().args);
+    Item item = ItemFactory.newAddressItem(secp256SigHashAddress);
     builder.addFrom(item);
 
     TransactionWithScriptGroups s =
