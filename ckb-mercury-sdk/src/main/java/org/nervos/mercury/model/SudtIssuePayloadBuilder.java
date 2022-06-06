@@ -14,6 +14,8 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
 
   public SudtIssuePayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
+    this.to = new ArrayList<>();
+    this.from = new ArrayList<>();
   }
 
   public void owner(String owner) {
@@ -21,14 +23,11 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
   }
 
   public void addTo(String address, BigInteger amount) {
-    if (this.to == null) {
-      this.to = new ArrayList<>();
-    }
     this.to.add(new ToInfo(address, amount));
   }
 
-  public void payFee(Item item) {
-    this.payFee = item;
+  public void addFrom(Item from) {
+    this.from.add(from);
   }
 
   public void feeRate(Long feeRate) {

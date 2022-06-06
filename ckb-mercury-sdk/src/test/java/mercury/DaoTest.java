@@ -31,8 +31,7 @@ public class DaoTest {
   @Test
   public void testBuildDaoWithdraw() throws IOException {
     DaoWithdrawPayloadBuilder builder = new DaoWithdrawPayloadBuilder();
-    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
-    builder.payFee(AddressWithKeyHolder.testAddress1());
+    builder.addFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     builder.feeRate(1200L);
 
     TransactionWithScriptGroups tx =
@@ -44,7 +43,7 @@ public class DaoTest {
   @Test
   public void testBuildDaoClaim() throws IOException {
     DaoClaimPayloadBuilder builder = new DaoClaimPayloadBuilder();
-    builder.from(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
+    builder.addFrom(ItemFactory.newAddressItem(AddressWithKeyHolder.testAddress3()));
     TransactionWithScriptGroups tx =
         ApiFactory.getApi().buildDaoClaimTransaction(builder.build());
     Assertions.assertNotNull(tx.txView);
