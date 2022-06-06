@@ -45,7 +45,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return addOutput(output, new byte[0]);
   }
 
-  public CkbTransactionBuilder setChangeOutpoint(CellOutput output, byte[] data) {
+  public CkbTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
     if (changeOutputIndex != -1) {
       throw new IllegalStateException("Change output has been set");
     }
@@ -53,9 +53,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return addOutput(output, data);
   }
 
-  public CkbTransactionBuilder setChangeOutpoint(String address) {
+  public CkbTransactionBuilder setChangeOutput(String address) {
     CellOutput output = new CellOutput(0, Address.decode(address).getScript());
-    return setChangeOutpoint(output, new byte[0]);
+    return setChangeOutput(output, new byte[0]);
   }
 
   public TransactionWithScriptGroups build() {
