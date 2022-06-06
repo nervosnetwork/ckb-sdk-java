@@ -28,7 +28,7 @@ public class InputIterator implements Iterator<TransactionInput> {
   private final Integer limit;
   private final Script type;
 
-  InputIterator(
+  public InputIterator(
       CkbIndexerApi indexerApi,
       List<String> addresses,
       Order order,
@@ -62,7 +62,7 @@ public class InputIterator implements Iterator<TransactionInput> {
   }
   
   private static CkbIndexerApi getDefaultIndexerApi(Network network) {
-    String url = null;
+    String url;
     switch (network) {
       case MAINNET:
         url = "https://mainnet.ckb.dev/indexer";
