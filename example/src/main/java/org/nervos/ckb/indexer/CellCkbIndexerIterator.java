@@ -102,7 +102,7 @@ public class CellCkbIndexerIterator implements Iterator<TransactionInput> {
     List<TransactionInput> newTransactionInputs = new ArrayList<>();
     for (CkbIndexerCells.Cell liveCell : response.objects) {
       CellInput cellInput = new CellInput(liveCell.outPoint);
-      newTransactionInputs.add(new TransactionInput(cellInput, liveCell.output));
+      newTransactionInputs.add(new TransactionInput(cellInput, liveCell.output, liveCell.outputData));
     }
     transactionInputs = newTransactionInputs;
     afterCursor = response.lastCursor;
