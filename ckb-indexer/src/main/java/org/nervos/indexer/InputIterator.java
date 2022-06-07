@@ -57,7 +57,7 @@ public class InputIterator implements Iterator<TransactionInput> {
     this(api, addresses, null);
   }
 
-  InputIterator(CkbIndexerApi api, List<String> addresses, Script type) {
+  public InputIterator(CkbIndexerApi api, List<String> addresses, Script type) {
     this(api, addresses, Order.ASC, 100, type);
   }
   
