@@ -108,7 +108,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     }
 
     if (!enoughCapacity) {
-      throw new IllegalStateException("Not enough capacity");
+      throw new IllegalStateException("No enough capacity");
     }
     return TransactionWithScriptGroups.builder()
         .setTxView(tx)
