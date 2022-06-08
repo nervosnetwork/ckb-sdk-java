@@ -23,6 +23,11 @@ public class Context {
     this.payload = payload;
   }
 
+  public Context(String privateKey, Object payload) {
+    this(privateKey);
+    this.payload = payload;
+  }
+
   public ECKeyPair getKeyPair() {
     return keyPair;
   }
