@@ -203,7 +203,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
 
     public byte[] witnessPlaceholder(byte[] originalWitness) {
       WitnessArgs witnessArgs;
-      if (originalWitness == null) {
+      if (originalWitness == null || originalWitness.length == 0) {
         witnessArgs = new WitnessArgs();
       } else {
         witnessArgs = WitnessArgs.unpack(originalWitness);
