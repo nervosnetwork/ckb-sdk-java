@@ -3,7 +3,9 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
-import org.nervos.ckb.type.*;
+import org.nervos.ckb.type.CellOutput;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.Address;
@@ -11,6 +13,8 @@ import org.nervos.ckb.utils.address.Address;
 import java.util.*;
 
 public class CkbTransactionBuilder extends AbstractTransactionBuilder {
+  private List<TransactionInput> transactionInputs = new ArrayList<>();
+
   public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs) {
     super(availableInputs);
   }
@@ -26,20 +30,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  public CkbTransactionBuilder addInput(CellInput input) {
-    tx.inputs.add(input);
-    tx.witnesses.add(new byte[0]);
+  public CkbTransactionBuilder addInput(TransactionInput transactionInput) {
+    transactionInputs.add(transactionInput);
     return this;
-  }
-
-  public CkbTransactionBuilder addInput(String txHash, int index) {
-    return addInput(txHash, index, 0);
-  }
-
-  public CkbTransactionBuilder addInput(String txHash, int index, long since) {
-    OutPoint outPoint = new OutPoint(Numeric.hexStringToByteArray(txHash), index);
-    CellInput input = new CellInput(outPoint, since);
-    return addInput(input);
   }
 
   public CkbTransactionBuilder addHeaderDep(byte[] headerDep) {
@@ -108,8 +101,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     long inputsCapacity = 0L;
     inputsDetail = new ArrayList<>();
     int inputIndex = -1;
-    while (availableInputs.hasNext()) {
-      TransactionInput input = availableInputs.next();
+    TransactionInput input;
+    for (input = next(); input != null; input = next()) {
       inputsDetail.add(input);
       tx.inputs.add(input.input);
       tx.witnesses.add(new byte[0]);
@@ -164,5 +157,17 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
         .setTxView(tx)
         .setScriptGroups(new ArrayList<>(scriptGroupMap.values()))
         .build();
+  }
+
+  int transactionInputsIndex = 0;
+
+  public TransactionInput next() {
+    if (transactionInputsIndex < transactionInputs.size()) {
+      return transactionInputs.get(transactionInputsIndex++);
+    }
+    if (availableInputs.hasNext()) {
+      return availableInputs.next();
+    }
+    return null;
   }
 }
