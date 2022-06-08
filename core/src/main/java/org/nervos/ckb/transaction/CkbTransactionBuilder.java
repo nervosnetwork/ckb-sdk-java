@@ -6,6 +6,7 @@ import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.Address;
 
@@ -25,6 +26,15 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   public CkbTransactionBuilder setFeeRate(long feeRate) {
     this.feeRate = feeRate;
     return this;
+  }
+
+  public CkbTransactionBuilder addHeaderDep(byte[] headerDep) {
+    tx.headerDeps.add(headerDep);
+    return this;
+  }
+
+  public CkbTransactionBuilder addHeaderDep(String headerDep) {
+    return addHeaderDep(Numeric.hexStringToByteArray(headerDep));
   }
 
   public CkbTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {

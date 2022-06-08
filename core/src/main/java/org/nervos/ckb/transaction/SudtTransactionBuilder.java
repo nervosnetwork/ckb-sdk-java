@@ -30,6 +30,15 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
+  public SudtTransactionBuilder addHeaderDep(byte[] headerDep) {
+    tx.headerDeps.add(headerDep);
+    return this;
+  }
+
+  public SudtTransactionBuilder addHeaderDep(String headerDep) {
+    return addHeaderDep(Numeric.hexStringToByteArray(headerDep));
+  }
+
   public SudtTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {
     tx.outputs.addAll(outputs);
     tx.outputsData.addAll(outputsData);
