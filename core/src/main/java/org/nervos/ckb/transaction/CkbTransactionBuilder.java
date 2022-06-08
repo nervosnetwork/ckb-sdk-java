@@ -126,12 +126,20 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       // check if there is enough capacity for output capacity and change
       long fee = calculateTxFee(tx, feeRate);
       long changeCapacity = inputsCapacity - outputsCapacity - fee;
-      CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
-      byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
-      if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
-        tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
-        enoughCapacity = true;
-        break;
+      // if changeOutput is set
+      if (changeOutputIndex != -1) {
+        CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
+        byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
+        if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
+          tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
+          enoughCapacity = true;
+          break;
+        }
+      } else {
+        if (changeCapacity >= 0) {
+          enoughCapacity = true;
+          break;
+        }
       }
     }
 
