@@ -3,9 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
-import org.nervos.ckb.type.CellOutput;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.ScriptType;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.Address;
@@ -25,6 +23,22 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
 
   public CkbTransactionBuilder setFeeRate(long feeRate) {
     this.feeRate = feeRate;
+    return this;
+  }
+
+  public CkbTransactionBuilder addInput(CellInput input) {
+    tx.inputs.add(input);
+    return this;
+  }
+
+  public CkbTransactionBuilder addInput(String txHash, int index) {
+    return addInput(txHash, index, 0);
+  }
+
+  public CkbTransactionBuilder addInput(String txHash, int index, long since) {
+    OutPoint outPoint = new OutPoint(Numeric.hexStringToByteArray(txHash), index);
+    CellInput input = new CellInput(outPoint, since);
+    tx.inputs.add(input);
     return this;
   }
 
@@ -91,7 +105,6 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     }
 
     tx.witnesses = new ArrayList<>();
-    tx.inputs = new ArrayList<>();
     boolean enoughCapacity = false;
     long inputsCapacity = 0L;
     inputsDetail = new ArrayList<>();

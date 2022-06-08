@@ -13,7 +13,6 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
-import org.nervos.indexer.DefaultIndexerApi;
 import org.nervos.indexer.InputIterator;
 
 import java.io.IOException;
@@ -37,15 +36,13 @@ public class DaoWithdrawExample {
     byte[] data = MoleculeConverter.packUint64(daoDepositBlockNumber).toByteArray();
 
     // Construct transaction
-    DefaultIndexerApi indexerApi = new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false);
-    Iterator<TransactionInput> iterator = new InputIterator(indexerApi)
-        .addSearchKey(sender, daoScript)
-        .addSearchKey(sender);
+    Iterator<TransactionInput> iterator = new InputIterator(sender);
 
     TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator)
         .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(network))
         .registerScriptHandler(new DaoScriptHandler(network))
         .addHeaderDep(daoDepositBlockHash)
+        .addInput("0xb27ac08c74f4cdac45c1a788379adf0a1923ef76e6c626bd389847748fa36456", 0)
         .addOutput(output, data)
         .setFeeRate(1000)
         .setChangeOutput(sender)
