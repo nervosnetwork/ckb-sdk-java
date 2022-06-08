@@ -58,10 +58,26 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return setChangeOutput(output, new byte[0]);
   }
 
-  public TransactionWithScriptGroups build() {
+  public TransactionWithScriptGroups build(Object context) {
+    Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     long outputsCapacity = 0L;
-    for (CellOutput output : tx.outputs) {
+    for (int i = 0; i < tx.outputs.size(); i++) {
+      CellOutput output = tx.outputs.get(i);
       outputsCapacity += output.capacity;
+      Script type = output.type;
+      if (type != null) {
+        ScriptGroup scriptGroup = scriptGroupMap.get(type);
+        if (scriptGroup == null) {
+          scriptGroup = new ScriptGroup();
+          scriptGroup.setScript(type);
+          scriptGroup.setGroupType(ScriptType.TYPE);
+          scriptGroupMap.put(type, scriptGroup);
+        }
+        scriptGroup.getOutputIndices().add(i);
+        for (ScriptHandler handler : scriptHandlers) {
+          handler.buildTransaction(this, scriptGroup, context);
+        }
+      }
     }
 
     tx.witnesses = new ArrayList<>();
@@ -69,7 +85,6 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     boolean enoughCapacity = false;
     long inputsCapacity = 0L;
     inputsDetail = new ArrayList<>();
-    Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     int inputIndex = -1;
     while (availableInputs.hasNext()) {
       TransactionInput input = availableInputs.next();
@@ -84,14 +99,27 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
         scriptGroup = new ScriptGroup();
         scriptGroup.setScript(lock);
         scriptGroup.setGroupType(ScriptType.LOCK);
-        scriptGroup.getInputIndices().add(inputIndex);
         scriptGroupMap.put(lock, scriptGroup);
-      } else {
-        scriptGroup.getInputIndices().add(inputIndex);
       }
+      scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
       for (ScriptHandler handler : scriptHandlers) {
-        handler.buildTransaction(this, scriptGroup, null);
+        handler.buildTransaction(this, scriptGroup, context);
+      }
+
+      Script type = input.output.type;
+      if (type != null) {
+        scriptGroup = scriptGroupMap.get(type);
+        if (scriptGroup == null) {
+          scriptGroup = new ScriptGroup();
+          scriptGroup.setScript(type);
+          scriptGroup.setGroupType(ScriptType.TYPE);
+          scriptGroupMap.put(type, scriptGroup);
+        }
+        scriptGroup.getInputIndices().add(inputIndex);
+        for (ScriptHandler handler : scriptHandlers) {
+          handler.buildTransaction(this, scriptGroup, context);
+        }
       }
 
       inputsCapacity += input.output.capacity;

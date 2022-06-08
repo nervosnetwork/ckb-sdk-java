@@ -29,7 +29,7 @@ class CkbTransactionBuilderTest {
                    501)
         .setFeeRate(1000)
         .setChangeOutput(sender.encode())
-        .build();
+        .build(null);
 
     Transaction tx = txWithGroups.getTxView();
     Assertions.assertEquals(1, tx.inputs.size());
@@ -51,7 +51,7 @@ class CkbTransactionBuilderTest {
                    1000)
         .setFeeRate(1000)
         .setChangeOutput(sender)
-        .build();
+        .build(null);
 
     Transaction tx = txWithGroups.getTxView();
     Assertions.assertEquals(2, tx.inputs.size());
