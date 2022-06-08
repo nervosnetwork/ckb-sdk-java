@@ -12,7 +12,7 @@ public class AmountUtils {
   }
 
 
-  public static byte[] SudtAmountToData(BigInteger sudtAmount) {
+  public static byte[] sudtAmountToData(BigInteger sudtAmount) {
     return MoleculeConverter.packUint128(sudtAmount).toByteArray();
   }
 

@@ -11,8 +11,8 @@ import org.nervos.ckb.utils.Numeric;
 import java.math.BigInteger;
 import java.util.*;
 
-import static org.nervos.ckb.utils.AmountUtils.SudtAmountToData;
 import static org.nervos.ckb.utils.AmountUtils.dataToSudtAmount;
+import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 
 public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs) {
@@ -43,7 +43,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   }
 
   public SudtTransactionBuilder addOutput(CellOutput output, BigInteger udtAmount) {
-    byte[] data = SudtAmountToData(udtAmount);
+    byte[] data = sudtAmountToData(udtAmount);
     return addOutput(output, data);
   }
 
@@ -52,7 +52,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       throw new IllegalStateException("Change output has been set");
     }
     changeOutputIndex = tx.outputs.size();
-    byte[] data = SudtAmountToData(BigInteger.ZERO);
+    byte[] data = sudtAmountToData(BigInteger.ZERO);
     return addOutput(output, data);
   }
 
@@ -143,7 +143,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       // get back capacity and SUDT change
       if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
         tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
-        tx.outputsData.set(changeOutputIndex, SudtAmountToData(inputSudtAmount.subtract(outputSudtAmount)));
+        tx.outputsData.set(changeOutputIndex, sudtAmountToData(inputSudtAmount.subtract(outputSudtAmount)));
         enoughCapacity = true;
         break;
       }

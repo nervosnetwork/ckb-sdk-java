@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.nervos.ckb.utils.AmountUtils.SudtAmountToData;
 import static org.nervos.ckb.utils.AmountUtils.dataToSudtAmount;
+import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 
 class SudtTransactionBuilderTest {
   byte[] fakeHash = Numeric.hexStringToByteArray("0x0000000000000000000000000000000000000000000000000000000000000000");
@@ -83,12 +83,12 @@ class SudtTransactionBuilderTest {
 
     CellInput cellInput = new CellInput(new OutPoint(fakeHash, 0), 0);
     CellOutput cellOutput = new CellOutput(100000000000L, lock, type);  // 1000 CKB
-    byte[] data = SudtAmountToData(BigInteger.valueOf(100L));  // 100 SUDT
+    byte[] data = sudtAmountToData(BigInteger.valueOf(100L));  // 100 SUDT
     inputs.add(new TransactionInput(cellInput, cellOutput, data));
 
     cellInput = new CellInput(new OutPoint(fakeHash, 0), 0);
     cellOutput = new CellOutput(10000000000L, lock, type); // 100 CKB
-    data = SudtAmountToData(BigInteger.valueOf(10L));  // 10 SUDT
+    data = sudtAmountToData(BigInteger.valueOf(10L));  // 10 SUDT
     inputs.add(new TransactionInput(cellInput, cellOutput, data));
 
     return inputs.iterator();
