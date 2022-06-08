@@ -17,7 +17,6 @@ import org.nervos.indexer.InputIterator;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class SendSudtExample {
@@ -31,9 +30,9 @@ public class SendSudtExample {
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq02cgdvd5mng9924xarf3rflqzafzmzlpsuhh83c";
     CellOutput changeOutput = new CellOutput(0, Address.decode(sender).getScript(), type);
 
-    Iterator<TransactionInput> iterator = new InputIterator(new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false),
-                                                            Arrays.asList(sender),
-                                                            type);
+    Iterator<TransactionInput> iterator =
+        new InputIterator(new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false))
+            .addSearchKey(sender, type);
 
     TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator)
         .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET))

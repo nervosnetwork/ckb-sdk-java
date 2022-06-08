@@ -13,54 +13,60 @@ import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class InputIterator implements Iterator<TransactionInput> {
   private List<TransactionInput> transactionInputs = new ArrayList<>();
   private TransactionInput current;
-  private int addressIndex;
-  private int inputIndex;
   private byte[] afterCursor;
 
-  private final List<String> addresses;
   private CkbIndexerApi indexerApi;
-  private final Order order;
-  private final Integer limit;
-  private final Script type;
+  private int inputIndex = 0;
+  private int searchKeysIndex = 0;
+  private List<SearchKey> searchKeys = new ArrayList<>();
+  private Order order = Order.ASC;
+  private Integer limit = 100;
 
   public InputIterator(
       CkbIndexerApi indexerApi,
-      List<String> addresses,
       Order order,
-      Integer limit,
-      Script type) {
+      Integer limit) {
     this.indexerApi = indexerApi;
-    this.addresses = addresses;
     this.order = order;
     this.limit = limit;
-    this.type = type;
-
-    addressIndex = 0;
-    inputIndex = 0;
   }
 
+  public InputIterator(CkbIndexerApi api) {
+    this.indexerApi = api;
+  }
 
   public InputIterator(String address) {
-    this(getDefaultIndexerApi(Address.decode(address).getNetwork()), Arrays.asList(address));
-  }
-  
-  public InputIterator(CkbIndexerApi api, String address) {
-    this(api, Arrays.asList(address));
+    this(getDefaultIndexerApi(Address.decode(address).getNetwork()));
+    addSearchKey(address);
   }
 
-  public InputIterator(CkbIndexerApi api, List<String> addresses) {
-    this(api, addresses, null);
+  public InputIterator addSearchKey(String address) {
+    return addSearchKey(address, null);
   }
 
-  public InputIterator(CkbIndexerApi api, List<String> addresses, Script type) {
-    this(api, addresses, Order.ASC, 100, type);
+  public InputIterator addSearchKey(String address, Script type) {
+    Script lockScript = Address.decode(address).getScript();
+
+    SearchKey searchKey = new SearchKey();
+    searchKey.scriptType = ScriptType.LOCK;
+    searchKey.script = lockScript;
+    if (type != null) {
+      Filter filter = new Filter();
+      filter.script = type;
+      searchKey.filter = filter;
+    }
+    searchKeys.add(searchKey);
+    return this;
   }
-  
+
   private static CkbIndexerApi getDefaultIndexerApi(Network network) {
     String url;
     switch (network) {
@@ -100,18 +106,8 @@ public class InputIterator implements Iterator<TransactionInput> {
       current = null;
     }
 
-    while (current == null && addressIndex < addresses.size()) {
-      String address = addresses.get(addressIndex);
-      Script lockScript = Address.decode(address).getScript();
-
-      SearchKey searchKey = new SearchKey();
-      searchKey.scriptType = ScriptType.LOCK;
-      searchKey.script = lockScript;
-      if (type != null) {
-        Filter filter = new Filter();
-        filter.script = type;
-        searchKey.filter = filter;
-      }
+    while (current == null && searchKeysIndex < searchKeys.size()) {
+      SearchKey searchKey = searchKeys.get(searchKeysIndex);
       try {
         fetchTransactionInputs(searchKey);
       } catch (IOException e) {
@@ -119,7 +115,7 @@ public class InputIterator implements Iterator<TransactionInput> {
       }
       if (transactionInputs.isEmpty()) {
         afterCursor = null;
-        addressIndex++;
+        searchKeysIndex++;
       } else {
         inputIndex = 0;
         current = transactionInputs.get(0);

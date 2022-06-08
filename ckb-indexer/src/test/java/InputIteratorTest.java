@@ -5,18 +5,14 @@ import org.nervos.indexer.DefaultIndexerApi;
 import org.nervos.indexer.InputIterator;
 import org.nervos.indexer.model.Order;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 class InputIteratorTest {
   @Test
   public void testIterate() {
-    Iterator<TransactionInput> iterator = new InputIterator(
-        new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false),
-        Arrays.asList("ckt1qyqgrfqrklscqeutp3tlqhlcd8xrculgufqspwdp7m"),
-        Order.ASC,
-        4,
-        null);
+    DefaultIndexerApi api = new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false);
+    Iterator<TransactionInput> iterator = new InputIterator(api, Order.ASC, 4)
+        .addSearchKey("ckt1qyqgrfqrklscqeutp3tlqhlcd8xrculgufqspwdp7m");
 
     int count = 0;
     while (iterator.hasNext()) {
@@ -25,19 +21,15 @@ class InputIteratorTest {
     }
     Assertions.assertEquals(10, count);
 
-    iterator = new InputIterator(
-        new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false),
-        Arrays.asList("ckt1qyqgrfqrklscqeutp3tlqhlcd8xrculgufqspwdp7m", "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2lck0mlvl2t25sgt6z504plwqdmh46elsqrps6v"),
-        Order.ASC,
-        4,
-        null);
+    iterator = new InputIterator(api, Order.ASC, 4)
+        .addSearchKey("ckt1qyqgrfqrklscqeutp3tlqhlcd8xrculgufqspwdp7m")
+        .addSearchKey("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2lck0mlvl2t25sgt6z504plwqdmh46elsqrps6v");
 
     count = 0;
     while (iterator.hasNext()) {
       iterator.next();
       count++;
     }
-    Assertions.assertEquals(26,  count);
+    Assertions.assertEquals(26, count);
   }
-
 }
