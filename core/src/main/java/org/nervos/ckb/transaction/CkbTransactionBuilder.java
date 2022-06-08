@@ -28,6 +28,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
 
   public CkbTransactionBuilder addInput(CellInput input) {
     tx.inputs.add(input);
+    tx.witnesses.add(new byte[0]);
     return this;
   }
 
@@ -38,8 +39,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   public CkbTransactionBuilder addInput(String txHash, int index, long since) {
     OutPoint outPoint = new OutPoint(Numeric.hexStringToByteArray(txHash), index);
     CellInput input = new CellInput(outPoint, since);
-    tx.inputs.add(input);
-    return this;
+    return addInput(input);
   }
 
   public CkbTransactionBuilder addHeaderDep(byte[] headerDep) {
@@ -104,7 +104,6 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       }
     }
 
-    tx.witnesses = new ArrayList<>();
     boolean enoughCapacity = false;
     long inputsCapacity = 0L;
     inputsDetail = new ArrayList<>();
