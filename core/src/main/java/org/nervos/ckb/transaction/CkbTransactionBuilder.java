@@ -8,7 +8,6 @@ import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.Address;
 
 import java.util.*;
@@ -57,9 +56,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  public CkbTransactionBuilder addOutput(String address, double capacityInBytes) {
-    CellOutput output = new CellOutput(Utils.ckbToShannon(capacityInBytes),
-                                       Address.decode(address).getScript());
+  public CkbTransactionBuilder addOutput(String address, long capacity) {
+    CellOutput output = new CellOutput(capacity, Address.decode(address).getScript());
     return addOutput(output, new byte[0]);
   }
 
