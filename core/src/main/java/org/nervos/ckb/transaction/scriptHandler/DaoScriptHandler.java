@@ -3,10 +3,8 @@ package org.nervos.ckb.transaction.scriptHandler;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.transaction.AbstractTransactionBuilder;
-import org.nervos.ckb.type.CellDep;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Transaction;
+import org.nervos.ckb.type.*;
+import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 
 import java.util.*;
@@ -55,6 +53,26 @@ public class DaoScriptHandler implements ScriptHandler {
     Set<CellDep> cellDeps = new HashSet<>(tx.cellDeps);
     cellDeps.addAll(getCellDeps());
     tx.cellDeps = new ArrayList<>(cellDeps);
+
+    if (context instanceof Number) {
+      int index = scriptGroup.getInputIndices().get(0);
+      byte[] witness = tx.witnesses.get(index);
+      WitnessArgs witnessArgs = getWitnessArgs(witness);
+      byte[] headerIndex = MoleculeConverter.packUint64(((Number) context).longValue()).toByteArray();
+      witnessArgs.setInputType(headerIndex);
+      tx.witnesses.set(index, witnessArgs.pack().toByteArray());
+    }
+
     return true;
+  }
+
+  private WitnessArgs getWitnessArgs(byte[] originalWitness) {
+    WitnessArgs witnessArgs;
+    if (originalWitness == null || originalWitness.length == 0) {
+      witnessArgs = new WitnessArgs();
+    } else {
+      witnessArgs = WitnessArgs.unpack(originalWitness);
+    }
+    return witnessArgs;
   }
 }

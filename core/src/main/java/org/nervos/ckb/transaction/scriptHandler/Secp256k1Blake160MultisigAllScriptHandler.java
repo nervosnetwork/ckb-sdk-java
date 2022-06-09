@@ -53,7 +53,7 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     if (context instanceof Secp256k1Blake160MultisigAllSigner.MultisigScript) {
       multisigScript = (Secp256k1Blake160MultisigAllSigner.MultisigScript) context;
     } else {
-      throw new IllegalArgumentException("context is a not a MultisigScript object");
+      return false;
     }
 
     Transaction tx = txBuilder.getTx();
