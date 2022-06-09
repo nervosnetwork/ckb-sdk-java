@@ -37,7 +37,7 @@ class CkbTransactionBuilderTest {
     Assertions.assertEquals(lock, txWithGroups.scriptGroups.get(0).getScript());
     Assertions.assertEquals(2, tx.outputs.size());
     long fee = 100000000000L - tx.outputs.get(0).capacity - tx.outputs.get(1).capacity;
-    Assertions.assertEquals(468, fee);
+    Assertions.assertEquals(464, fee);
   }
 
   @Test
@@ -59,7 +59,7 @@ class CkbTransactionBuilderTest {
     Assertions.assertEquals(lock, txWithGroups.scriptGroups.get(0).getScript());
     Assertions.assertEquals(2, tx.outputs.size());
     long fee = 110000000000L - tx.outputs.get(0).capacity - tx.outputs.get(1).capacity;
-    Assertions.assertEquals(520, fee);
+    Assertions.assertEquals(516, fee);
   }
 
   private Iterator<TransactionInput> newTransactionInputs() {

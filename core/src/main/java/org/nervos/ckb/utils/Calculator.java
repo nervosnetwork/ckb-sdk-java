@@ -15,7 +15,7 @@ public class Calculator {
 
   // https://docs.nervos.org/docs/essays/faq/#what-is-the-min_fee_rate
   private static long calculateTransactionFee(long transactionSize, long feeRate) {
-    long base = (transactionSize + 4) * feeRate;
+    long base = transactionSize * feeRate;
     long fee = Long.divideUnsigned(base, RADIO);
     if (Long.compareUnsigned(fee * feeRate, base) < 0) {
       return fee + 1;

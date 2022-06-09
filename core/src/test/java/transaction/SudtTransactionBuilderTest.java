@@ -47,7 +47,7 @@ class SudtTransactionBuilderTest {
     Assertions.assertEquals(lock, txWithGroups.scriptGroups.get(0).getScript());
     Assertions.assertEquals(2, tx.outputs.size());
     long fee = 100000000000L - tx.outputs.get(0).capacity - tx.outputs.get(1).capacity;
-    Assertions.assertEquals(670, fee);
+    Assertions.assertEquals(666, fee);
     BigInteger outputSudtAmount = dataToSudtAmount(tx.outputsData.get(0));
     BigInteger changeSudtAmount = dataToSudtAmount(tx.outputsData.get(1));
     Assertions.assertEquals(BigInteger.valueOf(100L), outputSudtAmount.add(changeSudtAmount));
@@ -72,7 +72,7 @@ class SudtTransactionBuilderTest {
     Assertions.assertEquals(lock, txWithGroups.scriptGroups.get(0).getScript());
     Assertions.assertEquals(2, tx.outputs.size());
     long fee = 110000000000L - tx.outputs.get(0).capacity - tx.outputs.get(1).capacity;
-    Assertions.assertEquals(722, fee);
+    Assertions.assertEquals(718, fee);
     BigInteger outputSudtAmount = dataToSudtAmount(tx.outputsData.get(0));
     BigInteger changeSudtAmount = dataToSudtAmount(tx.outputsData.get(1));
     Assertions.assertEquals(BigInteger.valueOf(110L), outputSudtAmount.add(changeSudtAmount));
