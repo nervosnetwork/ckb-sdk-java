@@ -26,7 +26,6 @@ public class EpochUtils {
     long since = 0x20L << 56;
     // epoch representation
     since = since | (length << 40 | index << 24 | number);
-    System.out.println(since);
     return since;
   }
 

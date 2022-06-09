@@ -119,7 +119,6 @@ public class ApiTest {
   @Test
   public void testGetConsensus() throws IOException {
     Consensus consensus = api.getConsensus();
-    System.out.println(consensus.maxBlockCycles);
     Assertions.assertEquals(3500000000L, consensus.maxBlockCycles);
   }
 

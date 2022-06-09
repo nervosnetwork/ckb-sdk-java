@@ -76,7 +76,6 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
   }
 
   public DaoClaimTransactionBuilder addDaoReward(long capacity) {
-    System.out.println("dao reward: " + capacity);
     daoReward += capacity;
     return this;
   }
@@ -156,7 +155,6 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
       CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
       byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
       if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
-        System.out.println("Fee: " + fee);
         tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
         enoughCapacity = true;
         break;

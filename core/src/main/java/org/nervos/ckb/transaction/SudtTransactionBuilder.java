@@ -101,8 +101,6 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     int inputIndex = -1;
     while (availableInputs.hasNext()) {
       TransactionInput input = availableInputs.next();
-      System.out.println(Numeric.toHexString(input.input.previousOutput.txHash));
-      System.out.println(input.input.previousOutput.index);
       inputsDetail.add(input);
       tx.inputs.add(input.input);
       tx.witnesses.add(new byte[0]);
