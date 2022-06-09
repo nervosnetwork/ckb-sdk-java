@@ -4,6 +4,7 @@ import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.CellOutput;
+import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
@@ -165,9 +166,29 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     if (transactionInputsIndex < transactionInputs.size()) {
       return transactionInputs.get(transactionInputsIndex++);
     }
-    if (availableInputs.hasNext()) {
-      return availableInputs.next();
+    while (availableInputs.hasNext()) {
+      TransactionInput input = availableInputs.next();
+      if (toFilter(input)) {
+        continue;
+      } else {
+        return input;
+      }
     }
     return null;
+  }
+
+  private boolean toFilter(TransactionInput input) {
+    OutPoint outPoint = input.input.previousOutput;
+    // Filter duplicate found inputs same with customized input
+    for (int i = 0; i < transactionInputs.size(); i++) {
+      if (outPoint.equals(transactionInputs.get(i).input.previousOutput)) {
+        return true;
+      }
+    }
+    // only pool tx fee by null-type input
+    if (input.output.type != null) {
+      return true;
+    }
+    return false;
   }
 }
