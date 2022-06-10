@@ -11,10 +11,7 @@ import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.address.Address;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static org.nervos.ckb.utils.AmountUtils.dataToSudtAmount;
 import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
@@ -162,6 +159,11 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       inputSudtAmount = inputSudtAmount.add(dataToSudtAmount(input.outputData));
 
       Script lock = input.output.lock;
+      if (transactionType == TransactionType.ISSUE) {
+        if (!Arrays.equals(lock.computeHash(), sudtArgs)) {
+          throw new IllegalStateException("input lock hash should be the same as SUDT args in the SUDT-issue transaction");
+        }
+      }
       ScriptGroup scriptGroup = scriptGroupMap.get(lock);
       if (scriptGroup == null) {
         scriptGroup = new ScriptGroup();
