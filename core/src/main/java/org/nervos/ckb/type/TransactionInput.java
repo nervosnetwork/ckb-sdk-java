@@ -1,7 +1,4 @@
-package org.nervos.ckb.transaction;
-
-import org.nervos.ckb.type.CellInput;
-import org.nervos.ckb.type.CellOutput;
+package org.nervos.ckb.type;
 
 public class TransactionInput {
 

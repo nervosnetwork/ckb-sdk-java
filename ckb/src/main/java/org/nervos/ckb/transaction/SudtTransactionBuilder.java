@@ -7,6 +7,7 @@ import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 
 import java.math.BigInteger;

@@ -3,6 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.transaction.scriptHandler.*;
 import org.nervos.ckb.type.Transaction;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Calculator;
 
 import java.util.ArrayList;

@@ -5,11 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.DaoClaimTransactionBuilder;
-import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.type.CellInput;
-import org.nervos.ckb.type.CellOutput;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 
 class DaoClaimTransactionBuilderTest {

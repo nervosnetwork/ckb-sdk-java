@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.transaction.TransactionInput;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.indexer.DefaultIndexerApi;
 import org.nervos.indexer.InputIterator;
 import org.nervos.indexer.model.Order;

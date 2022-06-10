@@ -4,65 +4,63 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
-import org.nervos.ckb.type.CellOutput;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.ScriptType;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
 
 import java.util.*;
 
-public class CkbTransactionBuilder extends AbstractTransactionBuilder {
+public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
   private List<TransactionInput> transactionInputs = new ArrayList<>();
+  private long daoReward = 0;
 
-  public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
+  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
     super(availableInputs, network);
   }
 
   @Override
-  public CkbTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
+  public DaoClaimTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
     scriptHandlers.add(scriptHandler);
     return this;
   }
 
-  public CkbTransactionBuilder setFeeRate(long feeRate) {
+  public DaoClaimTransactionBuilder setFeeRate(long feeRate) {
     this.feeRate = feeRate;
     return this;
   }
 
-  public CkbTransactionBuilder addInput(TransactionInput transactionInput) {
+  public DaoClaimTransactionBuilder addInput(TransactionInput transactionInput) {
     transactionInputs.add(transactionInput);
     return this;
   }
 
-  public CkbTransactionBuilder addHeaderDep(byte[] headerDep) {
+  public DaoClaimTransactionBuilder addHeaderDep(byte[] headerDep) {
     tx.headerDeps.add(headerDep);
     return this;
   }
 
-  public CkbTransactionBuilder addHeaderDep(String headerDep) {
+  public DaoClaimTransactionBuilder addHeaderDep(String headerDep) {
     return addHeaderDep(Numeric.hexStringToByteArray(headerDep));
   }
 
-  public CkbTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {
+  public DaoClaimTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {
     tx.outputs.addAll(outputs);
     tx.outputsData.addAll(outputsData);
     return this;
   }
 
-  public CkbTransactionBuilder addOutput(CellOutput output, byte[] data) {
+  public DaoClaimTransactionBuilder addOutput(CellOutput output, byte[] data) {
     tx.outputs.add(output);
     tx.outputsData.add(data);
     return this;
   }
 
-  public CkbTransactionBuilder addOutput(String address, long capacity) {
+  public DaoClaimTransactionBuilder addOutput(String address, long capacity) {
     CellOutput output = new CellOutput(capacity, Address.decode(address).getScript());
     return addOutput(output, new byte[0]);
   }
 
-  public CkbTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
+  public DaoClaimTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
     if (changeOutputIndex != -1) {
       throw new IllegalStateException("Change output has been set");
     }
@@ -70,12 +68,17 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return addOutput(output, data);
   }
 
-  public CkbTransactionBuilder setChangeOutput(String address) {
+  public DaoClaimTransactionBuilder setChangeOutput(String address) {
     CellOutput output = new CellOutput(0, Address.decode(address).getScript());
     return setChangeOutput(output, new byte[0]);
   }
 
-  public TransactionWithScriptGroups build(Object context) {
+  public DaoClaimTransactionBuilder addDaoReward(long capacity) {
+    daoReward += capacity;
+    return this;
+  }
+
+  public TransactionWithScriptGroups build(Object... contexts) {
     Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     long outputsCapacity = 0L;
     for (int i = 0; i < tx.outputs.size(); i++) {
@@ -92,7 +95,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
         }
         scriptGroup.getOutputIndices().add(i);
         for (ScriptHandler handler : scriptHandlers) {
-          handler.buildTransaction(this, scriptGroup, context);
+          for (Object context: contexts) {
+            handler.buildTransaction(this, scriptGroup, context);
+          }
         }
       }
     }
@@ -119,7 +124,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
       for (ScriptHandler handler : scriptHandlers) {
-        handler.buildTransaction(this, scriptGroup, context);
+        for (Object context: contexts) {
+          handler.buildTransaction(this, scriptGroup, context);
+        }
       }
 
       Script type = input.output.type;
@@ -133,14 +140,16 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
         }
         scriptGroup.getInputIndices().add(inputIndex);
         for (ScriptHandler handler : scriptHandlers) {
-          handler.buildTransaction(this, scriptGroup, context);
+          for (Object context: contexts) {
+            handler.buildTransaction(this, scriptGroup, context);
+          }
         }
       }
 
       inputsCapacity += input.output.capacity;
       // check if there is enough capacity for output capacity and change
       long fee = calculateTxFee(tx, feeRate);
-      long changeCapacity = inputsCapacity - outputsCapacity - fee;
+      long changeCapacity = inputsCapacity - outputsCapacity - fee + daoReward;
       CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
       byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
       if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
@@ -165,12 +174,14 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     if (transactionInputsIndex < transactionInputs.size()) {
       return transactionInputs.get(transactionInputsIndex++);
     }
-    while (availableInputs.hasNext()) {
-      TransactionInput input = availableInputs.next();
-      if (toFilter(input)) {
-        continue;
-      } else {
-        return input;
+    if (availableInputs != null) {
+      while (availableInputs.hasNext()) {
+        TransactionInput input = availableInputs.next();
+        if (toFilter(input)) {
+          continue;
+        } else {
+          return input;
+        }
       }
     }
     return null;

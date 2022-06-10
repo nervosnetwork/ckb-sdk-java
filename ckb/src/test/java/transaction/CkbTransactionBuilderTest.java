@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
-import org.nervos.ckb.transaction.TransactionInput;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
