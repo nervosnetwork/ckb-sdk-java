@@ -35,7 +35,7 @@ public class DaoDepositExample {
         .addOutput(output, depositDaoData)
         .setFeeRate(1000)
         .setChangeOutput(sender)
-        .build(null);
+        .build();
 
     // Sign transaction
     TransactionSigner.getInstance(network)
