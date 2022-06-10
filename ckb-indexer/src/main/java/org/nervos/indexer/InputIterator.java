@@ -52,6 +52,25 @@ public class InputIterator implements Iterator<TransactionInput> {
     return addSearchKey(address, null);
   }
 
+  public InputIterator addSudtSearchKey(String address, byte[] sudtArgs) {
+    Address addr = Address.decode(address);
+    Network network = addr.getNetwork();
+    byte[] codeHash;
+    if (network == Network.TESTNET) {
+      codeHash = Script.SUDT_CODE_HASH_TESTNET;
+    } else if (network == Network.MAINNET) {
+      codeHash = Script.SUDT_CODE_HASH_MAINNET;
+    } else {
+      throw new IllegalArgumentException("Unsupported network");
+    }
+    Script type = new Script(
+        codeHash,
+        sudtArgs,
+        Script.HashType.TYPE);
+    return addSearchKey(address, type);
+  }
+
+
   public InputIterator addSearchKey(String address, Script type) {
     Script lockScript = Address.decode(address).getScript();
 
