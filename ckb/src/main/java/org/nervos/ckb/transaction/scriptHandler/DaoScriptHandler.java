@@ -13,6 +13,13 @@ import java.io.IOException;
 import java.util.*;
 
 public class DaoScriptHandler implements ScriptHandler {
+  public static Script DAO_SCRIPT = new Script(Script.DAO_CODE_HASH,
+                                               new byte[0],
+                                               Script.HashType.TYPE);
+  public static byte[] DEPOSIT_CELL_DATA = Numeric.hexStringToByteArray("0x0000000000000000");
+  public static int DAO_LOCK_PERIOD_EPOCHS = 180;
+
+
   private List<CellDep> cellDeps;
   private byte[] codeHash;
 
@@ -45,28 +52,57 @@ public class DaoScriptHandler implements ScriptHandler {
     return cellDeps;
   }
 
+  public static boolean isDepositCell(CellOutput output, byte[] data) {
+    return DAO_SCRIPT.equals(output.type) && Arrays.equals(data, DEPOSIT_CELL_DATA);
+  }
+
   @Override
   public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
       return false;
     }
-    
+
     Transaction tx = txBuilder.getTx();
     // add celldeps
     Set<CellDep> cellDeps = new HashSet<>(tx.cellDeps);
     cellDeps.addAll(getCellDeps());
     tx.cellDeps = new ArrayList<>(cellDeps);
 
-    if (context instanceof Number) {
+    if (context instanceof ClaimInfo) {
+      ClaimInfo info = (ClaimInfo) context;
       int index = scriptGroup.getInputIndices().get(0);
+      // add header deps
+      int depositHeaderDepIndex = setHeaderDep(tx.headerDeps, info.depositBlockHeader.hash);
+      setHeaderDep(tx.headerDeps, info.withdrawBlockHeader.hash);
+      // update witness
       byte[] witness = tx.witnesses.get(index);
       WitnessArgs witnessArgs = getWitnessArgs(witness);
-      byte[] headerIndex = MoleculeConverter.packUint64(((Number) context).longValue()).toByteArray();
-      witnessArgs.setInputType(headerIndex);
+      witnessArgs.setInputType(
+          MoleculeConverter.packUint64(depositHeaderDepIndex).toByteArray());
       tx.witnesses.set(index, witnessArgs.pack().toByteArray());
+      // update input since
+      CellInput input = tx.inputs.get(index);
+      input.since = info.calculateDaoMinimalSince();
+    } else if (context instanceof WithdrawInfo) {
+      WithdrawInfo info = (WithdrawInfo) context;
+      setHeaderDep(tx.headerDeps, info.depositBlockHash);
     }
-
     return true;
+  }
+
+  private int setHeaderDep(List<byte[]> headerDeps, byte[] headerDep) {
+    int index = -1;
+    for (int i = 0; i < headerDeps.size(); i++) {
+      if (Arrays.equals(headerDep, headerDeps.get(i))) {
+        index = i;
+        break;
+      }
+    }
+    if (index == -1) {
+      index = headerDeps.size();
+      headerDeps.add(headerDep);
+    }
+    return index;
   }
 
   private WitnessArgs getWitnessArgs(byte[] originalWitness) {
@@ -80,31 +116,42 @@ public class DaoScriptHandler implements ScriptHandler {
   }
 
   public static class ClaimInfo {
-    byte[] depositBlockHash;
-    byte[] withdrawBlockHash;
-    OutPoint depositOutpoint;
+    Header depositBlockHeader;
+    Header withdrawBlockHeader;
     OutPoint withdrawOutpoint;
     private Api api;
 
-    public ClaimInfo(byte[] depositBlockHash, byte[] withdrawBlockHash, OutPoint depositOutpoint, OutPoint withdrawOutpoint, Api api) {
-      this.depositBlockHash = depositBlockHash;
-      this.withdrawBlockHash = withdrawBlockHash;
-      this.depositOutpoint = depositOutpoint;
+    public ClaimInfo(OutPoint withdrawOutpoint, Api api) {
       this.withdrawOutpoint = withdrawOutpoint;
       this.api = api;
-    }
-
-    public long calculateDaoMinimalSince() {
       try {
-        Header depositBlockHeader = api.getHeader(depositBlockHash);
-        Header withdrawBlockHeader = api.getHeader(withdrawBlockHash);
-        return calculateDaoMinimalSince(depositBlockHeader, withdrawBlockHeader);
+        TransactionWithStatus txWithStatus = api.getTransaction(withdrawOutpoint.txHash);
+        Transaction withdrawTx = txWithStatus.transaction;
+        byte[] withdrawBlockHash = txWithStatus.txStatus.blockHash;
+        byte[] depositBlockHash = null;
+        for (int i = 0; i < withdrawTx.inputs.size(); i++) {
+          OutPoint outPoint = withdrawTx.inputs.get(i).previousOutput;
+          int index = outPoint.index;
+          txWithStatus = api.getTransaction(outPoint.txHash);
+          Transaction tx = txWithStatus.transaction;
+          if (isDepositCell(tx.outputs.get(index), tx.outputsData.get(index))) {
+            depositBlockHash = txWithStatus.txStatus.blockHash;
+            break;
+          }
+        }
+        if (depositBlockHash == null) {
+          throw new RuntimeException("Can find deposit cell");
+        }
+        depositBlockHeader = api.getHeader(depositBlockHash);
+        withdrawBlockHeader = api.getHeader(withdrawBlockHash);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     }
 
-    private static int DAO_LOCK_PERIOD_EPOCHS = 180;
+    public long calculateDaoMinimalSince() {
+      return calculateDaoMinimalSince(depositBlockHeader, withdrawBlockHeader);
+    }
 
     private static long calculateDaoMinimalSince(Header depositBlockHeader,
                                                  Header withdrawBlockHeader) {
@@ -129,6 +176,24 @@ public class DaoScriptHandler implements ScriptHandler {
               minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber);
       return minimalSince;
     }
+  }
 
+  public static class WithdrawInfo {
+    Api api;
+    OutPoint depositOutpoint;
+    long depositBlockNumber;
+    byte[] depositBlockHash;
+
+    public WithdrawInfo(Api api, OutPoint depositOutpoint) {
+      this.api = api;
+      this.depositOutpoint = depositOutpoint;
+      try {
+        TransactionWithStatus txWithStatus = api.getTransaction(depositOutpoint.txHash);
+        depositBlockHash = txWithStatus.txStatus.blockHash;
+        depositBlockNumber = api.getHeader(depositBlockHash).number;
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 }
