@@ -121,7 +121,7 @@ public class DaoScriptHandler implements ScriptHandler {
     OutPoint withdrawOutpoint;
     private Api api;
 
-    public ClaimInfo(OutPoint withdrawOutpoint, Api api) {
+    public ClaimInfo(Api api, OutPoint withdrawOutpoint) {
       this.withdrawOutpoint = withdrawOutpoint;
       this.api = api;
       try {

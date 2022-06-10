@@ -61,19 +61,24 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
   }
 
   private long getDaoReward(OutPoint withdrawOutpoint) throws IOException {
-    Transaction withdrawTx = api.getTransaction(withdrawOutpoint.txHash).transaction;
+    TransactionWithStatus txWithStatus = api.getTransaction(withdrawOutpoint.txHash);
+    Transaction withdrawTx = txWithStatus.transaction;
+    byte[] withdrawBlockHash = txWithStatus.txStatus.blockHash;
+
     CellOutput depositCell = null;
     byte[] depositCellData = null;
-    OutPoint depositOutpoint = null;
+    byte[] depositBlockHash = null;
+
     for (int i = 0; i < withdrawTx.inputs.size(); i++) {
       OutPoint outPoint = withdrawTx.inputs.get(i).previousOutput;
-      Transaction tx = api.getTransaction(outPoint.txHash).transaction;
+      txWithStatus = api.getTransaction(outPoint.txHash);
+      Transaction tx = txWithStatus.transaction;
       CellOutput output = tx.outputs.get(outPoint.index);
       byte[] data = tx.outputsData.get(outPoint.index);
       if (isDepositCell(output, data)) {
         depositCell = output;
         depositCellData = data;
-        depositOutpoint = outPoint;
+        depositBlockHash = txWithStatus.txStatus.blockHash;
         break;
       }
     }
@@ -81,8 +86,8 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
       throw new RuntimeException("Can find deposit cell");
     }
 
-    Header depositBlockHeader = api.getHeader(depositOutpoint.txHash);
-    Header withdrawBlockHeader = api.getHeader(withdrawTx.hash);
+    Header depositBlockHeader = api.getHeader(depositBlockHash);
+    Header withdrawBlockHeader = api.getHeader(withdrawBlockHash);
     long occupiedCapacity = depositCell.occupiedCapacity(depositCellData);
     long daoMaximumWithdraw = calculateDaoMaximumWithdraw(depositBlockHeader, withdrawBlockHeader,
                                                           depositCell, occupiedCapacity);
