@@ -8,17 +8,56 @@ import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.TransactionInput;
-import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.address.Address;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import static org.nervos.ckb.utils.AmountUtils.dataToSudtAmount;
 import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 
 public class SudtTransactionBuilder extends AbstractTransactionBuilder {
+  private TransactionType transactionType;
+  private byte[] sudtArgs;
+  private Script sudtType;
+
+  public enum TransactionType {
+    ISSUE,
+    TRANSFER
+  }
+
   public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
     super(availableInputs, network);
+  }
+
+  public SudtTransactionBuilder setSudtArgs(byte[] sudtArgs) {
+    this.sudtArgs = sudtArgs;
+    byte[] codeHash;
+    if (network == Network.TESTNET) {
+      codeHash = Script.SUDT_CODE_HASH_TESTNET;
+    } else if (network == Network.MAINNET) {
+      codeHash = Script.SUDT_CODE_HASH_MAINNET;
+    } else {
+      throw new IllegalArgumentException("Unsupported network");
+    }
+    sudtType = new Script(
+        codeHash,
+        sudtArgs,
+        Script.HashType.TYPE);
+    return this;
+  }
+
+  public SudtTransactionBuilder setSudtArgs(String sudtOwnerAddress) {
+    sudtArgs = Address.decode(sudtOwnerAddress).getScript().computeHash();
+    return setSudtArgs(sudtArgs);
+  }
+
+  public SudtTransactionBuilder setTransactionType(TransactionType transactionType) {
+    this.transactionType = transactionType;
+    return this;
   }
 
   @Override
@@ -32,38 +71,35 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  public SudtTransactionBuilder addHeaderDep(byte[] headerDep) {
-    tx.headerDeps.add(headerDep);
-    return this;
-  }
-
-  public SudtTransactionBuilder addHeaderDep(String headerDep) {
-    return addHeaderDep(Numeric.hexStringToByteArray(headerDep));
-  }
-
-  public SudtTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {
-    tx.outputs.addAll(outputs);
-    tx.outputsData.addAll(outputsData);
-    return this;
-  }
-
   public SudtTransactionBuilder addOutput(CellOutput output, byte[] data) {
     tx.outputs.add(output);
     tx.outputsData.add(data);
     return this;
   }
 
-  public SudtTransactionBuilder addOutput(CellOutput output, BigInteger udtAmount) {
+  public SudtTransactionBuilder addSudtOutput(String address, long capacity, long udtAmount) {
+    return addSudtOutput(address, capacity, BigInteger.valueOf(udtAmount));
+  }
+
+  public SudtTransactionBuilder addSudtOutput(String address, long capacity, BigInteger udtAmount) {
+    CellOutput output = new CellOutput(
+        capacity,
+        Address.decode(address).getScript(),
+        sudtType);
     byte[] data = sudtAmountToData(udtAmount);
     return addOutput(output, data);
   }
 
-  public SudtTransactionBuilder setChangeOutput(CellOutput output) {
+  public SudtTransactionBuilder setChangeOutput(String address) {
     if (changeOutputIndex != -1) {
       throw new IllegalStateException("Change output has been set");
     }
     changeOutputIndex = tx.outputs.size();
     byte[] data = sudtAmountToData(BigInteger.ZERO);
+    CellOutput output = new CellOutput(
+        0,
+        Address.decode(address).getScript(),
+        sudtType);
     return addOutput(output, data);
   }
 
@@ -72,6 +108,18 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   }
 
   public TransactionWithScriptGroups build(Object context) {
+    if (sudtArgs == null) {
+      throw new IllegalStateException("SudtArgs is not set");
+    }
+    if (transactionType == null) {
+      throw new IllegalStateException("TransactionType is not set");
+    }
+    // won't change back SUDT for issue type transaction
+    if (transactionType == TransactionType.ISSUE) {
+      tx.outputs.get(changeOutputIndex).type = null;
+      tx.outputsData.set(changeOutputIndex, new byte[0]);
+    }
+
     Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     long outputsCapacity = 0L;
     BigInteger outputSudtAmount = BigInteger.ZERO;
@@ -144,8 +192,10 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
 
       inputsCapacity += input.output.capacity;
       // continue to iterate if there is enough SUDT amount
-      if (inputSudtAmount.compareTo(outputSudtAmount) < 0) {
-        continue;
+      if (transactionType == TransactionType.TRANSFER) {
+        if (inputSudtAmount.compareTo(outputSudtAmount) < 0) {
+          continue;
+        }
       }
 
       // check if there is enough capacity for output capacity and change
@@ -156,7 +206,9 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       // get back capacity and SUDT change
       if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
         tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
-        tx.outputsData.set(changeOutputIndex, sudtAmountToData(inputSudtAmount.subtract(outputSudtAmount)));
+        if (transactionType == TransactionType.TRANSFER) {
+          tx.outputsData.set(changeOutputIndex, sudtAmountToData(inputSudtAmount.subtract(outputSudtAmount)));
+        }
         enoughCapacity = true;
         break;
       }
