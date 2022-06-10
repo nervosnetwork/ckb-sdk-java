@@ -1,12 +1,15 @@
 package org.nervos.ckb.transaction.scriptHandler;
 
 import org.nervos.ckb.Network;
+import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.transaction.AbstractTransactionBuilder;
 import org.nervos.ckb.type.*;
+import org.nervos.ckb.utils.EpochUtils;
 import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 
+import java.io.IOException;
 import java.util.*;
 
 public class DaoScriptHandler implements ScriptHandler {
@@ -74,5 +77,58 @@ public class DaoScriptHandler implements ScriptHandler {
       witnessArgs = WitnessArgs.unpack(originalWitness);
     }
     return witnessArgs;
+  }
+
+  public static class ClaimInfo {
+    byte[] depositBlockHash;
+    byte[] withdrawBlockHash;
+    OutPoint depositOutpoint;
+    OutPoint withdrawOutpoint;
+    private Api api;
+
+    public ClaimInfo(byte[] depositBlockHash, byte[] withdrawBlockHash, OutPoint depositOutpoint, OutPoint withdrawOutpoint, Api api) {
+      this.depositBlockHash = depositBlockHash;
+      this.withdrawBlockHash = withdrawBlockHash;
+      this.depositOutpoint = depositOutpoint;
+      this.withdrawOutpoint = withdrawOutpoint;
+      this.api = api;
+    }
+
+    public long calculateDaoMinimalSince() {
+      try {
+        Header depositBlockHeader = api.getHeader(depositBlockHash);
+        Header withdrawBlockHeader = api.getHeader(withdrawBlockHash);
+        return calculateDaoMinimalSince(depositBlockHeader, withdrawBlockHeader);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    private static int DAO_LOCK_PERIOD_EPOCHS = 180;
+
+    private static long calculateDaoMinimalSince(Header depositBlockHeader,
+                                                 Header withdrawBlockHeader) {
+      EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlockHeader.epoch);
+      EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlockHeader.epoch);
+
+      // calculate since
+      long withdrawFraction = withdrawEpoch.index * depositEpoch.length;
+      long depositFraction = depositEpoch.index * withdrawEpoch.length;
+      long depositedEpochs = withdrawEpoch.number - depositEpoch.number;
+      if (withdrawFraction > depositFraction) {
+        depositedEpochs += 1;
+      }
+      long lockEpochs = (depositedEpochs + (DAO_LOCK_PERIOD_EPOCHS - 1))
+          / DAO_LOCK_PERIOD_EPOCHS
+          * DAO_LOCK_PERIOD_EPOCHS;
+      long minimalSinceEpochNumber = depositEpoch.number + lockEpochs;
+      long minimalSinceEpochIndex = depositEpoch.index;
+      long minimalSinceEpochLength = depositEpoch.length;
+      long minimalSince =
+          EpochUtils.generateSince(
+              minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber);
+      return minimalSince;
+    }
+
   }
 }

@@ -1,18 +1,118 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
-import org.nervos.ckb.sign.ScriptGroup;
+import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.address.Address;
 
-import java.util.*;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
-  private List<TransactionInput> transactionInputs = new ArrayList<>();
-  private long daoReward = 0;
+  private static Script daoScript = new Script(Script.DAO_CODE_HASH,
+                                               new byte[0],
+                                               Script.HashType.TYPE);
+  private static byte[] depositDaoData = Numeric.hexStringToByteArray("0x0000000000000000");
+
+  CkbTransactionBuilder builder;
+  private Api api;
+  private DaoType daoType;
+
+  private enum DaoType {
+    DEPOSIT,
+    CLAIM,
+  }
+
+  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, List<TransactionInput> transactionInputs, OutPoint daoOutpoint, Api api) throws IOException {
+    super(availableInputs, network);
+    builder = new CkbTransactionBuilder(availableInputs, network);
+    this.api = api;
+    CellInput withdrawCellInput = new CellInput(daoOutpoint, 0);
+    CellWithStatus cellWithStatus = api.getLiveCell(daoOutpoint, true);
+    TransactionInput input = new TransactionInput(
+        withdrawCellInput,
+        cellWithStatus.cell.output,
+        cellWithStatus.cell.data.content);
+    daoType = resolveDaoType(cellWithStatus.cell.data.content);
+    if (daoType == DaoType.CLAIM) {
+      builder.reward += getDaoReward(daoOutpoint);
+    }
+    transactionInputs.add(input);
+  }
+
+  private DaoType resolveDaoType(byte[] outputData) {
+    if (outputData.length != 8) {
+      throw new IllegalArgumentException("Dao cell's length should be 8 bytes");
+    }
+    if (Arrays.equals(outputData, depositDaoData)) {
+      return DaoType.DEPOSIT;
+    } else {
+      return DaoType.CLAIM;
+    }
+  }
+
+  private long getDaoReward(OutPoint withdrawOutpoint) throws IOException {
+    Transaction withdrawTx = api.getTransaction(withdrawOutpoint.txHash).transaction;
+    CellOutput depositCell = null;
+    byte[] depositCellData = null;
+    OutPoint depositOutpoint = null;
+    for (int i = 0; i < withdrawTx.inputs.size(); i++) {
+      OutPoint outPoint = withdrawTx.inputs.get(i).previousOutput;
+      CellWithStatus cellWithStatus = api.getLiveCell(outPoint, true);
+      if (isDepositCell(cellWithStatus)) {
+        depositCell = cellWithStatus.cell.output;
+        depositCellData = cellWithStatus.cell.data.content;
+        depositOutpoint = outPoint;
+        break;
+      }
+    }
+    if (depositCell == null || depositDaoData == null) {
+      throw new RuntimeException("Can find deposit cell");
+    }
+
+    Header depositBlockHeader = api.getHeader(depositOutpoint.txHash);
+    Header withdrawBlockHeader = api.getHeader(withdrawTx.hash);
+    long occupiedCapacity = depositCell.occupiedCapacity(depositCellData);
+    long daoMaximumWithdraw = calculateDaoMaximumWithdraw(depositBlockHeader, withdrawBlockHeader,
+                                                          depositCell, occupiedCapacity);
+    long daoReward = daoMaximumWithdraw - depositCell.capacity;
+    return daoReward;
+  }
+
+  private static boolean isDepositCell(CellWithStatus cellWithStatus) {
+    CellOutput output = cellWithStatus.cell.output;
+    byte[] data = cellWithStatus.cell.data.content;
+    return daoScript.equals(output.type) && Arrays.equals(data, depositDaoData);
+  }
+
+  private static long calculateDaoMaximumWithdraw(Header depositBlockHeader,
+                                                  Header withdrawBlockHeader,
+                                                  CellOutput output,
+                                                  long occupiedCapacity) {
+    BigInteger depositAr = BigInteger.valueOf(extractAr(depositBlockHeader.dao));
+    BigInteger withdrawAr = BigInteger.valueOf(extractAr(withdrawBlockHeader.dao));
+
+    BigInteger maximumWithdraw = BigInteger.valueOf(output.capacity - occupiedCapacity)
+        .multiply(withdrawAr)
+        .divide(depositAr)
+        .add(BigInteger.valueOf(occupiedCapacity));
+    return maximumWithdraw.longValue();
+  }
+
+  public static long extractAr(byte[] dao) {
+    byte[] slice = Arrays.copyOfRange(dao, 8, 16);
+    for (int i = 0; i < slice.length / 2; i++) {
+      byte tmp = slice[i];
+      slice[i] = slice[slice.length - 1 - i];
+      slice[slice.length - 1 - i] = tmp;
+    }
+    return new BigInteger(1, slice).longValue();
+  }
 
   public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
     super(availableInputs, network);
@@ -20,185 +120,31 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
 
   @Override
   public DaoClaimTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    scriptHandlers.add(scriptHandler);
+    builder.registerScriptHandler(scriptHandler);
     return this;
   }
 
   public DaoClaimTransactionBuilder setFeeRate(long feeRate) {
-    this.feeRate = feeRate;
-    return this;
-  }
-
-  public DaoClaimTransactionBuilder addInput(TransactionInput transactionInput) {
-    transactionInputs.add(transactionInput);
-    return this;
-  }
-
-  public DaoClaimTransactionBuilder addHeaderDep(byte[] headerDep) {
-    tx.headerDeps.add(headerDep);
-    return this;
-  }
-
-  public DaoClaimTransactionBuilder addHeaderDep(String headerDep) {
-    return addHeaderDep(Numeric.hexStringToByteArray(headerDep));
-  }
-
-  public DaoClaimTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {
-    tx.outputs.addAll(outputs);
-    tx.outputsData.addAll(outputsData);
-    return this;
-  }
-
-  public DaoClaimTransactionBuilder addOutput(CellOutput output, byte[] data) {
-    tx.outputs.add(output);
-    tx.outputsData.add(data);
+    builder.setFeeRate(feeRate);
     return this;
   }
 
   public DaoClaimTransactionBuilder addOutput(String address, long capacity) {
-    CellOutput output = new CellOutput(capacity, Address.decode(address).getScript());
-    return addOutput(output, new byte[0]);
+    builder.addOutput(address, capacity);
+    return this;
   }
 
-  public DaoClaimTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
-    if (changeOutputIndex != -1) {
-      throw new IllegalStateException("Change output has been set");
-    }
-    changeOutputIndex = tx.outputs.size();
-    return addOutput(output, data);
-  }
+  //  public DaoClaimTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
+  //    builder.setChangeOutput(output, data);
+  //    return this;
+  //  }
 
   public DaoClaimTransactionBuilder setChangeOutput(String address) {
-    CellOutput output = new CellOutput(0, Address.decode(address).getScript());
-    return setChangeOutput(output, new byte[0]);
-  }
-
-  public DaoClaimTransactionBuilder addDaoReward(long capacity) {
-    daoReward += capacity;
+    builder.setChangeOutput(address);
     return this;
   }
 
   public TransactionWithScriptGroups build(Object... contexts) {
-    Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
-    long outputsCapacity = 0L;
-    for (int i = 0; i < tx.outputs.size(); i++) {
-      CellOutput output = tx.outputs.get(i);
-      outputsCapacity += output.capacity;
-      Script type = output.type;
-      if (type != null) {
-        ScriptGroup scriptGroup = scriptGroupMap.get(type);
-        if (scriptGroup == null) {
-          scriptGroup = new ScriptGroup();
-          scriptGroup.setScript(type);
-          scriptGroup.setGroupType(ScriptType.TYPE);
-          scriptGroupMap.put(type, scriptGroup);
-        }
-        scriptGroup.getOutputIndices().add(i);
-        for (ScriptHandler handler : scriptHandlers) {
-          for (Object context: contexts) {
-            handler.buildTransaction(this, scriptGroup, context);
-          }
-        }
-      }
-    }
-
-    boolean enoughCapacity = false;
-    long inputsCapacity = 0L;
-    inputsDetail = new ArrayList<>();
-    int inputIndex = -1;
-    TransactionInput input;
-    for (input = next(); input != null; input = next()) {
-      inputsDetail.add(input);
-      tx.inputs.add(input.input);
-      tx.witnesses.add(new byte[0]);
-      inputIndex += 1;
-
-      Script lock = input.output.lock;
-      ScriptGroup scriptGroup = scriptGroupMap.get(lock);
-      if (scriptGroup == null) {
-        scriptGroup = new ScriptGroup();
-        scriptGroup.setScript(lock);
-        scriptGroup.setGroupType(ScriptType.LOCK);
-        scriptGroupMap.put(lock, scriptGroup);
-      }
-      scriptGroup.getInputIndices().add(inputIndex);
-      // add cellDeps and set witness placeholder
-      for (ScriptHandler handler : scriptHandlers) {
-        for (Object context: contexts) {
-          handler.buildTransaction(this, scriptGroup, context);
-        }
-      }
-
-      Script type = input.output.type;
-      if (type != null) {
-        scriptGroup = scriptGroupMap.get(type);
-        if (scriptGroup == null) {
-          scriptGroup = new ScriptGroup();
-          scriptGroup.setScript(type);
-          scriptGroup.setGroupType(ScriptType.TYPE);
-          scriptGroupMap.put(type, scriptGroup);
-        }
-        scriptGroup.getInputIndices().add(inputIndex);
-        for (ScriptHandler handler : scriptHandlers) {
-          for (Object context: contexts) {
-            handler.buildTransaction(this, scriptGroup, context);
-          }
-        }
-      }
-
-      inputsCapacity += input.output.capacity;
-      // check if there is enough capacity for output capacity and change
-      long fee = calculateTxFee(tx, feeRate);
-      long changeCapacity = inputsCapacity - outputsCapacity - fee + daoReward;
-      CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
-      byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
-      if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
-        tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
-        enoughCapacity = true;
-        break;
-      }
-    }
-
-    if (!enoughCapacity) {
-      throw new IllegalStateException("No enough capacity");
-    }
-    return TransactionWithScriptGroups.builder()
-        .setTxView(tx)
-        .setScriptGroups(new ArrayList<>(scriptGroupMap.values()))
-        .build();
-  }
-
-  int transactionInputsIndex = 0;
-
-  public TransactionInput next() {
-    if (transactionInputsIndex < transactionInputs.size()) {
-      return transactionInputs.get(transactionInputsIndex++);
-    }
-    if (availableInputs != null) {
-      while (availableInputs.hasNext()) {
-        TransactionInput input = availableInputs.next();
-        if (toFilter(input)) {
-          continue;
-        } else {
-          return input;
-        }
-      }
-    }
-    return null;
-  }
-
-  private boolean toFilter(TransactionInput input) {
-    OutPoint outPoint = input.input.previousOutput;
-    // Filter duplicate found inputs same with customized input
-    for (int i = 0; i < transactionInputs.size(); i++) {
-      if (outPoint.equals(transactionInputs.get(i).input.previousOutput)) {
-        return true;
-      }
-    }
-    // only pool tx fee by null-type input
-    if (input.output.type != null) {
-      return true;
-    }
-    return false;
+    return builder.build(contexts);
   }
 }
