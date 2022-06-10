@@ -12,6 +12,7 @@ import java.util.*;
 
 public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   private List<TransactionInput> transactionInputs = new ArrayList<>();
+  protected long reward = 0;
 
   public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
     super(availableInputs, network);
@@ -72,7 +73,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return setChangeOutput(output, new byte[0]);
   }
 
-  public TransactionWithScriptGroups build(Object context) {
+  public TransactionWithScriptGroups build(Object... contexts) {
     Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     long outputsCapacity = 0L;
     for (int i = 0; i < tx.outputs.size(); i++) {
@@ -89,7 +90,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
         }
         scriptGroup.getOutputIndices().add(i);
         for (ScriptHandler handler : scriptHandlers) {
-          handler.buildTransaction(this, scriptGroup, context);
+          for (Object context : contexts) {
+            handler.buildTransaction(this, scriptGroup, context);
+          }
         }
       }
     }
@@ -116,7 +119,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
       for (ScriptHandler handler : scriptHandlers) {
-        handler.buildTransaction(this, scriptGroup, context);
+        for (Object context : contexts) {
+          handler.buildTransaction(this, scriptGroup, context);
+        }
       }
 
       Script type = input.output.type;
@@ -130,14 +135,16 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
         }
         scriptGroup.getInputIndices().add(inputIndex);
         for (ScriptHandler handler : scriptHandlers) {
-          handler.buildTransaction(this, scriptGroup, context);
+          for (Object context : contexts) {
+            handler.buildTransaction(this, scriptGroup, context);
+          }
         }
       }
 
       inputsCapacity += input.output.capacity;
       // check if there is enough capacity for output capacity and change
       long fee = calculateTxFee(tx, feeRate);
-      long changeCapacity = inputsCapacity - outputsCapacity - fee;
+      long changeCapacity = inputsCapacity - outputsCapacity - fee + reward;
       CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
       byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
       if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
@@ -162,12 +169,14 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     if (transactionInputsIndex < transactionInputs.size()) {
       return transactionInputs.get(transactionInputsIndex++);
     }
-    while (availableInputs.hasNext()) {
-      TransactionInput input = availableInputs.next();
-      if (toFilter(input)) {
-        continue;
-      } else {
-        return input;
+    if (availableInputs != null) {
+      while (availableInputs.hasNext()) {
+        TransactionInput input = availableInputs.next();
+        if (toFilter(input)) {
+          continue;
+        } else {
+          return input;
+        }
       }
     }
     return null;
