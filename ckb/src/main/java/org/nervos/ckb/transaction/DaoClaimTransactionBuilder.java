@@ -5,51 +5,55 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.*;
-import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.MoleculeConverter;
+import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
+
+import static org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler.*;
 
 public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
-  private static Script daoScript = new Script(Script.DAO_CODE_HASH,
-                                               new byte[0],
-                                               Script.HashType.TYPE);
-  private static byte[] depositDaoData = Numeric.hexStringToByteArray("0x0000000000000000");
-
   CkbTransactionBuilder builder;
   private Api api;
   private DaoType daoType;
+  private long depositBlockNumber = -1;
 
   private enum DaoType {
     DEPOSIT,
     CLAIM,
   }
 
-  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, List<TransactionInput> transactionInputs, OutPoint daoOutpoint, Api api) throws IOException {
+  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutpoint, Api api) throws IOException {
     super(availableInputs, network);
     builder = new CkbTransactionBuilder(availableInputs, network);
     this.api = api;
-    CellInput withdrawCellInput = new CellInput(daoOutpoint, 0);
+    CellInput cellInput = new CellInput(daoOutpoint, 0);
     CellWithStatus cellWithStatus = api.getLiveCell(daoOutpoint, true);
     TransactionInput input = new TransactionInput(
-        withdrawCellInput,
+        cellInput,
         cellWithStatus.cell.output,
         cellWithStatus.cell.data.content);
     daoType = resolveDaoType(cellWithStatus.cell.data.content);
-    if (daoType == DaoType.CLAIM) {
-      builder.reward += getDaoReward(daoOutpoint);
+    switch (daoType) {
+      case DEPOSIT:
+        TransactionWithStatus txWithStatus = api.getTransaction(daoOutpoint.txHash);
+        depositBlockNumber = api.getHeader(txWithStatus.txStatus.blockHash).number;
+        break;
+      case CLAIM:
+        builder.reward += getDaoReward(daoOutpoint);
+        break;
     }
-    transactionInputs.add(input);
+    builder.transactionInputs.add(input);
   }
 
   private DaoType resolveDaoType(byte[] outputData) {
     if (outputData.length != 8) {
       throw new IllegalArgumentException("Dao cell's length should be 8 bytes");
     }
-    if (Arrays.equals(outputData, depositDaoData)) {
+    if (Arrays.equals(outputData, DEPOSIT_CELL_DATA)) {
       return DaoType.DEPOSIT;
     } else {
       return DaoType.CLAIM;
@@ -63,15 +67,17 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     OutPoint depositOutpoint = null;
     for (int i = 0; i < withdrawTx.inputs.size(); i++) {
       OutPoint outPoint = withdrawTx.inputs.get(i).previousOutput;
-      CellWithStatus cellWithStatus = api.getLiveCell(outPoint, true);
-      if (isDepositCell(cellWithStatus)) {
-        depositCell = cellWithStatus.cell.output;
-        depositCellData = cellWithStatus.cell.data.content;
+      Transaction tx = api.getTransaction(outPoint.txHash).transaction;
+      CellOutput output = tx.outputs.get(outPoint.index);
+      byte[] data = tx.outputsData.get(outPoint.index);
+      if (isDepositCell(output, data)) {
+        depositCell = output;
+        depositCellData = data;
         depositOutpoint = outPoint;
         break;
       }
     }
-    if (depositCell == null || depositDaoData == null) {
+    if (depositCell == null) {
       throw new RuntimeException("Can find deposit cell");
     }
 
@@ -82,12 +88,6 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
                                                           depositCell, occupiedCapacity);
     long daoReward = daoMaximumWithdraw - depositCell.capacity;
     return daoReward;
-  }
-
-  private static boolean isDepositCell(CellWithStatus cellWithStatus) {
-    CellOutput output = cellWithStatus.cell.output;
-    byte[] data = cellWithStatus.cell.data.content;
-    return daoScript.equals(output.type) && Arrays.equals(data, depositDaoData);
   }
 
   private static long calculateDaoMaximumWithdraw(Header depositBlockHeader,
@@ -124,6 +124,16 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
+  @Override
+  public long getFeeRate() {
+    return builder.getFeeRate();
+  }
+
+  @Override
+  public Transaction getTx() {
+    return builder.getTx();
+  }
+
   public DaoClaimTransactionBuilder setFeeRate(long feeRate) {
     builder.setFeeRate(feeRate);
     return this;
@@ -134,14 +144,26 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  //  public DaoClaimTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
-  //    builder.setChangeOutput(output, data);
-  //    return this;
-  //  }
-
   public DaoClaimTransactionBuilder setChangeOutput(String address) {
     builder.setChangeOutput(address);
     return this;
+  }
+
+  public DaoClaimTransactionBuilder addWithdrawOutput(String address, long capacity) {
+    if (depositBlockNumber == -1) {
+      throw new IllegalStateException("Deposit block number is not initialized");
+    }
+    CellOutput output = new CellOutput(
+        capacity,
+        Address.decode(address).getScript()
+        , DAO_SCRIPT);
+    byte[] data = MoleculeConverter.packUint64(depositBlockNumber).toByteArray();
+    builder.addOutput(output, data);
+    return this;
+  }
+
+  public TransactionWithScriptGroups build() {
+    return builder.build();
   }
 
   public TransactionWithScriptGroups build(Object... contexts) {
