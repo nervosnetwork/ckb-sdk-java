@@ -6,8 +6,6 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.DaoClaimTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160SighashAllScriptHandler;
 import org.nervos.ckb.type.CellInput;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.OutPoint;
@@ -41,9 +39,7 @@ class DaoClaimTransactionBuilderTest {
     byte[] data = Numeric.hexStringToByteArray("0x0be6020000000000");
     TransactionInput transactionInput = new TransactionInput(cellInput, cellOutput, data);
 
-    TransactionWithScriptGroups txWithGroups = new DaoClaimTransactionBuilder(null)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(network))
-        .registerScriptHandler(new DaoScriptHandler(network))
+    TransactionWithScriptGroups txWithGroups = new DaoClaimTransactionBuilder(null, network)
         .addHeaderDep(daoDepositBlockHash)
         .addHeaderDep(daoWithdrawBlockHash)
         .addInput(transactionInput)

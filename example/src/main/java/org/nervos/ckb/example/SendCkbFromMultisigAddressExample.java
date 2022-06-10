@@ -9,7 +9,6 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160MultisigAllScriptHandler;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
@@ -34,8 +33,7 @@ public class SendCkbFromMultisigAddressExample {
     String sender = new Address(lock, network).encode();
 
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160MultisigAllScriptHandler(network))
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, network)
         .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r",
                    50100000000L)
         .setFeeRate(1000)

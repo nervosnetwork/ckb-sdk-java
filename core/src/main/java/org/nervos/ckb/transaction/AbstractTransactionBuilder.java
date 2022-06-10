@@ -1,6 +1,7 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
+import org.nervos.ckb.Network;
+import org.nervos.ckb.transaction.scriptHandler.*;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.Calculator;
 
@@ -17,6 +18,21 @@ public abstract class AbstractTransactionBuilder {
   protected Transaction tx;
   protected Iterator<TransactionInput> availableInputs;
 
+  private static List<ScriptHandler> TESTNET_SCRIPT_HANDLERS = new ArrayList<>();
+  private static List<ScriptHandler> MAINNET_SCRIPT_HANDLERS = new ArrayList<>();
+
+  static {
+    TESTNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET));
+    TESTNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160MultisigAllScriptHandler(Network.TESTNET));
+    TESTNET_SCRIPT_HANDLERS.add(new SudtScriptHandler(Network.TESTNET));
+    TESTNET_SCRIPT_HANDLERS.add(new DaoScriptHandler(Network.TESTNET));
+
+    MAINNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160SighashAllScriptHandler(Network.MAINNET));
+    MAINNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160MultisigAllScriptHandler(Network.MAINNET));
+    MAINNET_SCRIPT_HANDLERS.add(new SudtScriptHandler(Network.MAINNET));
+    MAINNET_SCRIPT_HANDLERS.add(new DaoScriptHandler(Network.MAINNET));
+  }
+
   public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs) {
     tx = new Transaction();
     tx.version = 0;
@@ -27,6 +43,15 @@ public abstract class AbstractTransactionBuilder {
     tx.headerDeps = new ArrayList<>();
     tx.witnesses = new ArrayList<>();
     this.availableInputs = availableInputs;
+  }
+
+  public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
+    this(availableInputs);
+    if (network == Network.TESTNET) {
+      scriptHandlers.addAll(TESTNET_SCRIPT_HANDLERS);
+    } else {
+      scriptHandlers.addAll(MAINNET_SCRIPT_HANDLERS);
+    }
   }
 
   public AbstractTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {

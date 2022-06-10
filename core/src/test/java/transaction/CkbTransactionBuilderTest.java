@@ -6,7 +6,6 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160SighashAllScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
@@ -23,8 +22,7 @@ class CkbTransactionBuilderTest {
   @Test
   void testSingleInput() {
     Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET))
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, Network.TESTNET)
         .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r",
                    50100000000L)
         .setFeeRate(1000)
@@ -45,8 +43,7 @@ class CkbTransactionBuilderTest {
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
 
     Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET))
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, Network.TESTNET)
         .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r",
                    100000000000L)
         .setFeeRate(1000)

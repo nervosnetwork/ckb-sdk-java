@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction;
 
+import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
@@ -15,8 +16,8 @@ import static org.nervos.ckb.utils.AmountUtils.dataToSudtAmount;
 import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 
 public class SudtTransactionBuilder extends AbstractTransactionBuilder {
-  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs) {
-    super(availableInputs);
+  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
+    super(availableInputs, network);
   }
 
   @Override

@@ -6,7 +6,6 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.SudtTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160SighashAllScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
@@ -34,8 +33,7 @@ class SudtTransactionBuilderTest {
     CellOutput changeOutput = new CellOutput(0, lock, type);
 
     Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET))
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, Network.TESTNET)
         .addOutput(output, BigInteger.valueOf(99))
         .setFeeRate(1000)
         .setChangeOutput(changeOutput)
@@ -44,10 +42,9 @@ class SudtTransactionBuilderTest {
     Transaction tx = txWithGroups.getTxView();
     Assertions.assertEquals(1, tx.inputs.size());
     Assertions.assertEquals(2, txWithGroups.scriptGroups.size());
-    Assertions.assertEquals(lock, txWithGroups.scriptGroups.get(0).getScript());
     Assertions.assertEquals(2, tx.outputs.size());
     long fee = 100000000000L - tx.outputs.get(0).capacity - tx.outputs.get(1).capacity;
-    Assertions.assertEquals(666, fee);
+    Assertions.assertEquals(703, fee);
     BigInteger outputSudtAmount = dataToSudtAmount(tx.outputsData.get(0));
     BigInteger changeSudtAmount = dataToSudtAmount(tx.outputsData.get(1));
     Assertions.assertEquals(BigInteger.valueOf(100L), outputSudtAmount.add(changeSudtAmount));
@@ -59,8 +56,7 @@ class SudtTransactionBuilderTest {
     CellOutput changeOutput = new CellOutput(0, lock, type);
 
     Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET))
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, Network.TESTNET)
         .addOutput(output, BigInteger.valueOf(105L))
         .setFeeRate(1000)
         .setChangeOutput(changeOutput)
@@ -69,10 +65,9 @@ class SudtTransactionBuilderTest {
     Transaction tx = txWithGroups.getTxView();
     Assertions.assertEquals(2, tx.inputs.size());
     Assertions.assertEquals(2, txWithGroups.scriptGroups.size());
-    Assertions.assertEquals(lock, txWithGroups.scriptGroups.get(0).getScript());
     Assertions.assertEquals(2, tx.outputs.size());
     long fee = 110000000000L - tx.outputs.get(0).capacity - tx.outputs.get(1).capacity;
-    Assertions.assertEquals(718, fee);
+    Assertions.assertEquals(755, fee);
     BigInteger outputSudtAmount = dataToSudtAmount(tx.outputsData.get(0));
     BigInteger changeSudtAmount = dataToSudtAmount(tx.outputsData.get(1));
     Assertions.assertEquals(BigInteger.valueOf(110L), outputSudtAmount.add(changeSudtAmount));

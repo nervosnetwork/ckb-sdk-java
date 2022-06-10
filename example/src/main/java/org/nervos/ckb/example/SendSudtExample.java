@@ -6,8 +6,6 @@ import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.SudtTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160SighashAllScriptHandler;
-import org.nervos.ckb.transaction.scriptHandler.SudtScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
@@ -34,9 +32,7 @@ public class SendSudtExample {
         new InputIterator(new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false))
             .addSearchKey(sender, type);
 
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET))
-        .registerScriptHandler(new SudtScriptHandler(Network.TESTNET))
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, Network.TESTNET)
         .addOutput(receiverOutput, BigInteger.valueOf(900L))
         .setFeeRate(1000)
         .setChangeOutput(changeOutput)

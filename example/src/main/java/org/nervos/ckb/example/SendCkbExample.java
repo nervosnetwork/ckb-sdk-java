@@ -6,7 +6,6 @@ import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160SighashAllScriptHandler;
 import org.nervos.indexer.InputIterator;
 
 import java.io.IOException;
@@ -17,8 +16,7 @@ public class SendCkbExample {
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
 
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET))
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, Network.TESTNET)
         .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r",
                    50100000000L)
         .setFeeRate(1000)

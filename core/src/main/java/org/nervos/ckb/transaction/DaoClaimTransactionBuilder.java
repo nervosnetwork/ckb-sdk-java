@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction;
 
+import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
@@ -16,8 +17,8 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
   private List<TransactionInput> transactionInputs = new ArrayList<>();
   private long daoReward = 0;
 
-  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs) {
-    super(availableInputs);
+  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
+    super(availableInputs, network);
   }
 
   @Override

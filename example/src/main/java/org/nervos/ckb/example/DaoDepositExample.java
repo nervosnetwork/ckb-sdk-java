@@ -6,8 +6,6 @@ import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160SighashAllScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
@@ -33,9 +31,7 @@ public class DaoDepositExample {
 
     // Construct transaction
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(network))
-        .registerScriptHandler(new DaoScriptHandler(network))
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, network)
         .addOutput(output, depositDaoData)
         .setFeeRate(1000)
         .setChangeOutput(sender)

@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction;
 
+import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
@@ -15,8 +16,8 @@ import java.util.*;
 public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   private List<TransactionInput> transactionInputs = new ArrayList<>();
 
-  public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs) {
-    super(availableInputs);
+  public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
+    super(availableInputs, network);
   }
 
   @Override

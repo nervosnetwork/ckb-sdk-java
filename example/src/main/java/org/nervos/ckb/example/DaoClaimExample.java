@@ -6,8 +6,6 @@ import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.DaoClaimTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionInput;
-import org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler;
-import org.nervos.ckb.transaction.scriptHandler.Secp256k1Blake160SighashAllScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.EpochUtils;
 import org.nervos.ckb.utils.Numeric;
@@ -59,9 +57,7 @@ public class DaoClaimExample {
         withdrawCell.cell.output,
         withdrawCell.cell.data.content);
 
-    TransactionWithScriptGroups txWithGroups = new DaoClaimTransactionBuilder(iterator)
-        .registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(network))
-        .registerScriptHandler(new DaoScriptHandler(network))
+    TransactionWithScriptGroups txWithGroups = new DaoClaimTransactionBuilder(iterator, Network.TESTNET)
         .addHeaderDep(daoDepositBlockHash)
         .addHeaderDep(daoWithdrawBlockHash)
         .addInput(transactionInput)
