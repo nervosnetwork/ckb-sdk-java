@@ -3,6 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
+import org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
@@ -58,6 +59,14 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   public CkbTransactionBuilder addOutput(String address, long capacity) {
     CellOutput output = new CellOutput(capacity, Address.decode(address).getScript());
     return addOutput(output, new byte[0]);
+  }
+
+  public CkbTransactionBuilder addDaoDepositOutput(String address, long capacity) {
+
+    CellOutput output = new CellOutput(capacity, Address.decode(address).getScript(),
+                                       DaoScriptHandler.DAO_SCRIPT);
+    byte[] data = DaoScriptHandler.DEPOSIT_CELL_DATA;
+    return addOutput(output, data);
   }
 
   public CkbTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
