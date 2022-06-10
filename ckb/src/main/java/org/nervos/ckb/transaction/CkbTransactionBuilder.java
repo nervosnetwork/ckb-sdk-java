@@ -11,7 +11,7 @@ import org.nervos.ckb.utils.address.Address;
 import java.util.*;
 
 public class CkbTransactionBuilder extends AbstractTransactionBuilder {
-  private List<TransactionInput> transactionInputs = new ArrayList<>();
+  protected List<TransactionInput> transactionInputs = new ArrayList<>();
   protected long reward = 0;
 
   public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
@@ -71,6 +71,10 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   public CkbTransactionBuilder setChangeOutput(String address) {
     CellOutput output = new CellOutput(0, Address.decode(address).getScript());
     return setChangeOutput(output, new byte[0]);
+  }
+
+  public TransactionWithScriptGroups build() {
+    return build((Object) null);
   }
 
   public TransactionWithScriptGroups build(Object... contexts) {

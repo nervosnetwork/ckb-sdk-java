@@ -36,7 +36,7 @@ class SudtTransactionBuilderTest {
         .addOutput(output, BigInteger.valueOf(99))
         .setFeeRate(1000)
         .setChangeOutput(changeOutput)
-        .build(null);
+        .build();
 
     Transaction tx = txWithGroups.getTxView();
     Assertions.assertEquals(1, tx.inputs.size());
@@ -59,7 +59,7 @@ class SudtTransactionBuilderTest {
         .addOutput(output, BigInteger.valueOf(105L))
         .setFeeRate(1000)
         .setChangeOutput(changeOutput)
-        .build(null);
+        .build();
 
     Transaction tx = txWithGroups.getTxView();
     Assertions.assertEquals(2, tx.inputs.size());

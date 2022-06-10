@@ -67,6 +67,10 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     return addOutput(output, data);
   }
 
+  public TransactionWithScriptGroups build() {
+    return build(null);
+  }
+
   public TransactionWithScriptGroups build(Object context) {
     Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     long outputsCapacity = 0L;
