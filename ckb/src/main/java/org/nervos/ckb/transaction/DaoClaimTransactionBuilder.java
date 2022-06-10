@@ -18,10 +18,10 @@ import static org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler.*;
 public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
   CkbTransactionBuilder builder;
   private Api api;
-  private DaoType daoType;
+  private TransactionType transactionType;
   private long depositBlockNumber = -1;
 
-  private enum DaoType {
+  private enum TransactionType {
     DEPOSIT,
     CLAIM,
   }
@@ -36,8 +36,8 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
         cellInput,
         cellWithStatus.cell.output,
         cellWithStatus.cell.data.content);
-    daoType = resolveDaoType(cellWithStatus.cell.data.content);
-    switch (daoType) {
+    transactionType = resolveDaoType(cellWithStatus.cell.data.content);
+    switch (transactionType) {
       case DEPOSIT:
         TransactionWithStatus txWithStatus = api.getTransaction(daoOutpoint.txHash);
         depositBlockNumber = api.getHeader(txWithStatus.txStatus.blockHash).number;
@@ -49,14 +49,14 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     builder.transactionInputs.add(input);
   }
 
-  private DaoType resolveDaoType(byte[] outputData) {
+  private TransactionType resolveDaoType(byte[] outputData) {
     if (outputData.length != 8) {
       throw new IllegalArgumentException("Dao cell's length should be 8 bytes");
     }
     if (Arrays.equals(outputData, DEPOSIT_CELL_DATA)) {
-      return DaoType.DEPOSIT;
+      return TransactionType.DEPOSIT;
     } else {
-      return DaoType.CLAIM;
+      return TransactionType.CLAIM;
     }
   }
 
