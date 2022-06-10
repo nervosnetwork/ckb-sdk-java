@@ -4,11 +4,12 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.CkbTransactionBuilder;
-import org.nervos.ckb.type.*;
-import org.nervos.ckb.utils.MoleculeConverter;
+import org.nervos.ckb.transaction.DaoClaimTransactionBuilder;
+import org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler;
+import org.nervos.ckb.type.OutPoint;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.ckb.utils.address.Address;
 import org.nervos.indexer.InputIterator;
 
 import java.io.IOException;
@@ -23,34 +24,16 @@ public class DaoWithdrawExample {
     Network network = Network.TESTNET;
     Api api = new Api("https://testnet.ckb.dev", false);
     // the block number where the deposit dao transaction is
-    long daoDepositBlockNumber = 5629199L;
-    String daoDepositBlockHash = "0x4427bbd849721a391e234a913b7c2780ad682a36003a29ead759c87cd8ed38df";
-    // Prepare deposit cell input
     OutPoint depositOutpoint = new OutPoint(
-        Numeric.hexStringToByteArray("0xb27ac08c74f4cdac45c1a788379adf0a1923ef76e6c626bd389847748fa36456"), 0);
-    CellInput depositCellInput = new CellInput(depositOutpoint, 0);
-    CellWithStatus depositCell = api.getLiveCell(depositOutpoint, true);
-    TransactionInput transactionInput = new TransactionInput(
-        depositCellInput,
-        depositCell.cell.output,
-        depositCell.cell.data.content);
-
-    // Withdraw 500 CKB
+        Numeric.hexStringToByteArray("0xc4662aa4a0c9087aa299121fef06dcc2dbf30271441a85fdf9d62fb312b259e6"), 0);
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
-    CellOutput output = new CellOutput(depositCell.cell.output.capacity,
-                                       Address.decode(sender).getScript(),
-                                       daoScript);
-    byte[] data = MoleculeConverter.packUint64(daoDepositBlockNumber).toByteArray();
 
-    // Construct transaction
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, network)
-        .addHeaderDep(daoDepositBlockHash)
-        .addInput(transactionInput)
-        .addOutput(output, data)
+    TransactionWithScriptGroups txWithGroups = new DaoClaimTransactionBuilder(iterator, network, depositOutpoint, api)
+        .addWithdrawOutput(sender, 50000000000L)
         .setFeeRate(1000)
         .setChangeOutput(sender)
-        .build(null);
+        .build(new DaoScriptHandler.WithdrawInfo(api, depositOutpoint));
 
     // Sign transaction
     TransactionSigner.getInstance(network)

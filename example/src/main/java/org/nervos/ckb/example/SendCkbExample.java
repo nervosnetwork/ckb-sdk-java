@@ -21,7 +21,7 @@ public class SendCkbExample {
                    50100000000L)
         .setFeeRate(1000)
         .setChangeOutput(sender)
-        .build(null);
+        .build();
 
     TransactionSigner.getInstance(Network.TESTNET)
         .signTransaction(txWithGroups, "0x6c9ed03816e3111e49384b8d180174ad08e29feb1393ea1b51cef1c505d4e36a");
