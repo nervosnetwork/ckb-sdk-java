@@ -6,6 +6,7 @@ import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.type.TransactionInput;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.InputIterator;
 
 import java.io.IOException;
@@ -28,6 +29,6 @@ public class SendCkbExample {
 
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    System.out.println("Transaction hash: " + txHash);
+    System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }
