@@ -6,6 +6,7 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.MoleculeConverter;
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
 
 import java.io.IOException;
@@ -113,12 +114,7 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
 
   public static long extractAr(byte[] dao) {
     byte[] slice = Arrays.copyOfRange(dao, 8, 16);
-    for (int i = 0; i < slice.length / 2; i++) {
-      byte tmp = slice[i];
-      slice[i] = slice[slice.length - 1 - i];
-      slice[slice.length - 1 - i] = tmp;
-    }
-    return new BigInteger(1, slice).longValue();
+    return Numeric.littleEndianBytesToBigInteger(slice).longValue();
   }
 
   public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {

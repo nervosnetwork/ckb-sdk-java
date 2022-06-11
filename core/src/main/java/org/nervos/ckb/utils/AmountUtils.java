@@ -17,10 +17,6 @@ public class AmountUtils {
   }
 
   public static BigInteger dataToSudtAmount(byte[] data) {
-    byte[] reversedData = new byte[data.length];
-    for (int i = 0; i < data.length; i++) {
-      reversedData[i] = data[data.length - i - 1];
-    }
-    return new BigInteger(1, reversedData);
+    return Numeric.littleEndianBytesToBigInteger(data);
   }
 }
