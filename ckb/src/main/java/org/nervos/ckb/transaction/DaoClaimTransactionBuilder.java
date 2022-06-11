@@ -22,7 +22,7 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
   private long depositBlockNumber = -1;
 
   private enum TransactionType {
-    DEPOSIT,
+    WITHDRAW,
     CLAIM,
   }
 
@@ -36,9 +36,9 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
         cellInput,
         cellWithStatus.cell.output,
         cellWithStatus.cell.data.content);
-    transactionType = resolveDaoType(cellWithStatus.cell.data.content);
+    transactionType = getTransactionType(cellWithStatus.cell.data.content);
     switch (transactionType) {
-      case DEPOSIT:
+      case WITHDRAW:
         TransactionWithStatus txWithStatus = api.getTransaction(daoOutpoint.txHash);
         depositBlockNumber = api.getHeader(txWithStatus.txStatus.blockHash).number;
         break;
@@ -49,12 +49,12 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     builder.transactionInputs.add(input);
   }
 
-  private TransactionType resolveDaoType(byte[] outputData) {
+  private static TransactionType getTransactionType(byte[] outputData) {
     if (outputData.length != 8) {
       throw new IllegalArgumentException("Dao cell's length should be 8 bytes");
     }
     if (Arrays.equals(outputData, DEPOSIT_CELL_DATA)) {
-      return TransactionType.DEPOSIT;
+      return TransactionType.WITHDRAW;
     } else {
       return TransactionType.CLAIM;
     }
