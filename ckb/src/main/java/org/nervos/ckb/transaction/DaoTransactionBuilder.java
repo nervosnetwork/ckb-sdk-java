@@ -20,6 +20,7 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
   private Api api;
   private TransactionType transactionType;
   private long depositBlockNumber = -1;
+  private long depositCellCapacity = -1;
 
   private enum TransactionType {
     WITHDRAW,
@@ -41,6 +42,7 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
       case WITHDRAW:
         TransactionWithStatus txWithStatus = api.getTransaction(daoOutpoint.txHash);
         depositBlockNumber = api.getHeader(txWithStatus.txStatus.blockHash).number;
+        depositCellCapacity = txWithStatus.transaction.outputs.get(daoOutpoint.index).capacity;
         break;
       case CLAIM:
         builder.reward += getDaoReward(daoOutpoint);
@@ -149,12 +151,12 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  public DaoTransactionBuilder addWithdrawOutput(String address, long capacity) {
+  public DaoTransactionBuilder addWithdrawOutput(String address) {
     if (depositBlockNumber == -1) {
       throw new IllegalStateException("Deposit block number is not initialized");
     }
     CellOutput output = new CellOutput(
-        capacity,
+        depositCellCapacity,
         Address.decode(address).getScript()
         , DAO_SCRIPT);
     byte[] data = MoleculeConverter.packUint64(depositBlockNumber).toByteArray();

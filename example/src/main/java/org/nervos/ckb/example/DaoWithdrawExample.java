@@ -30,7 +30,7 @@ public class DaoWithdrawExample {
 
     Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new DaoTransactionBuilder(iterator, network, depositOutpoint, api)
-        .addWithdrawOutput(sender, 50000000000L)
+        .addWithdrawOutput(sender)
         .setFeeRate(1000)
         .setChangeOutput(sender)
         .build(new DaoScriptHandler.WithdrawInfo(api, depositOutpoint));
