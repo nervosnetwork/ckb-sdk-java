@@ -7,7 +7,7 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.mercury.model.TransferPayloadBuilder;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.item.ItemFactory;
-import org.nervos.mercury.model.req.payload.CapacityProvider;
+import org.nervos.mercury.model.req.payload.TransferPayload;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -21,7 +21,7 @@ public class BuildTransferTransactionTest {
     builder.addFrom(ItemFactory.newAddressItem("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqfqyerlanzmnkxtmd9ww9n7gr66k8jt4tclm9jnk"));
     builder.addTo("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf"
         , BigInteger.valueOf(100));
-    builder.payFee(CapacityProvider.FROM);
+    builder.payFee(TransferPayload.PayFee.FROM);
     builder.feeRate(1100L);
 
     TransactionWithScriptGroups s =
