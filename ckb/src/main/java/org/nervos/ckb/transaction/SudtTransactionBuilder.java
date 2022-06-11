@@ -41,7 +41,6 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
                                 TransactionType transactionType, String sudtOwnerAddress) {
     super(availableInputs, network);
     this.transactionType = transactionType;
-    setSudtArgs(sudtArgs);
     setSudtArgs(sudtOwnerAddress);
   }
 
