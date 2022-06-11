@@ -8,14 +8,14 @@ import java.util.List;
 import static org.nervos.ckb.utils.MoleculeConverter.packBytesVec;
 
 public class Transaction {
-  public int version;
+  public int version = 0;
   public byte[] hash;
-  public List<CellDep> cellDeps;
-  public List<byte[]> headerDeps;
-  public List<CellInput> inputs;
-  public List<CellOutput> outputs;
-  public List<byte[]> outputsData;
-  public List<byte[]> witnesses;
+  public List<CellDep> cellDeps = new ArrayList<>();
+  public List<byte[]> headerDeps = new ArrayList<>();
+  public List<CellInput> inputs = new ArrayList<>();
+  public List<CellOutput> outputs = new ArrayList<>();
+  public List<byte[]> outputsData = new ArrayList<>();
+  public List<byte[]> witnesses = new ArrayList<>();
 
   public Transaction() {
   }

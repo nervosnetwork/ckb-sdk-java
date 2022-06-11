@@ -19,8 +19,8 @@ public abstract class AbstractTransactionBuilder {
   protected Network network;
 
   protected List<ScriptHandler> scriptHandlers = new ArrayList<>();
-  protected List<TransactionInput> inputsDetail;
-  protected Transaction tx;
+  protected List<TransactionInput> inputsDetail = new ArrayList<>();
+  protected Transaction tx = new Transaction();
   protected Iterator<TransactionInput> availableInputs;
 
   private static List<ScriptHandler> TESTNET_SCRIPT_HANDLERS = new ArrayList<>();
@@ -38,20 +38,8 @@ public abstract class AbstractTransactionBuilder {
     MAINNET_SCRIPT_HANDLERS.add(new DaoScriptHandler(Network.MAINNET));
   }
 
-  public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs) {
-    tx = new Transaction();
-    tx.version = 0;
-    tx.inputs = new ArrayList<>();
-    tx.outputs = new ArrayList<>();
-    tx.outputsData = new ArrayList<>();
-    tx.cellDeps = new ArrayList<>();
-    tx.headerDeps = new ArrayList<>();
-    tx.witnesses = new ArrayList<>();
-    this.availableInputs = availableInputs;
-  }
-
   public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
-    this(availableInputs);
+    this.availableInputs = availableInputs;
     this.network = network;
     if (network == Network.TESTNET) {
       scriptHandlers.addAll(TESTNET_SCRIPT_HANDLERS);
@@ -60,7 +48,7 @@ public abstract class AbstractTransactionBuilder {
     }
   }
 
-  public AbstractTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
+  protected AbstractTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
     scriptHandlers.add(scriptHandler);
     return this;
   }
@@ -99,8 +87,7 @@ public abstract class AbstractTransactionBuilder {
   }
 
   public void setWitness(int i, WitnessArgs.Type type, byte[] data) {
-    byte[] witness = tx.witnesses.get(i);
-    WitnessArgs witnessArgs = getWitnessArgs(witness);
+    WitnessArgs witnessArgs = getWitnessArgs(i);
     switch (type) {
       case LOCK:
         witnessArgs.setLock(data);
@@ -115,7 +102,8 @@ public abstract class AbstractTransactionBuilder {
     tx.witnesses.set(i, witnessArgs.pack().toByteArray());
   }
 
-  private WitnessArgs getWitnessArgs(byte[] witness) {
+  private WitnessArgs getWitnessArgs(int i) {
+    byte[] witness = tx.witnesses.get(i);
     WitnessArgs witnessArgs;
     if (witness == null || witness.length == 0) {
       witnessArgs = new WitnessArgs();
