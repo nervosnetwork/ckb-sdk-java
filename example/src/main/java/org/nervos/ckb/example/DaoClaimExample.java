@@ -4,7 +4,7 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.DaoClaimTransactionBuilder;
+import org.nervos.ckb.transaction.DaoTransactionBuilder;
 import org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.TransactionInput;
@@ -23,7 +23,7 @@ public class DaoClaimExample {
     Api api = new Api("https://testnet.ckb.dev", false);
 
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new DaoClaimTransactionBuilder(iterator, network, withdrawOutpoint, api)
+    TransactionWithScriptGroups txWithGroups = new DaoTransactionBuilder(iterator, network, withdrawOutpoint, api)
         .setFeeRate(1000)
         .setChangeOutput(sender)
         .build(new DaoScriptHandler.ClaimInfo(api, withdrawOutpoint));

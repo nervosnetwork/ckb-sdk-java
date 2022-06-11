@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 import static org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler.*;
 
-public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
+public class DaoTransactionBuilder extends AbstractTransactionBuilder {
   CkbTransactionBuilder builder;
   private Api api;
   private TransactionType transactionType;
@@ -26,7 +26,7 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     CLAIM,
   }
 
-  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutpoint, Api api) throws IOException {
+  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutpoint, Api api) throws IOException {
     super(availableInputs, network);
     builder = new CkbTransactionBuilder(availableInputs, network);
     this.api = api;
@@ -119,12 +119,12 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     return new BigInteger(1, slice).longValue();
   }
 
-  public DaoClaimTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
+  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
     super(availableInputs, network);
   }
 
   @Override
-  public DaoClaimTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
+  public DaoTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
     builder.registerScriptHandler(scriptHandler);
     return this;
   }
@@ -134,22 +134,22 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     return builder.getFeeRate();
   }
 
-  public DaoClaimTransactionBuilder setFeeRate(long feeRate) {
+  public DaoTransactionBuilder setFeeRate(long feeRate) {
     builder.setFeeRate(feeRate);
     return this;
   }
 
-  public DaoClaimTransactionBuilder addOutput(String address, long capacity) {
+  public DaoTransactionBuilder addOutput(String address, long capacity) {
     builder.addOutput(address, capacity);
     return this;
   }
 
-  public DaoClaimTransactionBuilder setChangeOutput(String address) {
+  public DaoTransactionBuilder setChangeOutput(String address) {
     builder.setChangeOutput(address);
     return this;
   }
 
-  public DaoClaimTransactionBuilder addWithdrawOutput(String address, long capacity) {
+  public DaoTransactionBuilder addWithdrawOutput(String address, long capacity) {
     if (depositBlockNumber == -1) {
       throw new IllegalStateException("Deposit block number is not initialized");
     }
