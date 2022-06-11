@@ -11,6 +11,12 @@ public class WitnessArgs {
   private byte[] inputType;
   private byte[] outputType;
 
+  public enum Type {
+    LOCK,
+    INPUT_TYPE,
+    OUTPUT_TYPE
+  }
+
   public WitnessArgs() {
   }
 
