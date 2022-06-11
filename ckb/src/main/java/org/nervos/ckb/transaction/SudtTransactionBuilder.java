@@ -74,11 +74,25 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  public SudtTransactionBuilder addSudtOutput(String address, long capacity, long udtAmount) {
-    return addSudtOutput(address, capacity, BigInteger.valueOf(udtAmount));
+  public SudtTransactionBuilder addSudtOutput(String address, long udtAmount) {
+    return addSudtOutput(address, BigInteger.valueOf(udtAmount));
   }
 
-  public SudtTransactionBuilder addSudtOutput(String address, long capacity, BigInteger udtAmount) {
+  public SudtTransactionBuilder addSudtOutput(String address, BigInteger udtAmount) {
+    CellOutput output = new CellOutput(
+        0,
+        Address.decode(address).getScript(),
+        sudtType);
+    byte[] data = sudtAmountToData(udtAmount);
+    output.capacity = output.occupiedCapacity(data);
+    return this;
+  }
+
+  public SudtTransactionBuilder addSudtOutput(String address, long udtAmount, long capacity) {
+    return addSudtOutput(address, BigInteger.valueOf(udtAmount), capacity);
+  }
+
+  public SudtTransactionBuilder addSudtOutput(String address, BigInteger udtAmount, long capacity) {
     CellOutput output = new CellOutput(
         capacity,
         Address.decode(address).getScript(),

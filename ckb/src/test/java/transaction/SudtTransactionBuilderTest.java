@@ -34,7 +34,7 @@ class SudtTransactionBuilderTest {
         .setTransactionType(SudtTransactionBuilder.TransactionType.TRANSFER)
         .setSudtArgs(sudtArgs)
         .addSudtOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up",
-                       20000000000L, 1L)
+                       1L)
         .setFeeRate(1000)
         .setChangeOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up")
         .build();

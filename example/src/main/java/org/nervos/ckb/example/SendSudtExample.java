@@ -26,7 +26,7 @@ public class SendSudtExample {
     TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, Network.TESTNET)
         .setTransactionType(SudtTransactionBuilder.TransactionType.TRANSFER)
         .setSudtArgs(sudtArgs)
-        .addSudtOutput(receiver, 15000000000L, 1)
+        .addSudtOutput(receiver, 1L)
         .setFeeRate(1000)
         .setChangeOutput(sender)
         .build();

@@ -21,7 +21,7 @@ public class MintSudtExample {
     TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, network)
         .setTransactionType(SudtTransactionBuilder.TransactionType.ISSUE)
         .setSudtArgs(sender)
-        .addSudtOutput(sender, 51000000000L, 10L)
+        .addSudtOutput(sender, 10L)
         .setFeeRate(1000)
         .setChangeOutput(sender)
         .build();
