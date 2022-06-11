@@ -1,6 +1,5 @@
 package org.nervos.ckb.example;
 
-import org.bouncycastle.util.encoders.Hex;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.Context;
@@ -47,6 +46,6 @@ public class SendCkbFromMultisigAddressExample {
 
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    System.out.println("Transaction hash: " + Hex.toHexString(txHash));
+    System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }
