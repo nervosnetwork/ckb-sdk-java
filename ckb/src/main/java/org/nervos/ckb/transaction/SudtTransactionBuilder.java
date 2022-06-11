@@ -18,7 +18,6 @@ import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 
 public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   private TransactionType transactionType;
-  private byte[] sudtArgs;
   private Script sudtType;
 
   public enum TransactionType {
@@ -41,7 +40,6 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   }
 
   private SudtTransactionBuilder setSudtArgs(byte[] sudtArgs) {
-    this.sudtArgs = sudtArgs;
     byte[] codeHash;
     if (network == Network.TESTNET) {
       codeHash = Script.SUDT_CODE_HASH_TESTNET;
@@ -58,7 +56,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   }
 
   private SudtTransactionBuilder setSudtArgs(String sudtOwnerAddress) {
-    sudtArgs = Address.decode(sudtOwnerAddress).getScript().computeHash();
+    byte[] sudtArgs = Address.decode(sudtOwnerAddress).getScript().computeHash();
     return setSudtArgs(sudtArgs);
   }
 
@@ -121,8 +119,8 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
 
   @Override
   public TransactionWithScriptGroups build(Object... contexts) {
-    if (sudtArgs == null) {
-      throw new IllegalStateException("SudtArgs is not set");
+    if (sudtType == null) {
+      throw new IllegalStateException("Sudt type script is not initialized");
     }
     if (transactionType == null) {
       throw new IllegalStateException("TransactionType is not set");
@@ -178,7 +176,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
 
       Script lock = input.output.lock;
       if (transactionType == TransactionType.ISSUE) {
-        if (!Arrays.equals(lock.computeHash(), sudtArgs)) {
+        if (!Arrays.equals(lock.computeHash(), sudtType.args)) {
           throw new IllegalStateException("input lock hash should be the same as SUDT args in the SUDT-issue transaction");
         }
       }
