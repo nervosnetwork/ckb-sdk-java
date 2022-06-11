@@ -208,11 +208,16 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       } else {
         witnessArgs = WitnessArgs.unpack(originalWitness);
       }
-      byte[] header = this.encode();
-      byte[] lockPlaceholder = new byte[header.length + SIGNATURE_LENGTH_IN_BYTE * getThreshold()];
-      System.arraycopy(header, 0, lockPlaceholder, 0, header.length);
+      byte[] lockPlaceholder = witnessPlaceholderInLock();
       witnessArgs.setLock(lockPlaceholder);
       return witnessArgs.pack().toByteArray();
+    }
+
+    public byte[] witnessPlaceholderInLock() {
+      byte[] header = this.encode();
+      byte[] placeholder = new byte[header.length + SIGNATURE_LENGTH_IN_BYTE * getThreshold()];
+      System.arraycopy(header, 0, placeholder, 0, header.length);
+      return placeholder;
     }
 
     @Override

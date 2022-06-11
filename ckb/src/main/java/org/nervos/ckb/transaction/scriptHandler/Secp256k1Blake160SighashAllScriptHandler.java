@@ -3,10 +3,14 @@ package org.nervos.ckb.transaction.scriptHandler;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.transaction.AbstractTransactionBuilder;
-import org.nervos.ckb.type.*;
+import org.nervos.ckb.type.CellDep;
+import org.nervos.ckb.type.OutPoint;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.utils.Numeric;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
@@ -56,16 +60,12 @@ public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
       return false;
     }
-    Transaction tx = txBuilder.getTx();
     // set witness placeholder
     int index = scriptGroup.getInputIndices().get(0);
-    byte[] witness = tx.witnesses.get(index);
-    witness = getWitnessPlaceholder(witness);
-    tx.witnesses.set(index, witness);
+    byte[] lock = new byte[65];
+    txBuilder.setWitness(index, WitnessArgs.Type.LOCK, lock);
     // add celldeps
-    Set<CellDep> cellDeps = new HashSet<>(tx.cellDeps);
-    cellDeps.addAll(getCellDeps());
-    tx.cellDeps = new ArrayList<>(cellDeps);
+    txBuilder.addCellDeps(getCellDeps());
     return true;
   }
 }

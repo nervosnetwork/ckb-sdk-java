@@ -134,11 +134,6 @@ public class DaoClaimTransactionBuilder extends AbstractTransactionBuilder {
     return builder.getFeeRate();
   }
 
-  @Override
-  public Transaction getTx() {
-    return builder.getTx();
-  }
-
   public DaoClaimTransactionBuilder setFeeRate(long feeRate) {
     builder.setFeeRate(feeRate);
     return this;

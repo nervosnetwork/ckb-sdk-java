@@ -10,7 +10,8 @@ import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class DaoScriptHandler implements ScriptHandler {
   public static Script DAO_SCRIPT = new Script(Script.DAO_CODE_HASH,
@@ -62,68 +63,36 @@ public class DaoScriptHandler implements ScriptHandler {
       return false;
     }
 
-    Transaction tx = txBuilder.getTx();
     // add celldeps
-    Set<CellDep> cellDeps = new HashSet<>(tx.cellDeps);
-    cellDeps.addAll(getCellDeps());
-    tx.cellDeps = new ArrayList<>(cellDeps);
+    for (CellDep cellDep : getCellDeps()) {
+      txBuilder.addCellDep(cellDep);
+    }
 
     if (context instanceof ClaimInfo) {
       ClaimInfo info = (ClaimInfo) context;
       int index = scriptGroup.getInputIndices().get(0);
       // add header deps
-      int depositHeaderDepIndex = setHeaderDep(tx.headerDeps, info.depositBlockHeader.hash);
-      setHeaderDep(tx.headerDeps, info.withdrawBlockHeader.hash);
+      int depositHeaderDepIndex = txBuilder.setHeaderDep(info.depositBlockHeader.hash);
+      txBuilder.setHeaderDep(info.withdrawBlockHeader.hash);
       // update witness
-      byte[] witness = tx.witnesses.get(index);
-      WitnessArgs witnessArgs = getWitnessArgs(witness);
-      witnessArgs.setInputType(
-          MoleculeConverter.packUint64(depositHeaderDepIndex).toByteArray());
-      tx.witnesses.set(index, witnessArgs.pack().toByteArray());
+      byte[] inputType = MoleculeConverter.packUint64(depositHeaderDepIndex).toByteArray();
+      txBuilder.setWitness(index, WitnessArgs.Type.INPUT_TYPE, inputType);
       // update input since
-      CellInput input = tx.inputs.get(index);
-      input.since = info.calculateDaoMinimalSince();
+      txBuilder.setInputSince(index, info.calculateDaoMinimalSince());
     } else if (context instanceof WithdrawInfo) {
       WithdrawInfo info = (WithdrawInfo) context;
-      setHeaderDep(tx.headerDeps, info.depositBlockHash);
+      txBuilder.setHeaderDep(info.depositBlockHash);
     }
     return true;
-  }
-
-  private int setHeaderDep(List<byte[]> headerDeps, byte[] headerDep) {
-    int index = -1;
-    for (int i = 0; i < headerDeps.size(); i++) {
-      if (Arrays.equals(headerDep, headerDeps.get(i))) {
-        index = i;
-        break;
-      }
-    }
-    if (index == -1) {
-      index = headerDeps.size();
-      headerDeps.add(headerDep);
-    }
-    return index;
-  }
-
-  private WitnessArgs getWitnessArgs(byte[] originalWitness) {
-    WitnessArgs witnessArgs;
-    if (originalWitness == null || originalWitness.length == 0) {
-      witnessArgs = new WitnessArgs();
-    } else {
-      witnessArgs = WitnessArgs.unpack(originalWitness);
-    }
-    return witnessArgs;
   }
 
   public static class ClaimInfo {
     Header depositBlockHeader;
     Header withdrawBlockHeader;
     OutPoint withdrawOutpoint;
-    private Api api;
 
     public ClaimInfo(Api api, OutPoint withdrawOutpoint) {
       this.withdrawOutpoint = withdrawOutpoint;
-      this.api = api;
       try {
         TransactionWithStatus txWithStatus = api.getTransaction(withdrawOutpoint.txHash);
         Transaction withdrawTx = txWithStatus.transaction;
@@ -179,13 +148,11 @@ public class DaoScriptHandler implements ScriptHandler {
   }
 
   public static class WithdrawInfo {
-    Api api;
     OutPoint depositOutpoint;
     long depositBlockNumber;
     byte[] depositBlockHash;
 
     public WithdrawInfo(Api api, OutPoint depositOutpoint) {
-      this.api = api;
       this.depositOutpoint = depositOutpoint;
       try {
         TransactionWithStatus txWithStatus = api.getTransaction(depositOutpoint.txHash);

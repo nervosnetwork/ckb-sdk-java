@@ -2,11 +2,14 @@ package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
 import org.nervos.ckb.transaction.scriptHandler.*;
+import org.nervos.ckb.type.CellDep;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.TransactionInput;
+import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.utils.Calculator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -66,11 +69,63 @@ public abstract class AbstractTransactionBuilder {
     return feeRate;
   }
 
-  public Transaction getTx() {
-    return tx;
+  public void setInputSince(int index, long since) {
+    tx.inputs.get(index).since = since;
   }
 
-  protected long calculateTxFee(Transaction transaction, long feeRate) {
+  public int setHeaderDep(byte[] headerDep) {
+    for (int i = 0; i < tx.headerDeps.size(); i++) {
+      if (Arrays.equals(tx.headerDeps.get(i), headerDep)) {
+        return i;
+      }
+    }
+    tx.headerDeps.add(headerDep);
+    return tx.headerDeps.size() - 1;
+  }
+
+  public void addCellDeps(List<CellDep> cellDeps) {
+    for (CellDep cellDep : cellDeps) {
+      addCellDep(cellDep);
+    }
+  }
+
+  public void addCellDep(CellDep cellDep) {
+    for (int i = 0; i < tx.cellDeps.size(); i++) {
+      if (tx.cellDeps.get(i).equals(cellDep)) {
+        return;
+      }
+    }
+    tx.cellDeps.add(cellDep);
+  }
+
+  public void setWitness(int i, WitnessArgs.Type type, byte[] data) {
+    byte[] witness = tx.witnesses.get(i);
+    WitnessArgs witnessArgs = getWitnessArgs(witness);
+    switch (type) {
+      case LOCK:
+        witnessArgs.setLock(data);
+        break;
+      case INPUT_TYPE:
+        witnessArgs.setInputType(data);
+        break;
+      case OUTPUT_TYPE:
+        witnessArgs.setOutputType(data);
+        break;
+    }
+    tx.witnesses.set(i, witnessArgs.pack().toByteArray());
+  }
+
+  private WitnessArgs getWitnessArgs(byte[] witness) {
+    WitnessArgs witnessArgs;
+    if (witness == null || witness.length == 0) {
+      witnessArgs = new WitnessArgs();
+    } else {
+      witnessArgs = WitnessArgs.unpack(witness);
+    }
+    return witnessArgs;
+  }
+
+  protected static long calculateTxFee(Transaction transaction, long feeRate) {
     return Calculator.calculateTransactionFee(transaction, feeRate);
   }
 }

@@ -6,10 +6,10 @@ import org.nervos.ckb.transaction.AbstractTransactionBuilder;
 import org.nervos.ckb.type.CellDep;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.Numeric;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class SudtScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
@@ -50,12 +50,8 @@ public class SudtScriptHandler implements ScriptHandler {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
       return false;
     }
-
-    Transaction tx = txBuilder.getTx();
     // add celldeps
-    Set<CellDep> cellDeps = new HashSet<>(tx.cellDeps);
-    cellDeps.addAll(getCellDeps());
-    tx.cellDeps = new ArrayList<>(cellDeps);
+    txBuilder.addCellDeps(getCellDeps());
     return true;
   }
 }
