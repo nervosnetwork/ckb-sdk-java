@@ -26,10 +26,6 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     TRANSFER
   }
 
-  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
-    super(availableInputs, network);
-  }
-
   public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network,
                                 TransactionType transactionType, byte[] sudtArgs) {
     super(availableInputs, network);
@@ -68,7 +64,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
 
   @Override
   public SudtTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    scriptHandlers.add(scriptHandler);
+    super.registerScriptHandler(scriptHandler);
     return this;
   }
 
@@ -123,11 +119,8 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     return addOutput(output, data);
   }
 
-  public TransactionWithScriptGroups build() {
-    return build(null);
-  }
-
-  public TransactionWithScriptGroups build(Object context) {
+  @Override
+  public TransactionWithScriptGroups build(Object... contexts) {
     if (sudtArgs == null) {
       throw new IllegalStateException("SudtArgs is not set");
     }
@@ -161,7 +154,9 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
         }
         scriptGroup.getOutputIndices().add(i);
         for (ScriptHandler handler : scriptHandlers) {
-          handler.buildTransaction(this, scriptGroup, context);
+          for (Object context : contexts) {
+            handler.buildTransaction(this, scriptGroup, context);
+          }
         }
       }
     }
@@ -197,7 +192,9 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
       for (ScriptHandler handler : scriptHandlers) {
-        handler.buildTransaction(this, scriptGroup, context);
+        for (Object context : contexts) {
+          handler.buildTransaction(this, scriptGroup, context);
+        }
       }
 
       Script type = input.output.type;
@@ -211,7 +208,9 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
         }
         scriptGroup.getInputIndices().add(inputIndex);
         for (ScriptHandler handler : scriptHandlers) {
-          handler.buildTransaction(this, scriptGroup, context);
+          for (Object context : contexts) {
+            handler.buildTransaction(this, scriptGroup, context);
+          }
         }
       }
 

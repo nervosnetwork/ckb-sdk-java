@@ -160,10 +160,7 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  public TransactionWithScriptGroups build() {
-    return builder.build();
-  }
-
+  @Override
   public TransactionWithScriptGroups build(Object... contexts) {
     return builder.build(contexts);
   }

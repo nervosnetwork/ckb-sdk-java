@@ -21,7 +21,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
 
   @Override
   public CkbTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    scriptHandlers.add(scriptHandler);
+    super.registerScriptHandler(scriptHandler);
     return this;
   }
 
@@ -82,10 +82,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return setChangeOutput(output, new byte[0]);
   }
 
-  public TransactionWithScriptGroups build() {
-    return build((Object) null);
-  }
-
+  @Override
   public TransactionWithScriptGroups build(Object... contexts) {
     Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     long outputsCapacity = 0L;

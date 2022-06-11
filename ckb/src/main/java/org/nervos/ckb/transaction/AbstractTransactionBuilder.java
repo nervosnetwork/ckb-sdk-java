@@ -1,6 +1,7 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
+import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.scriptHandler.*;
 import org.nervos.ckb.type.CellDep;
 import org.nervos.ckb.type.Transaction;
@@ -116,4 +117,10 @@ public abstract class AbstractTransactionBuilder {
   protected static long calculateTxFee(Transaction transaction, long feeRate) {
     return Calculator.calculateTransactionFee(transaction, feeRate);
   }
+
+  public TransactionWithScriptGroups build() {
+    return build((Object) null);
+  }
+
+  abstract TransactionWithScriptGroups build(Object... contexts);
 }
