@@ -17,7 +17,6 @@ public class MintSudtExample {
     Network network = Network.TESTNET;
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up";
 
-    // Construct transaction to deposit 510 CKB to DAO
     Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, network)
         .setTransactionType(SudtTransactionBuilder.TransactionType.ISSUE)
