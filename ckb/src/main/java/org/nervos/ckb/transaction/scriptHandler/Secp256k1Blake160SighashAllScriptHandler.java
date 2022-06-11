@@ -40,21 +40,6 @@ public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
     return Arrays.equals(script.codeHash, codeHash);
   }
 
-  private List<CellDep> getCellDeps() {
-    return cellDeps;
-  }
-
-  private byte[] getWitnessPlaceholder(byte[] originalWitness) {
-    WitnessArgs witnessArgs;
-    if (originalWitness == null || originalWitness.length == 0) {
-      witnessArgs = new WitnessArgs();
-    } else {
-      witnessArgs = WitnessArgs.unpack(originalWitness);
-    }
-    witnessArgs.setLock(new byte[65]);
-    return witnessArgs.pack().toByteArray();
-  }
-
   @Override
   public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
@@ -65,7 +50,7 @@ public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
     byte[] lock = new byte[65];
     txBuilder.setWitness(index, WitnessArgs.Type.LOCK, lock);
     // add celldeps
-    txBuilder.addCellDeps(getCellDeps());
+    txBuilder.addCellDeps(cellDeps);
     return true;
   }
 }

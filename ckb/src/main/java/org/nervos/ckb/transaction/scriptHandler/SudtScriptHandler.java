@@ -40,18 +40,14 @@ public class SudtScriptHandler implements ScriptHandler {
     }
     return Arrays.equals(script.codeHash, codeHash);
   }
-
-  private List<CellDep> getCellDeps() {
-    return cellDeps;
-  }
-
+ 
   @Override
   public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
       return false;
     }
     // add celldeps
-    txBuilder.addCellDeps(getCellDeps());
+    txBuilder.addCellDeps(cellDeps);
     return true;
   }
 }

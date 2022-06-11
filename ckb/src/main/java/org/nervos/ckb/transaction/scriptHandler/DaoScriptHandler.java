@@ -49,10 +49,6 @@ public class DaoScriptHandler implements ScriptHandler {
     return Arrays.equals(script.codeHash, codeHash);
   }
 
-  private List<CellDep> getCellDeps() {
-    return cellDeps;
-  }
-
   public static boolean isDepositCell(CellOutput output, byte[] data) {
     return DAO_SCRIPT.equals(output.type) && Arrays.equals(data, DEPOSIT_CELL_DATA);
   }
@@ -64,9 +60,7 @@ public class DaoScriptHandler implements ScriptHandler {
     }
 
     // add celldeps
-    for (CellDep cellDep : getCellDeps()) {
-      txBuilder.addCellDep(cellDep);
-    }
+    txBuilder.addCellDeps(cellDeps);
 
     if (context instanceof ClaimInfo) {
       ClaimInfo info = (ClaimInfo) context;

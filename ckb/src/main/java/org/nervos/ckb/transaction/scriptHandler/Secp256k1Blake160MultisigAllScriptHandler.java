@@ -41,10 +41,6 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     return Arrays.equals(script.codeHash, codeHash);
   }
 
-  private List<CellDep> getCellDeps() {
-    return cellDeps;
-  }
-
   @Override
   public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
@@ -63,7 +59,7 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     txBuilder.setWitness(index, WitnessArgs.Type.LOCK, lock);
 
     // add celldeps
-    txBuilder.addCellDeps(getCellDeps());
+    txBuilder.addCellDeps(cellDeps);
     return true;
   }
 }
