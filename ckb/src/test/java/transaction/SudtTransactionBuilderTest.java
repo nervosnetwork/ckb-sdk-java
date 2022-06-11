@@ -30,9 +30,10 @@ class SudtTransactionBuilderTest {
   @Test
   void testBalance() {
     Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, Network.TESTNET)
-        .setTransactionType(SudtTransactionBuilder.TransactionType.TRANSFER)
-        .setSudtArgs(sudtArgs)
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator,
+                                                                          Network.TESTNET,
+                                                                          SudtTransactionBuilder.TransactionType.TRANSFER,
+                                                                          sudtArgs)
         .addSudtOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up",
                        1L)
         .setFeeRate(1000)

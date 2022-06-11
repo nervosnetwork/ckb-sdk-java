@@ -30,7 +30,22 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     super(availableInputs, network);
   }
 
-  public SudtTransactionBuilder setSudtArgs(byte[] sudtArgs) {
+  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network,
+                                TransactionType transactionType, byte[] sudtArgs) {
+    super(availableInputs, network);
+    this.transactionType = transactionType;
+    setSudtArgs(sudtArgs);
+  }
+
+  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network,
+                                TransactionType transactionType, String sudtOwnerAddress) {
+    super(availableInputs, network);
+    this.transactionType = transactionType;
+    setSudtArgs(sudtArgs);
+    setSudtArgs(sudtOwnerAddress);
+  }
+
+  private SudtTransactionBuilder setSudtArgs(byte[] sudtArgs) {
     this.sudtArgs = sudtArgs;
     byte[] codeHash;
     if (network == Network.TESTNET) {
@@ -47,14 +62,9 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  public SudtTransactionBuilder setSudtArgs(String sudtOwnerAddress) {
+  private SudtTransactionBuilder setSudtArgs(String sudtOwnerAddress) {
     sudtArgs = Address.decode(sudtOwnerAddress).getScript().computeHash();
     return setSudtArgs(sudtArgs);
-  }
-
-  public SudtTransactionBuilder setTransactionType(TransactionType transactionType) {
-    this.transactionType = transactionType;
-    return this;
   }
 
   @Override
@@ -85,7 +95,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
         sudtType);
     byte[] data = sudtAmountToData(udtAmount);
     output.capacity = output.occupiedCapacity(data);
-    return this;
+    return addOutput(output, data);
   }
 
   public SudtTransactionBuilder addSudtOutput(String address, long udtAmount, long capacity) {

@@ -23,9 +23,10 @@ public class SendSudtExample {
         new InputIterator(new DefaultIndexerApi("https://testnet.ckb.dev/indexer", false))
             .addSudtSearchKey(sender, sudtArgs);
 
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, Network.TESTNET)
-        .setTransactionType(SudtTransactionBuilder.TransactionType.TRANSFER)
-        .setSudtArgs(sudtArgs)
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator,
+                                                                          Network.TESTNET,
+                                                                          SudtTransactionBuilder.TransactionType.TRANSFER,
+                                                                          sudtArgs)
         .addSudtOutput(receiver, 1L)
         .setFeeRate(1000)
         .setChangeOutput(sender)

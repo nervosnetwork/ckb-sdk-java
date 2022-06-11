@@ -18,9 +18,10 @@ public class MintSudtExample {
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up";
 
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator, network)
-        .setTransactionType(SudtTransactionBuilder.TransactionType.ISSUE)
-        .setSudtArgs(sender)
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator,
+                                                                          network,
+                                                                          SudtTransactionBuilder.TransactionType.ISSUE,
+                                                                          sender)
         .addSudtOutput(sender, 10L)
         .setFeeRate(1000)
         .setChangeOutput(sender)
