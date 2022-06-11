@@ -131,56 +131,44 @@ DefaultCkbApi ckbApi = new DefaultCkbApi(ckbUrl, mercuryUrl, indexerUrl, false);
 
 You can leverage this client to call any RPC APIs provided by CKB, CKB-indexer or Mercury in Java code.
 ```java
-Block block = ckbApi.getBlock("0x77fdd22f6ae8a717de9ae2b128834e9b2a1424378b5fc95606ba017aab5fed75");
+byte[] blockHash = Numeric.hexStringToByteArray("0x77fdd22f6ae8a717de9ae2b128834e9b2a1424378b5fc95606ba017aab5fed75");
+Block block = ckbApi.getBlock(blockHash);
 ```
 
 For more details about RPC APIs, please check:
+
 - [CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
 - [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
 - [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
 
 ### Mercury
-[Mercury](https://github.com/nervosnetwork/mercury) is a development service in CKB ecosystem, providing many useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like querying transaction or getting udt asset information. You need to deploy your own mercury and sync data with the network before using it.
 
-ckb-java-sdk also integrate with Mercury. For usage guide, please check the [examples](./ckb-api/src/test/java/org/nervos/api/mercury).
+[Mercury](https://github.com/nervosnetwork/mercury) is a development service in CKB ecosystem, providing many
+useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like querying
+transaction or getting udt asset information. You need to deploy your own mercury and sync data with the network before
+using it.
+
+ckb-java-sdk also integrate with Mercury. For usage guide, please check
+the [examples](./ckb-api/src/test/java/org/nervos/api/mercury).
 
 ### Build transaction
 
-In order to build transaction, you have to collect the live cells that you want to spend at first. In the example below we use CKB indexer to get live cells. You also can get them by manual (e.g. check on [CKB explorer](https://explorer.nervos.org/)) or by your own database.
+You can build a transaction by manual, or by calling mercury JSON-RPC API. We recommend the latter.
+Here we shows how to do it.
 
 ```java
-// Prepare client and utils class
-Api ckbApi = new Api("http://127.0.0.1:8114", false);
-CkbIndexerApi ckbIndexerApi = new CkbIndexerApi("http://127.0.0.1:8114", false);
-TransactionBuilder txBuilder = new TransactionBuilder(ckbApi);
-IndexerCollector txUtils = new IndexerCollector(ckbApi, ckbIndexerApi);
+String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq0yvcdtsu5wcr2jldtl72fhkruf0w5vymsp6rk9r";
+String receiver = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqvglkprurm00l7hrs3rfqmmzyy3ll7djdsujdm6z";
 
-// Find live cells and calculate capacity balance with the help of CKB indexer.
-long feeRate = 1024;
-List<String> SendAddresses = Arrays.asList("ckt1qyqrdsefa43s6m882pcj53m4gdnj4k440axqswmu83");
-CollectResult collectResult = txUtils.collectInputs(SendAddresses, txBuilder.buildTx(), feeRate, Sign.SIGN_LENGTH * 2);
+long ckbAmount = AmountUtils.ckbToShannon(100);   // Convert CKB to Shannon (1 CKB = 10^8 Shannon)
+SimpleTransferPayloadBuilder builder = new SimpleTransferPayloadBuilder();
+builder.addFrom(sender);
+builder.addTo(receiver, ckbAmount);
+builder.assetInfo(AssetInfo.newCkbAsset());
 
-// Generate cell outputs - the target address.
-List<CellOutput> cellOutputs = txUtils.generateOutputs(receivers, changeAddress);
-txBuilder.addOutputs(cellOutputs);
-// Charge back (if inputs capacity - fee > outputs capacity)
-if (Long.compareUnsigned(collectResult.changeCapacity, 0) > 0) {
-    cellOutputs.get(cellOutputs.size() - 1).capacity = collectResult.changeCapacity;
-    txBuilder.setOutputs(cellOutputs);
-}
-
-// Add witnesses placeholder for latter signature
-for (CellsWithAddress cellsWithAddress : collectResult.cellsWithAddresses) {
-    txBuilder.addInputs(cellsWithAddress.inputs);
-    for (int i = 0; i < cellsWithAddress.inputs.size(); i++) {
-        txBuilder.addWitness(i == 0 ? new Witness(Witness.SIGNATURE_PLACEHOLDER) : "0x");
-    }
-}
-// Build the unsiged transaction
-Transaction rawTx = txBuilder.buildTx();
+// Get an unsigned raw transaction with the help of Mercury
+TransactionWithScriptGroups txWithScriptGroups = api.buildSimpleTransferTransaction(builder.build());
 ```
-
-A more recommended way is to directly call RPC API `build_simple_transfer_transaction` provided by Mercury, which could help you do almost everything above in building transaction.
 
 ### Sign and send transaction
 To send transaction you build to CKB network, you need to
@@ -188,27 +176,14 @@ To send transaction you build to CKB network, you need to
 2. send signed transaction to CKB node, and wait it to be confirmed.
 
 ```java
-// Assume that you already have an unsigned transaction named `rawTx`
-Secp256k1SighashAllBuilder signBuilder = new Secp256k1SighashAllBuilder(rawTx);
+// Before signing and sending transaction, you need to prepare a raw transaction represented by a instance of class `TransactionWithScriptGroups`
+// You can get it by `merucyrApi` or construct it by mamual.
 
-// Prepare private key to sign
-List<ScriptGroupWithPrivateKeys> scriptGroupWithPrivateKeysList = new ArrayList<>();
-scriptGroupWithPrivateKeysList.add(
-    new ScriptGroupWithPrivateKeys(
-        new ScriptGroup(Arrays.asList(0, 1, 2)),  // indices of input cells that are to be unlocked by this private key
-        Arrays.asList("e79f3207ea4980b7fed79956d5934249ceac4751a4fae01a0f7c4a96884bc4e3")  // your private key
-    )
-);
-
-// Sign transaction with private key
-for (ScriptGroupWithPrivateKeys scriptGroupWithPrivateKeys : scriptGroupWithPrivateKeysList) {
-    signBuilder.sign(scriptGroupWithPrivateKeys.scriptGroup, 
-        scriptGroupWithPrivateKeys.privateKeys.get(0));
-}
-
-// Send transaction
-Transaction tx = signBuilder.buildTx();
-ckbApi.sendTransaction(tx);
+// 1. Sign transaction with your private key
+TransactionSigner.getInstance(Network.TESTNET).signTransaction(txWithScriptGroups, privateKey);
+// 2. Send transaction to CKB node
+byte[] txHash = ckbApi.sendTransaction(txWithScriptGroups.txView);
+System.out.println(Numeric.toHexString(txHash));
 ```
 
 ### Generate a new address
