@@ -7,12 +7,12 @@
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
-### Prerequisites
+## Prerequisites
 
 * Java 8
 * Gradle 5.0 or later
 
-### Installation
+## Installation
 
 Maven
 
@@ -30,7 +30,7 @@ Gradle
 implementation 'org.nervos.ckb-api:ckb:{version}'
 ```
 
-### Build
+## Build
 
 Run `gradle build` in project root directory.
 
