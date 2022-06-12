@@ -12,7 +12,7 @@ import org.nervos.indexer.InputIterator;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class MintSudtExample {
+public class IssueSudtExample {
   public static void main(String[] args) throws IOException {
     Network network = Network.TESTNET;
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up";
