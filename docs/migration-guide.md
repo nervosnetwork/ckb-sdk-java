@@ -1,4 +1,4 @@
-We roll out a brand new ckb-java-sdk after a great refactor work. The new sdk brings plenty of BREAKING CHANGES incompatible with deprecated sdk `v1.0.*` and earlier releases.
+We roll out a brand new ckb-java-sdk after a refactor work. The new sdk brings plenty of BREAKING CHANGES incompatible with the deprecated sdk `v1.0.*` and earlier releases.
 
 The breaking changes include
 
@@ -28,14 +28,11 @@ Address address = Address.decode("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0v
 Script script = address.getScript();
 Network network = address.getNetwork();
 // encode to address string representation
-String shortEncoded = address.encodeShort();
-String fullBech32Encoded = address.encodeFullBech32();
-String fullBech32mEncoded = address.encodeFullBech32();
+String encoded = address.encode();
 ```
 
-Note: ckb has 3 kinds of address encoding formats, the short, the full_bech32, and the full_bech32m. The recommended way is full_bech32m, while the other two are under deprecation. For more please refer to [RFC-0021](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0021-ckb-address-format/0021-ckb-address-format.md).
-
 ## data representation
+
 ### hash
 
 The 32-byte hash is widely used in ckb worlds The deprecated sdk uses `String` to represents the hash, while the new sdk represents it by `byte[]`.
@@ -59,7 +56,7 @@ Except for these, you can use `+` `-` and `*` operators for capacity as usual.
 Some important packages move
 
 - `org.nervos.ckb.type.cell` -> `org.nervos.ckb.type`
-- `org.nervos.ckb.type` -> `org.nervos.ckb.type`
+- `org.nervos.ckb.type.param` -> `org.nervos.ckb.type`
 - `org.nervos.ckb.type.transaction` -> `org.nervos.ckb.type`
 - `org.nervos.ckb.address.Network` -> `org.nervos.ckb.Network`
 
