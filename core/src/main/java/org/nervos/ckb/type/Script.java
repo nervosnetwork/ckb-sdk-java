@@ -28,6 +28,12 @@ public class Script {
       Numeric.hexStringToByteArray("0xbf43c3602455798c1a61a596e0d95278864c552fafe231c063b3fabf97a8febc");
   public static final byte[] PW_LOCK_CODE_HASH_TESTNET =
       Numeric.hexStringToByteArray("0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63");
+  public static final byte[] SUDT_CODE_HASH_MAINNET =
+      Numeric.hexStringToByteArray("0x5e7a36a77e68eecc013dfa2fe6a23f3b6c344b04005808694ae6dd45eea4cfd5");
+  public static final byte[] SUDT_CODE_HASH_TESTNET =
+      Numeric.hexStringToByteArray("0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4");
+  public static final byte[] DAO_CODE_HASH =
+      Numeric.hexStringToByteArray("0x82d76d1b75fe2fd9a27dfbaa65a039221a380d76c926f378d3f81cf3e7e13f2e");
 
   public byte[] codeHash;
   public byte[] args;

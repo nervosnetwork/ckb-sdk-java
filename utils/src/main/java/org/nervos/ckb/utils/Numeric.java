@@ -242,4 +242,12 @@ public final class Numeric {
     System.arraycopy(b, 0, c, a.length, b.length);
     return c;
   }
+
+  public static BigInteger littleEndianBytesToBigInteger(byte[] data) {
+    byte[] reversedData = new byte[data.length];
+    for (int i = 0; i < data.length; i++) {
+      reversedData[i] = data[data.length - i - 1];
+    }
+    return new BigInteger(1, reversedData);
+  }
 }

@@ -5,7 +5,7 @@ import constant.ApiFactory;
 import constant.UdtHolder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.address.Network;
+import org.nervos.ckb.Network;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.crypto.secp256k1.Keys;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;

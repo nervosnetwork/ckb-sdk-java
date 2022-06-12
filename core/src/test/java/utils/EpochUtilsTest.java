@@ -23,7 +23,7 @@ public class EpochUtilsTest {
 
   @Test
   void parseSinceTest() {
-    String epoch = EpochUtils.generateSince(1800, 253, 88);
-    Assertions.assertEquals("0x20070800fd000058", epoch);
+    long since = EpochUtils.generateSince(1800, 253, 88);
+    Assertions.assertEquals(0x20070800fd000058L, since);
   }
 }

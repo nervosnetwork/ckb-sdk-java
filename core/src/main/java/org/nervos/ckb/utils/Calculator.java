@@ -13,6 +13,7 @@ public class Calculator {
 
   private static final long RADIO = 1000;
 
+  // https://docs.nervos.org/docs/essays/faq/#what-is-the-min_fee_rate
   private static long calculateTransactionFee(long transactionSize, long feeRate) {
     long base = transactionSize * feeRate;
     long fee = Long.divideUnsigned(base, RADIO);
