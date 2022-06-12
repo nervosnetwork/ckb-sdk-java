@@ -7,16 +7,6 @@
 
 Java SDK for Nervos [CKB](https://github.com/nervosnetwork/ckb).
 
-The ckb-sdk-java is still under development and considered to be a work in progress. You should get familiar
-with CKB transaction structure and RPC before using it.
-
-**Note: All RPC methods in the indexer module have been deprecated since CKB version `v0.36.0` and
-they have been removed in the CKB version of `v0.40.0`. We strongly recommend migrating to
-the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) as soon as possible. You can refer
-to
-the [examples](https://github.com/nervosnetwork/ckb-sdk-java/tree/develop/example/src/main/java/org/nervos/ckb)
-of the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) in this project.**
-
 ### Prerequisites
 
 * Java 8
@@ -24,47 +14,7 @@ of the [ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) in this proje
 
 ### Installation
 
-#### Install from repositories:
-
-##### version <= 0.24.0
-
-- Maven
-
-```
-<dependency>
-  <groupId>org.nervos.ckb</groupId>
-  <artifactId>core</artifactId>
-  <version>{version}</version>
-</dependency>
-```
-
-- Gradle
-
-```
-implementation 'org.nervos.ckb:core:{version}'
-```
-
-##### version >= 0.24.1
-
-- Maven
-
-```
-<dependency>
-  <groupId>org.nervos.ckb</groupId>
-  <artifactId>ckb</artifactId>
-  <version>{version}</version>
-</dependency>
-```
-
-- Gradle
-
-```
-implementation 'org.nervos.ckb:ckb:{version}'
-```
-
-##### version >= 0.43.0
-
-- Maven
+Maven
 
 ```
 <dependency>
@@ -74,45 +24,15 @@ implementation 'org.nervos.ckb:ckb:{version}'
 </dependency>
 ```
 
-- Gradle
+Gradle
 
 ```
 implementation 'org.nervos.ckb-api:ckb:{version}'
 ```
 
-#### Install manually
+### Build
 
-You can generate the jar and import manually.
-
-```shell
-git clone https://github.com/nervosnetwork/ckb-sdk-java.git
-
-cd ckb-sdk-java
-
-gradle shadowJar  // ./gradlew shadowJar 
-```
-
-##### version <= 0.24.0
-
-A `console-{version}-all.jar` package will be generated in `console/build/libs`, which you can put
-into your project to develop with it.
-
-##### version >= 0.24.1
-
-A `ckb-sdk-{version}-all.jar` package will be generated in `ckb-sdk/build/libs`, which you can put
-into your project to develop with it.
-
-If you don't want to generate the jar by yourself, you can download a build
-from [releases](https://github.com/nervosnetwork/ckb-sdk-java/releases).
-
-#### Import Jar to Project
-
-When you need to import `ckb-java-sdk` dependency to your project, you can add
-the `console-{version}-all.jar`
-or `ckb-sdk-{version}-all.jar` to your project `libs` package.
-
-If you use Java IDE (eg. IntelliJ IDEA or Eclipse or other Editors), you can import jar according to
-IDE option help documents.
+Run `gradle build` in project root directory.
 
 ## Quick start
 
