@@ -61,20 +61,40 @@ For more details about RPC APIs, please check:
 - [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
 - [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
 
-### Mercury
+### Build transaction with indexer
 
-[Mercury](https://github.com/nervosnetwork/mercury) is a development service in CKB ecosystem, providing many
-useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like querying
-transaction or getting udt asset information. You need to deploy your own mercury and sync data with the network before
-using it.
+[ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) is an application to collect cells and transaction from CKB
+chain. With ckb-indexer to collect live cells we can build transaction easily.
 
-ckb-java-sdk also integrate with Mercury. For usage guide, please check
-the [examples](./ckb-api/src/test/java/org/nervos/api/mercury).
+ckb-java-sdk encapsulates the common logic into user-friendly transaction builder. It could greatly free you from
+getting into script details and from tedious manual work of building transaction including adding celldeps, transaction
+fee calculation, change output set and so on.
 
-### Build transaction
+Here is an example to build a CKB transfer transaction with the help of transaction builder and ckb-indexer.
 
-You can build a transaction by manual, or by calling mercury JSON-RPC API. We recommend the latter.
-Here we shows how to do it.
+```java
+String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
+String receiver = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf";
+Iterator<TransactionInput> iterator = new InputIterator(sender);
+TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, Network.TESTNET)
+    .addOutput(receiver, 50100000000L)
+    .setFeeRate(1000)
+    .setChangeOutput(sender)
+    .build();
+```
+
+For more use cases of building transaction with ckb-indexer, please refer
+to [these examples](./example/src/main/java/org/nervos/ckb/example).
+
+### Build transaction with Mercury
+
+[Mercury](https://github.com/nervosnetwork/mercury) is an application for better interaction with CKB chain, providing
+many useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like
+querying transaction or getting UDT asset information. You need to deploy your own mercury server and sync data with the
+latest network before using it.
+
+Mercury is another way to build transaction. With the help of Mercury, you can build a transaction by simply calling a
+JSON-RPC API. Here we show how to build a CKB transfer transaction with mercury.
 
 ```java
 String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq0yvcdtsu5wcr2jldtl72fhkruf0w5vymsp6rk9r";
@@ -90,8 +110,13 @@ builder.assetInfo(AssetInfo.newCkbAsset());
 TransactionWithScriptGroups txWithScriptGroups = api.buildSimpleTransferTransaction(builder.build());
 ```
 
+For more use cases of mercury, please refer to [these test cases](./ckb-mercury-sdk/src/test/java/mercury)
+and [Mercury JSON-RPC documentation](https://github.com/nervosnetwork/mercury/blob/dev-0.4/core/rpc/README.md).
+
 ### Sign and send transaction
+
 To send transaction you build to CKB network, you need to
+
 1. sign transaction with your private key.
 2. send signed transaction to CKB node, and wait it to be confirmed.
 
@@ -99,6 +124,8 @@ To send transaction you build to CKB network, you need to
 // Before signing and sending transaction, you need to prepare a raw transaction represented by a instance of class `TransactionWithScriptGroups`
 // You can get it by `merucyrApi` or construct it by mamual.
 
+// 0. Set your private key
+String privateKey = "0x6c9ed03816e31...";
 // 1. Sign transaction with your private key
 TransactionSigner.getInstance(Network.TESTNET).signTransaction(txWithScriptGroups, privateKey);
 // 2. Send transaction to CKB node
