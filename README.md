@@ -120,10 +120,9 @@ To send transaction you build to CKB network, you need to
 1. sign transaction with your private key.
 2. send signed transaction to CKB node, and wait it to be confirmed.
 
-```java
-// Before signing and sending transaction, you need to prepare a raw transaction represented by a instance of class `TransactionWithScriptGroups`
-// You can get it by `merucyrApi` or construct it by manual.
+Before signing and sending transaction, you need to prepare a raw transaction represented by an instance of class `TransactionWithScriptGroups`. You can get it [by Mercury](#Build-transaction-with-Mercury) or [by ckb-indexer](#Build-transaction-with-indexer)
 
+```java
 // 0. Set your private key
 String privateKey = "0x6c9ed03816e31...";
 // 1. Sign transaction with your private key
