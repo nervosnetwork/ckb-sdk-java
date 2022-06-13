@@ -1,4 +1,4 @@
-We roll out a brand new ckb-java-sdk after a refactor work. The new sdk brings plenty of BREAKING CHANGES incompatible with the deprecated sdk `v1.0.*` and earlier releases.
+We roll out a brand new ckb-java-sdk after refactor work. The new sdk brings plenty of BREAKING CHANGES incompatible with the deprecated sdk `v1.0.*` and earlier releases.
 
 The breaking changes include
 
@@ -67,9 +67,9 @@ Type should be changed like this in all places where the hash is used.
 
 To align with [CKB RPC Types](https://github.com/nervosnetwork/ckb/tree/develop/rpc#rpc-types), the new sdk represents `Uint32` by `int`, `Uint64` by `long` and `Uint128` by `BigInteger` for corresponding data. The deprecated sdk does not obey this rule strictly.
 
-Because the number is signed in java but is unsigned in CKB RPC, you should operate the these numeric variables in an unsigned way in sdk.
+Because the number is signed in java but is unsigned in CKB RPC, you should operate these numeric variables in an unsigned way in sdk.
 
-Let's take [Capacity](https://github.com/nervosnetwork/ckb/tree/develop/rpc#type-capacity), one of the most frequently used field, for example. The deprecated sdk represents capacity by `BigInteger`, while the new sdk represents it by `long`. The `long` here should be regarded as a **unsigned** `long` in numerical processing. That is to say, for safety you had better use the following methods for the specific purpose of capacity operation
+Let's take [Capacity](https://github.com/nervosnetwork/ckb/tree/develop/rpc#type-capacity), one of the most frequently used fields, for example. The deprecated sdk represents capacity by `BigInteger`, while the new sdk represents it by `long`. The `long` here should be regarded as a **unsigned** `long` in numerical processing. That is to say, for safety you had better use the following methods for the specific purpose of capacity operation
 
 - `Long#compare`
 - `Long#divideUnsigned`

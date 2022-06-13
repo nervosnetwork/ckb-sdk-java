@@ -22,7 +22,7 @@ Transaction examples include simple signature transaction and multi-sig transact
 
 Anyone can issue his own SUDT, or transfer a specific kind of SUDT if he has enough SUDT amount. SUDT smart contract should be used in type script in these transactions.
 
-Check the example [issueSudtExample](./src/main/java/org/nervos/ckb/example/issueSudtExample.java) and [SendSudtExample](./src/main/java/org/nervos/ckb/example/SendSudtExample.java) to learn how to issue and transfer SUDT.
+Check the example [IssueSudtExample](./src/main/java/org/nervos/ckb/example/IssueSudtExample.java) and [SendSudtExample](./src/main/java/org/nervos/ckb/example/SendSudtExample.java) to learn how to issue and transfer SUDT.
 
 ### Nervos DAO Examples
 

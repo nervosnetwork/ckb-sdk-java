@@ -63,10 +63,10 @@ For more details about RPC APIs, please check:
 
 ### Build transaction with indexer
 
-[ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) is an application to collect cells and transaction from CKB
-chain. With ckb-indexer to collect live cells we can build transaction easily.
+[ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) is an application to collect cells and transactions from CKB
+chain. With ckb-indexer to collect live cells, we can build transactions easily.
 
-ckb-java-sdk encapsulates the common logic into user-friendly transaction builder. It could greatly free you from
+ckb-java-sdk encapsulates the common logic into a user-friendly transaction builder. It could greatly free you from
 getting into script details and from tedious manual work of building transaction including adding celldeps, transaction
 fee calculation, change output set and so on.
 
@@ -90,7 +90,7 @@ to [these examples](./example/src/main/java/org/nervos/ckb/example).
 
 [Mercury](https://github.com/nervosnetwork/mercury) is an application for better interaction with CKB chain, providing
 many useful [RPC APIs](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md) for development like
-querying transaction or getting UDT asset information. You need to deploy your own mercury server and sync data with the
+querying transactions or getting UDT asset information. You need to deploy your own mercury server and sync data with the
 latest network before using it.
 
 Mercury is another way to build transaction. With the help of Mercury, you can build a transaction by simply calling a
@@ -122,7 +122,7 @@ To send transaction you build to CKB network, you need to
 
 ```java
 // Before signing and sending transaction, you need to prepare a raw transaction represented by a instance of class `TransactionWithScriptGroups`
-// You can get it by `merucyrApi` or construct it by mamual.
+// You can get it by `merucyrApi` or construct it by manual.
 
 // 0. Set your private key
 String privateKey = "0x6c9ed03816e31...";
