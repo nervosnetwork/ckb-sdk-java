@@ -9,7 +9,7 @@ The breaking changes include
 - Operation support for most common scripts.
 - Clean some utils classes and unused classes.
 
-Other underlying breaking changes that a possibly transparent to you
+Other underlying breaking changes that are possibly transparent to you
 
 - Molecule serialization in a code-generated way.
 - Unify type adapter for Gson serialization.

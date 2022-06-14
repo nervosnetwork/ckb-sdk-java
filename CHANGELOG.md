@@ -1,8 +1,30 @@
+# 2.0.0 (2022-06-14)
+
+2.0.0 is a refactored ckb-java-sdk release and brings plenty of BREAKING CHANGES compared with `v1.0.*` and the earlier releases.
+
+Breaking changes related with user interfaces
+
+- Type or name change of quite a few fields in RPC type representation.
+- Unified address representation and operation.
+- Transaction signing mechanism by `ScriptGroup`, `ScriptSigner`, and `TransactionSigner`.
+- `TransactionBuilder` and `ScriptHandler` for transaction construction by manual.
+- Operation support for most common scripts.
+- Clean some utils classes and unused classes.
+
+Underlying breaking changes that less likely need users' changes
+
+- Molecule serialization in a code-generated way.
+- Unify type adapter for Gson serialization.
+- More robust test.
+
+Check [migration-guide.md](./docs/migration-guide.md) for more details.
+
 # 1.0.0 (2022-03-17)
 
 ## Breaking Changes
 
 - feat: Replace Record Id with Outpoint (#534)
+
 # 0.101.3 (2022-01-21)
 
 ## 🚀 Features
