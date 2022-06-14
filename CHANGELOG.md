@@ -1,19 +1,50 @@
-# 1.0.2 (2022-05-27)
+# 2.0.0 (2022-06-14)
 
-## 🚀 Features
+2.0.0 is a refactored ckb-java-sdk release and brings plenty of BREAKING CHANGES compared with  and the earlier releases.
 
-- feat: check address strictly (#550)
+Breaking changes related to user interfaces
 
-# 1.0.1 (2022-05-06)
+- Type or name change of quite a few fields in RPC type representation.
+- Unified address representation and operation.
+- Transaction signing mechanism by , , and .
+-  and  for transaction construction by manual.
+- Operation support for most common scripts.
+- Clean some utils classes and unused classes.
 
-## 🐛 Bug Fixes
+Underlying breaking changes that are less likely to need users' changes
 
-- fix: close OK http client (#544)
+- Molecule serialization in a code-generated way.
+- Unify type adapter for Gson serialization.
+- More robust test.
+
+Check [migration-guide.md](./docs/migration-guide.md) for more details if you are migrating from earlier version to 2.0.0.
+# 2.0.0 (2022-06-14)
+
+2.0.0 is a refactored ckb-java-sdk release and brings plenty of BREAKING CHANGES compared with `v1.0.*` and the earlier releases.
+
+Breaking changes related with user interfaces
+
+- Type or name change of quite a few fields in RPC type representation.
+- Unified address representation and operation.
+- Transaction signing mechanism by `ScriptGroup`, `ScriptSigner`, and `TransactionSigner`.
+- `TransactionBuilder` and `ScriptHandler` for transaction construction by manual.
+- Operation support for most common scripts.
+- Clean some utils classes and unused classes.
+
+Underlying breaking changes that less likely need users' changes
+
+- Molecule serialization in a code-generated way.
+- Unify type adapter for Gson serialization.
+- More robust test.
+
+Check [migration-guide.md](./docs/migration-guide.md) for more details.
+
 # 1.0.0 (2022-03-17)
 
 ## Breaking Changes
 
 - feat: Replace Record Id with Outpoint (#534)
+
 # 0.101.3 (2022-01-21)
 
 ## 🚀 Features
@@ -24,38 +55,38 @@
 
 ## 🚀 Features
 
-- feat: add method for legacy address conversion (#514)
+- feat: add method for legacy address conversion (#514) @fjchen7
 
 ## 🐛 Bug Fixes
 
-- fix: improve address validation (#515)
-- fix: fix PR labler not permission (#516)
+- fix: improve address validation (#515) @fjchen7
+- fix: fix PR labler not permission (#516) @fjchen7
 
 ## 🧰 Maintenance
 
-- chore: fix release github action (#513)
+- chore: fix release github action (#513) @fjchen7
 
 ## 0.101.1 (2021-12-01)
 
 ## 🚀 Features
 
-- feat: adopt full address by default (#506)
-- feat: add enum Freeze in extraFilter (#508)
-- feat(mercury): support `build_sudt_issue_transaction` (#501)
-- feat(mercury): add build\_sudt\_issue\_transaction test (#502)
+- feat: adopt full address by default (#506) @fjchen7
+- feat: add enum Freeze in extraFilter (#508) @fjchen7
+- feat(mercury): support `build_sudt_issue_transaction` (#501) @handsome0hell
+- feat(mercury): add build\_sudt\_issue\_transaction test (#502) @rev-chaos
 
 ## 🐛 Bug Fixes
 
-- fix: replace short address with bech32m full address in test (#511)
+- fix: replace short address with bech32m full address in test (#511) @fjchen7
 
 ## 🧰 Maintenance
 
-- chore: label PR based on title (#507)
-- chore: add CICD github actions (#505)
+- chore: label PR based on title (#507) @fjchen7
+- chore: add CICD github actions (#505) @fjchen7
 
 ## 📝 Document
 
-- docs: update README for default address (#510)
+- docs: update README for default address (#510) @fjchen7
 
 # [v0.101.1](https://github.com/nervosnetwork/ckb-sdk-java/compare/v0.101.1...v0.101.0-beta.1) (2021-12-01)
 ### Feature
