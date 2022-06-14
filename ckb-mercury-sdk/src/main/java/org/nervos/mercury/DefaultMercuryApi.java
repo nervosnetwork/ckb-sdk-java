@@ -98,7 +98,7 @@ public class DefaultMercuryApi extends DefaultIndexerApi implements MercuryApi {
     return this.rpcService.post(
         RpcMethods.REGISTER_ADDRESS,
         Arrays.asList(normalAddresses),
-        new TypeToken<List<String>>() {
+        new TypeToken<List<byte[]>>() {
         }.getType(),
         this.g);
   }
