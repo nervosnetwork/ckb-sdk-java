@@ -15,6 +15,7 @@ public class TransferPayloadBuilder extends TransferPayload {
   public TransferPayloadBuilder() {
     this.assetInfo = AssetInfo.newCkbAsset();
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
+    this.to = new ArrayList<>();
   }
 
   public void addFrom(Item from) {
@@ -29,11 +30,12 @@ public class TransferPayloadBuilder extends TransferPayload {
   }
 
   public void addTo(String address, BigInteger amount) {
-    if (this.to == null) {
-      this.to = new ArrayList<>();
-    }
     ToInfo toInfo = new ToInfo(address, amount);
     this.to.add(toInfo);
+  }
+
+  public void addTo(String address, long amount) {
+    addTo(address, BigInteger.valueOf(amount));
   }
 
   public void payFee(PayFee payFee) {

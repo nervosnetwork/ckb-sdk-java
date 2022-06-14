@@ -29,6 +29,10 @@ public class SimpleTransferPayloadBuilder extends SimpleTransferPayload {
     this.to.add(toInfo);
   }
 
+  public void addTo(String address, long amount) {
+    addTo(address, BigInteger.valueOf(amount));
+  }
+
   public void feeRate(Long feeRate) {
     this.feeRate = feeRate;
   }
