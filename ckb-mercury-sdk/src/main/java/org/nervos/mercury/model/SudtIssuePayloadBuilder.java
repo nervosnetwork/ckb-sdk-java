@@ -26,6 +26,10 @@ public class SudtIssuePayloadBuilder extends SudtIssuePayload {
     this.to.add(new ToInfo(address, amount));
   }
 
+  public void addTo(String address, long amount) {
+    addTo(address, BigInteger.valueOf(amount));
+  }
+
   public void addFrom(Item from) {
     this.from.add(from);
   }
