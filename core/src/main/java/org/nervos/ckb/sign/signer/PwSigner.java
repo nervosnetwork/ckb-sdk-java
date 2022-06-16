@@ -16,9 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PwSigner implements ScriptSigner {
-  private static final int WITNESS_OFFSET_IN_BYTE = 20;
-  private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
-
   private static PwSigner INSTANCE;
 
   private PwSigner() {
