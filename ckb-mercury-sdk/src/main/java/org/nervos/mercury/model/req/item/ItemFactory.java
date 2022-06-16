@@ -1,13 +1,15 @@
 package org.nervos.mercury.model.req.item;
 
 import org.bouncycastle.util.encoders.Hex;
+import org.nervos.ckb.Network;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.address.Address;
 
 import java.util.Arrays;
 
-import static org.nervos.ckb.type.Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
+import static org.nervos.ckb.type.Script.*;
 
 // https://github.com/XuJiandong/docs-bank/blob/master/omni_lock.md#auth
 public class ItemFactory {
@@ -31,15 +33,47 @@ public class ItemFactory {
   }
 
   public static Item newIdentityItemBySecp256k1Blake160SignhashAllAddress(String address) {
-    org.nervos.ckb.utils.address.Address addr = org.nervos.ckb.utils.address.Address.decode(address);
-    Script script = addr.getScript();
+    Script script = Address.decode(address).getScript();
     if (!Arrays.equals(SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, script.codeHash)) {
-      throw new IllegalArgumentException("address is not a SECP256_BLAKE160_SIGNHASH_ALL address");
+      throw new IllegalArgumentException("not a secp256k1_blake160_signhash_all address");
     }
     if (script.hashType != Script.HashType.TYPE) {
       throw new IllegalArgumentException("address hash type should be TYPE");
     }
     return newIdentityItemByCkb(script.args);
+  }
+
+  /**
+   * Create a new identity item from secp256k1_blake160_signhash_all or ACP address
+   *
+   * @param address a secp256_blake160_signhash_all or ACP address
+   * @return a new identity item
+   */
+  public static Item newIdentityItemByAddress(String address) {
+    Address a = Address.decode(address);
+    if (!isValidAddress(a)) {
+      throw new IllegalArgumentException("not a valid secp256k1_blake160_signhash_all or ACP address");
+    }
+    byte[] args = new byte[20];
+    System.arraycopy(a.getScript().args, 0, args, 0, 20);
+    return newIdentityItemByCkb(args);
+  }
+
+  /**
+   * Check if the address is a valid secp256k1_blake160_signhash_all or ACP address.
+   */
+  private static boolean isValidAddress(Address address) {
+    Script script = address.getScript();
+    Network network = address.getNetwork();
+    if (script.hashType != Script.HashType.TYPE) {
+      return false;
+    }
+    if (Arrays.equals(SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, script.codeHash)
+        || (Network.TESTNET == network && Arrays.equals(ANY_CAN_PAY_CODE_HASH_TESTNET, script.codeHash)
+        || (Network.MAINNET == network && Arrays.equals(ANY_CAN_PAY_CODE_HASH_MAINNET, script.codeHash)))) {
+      return true;
+    }
+    return false;
   }
 
   public static Item newOutPointItem(byte[] txHash, int index) {
