@@ -32,23 +32,35 @@ public class ItemFactory {
     return newIdentityItemByCkb(Numeric.hexStringToByteArray(pubKeyHash));
   }
 
+  public static Item newIdentityItemBySecp256k1Blake160SignhashAllAddress(String address) {
+    Script script = Address.decode(address).getScript();
+    if (!Arrays.equals(SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, script.codeHash)) {
+      throw new IllegalArgumentException("not a secp256k1_blake160_signhash_all address");
+    }
+    if (script.hashType != Script.HashType.TYPE) {
+      throw new IllegalArgumentException("address hash type should be TYPE");
+    }
+    return newIdentityItemByCkb(script.args);
+  }
+
   /**
-   * Create a new identity item from secp256_blake160_signhash_all or ACP address
+   * Create a new identity item from secp256k1_blake160_signhash_all or ACP address
    *
    * @param address a secp256_blake160_signhash_all or ACP address
    * @return a new identity item
    */
   public static Item newIdentityItemByAddress(String address) {
     Address a = Address.decode(address);
-    Script script = a.getScript();
     if (!isValidAddress(a)) {
-      throw new IllegalArgumentException("not a valid secp256_blake160_signhash_all or ACP address");
+      throw new IllegalArgumentException("not a valid secp256k1_blake160_signhash_all or ACP address");
     }
-    return newIdentityItemByCkb(script.args);
+    byte[] args = new byte[20];
+    System.arraycopy(a.getScript().args, 0, args, 0, 20);
+    return newIdentityItemByCkb(args);
   }
 
   /**
-   * Check if the address is a valid secp256_blake160_signhash_all or ACP address.
+   * Check if the address is a valid secp256k1_blake160_signhash_all or ACP address.
    */
   private static boolean isValidAddress(Address address) {
     Script script = address.getScript();
