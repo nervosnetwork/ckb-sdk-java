@@ -8,7 +8,4 @@ public class DaoClaimPayload {
   public List<Item> from;
   public String to;
   public Long feeRate;
-
-  protected DaoClaimPayload() {
-  }
 }

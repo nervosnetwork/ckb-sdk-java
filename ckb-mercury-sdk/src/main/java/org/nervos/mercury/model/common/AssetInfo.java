@@ -4,7 +4,7 @@ public class AssetInfo {
   public AssetType assetType;
   public byte[] udtHash;
 
-  private AssetInfo(AssetType assetType, byte[] udtHash) {
+  public AssetInfo(AssetType assetType, byte[] udtHash) {
     this.assetType = assetType;
     this.udtHash = udtHash;
   }

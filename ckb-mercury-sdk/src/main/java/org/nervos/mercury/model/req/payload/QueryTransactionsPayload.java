@@ -12,7 +12,4 @@ public class QueryTransactionsPayload {
   public Range blockRange;
   public PaginationRequest pagination;
   public StructureType structureType;
-
-  protected QueryTransactionsPayload() {
-  }
 }

@@ -16,7 +16,7 @@ public class Record {
   public long blockNumber;
   public long epochNumber;
 
-  enum IoType {
+  public enum IoType {
     @SerializedName("Input")
     INPUT,
     @SerializedName("Output")

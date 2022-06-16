@@ -12,7 +12,4 @@ public class SimpleTransferPayload {
   public List<ToInfo> to;
   public Long feeRate;
   public SinceConfig since;
-
-  protected SimpleTransferPayload() {
-  }
 }

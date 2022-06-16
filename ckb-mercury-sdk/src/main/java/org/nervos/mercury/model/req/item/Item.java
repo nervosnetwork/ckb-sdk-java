@@ -13,12 +13,12 @@ public class Item {
   Type type;
   Object value;
 
-  protected Item(Type type, Object value) {
+  public Item(Type type, Object value) {
     this.type = type;
     this.value = value;
   }
 
-  enum Type {
+  public enum Type {
     @SerializedName("Identity")
     IDENTITY,
     @SerializedName("Address")

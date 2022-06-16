@@ -6,7 +6,7 @@ public class MercurySyncState {
   public State type;
   public SyncInfo value;
 
-  enum State {
+  public enum State {
     @SerializedName("ReadOnly")
     READ_ONLY,
     @SerializedName("Serial")
@@ -17,7 +17,7 @@ public class MercurySyncState {
     PARALLEL_SECOND_STAGE,
   }
 
-  class SyncInfo {
+  public static class SyncInfo {
     public long current;
     public long target;
     public String progress;

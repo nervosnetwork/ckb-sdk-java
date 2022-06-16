@@ -12,7 +12,4 @@ public class AdjustAccountPayload {
   public Integer accountNumber;
   public Long extraCkb;
   public Long feeRate;
-
-  protected AdjustAccountPayload() {
-  }
 }
