@@ -39,7 +39,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     setSudtArgs(sudtOwnerAddress);
   }
 
-  private SudtTransactionBuilder setSudtArgs(byte[] sudtArgs) {
+  public SudtTransactionBuilder setSudtArgs(byte[] sudtArgs) {
     byte[] codeHash;
     if (network == Network.TESTNET) {
       codeHash = Script.SUDT_CODE_HASH_TESTNET;
@@ -55,7 +55,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  private SudtTransactionBuilder setSudtArgs(String sudtOwnerAddress) {
+  public SudtTransactionBuilder setSudtArgs(String sudtOwnerAddress) {
     byte[] sudtArgs = Address.decode(sudtOwnerAddress).getScript().computeHash();
     return setSudtArgs(sudtArgs);
   }
