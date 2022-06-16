@@ -13,7 +13,4 @@ public class SudtIssuePayload {
   public CapacityProvider outputCapacityProvider;
   public Long feeRate = 1000L;
   public SinceConfig since;
-
-  protected SudtIssuePayload() {
-  }
 }

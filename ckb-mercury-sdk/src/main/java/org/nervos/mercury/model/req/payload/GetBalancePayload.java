@@ -9,7 +9,4 @@ public class GetBalancePayload {
   public Item item;
   public Set<AssetInfo> assetInfos;
   public Long tipBlockNumber;
-
-  protected GetBalancePayload() {
-  }
 }

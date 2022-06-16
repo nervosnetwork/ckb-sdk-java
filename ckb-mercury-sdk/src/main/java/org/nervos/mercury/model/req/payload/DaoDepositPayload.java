@@ -9,7 +9,4 @@ public class DaoDepositPayload {
   public String to;
   public long amount;
   public Long feeRate;
-
-  protected DaoDepositPayload() {
-  }
 }

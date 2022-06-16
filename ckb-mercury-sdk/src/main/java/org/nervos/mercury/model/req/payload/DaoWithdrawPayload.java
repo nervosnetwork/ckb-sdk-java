@@ -7,7 +7,4 @@ import java.util.List;
 public class DaoWithdrawPayload {
   public List<Item> from;
   public Long feeRate;
-
-  protected DaoWithdrawPayload() {
-  }
 }
