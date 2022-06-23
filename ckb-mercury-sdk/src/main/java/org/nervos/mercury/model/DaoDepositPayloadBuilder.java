@@ -9,12 +9,10 @@ import java.util.ArrayList;
 public class DaoDepositPayloadBuilder extends DaoDepositPayload {
   public DaoDepositPayloadBuilder() {
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
+    this.from = new ArrayList<>();
   }
 
   public void addFrom(Item from) {
-    if (this.from == null) {
-      this.from = new ArrayList<>();
-    }
     this.from.add(from);
   }
 
