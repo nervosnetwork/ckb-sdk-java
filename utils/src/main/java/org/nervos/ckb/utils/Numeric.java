@@ -116,7 +116,7 @@ public final class Numeric {
     }
 
     if (length < size) {
-      result = Strings.zeros(size - length) + result;
+      result = repeat('0', size - length) + result;
     }
 
     if (withPrefix) {
@@ -124,6 +124,10 @@ public final class Numeric {
     } else {
       return result;
     }
+  }
+
+  private static String repeat(char value, int n) {
+    return new String(new char[n]).replace("\0", String.valueOf(value));
   }
 
   public static byte[] toBytesPadded(BigInteger value, int length) {
