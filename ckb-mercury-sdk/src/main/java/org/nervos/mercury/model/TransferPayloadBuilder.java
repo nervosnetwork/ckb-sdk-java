@@ -4,6 +4,7 @@ import org.nervos.mercury.FeeConstant;
 import org.nervos.mercury.model.common.AssetInfo;
 import org.nervos.mercury.model.req.ToInfo;
 import org.nervos.mercury.model.req.item.Item;
+import org.nervos.mercury.model.req.payload.CapacityProvider;
 import org.nervos.mercury.model.req.payload.TransferPayload;
 import org.nervos.mercury.model.req.since.SinceConfig;
 
@@ -15,13 +16,11 @@ public class TransferPayloadBuilder extends TransferPayload {
   public TransferPayloadBuilder() {
     this.assetInfo = AssetInfo.newCkbAsset();
     this.feeRate = FeeConstant.DEFAULT_FEE_RATE;
+    this.from = new ArrayList<>();
     this.to = new ArrayList<>();
   }
 
   public void addFrom(Item from) {
-    if (this.from == null) {
-      this.from = new ArrayList<>();
-    }
     this.from.add(from);
   }
 
@@ -38,6 +37,10 @@ public class TransferPayloadBuilder extends TransferPayload {
     addTo(address, BigInteger.valueOf(amount));
   }
 
+  public void outputCapacityProvider(CapacityProvider outputCapacityProvider) {
+    this.outputCapacityProvider = outputCapacityProvider;
+  }
+
   public void payFee(PayFee payFee) {
     this.payFee = payFee;
   }
@@ -51,9 +54,6 @@ public class TransferPayloadBuilder extends TransferPayload {
   }
 
   public TransferPayload build() {
-    assert !(this.from == null) : "from not null";
-    assert !(this.to == null) : "items not null";
-
     return this;
   }
 }

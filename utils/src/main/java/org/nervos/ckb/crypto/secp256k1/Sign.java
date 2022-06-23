@@ -17,8 +17,6 @@ import org.nervos.ckb.utils.Numeric;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import static org.nervos.ckb.utils.Assertions.verifyPrecondition;
-
 /*
  * Copyright 2019 Web3 Labs Ltd.
  *
@@ -76,6 +74,18 @@ public class Sign {
     byte[] s = Numeric.toBytesPadded(sig.s, 32);
 
     return new SignatureData(v, r, s);
+  }
+ 
+  /**
+   * Verify that the provided precondition holds true.
+   *
+   * @param assertionResult assertion value
+   * @param errorMessage    error message if precondition failure
+   */
+  private static void verifyPrecondition(boolean assertionResult, String errorMessage) {
+    if (!assertionResult) {
+      throw new RuntimeException(errorMessage);
+    }
   }
 
   /**
