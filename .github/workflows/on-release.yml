@@ -17,8 +17,8 @@ jobs:
       - name: Commit and create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: 'chore: update CHANGELOG.md for release ${{ github.event.release.tag_name }}'
-          branch: chore/update-CHANGELOG-for-release-${{ github.event.release.tag_name }}
-          base: master
+          commit-message: 'chore: release ${{ github.event.release.tag_name }}'
+          branch: chore/release-${{ github.event.release.tag_name }}
+          base: develop
           author: github-actions <noreply@github.com>
           title: 'Update CHANGELOG for release ${{ github.event.release.tag_name }}'
