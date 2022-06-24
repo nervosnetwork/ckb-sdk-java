@@ -1,9 +1,6 @@
 package org.nervos.mercury.model;
 
-import org.nervos.mercury.model.common.AssetInfo;
-import org.nervos.mercury.model.common.ExtraFilter;
-import org.nervos.mercury.model.common.PaginationRequest;
-import org.nervos.mercury.model.common.Range;
+import org.nervos.mercury.model.common.*;
 import org.nervos.mercury.model.req.item.Item;
 import org.nervos.mercury.model.req.payload.QueryTransactionsPayload;
 
@@ -49,6 +46,10 @@ public class QueryTransactionsPayloadBuilder extends QueryTransactionsPayload {
 
   public void extra(ExtraFilter.Type extra) {
     this.extra = extra;
+  }
+
+  public void structureType(StructureType structureType) {
+    this.structureType = structureType;
   }
 
   public QueryTransactionsPayload build() {

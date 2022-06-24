@@ -1,3 +1,16 @@
+# 2.0.2 (2022-06-24)
+
+## 🚀 Features
+
+- feat: enhance mercury builder (#570)
+
+# 2.0.1 (2022-06-16)
+
+## 🚀 Features
+
+- feat: make mercury enum public (#566)
+- feat: add more easy-use mercury tool methods (#565)
+
 # 2.0.0 (2022-06-14)
 
 2.0.0 is a refactored ckb-java-sdk release and brings plenty of BREAKING CHANGES compared with `v1.0.*` and the earlier releases.

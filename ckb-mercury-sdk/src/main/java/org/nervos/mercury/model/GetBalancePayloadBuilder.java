@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class GetBalancePayloadBuilder extends GetBalancePayload {
 
   public GetBalancePayloadBuilder() {
-    this.assetInfos = new HashSet<>(2, 1);
+    this.assetInfos = new HashSet<>();
   }
 
   public void item(Item item) {
@@ -17,9 +17,6 @@ public class GetBalancePayloadBuilder extends GetBalancePayload {
   }
 
   public void addAssetInfo(AssetInfo info) {
-    if (this.assetInfos == null) {
-      this.assetInfos = new HashSet<>();
-    }
     this.assetInfos.add(info);
   }
 
