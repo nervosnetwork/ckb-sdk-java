@@ -20,9 +20,9 @@ public class TransactionSigner {
   static {
     TESTNET_TRANSACTION_SIGNER = new TransactionSigner()
         .registerLockScriptSigner(
-            Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
         .registerLockScriptSigner(
-            Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
         .registerLockScriptSigner(
             Script.ANY_CAN_PAY_CODE_HASH_TESTNET, AcpSigner.getInstance())
         .registerLockScriptSigner(
@@ -30,9 +30,9 @@ public class TransactionSigner {
 
     MAINNET_TRANSACTION_SIGNER = new TransactionSigner()
         .registerLockScriptSigner(
-            Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
         .registerLockScriptSigner(
-            Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
         .registerLockScriptSigner(
             Script.ANY_CAN_PAY_CODE_HASH_MAINNET, AcpSigner.getInstance())
         .registerLockScriptSigner(

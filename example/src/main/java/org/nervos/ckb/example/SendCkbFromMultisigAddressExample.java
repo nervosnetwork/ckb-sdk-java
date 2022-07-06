@@ -25,7 +25,7 @@ public class SendCkbFromMultisigAddressExample {
     Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript =
         new Secp256k1Blake160MultisigAllSigner.MultisigScript(0, 2, keyHashes);
     Script lock = new Script(
-        Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH,
+        Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH,
         multisigScript.computeHash(),
         Script.HashType.TYPE);
     // ckt1qpw9q60tppt7l3j7r09qcp7lxnp3vcanvgha8pmvsa3jplykxn32sqdunqvd3g2felqv6qer8pkydws8jg9qxlca0st5v
