@@ -52,12 +52,12 @@ public class Secp256k1Blake160MultisigAllSignerTest {
 
   @Test
   public void testFirstSign() {
-    SignerChecker.signAndCheck("secp256k1_blake16_multisig_all_first");
+    SignerChecker.signAndCheck("secp256k1_blake160_multisig_all_first");
   }
 
   @Test
   public void testSecondSign() {
-    SignerChecker.signAndCheck("secp256k1_blake16_multisig_all_second");
+    SignerChecker.signAndCheck("secp256k1_blake160_multisig_all_second");
   }
 
 }
