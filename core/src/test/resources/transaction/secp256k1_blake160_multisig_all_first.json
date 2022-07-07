@@ -71,7 +71,7 @@
         },
         "group_type": "lock",
         "input_indices": [
-          0
+          "0x0"
         ],
         "output_indices": []
       }

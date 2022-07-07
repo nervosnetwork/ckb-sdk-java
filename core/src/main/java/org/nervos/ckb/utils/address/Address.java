@@ -79,12 +79,12 @@ public class Address {
       if (args.length != 20) {
         throw new AddressFormatException("Invalid args length " + args.length);
       }
-      codeHash = Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
+      codeHash = Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH;
     } else if (codeHashIndex == 0x01) {
       if (args.length != 20) {
         throw new AddressFormatException("Invalid args length " + args.length);
       }
-      codeHash = Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH;
+      codeHash = Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH;
     } else if (codeHashIndex == 0x02) {
       if (args.length < 20 || args.length > 22) {
         throw new AddressFormatException("Invalid args length " + args.length);
@@ -142,9 +142,9 @@ public class Address {
     byte[] payload = new byte[2 + script.args.length];
     byte codeHashIndex;
     byte[] codeHash = script.codeHash;
-    if (Arrays.equals(codeHash, Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH)) {
+    if (Arrays.equals(codeHash, Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH)) {
       codeHashIndex = 0x00;
-    } else if (Arrays.equals(codeHash, Script.SECP256_BLAKE160_MULTISIG_ALL_CODE_HASH)) {
+    } else if (Arrays.equals(codeHash, Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH)) {
       codeHashIndex = 0x01;
     } else if ((network == Network.MAINNET && Arrays.equals(codeHash, Script.ANY_CAN_PAY_CODE_HASH_MAINNET)
         || (network == Network.TESTNET && Arrays.equals(codeHash, Script.ANY_CAN_PAY_CODE_HASH_TESTNET)))) {

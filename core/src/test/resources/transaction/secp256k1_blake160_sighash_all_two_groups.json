@@ -93,7 +93,7 @@
         },
         "group_type": "lock",
         "input_indices": [
-          0
+          "0x0"
         ],
         "output_indices": []
       },
@@ -105,8 +105,8 @@
         },
         "group_type": "lock",
         "input_indices": [
-          1,
-          2
+          "0x1",
+          "0x2"
         ],
         "output_indices": []
       }
