@@ -165,7 +165,7 @@ public class Address {
     if (script.hashType == Script.HashType.TYPE) {
       payload[0] = 0x04;
     } else if (script.hashType == Script.HashType.DATA) {
-      payload[1] = 0x02;
+      payload[0] = 0x02;
     } else {
       throw new AddressFormatException("Unknown script hash type");
     }

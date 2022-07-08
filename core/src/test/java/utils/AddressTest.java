@@ -27,9 +27,9 @@ public class AddressTest {
       Numeric.hexStringToByteArray("bd07d9f32bce34d27152a6a0391d324f79aab854"),
       Script.HashType.TYPE);
 
-  private Script script4 = new Script(
-      Numeric.hexStringToByteArray("9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8"),
-      Numeric.hexStringToByteArray("b39bbc0b3673c7d36450bc14cfcdad2d559c6c64"),
+  private Script scriptWithHashTypeData = new Script(
+      Numeric.hexStringToByteArray("0x709f3fda12f561cfacf92273c57a98fede188a3f1a59b1f888d113f9cce08649"),
+      Numeric.hexStringToByteArray("0xb73961e46d9eb118d3de1d1e8f30b3af7bbf3160"),
       Script.HashType.DATA);
 
   @Test
@@ -51,10 +51,10 @@ public class AddressTest {
     assertEquals("ckb1qypt6p7e7v4uudxjw9f2dgper5ey77d2hp2qxz4u4u",
                  new Address(acpScript, Network.MAINNET).encodeShort());
 
-    assertEquals("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq9nnw7qkdnnclfkg59uzn8umtfd2kwxceqvguktl",
-                 new Address(script4, Network.MAINNET).encodeFullBech32m());
-    assertEquals("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq9nnw7qkdnnclfkg59uzn8umtfd2kwxceqz6hep8",
-                 new Address(script4, Network.TESTNET).encodeFullBech32m());
+    assertEquals("ckb1qfcf7076zt6krnavly3883t6nrlduxy28ud9nv0c3rg387wvuzryndeev8jxm843rrfau8g73uct8tmmhuckqy57acj",
+                 new Address(scriptWithHashTypeData, Network.MAINNET).encodeFullBech32());
+    assertEquals("ckb1qpcf7076zt6krnavly3883t6nrlduxy28ud9nv0c3rg387wvuzryjq9h89s7gmv7kyvd8hsar68npva00wlnzcqgh76tz",
+                 new Address(scriptWithHashTypeData, Network.MAINNET).encodeFullBech32m());
   }
 
   @Test
@@ -78,10 +78,10 @@ public class AddressTest {
     actual = Address.decode("ckb1qypt6p7e7v4uudxjw9f2dgper5ey77d2hp2qxz4u4u");
     assertEquals(new Address(acpScript, Network.MAINNET), actual);
 
-    actual = Address.decode("ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq9nnw7qkdnnclfkg59uzn8umtfd2kwxceqvguktl");
-    assertEquals(new Address(script4, Network.MAINNET), actual);
-    actual = Address.decode("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq9nnw7qkdnnclfkg59uzn8umtfd2kwxceqz6hep8");
-    assertEquals(new Address(script4, Network.TESTNET), actual);
+    actual = Address.decode("ckb1qfcf7076zt6krnavly3883t6nrlduxy28ud9nv0c3rg387wvuzryndeev8jxm843rrfau8g73uct8tmmhuckqy57acj");
+    assertEquals(new Address(scriptWithHashTypeData, Network.MAINNET), actual);
+    actual = Address.decode("ckb1qpcf7076zt6krnavly3883t6nrlduxy28ud9nv0c3rg387wvuzryjq9h89s7gmv7kyvd8hsar68npva00wlnzcqgh76tz");
+    assertEquals(new Address(scriptWithHashTypeData, Network.MAINNET), actual);
   }
 
 
