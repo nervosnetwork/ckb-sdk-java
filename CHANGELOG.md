@@ -1,9 +1,9 @@
 # 2.0.3 (2022-07-13)
 
-## 🚀 Features
+## 🐛 Bug Fixes
 
-- feat: fix signer test fixture (#575)
-- feat: fix incorrect index at method `encodeFullBech32` (#576)
+- fix: fix signer test fixture (#575)
+- fix: fix incorrect index at method `encodeFullBech32` (#576)
 
 # 2.0.2 (2022-06-24)
 
