@@ -36,7 +36,7 @@ public class Secp256k1Blake160SighashAllScriptHandler implements ScriptHandler {
     if (script == null) {
       return false;
     }
-    byte[] codeHash = Script.SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH;
+    byte[] codeHash = Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH;
     return Arrays.equals(script.codeHash, codeHash);
   }
 

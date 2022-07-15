@@ -34,7 +34,7 @@ public class ItemFactory {
 
   public static Item newIdentityItemBySecp256k1Blake160SignhashAllAddress(String address) {
     Script script = Address.decode(address).getScript();
-    if (!Arrays.equals(SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, script.codeHash)) {
+    if (!Arrays.equals(SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, script.codeHash)) {
       throw new IllegalArgumentException("not a secp256k1_blake160_signhash_all address");
     }
     if (script.hashType != Script.HashType.TYPE) {
@@ -46,7 +46,7 @@ public class ItemFactory {
   /**
    * Create a new identity item from secp256k1_blake160_signhash_all or ACP address
    *
-   * @param address a secp256_blake160_signhash_all or ACP address
+   * @param address a secp256k1_blake160_signhash_all or ACP address
    * @return a new identity item
    */
   public static Item newIdentityItemByAddress(String address) {
@@ -68,7 +68,7 @@ public class ItemFactory {
     if (script.hashType != Script.HashType.TYPE) {
       return false;
     }
-    if (Arrays.equals(SECP256_BLAKE160_SIGNHASH_ALL_CODE_HASH, script.codeHash)
+    if (Arrays.equals(SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, script.codeHash)
         || (Network.TESTNET == network && Arrays.equals(ANY_CAN_PAY_CODE_HASH_TESTNET, script.codeHash)
         || (Network.MAINNET == network && Arrays.equals(ANY_CAN_PAY_CODE_HASH_MAINNET, script.codeHash)))) {
       return true;

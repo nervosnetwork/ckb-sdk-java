@@ -33,21 +33,21 @@ public class Secp256k1Blake160SighashAllSignerTest {
 
   @Test
   void testSecp256k1Blake160OneInput() {
-    SignerChecker.signAndCheck("secp256k1_blake16_sighash_all_one_input");
+    SignerChecker.signAndCheck("secp256k1_blake160_sighash_all_one_input");
   }
 
   @Test
   void testSecp256k1Blake160OneGroup() {
-    SignerChecker.signAndCheck("secp256k1_blake16_sighash_all_one_group");
+    SignerChecker.signAndCheck("secp256k1_blake160_sighash_all_one_group");
   }
 
   @Test
   void testSecp256k1Blake160TwoGroups() {
-    SignerChecker.signAndCheck("secp256k1_blake16_sighash_all_two_groups");
+    SignerChecker.signAndCheck("secp256k1_blake160_sighash_all_two_groups");
   }
 
   @Test
   void testSecp256k1Blake160ExtraWitness() {
-    SignerChecker.signAndCheck("secp256k1_blake16_sighash_all_extra_witness");
+    SignerChecker.signAndCheck("secp256k1_blake160_sighash_all_extra_witness");
   }
 }
