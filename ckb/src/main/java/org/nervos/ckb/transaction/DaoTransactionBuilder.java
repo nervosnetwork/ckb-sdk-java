@@ -28,12 +28,12 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     CLAIM,
   }
 
-  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutpoint, Api api) throws IOException {
+  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutPoint, Api api) throws IOException {
     super(availableInputs, network);
     builder = new CkbTransactionBuilder(availableInputs, network);
     this.api = api;
-    CellInput cellInput = new CellInput(daoOutpoint, 0);
-    CellWithStatus cellWithStatus = api.getLiveCell(daoOutpoint, true);
+    CellInput cellInput = new CellInput(daoOutPoint, 0);
+    CellWithStatus cellWithStatus = api.getLiveCell(daoOutPoint, true);
     TransactionInput input = new TransactionInput(
         cellInput,
         cellWithStatus.cell.output,
@@ -41,12 +41,12 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     transactionType = getTransactionType(cellWithStatus.cell.data.content);
     switch (transactionType) {
       case WITHDRAW:
-        TransactionWithStatus txWithStatus = api.getTransaction(daoOutpoint.txHash);
+        TransactionWithStatus txWithStatus = api.getTransaction(daoOutPoint.txHash);
         depositBlockNumber = api.getHeader(txWithStatus.txStatus.blockHash).number;
-        depositCellCapacity = txWithStatus.transaction.outputs.get(daoOutpoint.index).capacity;
+        depositCellCapacity = txWithStatus.transaction.outputs.get(daoOutPoint.index).capacity;
         break;
       case CLAIM:
-        builder.reward += getDaoReward(daoOutpoint);
+        builder.reward += getDaoReward(daoOutPoint);
         break;
     }
     builder.transactionInputs.add(input);
@@ -54,7 +54,7 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
 
   private static TransactionType getTransactionType(byte[] outputData) {
     if (outputData.length != 8) {
-      throw new IllegalArgumentException("Dao cell's length should be 8 bytes");
+      throw new IllegalArgumentException("Dao cell's output data length should be 8 bytes");
     }
     if (Arrays.equals(outputData, DEPOSIT_CELL_DATA)) {
       return TransactionType.WITHDRAW;
@@ -98,10 +98,7 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     return daoReward;
   }
 
-  private static long calculateDaoMaximumWithdraw(Header depositBlockHeader,
-                                                  Header withdrawBlockHeader,
-                                                  CellOutput output,
-                                                  long occupiedCapacity) {
+  private static long calculateDaoMaximumWithdraw(Header depositBlockHeader, Header withdrawBlockHeader, CellOutput output, long occupiedCapacity) {
     BigInteger depositAr = BigInteger.valueOf(extractAr(depositBlockHeader.dao));
     BigInteger withdrawAr = BigInteger.valueOf(extractAr(withdrawBlockHeader.dao));
 
