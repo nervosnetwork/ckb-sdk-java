@@ -27,7 +27,7 @@ Maven
 Gradle
 
 ```
-implementation 'org.nervos.ckb-api:ckb:{version}'
+implementation 'org.nervos.ckb:ckb-api:{version}'
 ```
 
 ## Build
