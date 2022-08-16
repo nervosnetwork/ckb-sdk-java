@@ -5,7 +5,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.DaoTransactionBuilder;
-import org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler;
+import org.nervos.ckb.transaction.handler.DaoScriptHandler;
 import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;

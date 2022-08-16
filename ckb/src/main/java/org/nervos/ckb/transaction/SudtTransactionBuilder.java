@@ -3,7 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
+import org.nervos.ckb.transaction.handler.ScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;

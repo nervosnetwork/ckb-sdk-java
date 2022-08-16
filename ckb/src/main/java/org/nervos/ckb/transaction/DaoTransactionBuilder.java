@@ -3,7 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
+import org.nervos.ckb.transaction.handler.ScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
@@ -14,7 +14,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import static org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler.*;
+import static org.nervos.ckb.transaction.handler.DaoScriptHandler.*;
 
 public class DaoTransactionBuilder extends AbstractTransactionBuilder {
   CkbTransactionBuilder builder;
