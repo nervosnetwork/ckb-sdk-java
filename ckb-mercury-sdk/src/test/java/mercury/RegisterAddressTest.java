@@ -13,6 +13,7 @@ import java.util.List;
 public class RegisterAddressTest {
 
   @Test
+  @SuppressWarnings("deprecation")
   void testRegisterAddress() throws IOException {
     List<byte[]> scriptHashes =
         ApiFactory.getApi().registerAddresses(
