@@ -4,8 +4,8 @@ dependencies {
     compile project(":core")
     compile project(":ckb-indexer")
     testCompile project(":ckb")
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M4")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     // Enable use of the JUnitPlatform Runner within the IDE
     testCompile("org.junit.platform:junit-platform-runner:1.0.0-M4")
 }
