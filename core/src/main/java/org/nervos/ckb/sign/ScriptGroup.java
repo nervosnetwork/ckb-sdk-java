@@ -59,10 +59,6 @@ public class ScriptGroup {
       this.outputIndices = new ArrayList<>();
     }
 
-    public static Builder aScriptGroup() {
-      return new Builder();
-    }
-
     public Builder setScript(Script script) {
       this.script = script;
       return this;
@@ -89,7 +85,7 @@ public class ScriptGroup {
     }
 
     public Builder addInputIndices(int... indices) {
-      for (int index : indices) {
+      for (int index: indices) {
         this.inputIndices.add(index);
       }
       return this;
@@ -101,7 +97,7 @@ public class ScriptGroup {
     }
 
     public Builder addOutputIndices(int... indices) {
-      for (int index : indices) {
+      for (int index: indices) {
         this.outputIndices.add(index);
       }
       return this;

@@ -48,6 +48,8 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
       case CLAIM:
         builder.reward += getDaoReward(daoOutPoint);
         break;
+      default:
+        throw new IllegalArgumentException("Unsupported transaction type");
     }
     builder.transactionInputs.add(input);
   }
@@ -150,8 +152,8 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     }
     CellOutput output = new CellOutput(
         depositCellCapacity,
-        Address.decode(address).getScript()
-        , DAO_SCRIPT);
+        Address.decode(address).getScript(),
+        DAO_SCRIPT);
     byte[] data = MoleculeConverter.packUint64(depositBlockNumber).toByteArray();
     builder.addOutput(output, data);
     return this;

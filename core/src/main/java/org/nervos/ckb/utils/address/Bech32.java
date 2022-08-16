@@ -44,7 +44,9 @@ public class Bech32 {
   private static final int BECH32_CONST = 1;
   private static final int BECH32M_CONST = 0x2bc830a3;
 
-  public enum Encoding {BECH32, BECH32M}
+  public enum Encoding {
+    BECH32, BECH32M
+  }
 
   public static class Bech32Data {
     public final Encoding encoding;
