@@ -8,5 +8,3 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$loggingOkhttpVersion"
 }
-
-apply from: rootProject.file('gradle/checkstyle.gradle')

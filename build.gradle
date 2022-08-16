@@ -56,7 +56,7 @@ allprojects {
     test {
         useJUnitPlatform()
     }
-
+    apply from: rootProject.file('gradle/checkstyle.gradle')
 }
 
 configure(subprojects.findAll { it.name != 'tests' }) {

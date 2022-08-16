@@ -6,9 +6,6 @@ dependencies {
     compile project(":ckb-indexer")
 }
 
-apply from: rootProject.file('gradle/checkstyle.gradle')
-
-
 test {
     useJUnitPlatform()
 }
