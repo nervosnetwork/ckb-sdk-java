@@ -72,7 +72,7 @@ public class DaoScriptHandler implements ScriptHandler {
       byte[] inputType = MoleculeConverter.packUint64(depositHeaderDepIndex).toByteArray();
       txBuilder.setWitness(index, WitnessArgs.Type.INPUT_TYPE, inputType);
       // update input since
-      txBuilder.setInputSince(index, info.calculateDaoMinimalSince());
+      txBuilder.setInputSince(index, info.calculateDaoMinimumSince());
     } else if (context instanceof WithdrawInfo) {
       WithdrawInfo info = (WithdrawInfo) context;
       txBuilder.setHeaderDep(info.depositBlockHash);
@@ -112,12 +112,11 @@ public class DaoScriptHandler implements ScriptHandler {
       }
     }
 
-    public long calculateDaoMinimalSince() {
-      return calculateDaoMinimalSince(depositBlockHeader, withdrawBlockHeader);
+    public long calculateDaoMinimumSince() {
+      return calculateDaoMinimumSince(depositBlockHeader, withdrawBlockHeader);
     }
 
-    private static long calculateDaoMinimalSince(Header depositBlockHeader,
-                                                 Header withdrawBlockHeader) {
+    private static long calculateDaoMinimumSince(Header depositBlockHeader, Header withdrawBlockHeader) {
       EpochUtils.EpochInfo depositEpoch = EpochUtils.parse(depositBlockHeader.epoch);
       EpochUtils.EpochInfo withdrawEpoch = EpochUtils.parse(withdrawBlockHeader.epoch);
 
@@ -131,25 +130,25 @@ public class DaoScriptHandler implements ScriptHandler {
       long lockEpochs = (depositedEpochs + (DAO_LOCK_PERIOD_EPOCHS - 1))
           / DAO_LOCK_PERIOD_EPOCHS
           * DAO_LOCK_PERIOD_EPOCHS;
-      long minimalSinceEpochNumber = depositEpoch.number + lockEpochs;
-      long minimalSinceEpochIndex = depositEpoch.index;
-      long minimalSinceEpochLength = depositEpoch.length;
-      long minimalSince =
+      long minimumSinceEpochNumber = depositEpoch.number + lockEpochs;
+      long minimumSinceEpochIndex = depositEpoch.index;
+      long minimumSinceEpochLength = depositEpoch.length;
+      long minimumSince =
           EpochUtils.generateSince(
-              minimalSinceEpochLength, minimalSinceEpochIndex, minimalSinceEpochNumber);
-      return minimalSince;
+              minimumSinceEpochLength, minimumSinceEpochIndex, minimumSinceEpochNumber);
+      return minimumSince;
     }
   }
 
   public static class WithdrawInfo {
-    OutPoint depositOutpoint;
+    OutPoint depositOutPoint;
     long depositBlockNumber;
     byte[] depositBlockHash;
 
-    public WithdrawInfo(Api api, OutPoint depositOutpoint) {
-      this.depositOutpoint = depositOutpoint;
+    public WithdrawInfo(Api api, OutPoint depositOutPoint) {
+      this.depositOutPoint = depositOutPoint;
       try {
-        TransactionWithStatus txWithStatus = api.getTransaction(depositOutpoint.txHash);
+        TransactionWithStatus txWithStatus = api.getTransaction(depositOutPoint.txHash);
         depositBlockHash = txWithStatus.txStatus.blockHash;
         depositBlockNumber = api.getHeader(depositBlockHash).number;
       } catch (IOException e) {
