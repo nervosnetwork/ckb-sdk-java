@@ -6,6 +6,7 @@ updates:
       interval: weekly
       day: wednesday
       timezone: Asia/Shanghai
+    target-branch: "develop"
     open-pull-requests-limit: 10
     ignore:
       - dependency-name: org.bouncycastle:bcprov-jdk15on
