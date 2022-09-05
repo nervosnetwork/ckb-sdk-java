@@ -52,6 +52,21 @@ public class InputIterator implements Iterator<TransactionInput> {
     return addSearchKey(address, null);
   }
 
+  public InputIterator addSearchKey(String address, Script type) {
+    Script lockScript = Address.decode(address).getScript();
+
+    SearchKey searchKey = new SearchKey();
+    searchKey.scriptType = ScriptType.LOCK;
+    searchKey.script = lockScript;
+    if (type != null) {
+      Filter filter = new Filter();
+      filter.script = type;
+      searchKey.filter = filter;
+    }
+    searchKeys.add(searchKey);
+    return this;
+  }
+ 
   public InputIterator addSudtSearchKey(String address, byte[] sudtArgs) {
     Address addr = Address.decode(address);
     Network network = addr.getNetwork();
@@ -68,22 +83,6 @@ public class InputIterator implements Iterator<TransactionInput> {
         sudtArgs,
         Script.HashType.TYPE);
     return addSearchKey(address, type);
-  }
-
-
-  public InputIterator addSearchKey(String address, Script type) {
-    Script lockScript = Address.decode(address).getScript();
-
-    SearchKey searchKey = new SearchKey();
-    searchKey.scriptType = ScriptType.LOCK;
-    searchKey.script = lockScript;
-    if (type != null) {
-      Filter filter = new Filter();
-      filter.script = type;
-      searchKey.filter = filter;
-    }
-    searchKeys.add(searchKey);
-    return this;
   }
 
   private static CkbIndexerApi getDefaultIndexerApi(Network network) {

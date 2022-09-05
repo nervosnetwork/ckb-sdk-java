@@ -1,4 +1,4 @@
-package org.nervos.ckb.transaction.scriptHandler;
+package org.nervos.ckb.transaction.handler;
 
 import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
@@ -90,7 +90,6 @@ public class DaoScriptHandler implements ScriptHandler {
       try {
         TransactionWithStatus txWithStatus = api.getTransaction(withdrawOutpoint.txHash);
         Transaction withdrawTx = txWithStatus.transaction;
-        byte[] withdrawBlockHash = txWithStatus.txStatus.blockHash;
         byte[] depositBlockHash = null;
         for (int i = 0; i < withdrawTx.inputs.size(); i++) {
           OutPoint outPoint = withdrawTx.inputs.get(i).previousOutput;
@@ -105,6 +104,7 @@ public class DaoScriptHandler implements ScriptHandler {
         if (depositBlockHash == null) {
           throw new RuntimeException("Can find deposit cell");
         }
+        byte[] withdrawBlockHash = txWithStatus.txStatus.blockHash;
         depositBlockHeader = api.getHeader(depositBlockHash);
         withdrawBlockHeader = api.getHeader(withdrawBlockHash);
       } catch (IOException e) {

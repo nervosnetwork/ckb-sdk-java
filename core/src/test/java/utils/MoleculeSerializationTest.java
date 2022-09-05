@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 
 public class MoleculeSerializationTest {
   @Test
+  @SuppressWarnings("checkstyle:linelength")
   public void testTransaction() {
     Transaction transaction = readData("transaction.json", Transaction.class);
 
@@ -47,6 +48,7 @@ public class MoleculeSerializationTest {
   }
 
   @Test
+  @SuppressWarnings("checkstyle:linelength")
   public void testHeader() {
     Header header = readData("header.json", Header.class);
     assertByteArray(

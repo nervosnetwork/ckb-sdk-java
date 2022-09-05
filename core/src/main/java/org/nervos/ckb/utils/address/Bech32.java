@@ -44,7 +44,9 @@ public class Bech32 {
   private static final int BECH32_CONST = 1;
   private static final int BECH32M_CONST = 0x2bc830a3;
 
-  public enum Encoding {BECH32, BECH32M}
+  public enum Encoding {
+    BECH32, BECH32M
+  }
 
   public static class Bech32Data {
     public final Encoding encoding;
@@ -115,12 +117,24 @@ public class Bech32 {
     return ret;
   }
 
-  /** Encode a Bech32 string. */
+  /**
+   * Encode a Bech32 string.
+   *
+   * @param bech32 the Bech32 to encode
+   * @return the encoded Bech32 string
+   */
   public static String encode(final Bech32Data bech32) {
     return encode(bech32.encoding, bech32.hrp, bech32.data);
   }
 
-  /** Encode a Bech32 string. */
+  /**
+   * Encode a Bech32 string.
+   *
+   * @param encoding the encoding to use
+   * @param hrp      the human-readable part of the Bech32 string
+   * @param values   the data part of the Bech32 string
+   * @return the encoded Bech32 string
+   */
   public static String encode(Encoding encoding, String hrp, final byte[] values) {
     if (hrp.length() < 1) {
       throw new AddressFormatException.InvalidDataLength("Human-readable part is too short");
@@ -136,13 +150,19 @@ public class Bech32 {
     StringBuilder sb = new StringBuilder(hrp.length() + 1 + combined.length);
     sb.append(hrp);
     sb.append('1');
-    for (byte b : combined) {
+    for (byte b: combined) {
       sb.append(CHARSET.charAt(b));
     }
     return sb.toString();
   }
 
-  /** Decode a Bech32 string. */
+  /**
+   * Decode a Bech32 string.
+   *
+   * @param str the Bech32 string to decode
+   * @return the decoded Bech32 data
+   * @throws AddressFormatException if the string is not a valid Bech32 string
+   */
   public static Bech32Data decode(final String str) throws AddressFormatException {
     boolean lower = false, upper = false;
     if (str.length() < 8)

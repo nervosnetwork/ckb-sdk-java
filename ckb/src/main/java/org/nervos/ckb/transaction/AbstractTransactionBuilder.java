@@ -2,7 +2,7 @@ package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.scriptHandler.*;
+import org.nervos.ckb.transaction.handler.*;
 import org.nervos.ckb.type.CellDep;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.TransactionInput;
@@ -73,7 +73,7 @@ public abstract class AbstractTransactionBuilder {
   }
 
   public void addCellDeps(List<CellDep> cellDeps) {
-    for (CellDep cellDep : cellDeps) {
+    for (CellDep cellDep: cellDeps) {
       addCellDep(cellDep);
     }
   }
@@ -99,6 +99,8 @@ public abstract class AbstractTransactionBuilder {
       case OUTPUT_TYPE:
         witnessArgs.setOutputType(data);
         break;
+      default:
+        throw new IllegalArgumentException("Unsupported witness type");
     }
     tx.witnesses.set(i, witnessArgs.pack().toByteArray());
   }

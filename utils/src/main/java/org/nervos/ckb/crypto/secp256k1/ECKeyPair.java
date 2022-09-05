@@ -74,6 +74,7 @@ public class ECKeyPair {
    * Returns public key from the given private key.
    *
    * @param privateKey the private key to derive the public key from
+   * @param compressed whether the public key should be compressed
    * @return byte array encoded public key
    */
   public static byte[] publicKeyFromPrivate(BigInteger privateKey, boolean compressed) {

@@ -65,7 +65,7 @@ public class RpcService {
       }
 
       JsonElement jsonElement =
-          new JsonParser().parse(responseBody).getAsJsonObject().get("result");
+          JsonParser.parseString(responseBody).getAsJsonObject().get("result");
       if (jsonElement.isJsonObject()) {
         return gson.fromJson(jsonElement.getAsJsonObject(), cls);
       }
@@ -101,7 +101,7 @@ public class RpcService {
                         "RpcService method " + method + " error " + gson.toJson(rpcResponse.error));
                   }
                   JsonElement jsonElement =
-                      new JsonParser().parse(responseBody).getAsJsonObject().get("result");
+                      JsonParser.parseString(responseBody).getAsJsonObject().get("result");
                   if (jsonElement.isJsonObject()) {
                     callback.onResponse(gson.fromJson(jsonElement.getAsJsonObject(), cls));
                   }

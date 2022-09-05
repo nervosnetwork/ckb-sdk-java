@@ -1,4 +1,4 @@
-package org.nervos.ckb.transaction.scriptHandler;
+package org.nervos.ckb.transaction.handler;
 
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.transaction.AbstractTransactionBuilder;
