@@ -30,22 +30,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     return INSTANCE;
   }
 
-  @Override
-  public boolean signTransaction(
-      Transaction transaction, ScriptGroup scriptGroup, Context context) {
-    Script script = scriptGroup.getScript();
-    ECKeyPair keyPair = context.getKeyPair();
-    Object payload = context.getPayload();
-    if (payload instanceof MultisigScript) {
-      MultisigScript multisigScript = (MultisigScript) payload;
-      if (isMatched(keyPair, script.args, multisigScript)) {
-        return signScriptGroup(transaction, scriptGroup, keyPair, multisigScript);
-      }
-    }
-    return false;
-  }
-
-  public boolean signScriptGroup(
+  public static byte[] signTransaction(
       Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, MultisigScript multisigScript) {
     byte[] txHash = transaction.computeHash();
     List<byte[]> witnesses = transaction.witnesses;
@@ -55,10 +40,13 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     int firstIndex = scriptGroup.getInputIndices().get(0);
     byte[] firstWitness = witnesses.get(firstIndex);
     byte[] firstWitnessPlaceholder = multisigScript.witnessPlaceholder(firstWitness);
-    witnesses.set(firstIndex, firstWitnessPlaceholder);
 
-    for (int i : scriptGroup.getInputIndices()) {
-      byte[] witness = witnesses.get(i);
+    blake2b.update(MoleculeConverter.packUint64(firstWitnessPlaceholder.length).toByteArray());
+    blake2b.update(firstWitnessPlaceholder);
+
+    for (int i = 1; i < scriptGroup.getInputIndices().size(); i++) {
+      int ii = scriptGroup.getInputIndices().get(i);
+      byte[] witness = witnesses.get(ii);
       blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
       blake2b.update(witness);
     }
@@ -69,11 +57,34 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     }
 
     byte[] message = blake2b.doFinal();
-    byte[] signature = Sign.signMessage(message, keyPair).getSignature();
+    return Sign.signMessage(message, keyPair).getSignature();
+  }
 
+  public boolean signTransactionInPlace(
+      Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, MultisigScript multisigScript) {
+    byte[] signature = signTransaction(transaction, scriptGroup, keyPair, multisigScript);
+
+    List<byte[]> witnesses = transaction.witnesses;
+    int firstIndex = scriptGroup.getInputIndices().get(0);
+    byte[] firstWitness = witnesses.get(firstIndex);
     firstWitness = setSignatureToWitness(firstWitness, signature, multisigScript);
     witnesses.set(firstIndex, firstWitness);
     return true;
+  }
+
+  @Override
+  public boolean signTransaction(
+      Transaction transaction, ScriptGroup scriptGroup, Context context) {
+    Script script = scriptGroup.getScript();
+    ECKeyPair keyPair = context.getKeyPair();
+    Object payload = context.getPayload();
+    if (payload instanceof MultisigScript) {
+      MultisigScript multisigScript = (MultisigScript) payload;
+      if (isMatched(keyPair, script.args, multisigScript)) {
+        return signTransactionInPlace(transaction, scriptGroup, keyPair, multisigScript);
+      }
+    }
+    return false;
   }
 
   private static byte[] setSignatureToWitness(byte[] witness, byte[] signature, MultisigScript multisigScript) {
@@ -100,7 +111,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     return true;
   }
 
-  private static boolean isMatched(ECKeyPair keyPair, byte[] scriptArgs, MultisigScript multisigScript) {
+  public static boolean isMatched(ECKeyPair keyPair, byte[] scriptArgs, MultisigScript multisigScript) {
     if (scriptArgs == null || keyPair == null) {
       return false;
     }
@@ -166,7 +177,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       out[2] = (byte) this.threshold;
       out[3] = (byte) this.keysHashes.size();
       int pos = 4;
-      for (byte[] publicKeyHash : this.keysHashes) {
+      for (byte[] publicKeyHash: this.keysHashes) {
         System.arraycopy(publicKeyHash, 0, out, pos, 20);
         pos += 20;
       }
