@@ -61,11 +61,15 @@ public class OmnilockScriptHandler implements ScriptHandler {
         omnilockWitnessLock.setSignature(new byte[65]);
         break;
       case ETHEREUM:
+        throw new UnsupportedOperationException("Ethereum");
       case EOS:
+        throw new UnsupportedOperationException("EOS");
       case TRON:
+        throw new UnsupportedOperationException("TRON");
       case BITCOIN:
+        throw new UnsupportedOperationException("Bitcoin");
       case DOGECOIN:
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Dogecoin");
       case CKB_MULTI_SIG:
         Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = omnilockConfig.getMultisigScript();
         Objects.requireNonNull(multisigScript);
@@ -75,14 +79,14 @@ public class OmnilockScriptHandler implements ScriptHandler {
         // TODO: set input by script handler OR by user???
         break;
       case EXEC:
-        break;
+        throw new UnsupportedOperationException("Exec");
       case DYNAMIC_LINKING:
-        break;
+        throw new UnsupportedOperationException("Dynamic linking");
       default:
         throw new IllegalArgumentException("Unknown auth flag " + omnilockConfig.getOmnilockArgs().getFlag());
     }
-    int index = scriptGroup.getInputIndices().get(0);
     byte[] lock = omnilockWitnessLock.pack().toByteArray();
+    int index = scriptGroup.getInputIndices().get(0);
     txBuilder.setWitness(index, WitnessArgs.Type.LOCK, lock);
     return true;
   }
@@ -94,11 +98,11 @@ public class OmnilockScriptHandler implements ScriptHandler {
     txBuilder.addCellDep(adminListCell);
 
     // set lock to witness
-    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
     OmnilockIdentity.OmnilockFlag administratorMode = omnilockConfig.getOmnilockIdentity().getFlag();
+    byte[] signature = null;
     switch (administratorMode) {
       case CKB_SECP256K1_BLAKE160:
-        omnilockWitnessLock.setSignature(new byte[65]);
+        signature = new byte[65];
         break;
       case LOCK_SCRIPT_HASH:
         // TODO: set input by script handler OR by user???
@@ -106,8 +110,13 @@ public class OmnilockScriptHandler implements ScriptHandler {
       default:
         throw new IllegalArgumentException("Unknown administrator mode " + administratorMode);
     }
-    int index = scriptGroup.getInputIndices().get(0);
+
+    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
+    omnilockWitnessLock.setSignature(signature);
+    omnilockWitnessLock.setOmnilockIdentity(omnilockConfig.getOmnilockIdentity());
+
     byte[] lock = omnilockWitnessLock.pack().toByteArray();
+    int index = scriptGroup.getInputIndices().get(0);
     txBuilder.setWitness(index, WitnessArgs.Type.LOCK, lock);
     return true;
   }

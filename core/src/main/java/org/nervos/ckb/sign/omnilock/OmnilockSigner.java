@@ -65,11 +65,15 @@ public class OmnilockSigner implements ScriptSigner {
         signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, keyPair);
         break;
       case ETHEREUM:
+        throw new UnsupportedOperationException("Ethereum");
       case EOS:
+        throw new UnsupportedOperationException("EOS");
       case TRON:
+        throw new UnsupportedOperationException("TRON");
       case BITCOIN:
+        throw new UnsupportedOperationException("Bitcoin");
       case DOGECOIN:
-        return null;
+        throw new UnsupportedOperationException("Dogecoin");
       case CKB_MULTI_SIG:
         Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = omnilockConfig.getMultisigScript();
         if (multisigScript == null) {
@@ -85,9 +89,11 @@ public class OmnilockSigner implements ScriptSigner {
         signature = new byte[0];
         break;
       case EXEC:
-        throw new UnsupportedOperationException("not support EXEC mode");
+        throw new UnsupportedOperationException("Exec");
       case DYNAMIC_LINKING:
-        throw new UnsupportedOperationException("not support DYNAMIC LINKING mode");
+        throw new UnsupportedOperationException("Dynamic linking");
+      default:
+        throw new IllegalArgumentException("Unknown auth flag " + omnilockConfig.getOmnilockArgs().getFlag());
     }
     OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
     omnilockWitnessLock.setSignature(signature);
@@ -96,10 +102,10 @@ public class OmnilockSigner implements ScriptSigner {
 
   private static OmnilockWitnessLock signForAdministratorMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
     byte[] signature = null;
-    // TODO: complete
     switch (omnilockConfig.getOmnilockIdentity().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
-        break;
+        // TODO: complete
+        throw new UnsupportedOperationException("CKB_SECP256K1_BLAKE160");
       case LOCK_SCRIPT_HASH:
         break;
     }
