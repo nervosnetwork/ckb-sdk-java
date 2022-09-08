@@ -1,5 +1,6 @@
 package org.nervos.ckb.sign.omnilock;
 
+import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
@@ -7,81 +8,104 @@ import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
 import org.nervos.ckb.type.Transaction;
+import org.nervos.ckb.type.WitnessArgs;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class OmnilockSigner implements ScriptSigner {
+
   @Override
   public boolean signTransaction(Transaction transaction, ScriptGroup scriptGroup, Context context) {
-    OmnilockWitnessLock omnilockWitnessLock = sign(transaction, scriptGroup, context);
-    if (omnilockWitnessLock == null) {
+    OmnilockConfig omnilockConfig;
+    if (!(context.getPayload() instanceof OmnilockConfig)) {
       return false;
-    } else {
-      // TODO: set omnilockWitnessLock back to witness field in transaction
+    }
+    omnilockConfig = (OmnilockConfig) context.getPayload();
+    byte[] args = scriptGroup.getScript().args;
+    // Check if script args is matched with given omnilockConfig
+    if (!Arrays.equals(args, omnilockConfig.encode())) {
+      return false;
+    }
+
+    List<byte[]> witnesses = transaction.witnesses;
+    int index = scriptGroup.getInputIndices().get(0);
+    WitnessArgs witnessArgs = WitnessArgs.unpack(witnesses.get(index));
+    OmnilockWitnessLock omnilockWitnessLock;
+    switch (omnilockConfig.getMode()) {
+      case AUTH:
+        omnilockWitnessLock = signForAuthMode(transaction, scriptGroup, context.getKeyPair(), omnilockConfig);
+        break;
+      case ADMINISTRATOR:
+        omnilockWitnessLock = signForAdministratorMode(transaction, scriptGroup, context.getKeyPair(), omnilockConfig);
+        break;
+      default:
+        throw new IllegalArgumentException("Unknown Omnilock mode " + omnilockConfig.getMode());
+    }
+    if (omnilockWitnessLock != null) {
+      witnessArgs.setLock(omnilockWitnessLock.pack().toByteArray());
+      witnesses.set(index, witnessArgs.pack().toByteArray());
       return true;
+    } else {
+      return false;
     }
   }
 
-  public static OmnilockWitnessLock sign(Transaction transaction, ScriptGroup scriptGroup, Context context) {
-    byte[] args = scriptGroup.getScript().args;
-    AuthenticationArgs authenticationArgs = AuthenticationArgs.decode(args);
-    args = Arrays.copyOfRange(args, 21, args.length);
-    OmnilockArgs omnilockArgs = OmnilockArgs.decode(args);
-    OmnilockWitnessLock witnessLock = new OmnilockWitnessLock();
-
-    if (omnilockArgs.isAdminModeEnabled() && context.getPayload() instanceof OmnilockIdentity) {
-      OmnilockIdentity omnilockIdentity = (OmnilockIdentity) context.getPayload();
-      witnessLock.setOmnilockIdentity(omnilockIdentity);
-      if (omnilockIdentity.getFlag() == OmnilockIdentity.OmnilockFlag.CKB_SECP256K1_BLAKE160) {
-        // TODO: sign by Secp256k1Blake160SighashAllSigner
-      }
-    } else {
-      byte[] signature = new byte[0];
-      // TODO: compute signature and put it to witnessLock
-      ECKeyPair keyPair = context.getKeyPair();
-      byte[] authContent = authenticationArgs.getAuthContent();
-      switch (authenticationArgs.getFlag()) {
-        case CKB_SECP256K1_BLAKE160:
-          if (Secp256k1Blake160SighashAllSigner.isMatched(keyPair, authContent)) {
-            signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, keyPair);
-          } else {
-            return null;
-          }
-          break;
-        case ETHEREUM:
-          // TODO: sign by PwSigner
-          break;
-        case EOS:
-          break;
-        case TRON:
-          break;
-        case BITCOIN:
-          break;
-        case DOGECOIN:
-          break;
-        case CKB_MULTI_SIG:
-          if (context.getPayload() instanceof Secp256k1Blake160MultisigAllSigner.MultisigScript) {
-            Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = (Secp256k1Blake160MultisigAllSigner.MultisigScript) context.getPayload();
-            if (Secp256k1Blake160MultisigAllSigner.isMatched(keyPair, authContent, multisigScript)) {
-              signature = Secp256k1Blake160MultisigAllSigner.signTransaction(transaction, scriptGroup, keyPair, multisigScript);
-              // TODO: read current witness in transaction and set signature back
-            } else {
-              return null;
-            }
-          } else {
-            return null;
-          }
-          break;
-        case LOCK_SCRIPT_HASH:
-          // Do nothing
-          break;
-        case EXEC:
-          throw new UnsupportedOperationException("not support EXEC mode");
-        case DYNAMIC_LINKING:
-          throw new UnsupportedOperationException("not support DYNAMIC LINKING mode");
-      }
-      witnessLock.setSignature(signature);
+  private static OmnilockWitnessLock signForAuthMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
+    byte[] authArgs = Arrays.copyOfRange(scriptGroup.getScript().args, 1, 21);
+    byte[] signature = null;
+    // TODO: complete
+    switch (omnilockConfig.getAuthenticationArgs().getFlag()) {
+      case CKB_SECP256K1_BLAKE160:
+        byte[] hash = Blake2b.digest(keyPair.getEncodedPublicKey(true));
+        hash = Arrays.copyOfRange(hash, 0, 20);
+        if (!Arrays.equals(authArgs, hash)) {
+          return null;
+        }
+        signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, keyPair);
+        break;
+      case ETHEREUM:
+      case EOS:
+      case TRON:
+      case BITCOIN:
+      case DOGECOIN:
+        return null;
+      case CKB_MULTI_SIG:
+        Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = omnilockConfig.getMultisigScript();
+        if (multisigScript == null) {
+          return null;
+        }
+        if (!Arrays.equals(authArgs, multisigScript.computeHash())) {
+          return null;
+        }
+        signature = Secp256k1Blake160MultisigAllSigner.signTransaction(transaction, scriptGroup, keyPair, multisigScript);
+        // TODO: read current witness in transaction and set signature back
+        break;
+      case LOCK_SCRIPT_HASH:
+        signature = new byte[0];
+        break;
+      case EXEC:
+        throw new UnsupportedOperationException("not support EXEC mode");
+      case DYNAMIC_LINKING:
+        throw new UnsupportedOperationException("not support DYNAMIC LINKING mode");
     }
-    return witnessLock;
+    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
+    omnilockWitnessLock.setSignature(signature);
+    return omnilockWitnessLock;
+  }
+
+  private static OmnilockWitnessLock signForAdministratorMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
+    byte[] signature = null;
+    // TODO: complete
+    switch (omnilockConfig.getOmnilockIdentity().getFlag()) {
+      case CKB_SECP256K1_BLAKE160:
+        break;
+      case LOCK_SCRIPT_HASH:
+        break;
+    }
+    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
+    omnilockWitnessLock.setOmnilockIdentity(omnilockConfig.getOmnilockIdentity());
+    omnilockWitnessLock.setSignature(signature);
+    return omnilockWitnessLock;
   }
 }
