@@ -32,6 +32,11 @@ public class OmnilockArgs {
     return args;
   }
 
+  // TODO: complete
+  public byte[] encode() {
+    return new byte[0];
+  }
+
   public boolean isAdminModeEnabled() {
     return (flag & 0x1) != 0;
   }
