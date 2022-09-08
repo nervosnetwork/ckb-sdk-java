@@ -1,5 +1,7 @@
 package org.nervos.ckb.sign.omnilock;
 
+import org.nervos.ckb.type.base.Molecule;
+
 public class OmnilockWitnessLock {
   private byte[] signature;
   private OmnilockIdentity omnilockIdentity;
@@ -27,5 +29,19 @@ public class OmnilockWitnessLock {
 
   public void setPreimage(byte[] preimage) {
     this.preimage = preimage;
+  }
+
+  public OmnilockWitnessLockMolecule pack() {
+    // TODO: complete
+    return new OmnilockWitnessLockMolecule();
+  }
+
+  public static OmnilockWitnessLock unpack(byte[] in) {
+    // TODO: complete
+    return new OmnilockWitnessLock();
+  }
+ 
+  // Temporary class
+  public static class OmnilockWitnessLockMolecule extends Molecule {
   }
 }
