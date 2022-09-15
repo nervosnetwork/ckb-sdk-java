@@ -32,6 +32,10 @@ public class Script {
       Numeric.hexStringToByteArray("0x5e7a36a77e68eecc013dfa2fe6a23f3b6c344b04005808694ae6dd45eea4cfd5");
   public static final byte[] SUDT_CODE_HASH_TESTNET =
       Numeric.hexStringToByteArray("0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4");
+  public static final byte[] OMNILOCK_CODE_HASH_MAINNET =
+      Numeric.hexStringToByteArray("0x9b819793a64463aed77c615d6cb226eea5487ccfc0783043a587254cda2b6f26");
+  public static final byte[] OMNILOCK_CODE_HASH_TESTNET =
+      Numeric.hexStringToByteArray("0xf329effd1c475a2978453c8600e1eaf0bc2087ee093c3ee64cc96ec6847752cb");
   public static final byte[] DAO_CODE_HASH =
       Numeric.hexStringToByteArray("0x82d76d1b75fe2fd9a27dfbaa65a039221a380d76c926f378d3f81cf3e7e13f2e");
 
