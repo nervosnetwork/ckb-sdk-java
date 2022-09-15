@@ -3,24 +3,15 @@ package org.nervos.ckb.sign.omnilock;
 import java.util.List;
 
 public class OmnilockIdentity {
-  private OmnilockFlag flag;
-  private byte[] authContent;
+  private Auth identity;
   private List<SmtProofEntry> proofs;
 
-  public OmnilockFlag getFlag() {
-    return flag;
+  public Auth getIdentity() {
+    return identity;
   }
 
-  public void setFlag(OmnilockFlag flag) {
-    this.flag = flag;
-  }
-
-  public byte[] getAuthContent() {
-    return authContent;
-  }
-
-  public void setAuthContent(byte[] authContent) {
-    this.authContent = authContent;
+  public void setIdentity(Auth identity) {
+    this.identity = identity;
   }
 
   public List<SmtProofEntry> getProofs() {
@@ -72,6 +63,34 @@ public class OmnilockIdentity {
         }
       }
       throw new IllegalArgumentException("unknown value");
+    }
+  }
+
+  public class Auth {
+    private OmnilockFlag flag;
+    private byte[] authContent;
+
+    public OmnilockFlag getFlag() {
+      return flag;
+    }
+
+    public void setFlag(OmnilockFlag flag) {
+      this.flag = flag;
+    }
+
+    public byte[] getAuthContent() {
+      return authContent;
+    }
+
+    public void setAuthContent(byte[] authContent) {
+      this.authContent = authContent;
+    }
+
+    public byte[] encode() {
+      byte[] encoded = new byte[21];
+      encoded[0] = flag.getValue();
+      System.arraycopy(authContent, 0, encoded, 1, 20);
+      return encoded;
     }
   }
 

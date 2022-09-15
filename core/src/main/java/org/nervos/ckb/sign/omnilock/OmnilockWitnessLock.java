@@ -1,6 +1,6 @@
 package org.nervos.ckb.sign.omnilock;
 
-import org.nervos.ckb.type.base.Molecule;
+import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
 
 public class OmnilockWitnessLock {
   private byte[] signature;
@@ -31,17 +31,32 @@ public class OmnilockWitnessLock {
     this.preimage = preimage;
   }
 
-  public OmnilockWitnessLockMolecule pack() {
-    // TODO: complete
-    return new OmnilockWitnessLockMolecule();
+  public org.nervos.ckb.sign.omnilock.molecule.OmniLockWitnessLock pack() {
+    org.nervos.ckb.sign.omnilock.molecule.OmniLockWitnessLock.Builder moleculeLock = org.nervos.ckb.sign.omnilock.molecule.OmniLockWitnessLock.builder();
+    if (signature != null) {
+      moleculeLock.setSignature(packBytes(signature));
+    }
+    if (preimage != null) {
+      moleculeLock.setPreimage(packBytes(preimage));
+    }
+    if (omnilockIdentity != null) {
+      org.nervos.ckb.sign.omnilock.molecule.Identity.Builder identityBuilder = org.nervos.ckb.sign.omnilock.molecule.Identity.builder();
+      org.nervos.ckb.sign.omnilock.molecule.Auth.Builder authBuilder = org.nervos.ckb.sign.omnilock.molecule.Auth.builder(omnilockIdentity.getIdentity().encode());
+      identityBuilder.setIdentity(authBuilder.build());
+      org.nervos.ckb.sign.omnilock.molecule.SmtProofEntryVec.Builder smtProofEntryVec = org.nervos.ckb.sign.omnilock.molecule.SmtProofEntryVec.builder();
+      for (OmnilockIdentity.SmtProofEntry s: omnilockIdentity.getProofs()) {
+        smtProofEntryVec.add(packSmtProofEntry(s));
+      }
+      identityBuilder.setProofs(smtProofEntryVec.build());
+      moleculeLock.setOmniIdentity(identityBuilder.build());
+    }
+    return moleculeLock.build();
   }
 
-  public static OmnilockWitnessLock unpack(byte[] in) {
-    // TODO: complete
-    return new OmnilockWitnessLock();
-  }
- 
-  // Temporary class
-  public static class OmnilockWitnessLockMolecule extends Molecule {
+  public org.nervos.ckb.sign.omnilock.molecule.SmtProofEntry packSmtProofEntry(OmnilockIdentity.SmtProofEntry smtProofEntry) {
+    org.nervos.ckb.sign.omnilock.molecule.SmtProofEntry.Builder builder = org.nervos.ckb.sign.omnilock.molecule.SmtProofEntry.builder();
+    builder.setProof(org.nervos.ckb.sign.omnilock.molecule.SmtProof.builder(smtProofEntry.getSmtProof()).build());
+    builder.setMask(smtProofEntry.getMask());
+    return builder.build();
   }
 }

@@ -102,7 +102,7 @@ public class OmnilockSigner implements ScriptSigner {
 
   private static OmnilockWitnessLock signForAdministratorMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
     byte[] signature = null;
-    switch (omnilockConfig.getOmnilockIdentity().getFlag()) {
+    switch (omnilockConfig.getOmnilockIdentity().getIdentity().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
         // TODO: complete
         throw new UnsupportedOperationException("CKB_SECP256K1_BLAKE160");
