@@ -17,7 +17,6 @@ import java.util.List;
 public abstract class AbstractTransactionBuilder {
   protected int changeOutputIndex = -1;
   protected long feeRate = 1000;
-  protected Network network;
 
   protected List<ScriptHandler> scriptHandlers = new ArrayList<>();
   protected List<TransactionInput> inputsDetail = new ArrayList<>();
@@ -40,13 +39,16 @@ public abstract class AbstractTransactionBuilder {
   }
 
   public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
-    this.availableInputs = availableInputs;
-    this.network = network;
+    this(availableInputs);
     if (network == Network.TESTNET) {
       scriptHandlers.addAll(TESTNET_SCRIPT_HANDLERS);
     } else {
       scriptHandlers.addAll(MAINNET_SCRIPT_HANDLERS);
     }
+  }
+
+  public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs) {
+    this.availableInputs = availableInputs;
   }
 
   protected AbstractTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {

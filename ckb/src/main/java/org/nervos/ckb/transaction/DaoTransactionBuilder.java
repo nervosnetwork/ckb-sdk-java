@@ -16,7 +16,7 @@ import java.util.Iterator;
 
 import static org.nervos.ckb.transaction.handler.DaoScriptHandler.*;
 
-public class DaoTransactionBuilder extends AbstractTransactionBuilder {
+public class DaoTransactionBuilder {
   CkbTransactionBuilder builder;
   private Api api;
   private TransactionType transactionType;
@@ -28,9 +28,17 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     CLAIM,
   }
 
+  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, OutPoint daoOutPoint, Api api) throws IOException {
+    builder = new CkbTransactionBuilder(availableInputs);
+    init(daoOutPoint, api);
+  }
+
   public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutPoint, Api api) throws IOException {
-    super(availableInputs, network);
     builder = new CkbTransactionBuilder(availableInputs, network);
+    init(daoOutPoint, api);
+  }
+
+  private void init(OutPoint daoOutPoint, Api api) throws IOException {
     this.api = api;
     CellInput cellInput = new CellInput(daoOutPoint, 0);
     CellWithStatus cellWithStatus = api.getLiveCell(daoOutPoint, true);
@@ -116,19 +124,13 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     return Numeric.littleEndianBytesToBigInteger(slice).longValue();
   }
 
-  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
-    super(availableInputs, network);
+  public CkbTransactionBuilder getInnerTransactionBuilder() {
+    return builder;
   }
 
-  @Override
   public DaoTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
     builder.registerScriptHandler(scriptHandler);
     return this;
-  }
-
-  @Override
-  public long getFeeRate() {
-    return builder.getFeeRate();
   }
 
   public DaoTransactionBuilder setFeeRate(long feeRate) {
@@ -159,7 +161,6 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     return this;
   }
 
-  @Override
   public TransactionWithScriptGroups build(Object... contexts) {
     return builder.build(contexts);
   }
