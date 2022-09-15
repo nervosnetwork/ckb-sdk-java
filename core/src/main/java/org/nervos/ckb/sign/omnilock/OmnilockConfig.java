@@ -24,6 +24,12 @@ public class OmnilockConfig {
     this.mode = mode;
   }
 
+  public OmnilockConfig(AuthenticationArgs authenticationArgs, OmnilockArgs omnilockArgs, Mode mode) {
+    this.authenticationArgs = authenticationArgs;
+    this.omnilockArgs = omnilockArgs;
+    this.mode = mode;
+  }
+
   public byte[] encode() {
     byte[] args1 = authenticationArgs.encode();
     byte[] args2 = omnilockArgs.encode();

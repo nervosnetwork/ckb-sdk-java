@@ -52,7 +52,7 @@ public class OmnilockIdentity {
     }
   }
 
-  public static enum OmnilockFlag {
+  public enum OmnilockFlag {
     CKB_SECP256K1_BLAKE160((byte) 0x0),
     LOCK_SCRIPT_HASH((byte) 0xFC);
     private byte value;
