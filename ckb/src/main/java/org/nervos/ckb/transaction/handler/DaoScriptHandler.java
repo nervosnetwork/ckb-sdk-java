@@ -24,6 +24,11 @@ public class DaoScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
   private byte[] codeHash;
 
+  public DaoScriptHandler(List<CellDep> cellDeps, byte[] codeHash) {
+    this.cellDeps = cellDeps;
+    this.codeHash = codeHash;
+  }
+
   public DaoScriptHandler(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {

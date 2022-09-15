@@ -15,6 +15,11 @@ public class SudtScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
   private byte[] codeHash;
 
+  public SudtScriptHandler(List<CellDep> cellDeps, byte[] codeHash) {
+    this.cellDeps = cellDeps;
+    this.codeHash = codeHash;
+  }
+
   public SudtScriptHandler(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
@@ -40,7 +45,7 @@ public class SudtScriptHandler implements ScriptHandler {
     }
     return Arrays.equals(script.codeHash, codeHash);
   }
- 
+
   @Override
   public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
