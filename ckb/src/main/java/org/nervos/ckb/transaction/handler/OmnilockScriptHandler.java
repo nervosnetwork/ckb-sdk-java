@@ -1,5 +1,6 @@
 package org.nervos.ckb.transaction.handler;
 
+import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.omnilock.OmnilockConfig;
 import org.nervos.ckb.sign.omnilock.OmnilockIdentity;
@@ -7,14 +8,17 @@ import org.nervos.ckb.sign.omnilock.OmnilockWitnessLock;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.transaction.AbstractTransactionBuilder;
 import org.nervos.ckb.type.CellDep;
+import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.WitnessArgs;
+import org.nervos.ckb.utils.Numeric;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 public class OmnilockScriptHandler implements ScriptHandler {
-  private OmnilockConfig omnilockConfig;
+  private CellDep cellDep;
+  private byte[] codeHash;
 
   // AUTH Mode:
   // 0x00
@@ -32,6 +36,29 @@ public class OmnilockScriptHandler implements ScriptHandler {
   // 0xFC: input - adminList cell
   //       input - proof cell
 
+  public OmnilockScriptHandler(CellDep cellDep, byte[] codeHash) {
+    this.cellDep = cellDep;
+    this.codeHash = codeHash;
+  }
+
+  public OmnilockScriptHandler(Network network) {
+    OutPoint outPoint = new OutPoint();
+    if (network == Network.MAINNET) {
+      outPoint.txHash = Numeric.hexStringToByteArray("0xdfdb40f5d229536915f2d5403c66047e162e25dedd70a79ef5164356e1facdc8");
+      outPoint.index = 0;
+      codeHash = Script.OMNILOCK_CODE_HASH_MAINNET;
+    } else if (network == Network.TESTNET) {
+      outPoint.txHash = Numeric.hexStringToByteArray("0x27b62d8be8ed80b9f56ee0fe41355becdb6f6a40aeba82d3900434f43b1c8b60");
+      outPoint.index = 0;
+      codeHash = Script.OMNILOCK_CODE_HASH_TESTNET;
+    } else {
+      throw new IllegalArgumentException("Unsupported network: " + network);
+    }
+    cellDep = new CellDep();
+    cellDep.outPoint = outPoint;
+    cellDep.depType = CellDep.DepType.CODE;
+  }
+
   @Override
   public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
@@ -43,6 +70,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
     } else {
       return false;
     }
+    txBuilder.addCellDep(cellDep);
     OmnilockConfig.Mode mode = omnilockConfig.getMode();
     switch (mode) {
       case AUTH:
@@ -125,8 +153,6 @@ public class OmnilockScriptHandler implements ScriptHandler {
     if (script == null) {
       return false;
     }
-    // TODO: set to omnilock code hash
-    byte[] codeHash = new byte[0];
     return Arrays.equals(script.codeHash, codeHash);
   }
 }
