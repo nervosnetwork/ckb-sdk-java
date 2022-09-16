@@ -165,6 +165,7 @@ public class OmnilockSigner implements ScriptSigner {
         throw new UnsupportedOperationException("CKB_SECP256K1_BLAKE160");
       case LOCK_SCRIPT_HASH:
         break;
+      default:
     }
     OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
     omnilockWitnessLock.setOmnilockIdentity(omnilockConfig.getOmnilockIdentity());
