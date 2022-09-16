@@ -86,6 +86,8 @@ public class OmnilockScriptHandler implements ScriptHandler {
     OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
     switch (omnilockConfig.getAuthenticationArgs().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
+        // TODO: refactor adding celldeps
+        txBuilder.addCellDep(secpCellDep(Network.TESTNET));
         omnilockWitnessLock.setSignature(new byte[65]);
         break;
       case ETHEREUM:
@@ -115,8 +117,25 @@ public class OmnilockScriptHandler implements ScriptHandler {
     }
     byte[] lock = omnilockWitnessLock.pack().toByteArray();
     int index = scriptGroup.getInputIndices().get(0);
-    txBuilder.setWitness(index, WitnessArgs.Type.LOCK, lock);
+    txBuilder.setWitness(index, WitnessArgs.Type.LOCK, new byte[lock.length]);
     return true;
+  }
+
+  public CellDep secpCellDep(Network network) {
+    OutPoint outPoint = new OutPoint();
+    if (network == Network.MAINNET) {
+      outPoint.txHash = Numeric.hexStringToByteArray("0x71a7ba8fc96349fea0ed3a5c47992e3b4084b031a42264a018e0072e8172e46c");
+      outPoint.index = 0;
+    } else if (network == Network.TESTNET) {
+      outPoint.txHash = Numeric.hexStringToByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37");
+      outPoint.index = 0;
+    } else {
+      throw new IllegalArgumentException("Unsupported network");
+    }
+    CellDep cellDep = new CellDep();
+    cellDep.outPoint = outPoint;
+    cellDep.depType = CellDep.DepType.DEP_GROUP;
+    return cellDep;
   }
 
   private boolean buildTransactionForAdministratorMode(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, OmnilockConfig omnilockConfig) {
@@ -126,7 +145,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
     txBuilder.addCellDep(adminListCell);
 
     // set lock to witness
-    OmnilockIdentity.OmnilockFlag administratorMode = omnilockConfig.getOmnilockIdentity().getFlag();
+    OmnilockIdentity.OmnilockFlag administratorMode = omnilockConfig.getOmnilockIdentity().getIdentity().getFlag();
     byte[] signature = null;
     switch (administratorMode) {
       case CKB_SECP256K1_BLAKE160:

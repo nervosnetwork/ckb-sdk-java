@@ -53,7 +53,7 @@ public class OmnilockSigner implements ScriptSigner {
 
   private static OmnilockWitnessLock signForAuthMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
     byte[] authArgs = Arrays.copyOfRange(scriptGroup.getScript().args, 1, 21);
-    byte[] signature = null;
+    byte[] signature;
     // TODO: complete
     switch (omnilockConfig.getAuthenticationArgs().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
