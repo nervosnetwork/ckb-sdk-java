@@ -16,7 +16,7 @@ import org.nervos.indexer.InputIterator;
 import java.io.IOException;
 import java.util.*;
 
-public class SendCkbFromMultisigAddressExample {
+public class SendCkbMultisigExample {
   public static void main(String[] args) throws IOException {
     Network network = Network.TESTNET;
     List<byte[]> keyHashes = new ArrayList<>();
