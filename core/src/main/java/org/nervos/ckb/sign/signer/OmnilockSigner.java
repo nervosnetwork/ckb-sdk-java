@@ -1,12 +1,12 @@
-package org.nervos.ckb.sign.omnilock;
+package org.nervos.ckb.sign.signer;
 
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
-import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
-import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
+import org.nervos.ckb.sign.omnilock.OmnilockConfig;
+import org.nervos.ckb.sign.omnilock.OmnilockWitnessLock;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.WitnessArgs;
 
@@ -104,7 +104,6 @@ public class OmnilockSigner implements ScriptSigner {
     byte[] signature = null;
     switch (omnilockConfig.getOmnilockIdentity().getIdentity().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
-        // TODO: complete
         throw new UnsupportedOperationException("CKB_SECP256K1_BLAKE160");
       case LOCK_SCRIPT_HASH:
         break;
