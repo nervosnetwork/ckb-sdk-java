@@ -54,10 +54,8 @@ public class OmnilockSigner implements ScriptSigner {
   // TODO: return void
   private static OmnilockWitnessLock signForAuthMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
     byte[] authArgs = Arrays.copyOfRange(scriptGroup.getScript().args, 1, 21);
-    // TODO: complete
     int firstIndex = scriptGroup.getInputIndices().get(0);
     byte[] firstWitness = transaction.witnesses.get(firstIndex);
-
 
     // witness placeholder should be set before signing
     WitnessArgs witnessArgs = WitnessArgs.unpack(firstWitness);

@@ -50,7 +50,7 @@ public class TransactionSigner {
 
   public TransactionSigner(TransactionSigner s) {
     scriptSignerMap = new HashMap<>();
-    for (Map.Entry<Key, ScriptSigner> entry : s.scriptSignerMap.entrySet()) {
+    for (Map.Entry<Key, ScriptSigner> entry: s.scriptSignerMap.entrySet()) {
       scriptSignerMap.put(entry.getKey(), entry.getValue());
     }
   }
@@ -87,6 +87,12 @@ public class TransactionSigner {
     return registerLockScriptSigner(Numeric.hexStringToByteArray(codeHash), scriptSigner);
   }
 
+
+  public Set<Integer> signTransaction(
+      TransactionWithScriptGroups transaction, Context... contexts) {
+    return signTransaction(transaction, new HashSet<>(Arrays.asList(contexts)));
+  }
+
   public Set<Integer> signTransaction(
       TransactionWithScriptGroups transaction, Set<Context> contexts) {
     Set<Integer> signedGroupsIndices = new HashSet<>();
@@ -105,7 +111,7 @@ public class TransactionSigner {
       ScriptSigner signer =
           scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getGroupType()));
       if (signer != null) {
-        for (Context context : contexts) {
+        for (Context context: contexts) {
           if (signer.signTransaction(tx, group, context)) {
             signedGroupsIndices.add(i);
             break;
