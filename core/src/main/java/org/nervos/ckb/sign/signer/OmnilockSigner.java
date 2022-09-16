@@ -51,10 +51,17 @@ public class OmnilockSigner implements ScriptSigner {
     }
   }
 
+  // TODO: return void
   private static OmnilockWitnessLock signForAuthMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
     byte[] authArgs = Arrays.copyOfRange(scriptGroup.getScript().args, 1, 21);
-    byte[] signature;
     // TODO: complete
+    int firstIndex = scriptGroup.getInputIndices().get(0);
+    byte[] firstWitness = transaction.witnesses.get(firstIndex);
+
+
+    // witness placeholder should be set before signing
+    WitnessArgs witnessArgs = WitnessArgs.unpack(firstWitness);
+    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
     switch (omnilockConfig.getAuthenticationArgs().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
         byte[] hash = Blake2b.digest(keyPair.getEncodedPublicKey(true));
@@ -62,7 +69,13 @@ public class OmnilockSigner implements ScriptSigner {
         if (!Arrays.equals(authArgs, hash)) {
           return null;
         }
-        signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, keyPair);
+        // Prepare witness placeholder
+        omnilockWitnessLock.setSignature(new byte[65]);
+        witnessArgs.setLock(new byte[omnilockWitnessLock.pack().toByteArray().length]);
+        byte[] witnessPlaceholder = witnessArgs.pack().toByteArray();
+        // Sign
+        byte[] signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, witnessPlaceholder, keyPair);
+        omnilockWitnessLock.setSignature(signature);
         break;
       case ETHEREUM:
         throw new UnsupportedOperationException("Ethereum");
@@ -76,14 +89,42 @@ public class OmnilockSigner implements ScriptSigner {
         throw new UnsupportedOperationException("Dogecoin");
       case CKB_MULTI_SIG:
         Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = omnilockConfig.getMultisigScript();
-        if (multisigScript == null) {
+        if (multisigScript == null || !Arrays.equals(authArgs, multisigScript.computeHash())) {
           return null;
         }
-        if (!Arrays.equals(authArgs, multisigScript.computeHash())) {
+        boolean inMultisigScript = false;
+        for (byte[] v: multisigScript.getKeysHashes()) {
+          hash = Blake2b.digest(keyPair.getEncodedPublicKey(true));
+          hash = Arrays.copyOfRange(hash, 0, 20);
+          if (Arrays.equals(v, hash)) {
+            inMultisigScript = true;
+            break;
+          }
+        }
+        if (!inMultisigScript) {
           return null;
         }
-        signature = Secp256k1Blake160MultisigAllSigner.signTransaction(transaction, scriptGroup, keyPair, multisigScript);
-        // TODO: read current witness in transaction and set signature back
+
+        // Prepare witness placeholder
+        WitnessArgs witnessArgsPlaceholder = WitnessArgs.unpack(firstWitness);
+        omnilockWitnessLock.setSignature(multisigScript.witnessPlaceholderInLock());
+        witnessArgsPlaceholder.setLock(new byte[omnilockWitnessLock.pack().toByteArray().length]);
+        witnessPlaceholder = witnessArgsPlaceholder.pack().toByteArray();
+        // Sign
+        signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, witnessPlaceholder, keyPair);
+
+        // get existent signature
+        byte[] oldSignature;
+        byte[] lockBytes = witnessArgs.getLock();
+        if (isEmpty(lockBytes, 0, lockBytes.length)) {
+          oldSignature = multisigScript.witnessPlaceholderInLock();
+        } else {
+          oldSignature = OmnilockWitnessLock.unpack(lockBytes).getSignature();
+        }
+
+        // set segment signature to signature
+        signature = setSignatureToWitness(oldSignature, signature, multisigScript);
+        omnilockWitnessLock.setSignature(signature);
         break;
       case LOCK_SCRIPT_HASH:
         signature = new byte[0];
@@ -95,9 +136,28 @@ public class OmnilockSigner implements ScriptSigner {
       default:
         throw new IllegalArgumentException("Unknown auth flag " + omnilockConfig.getOmnilockArgs().getFlag());
     }
-    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
-    omnilockWitnessLock.setSignature(signature);
     return omnilockWitnessLock;
+  }
+
+  private static byte[] setSignatureToWitness(byte[] signatures, byte[] signature, Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript) {
+    int pos = multisigScript.encode().length;
+    for (int i = 0; i < multisigScript.getThreshold(); i++) {
+      if (isEmpty(signatures, pos, 65)) {
+        System.arraycopy(signature, 0, signatures, pos, 65);
+        break;
+      }
+      pos += 65;
+    }
+    return signatures;
+  }
+
+  private static boolean isEmpty(byte[] lock, int start, int length) {
+    for (int i = start; i < start + length; i++) {
+      if (lock[i] != 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private static OmnilockWitnessLock signForAdministratorMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
