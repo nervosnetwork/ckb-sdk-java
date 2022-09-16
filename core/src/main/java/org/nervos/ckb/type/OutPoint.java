@@ -1,5 +1,7 @@
 package org.nervos.ckb.type;
 
+import org.nervos.ckb.utils.Numeric;
+
 import java.util.Arrays;
 
 import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
@@ -11,6 +13,10 @@ public class OutPoint {
   public int index;
 
   public OutPoint() {
+  }
+
+  public OutPoint(String txHash, int index) {
+    this(Numeric.hexStringToByteArray(txHash), index);
   }
 
   public OutPoint(byte[] txHash, int index) {
