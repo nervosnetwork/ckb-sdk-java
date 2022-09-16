@@ -18,18 +18,6 @@ import java.util.List;
 public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
-  private static Secp256k1Blake160MultisigAllSigner INSTANCE;
-
-  private Secp256k1Blake160MultisigAllSigner() {
-  }
-
-  public static Secp256k1Blake160MultisigAllSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new Secp256k1Blake160MultisigAllSigner();
-    }
-    return INSTANCE;
-  }
-
   public static byte[] signTransaction(
       Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, MultisigScript multisigScript) {
     byte[] txHash = transaction.computeHash();

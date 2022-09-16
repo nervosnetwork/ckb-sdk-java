@@ -1,10 +1,7 @@
 package org.nervos.ckb.sign;
 
 import org.nervos.ckb.Network;
-import org.nervos.ckb.sign.signer.AcpSigner;
-import org.nervos.ckb.sign.signer.PwSigner;
-import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
-import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
+import org.nervos.ckb.sign.signer.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.Transaction;
@@ -20,23 +17,27 @@ public class TransactionSigner {
   static {
     TESTNET_TRANSACTION_SIGNER = new TransactionSigner()
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, new Secp256k1Blake160SighashAllSigner())
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, new Secp256k1Blake160MultisigAllSigner())
         .registerLockScriptSigner(
-            Script.ANY_CAN_PAY_CODE_HASH_TESTNET, AcpSigner.getInstance())
+            Script.ANY_CAN_PAY_CODE_HASH_TESTNET, new AcpSigner())
         .registerLockScriptSigner(
-            Script.PW_LOCK_CODE_HASH_TESTNET, PwSigner.getInstance());
+            Script.PW_LOCK_CODE_HASH_TESTNET, new PwSigner())
+        .registerLockScriptSigner(
+            Script.OMNILOCK_CODE_HASH_TESTNET, new OmnilockSigner());
 
     MAINNET_TRANSACTION_SIGNER = new TransactionSigner()
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, new Secp256k1Blake160SighashAllSigner())
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, new Secp256k1Blake160MultisigAllSigner())
         .registerLockScriptSigner(
-            Script.ANY_CAN_PAY_CODE_HASH_MAINNET, AcpSigner.getInstance())
+            Script.ANY_CAN_PAY_CODE_HASH_MAINNET, new AcpSigner())
         .registerLockScriptSigner(
-            Script.PW_LOCK_CODE_HASH_MAINNET, PwSigner.getInstance());
+            Script.PW_LOCK_CODE_HASH_MAINNET, new PwSigner())
+        .registerLockScriptSigner(
+            Script.OMNILOCK_CODE_HASH_MAINNET, new OmnilockSigner());
   }
 
   public TransactionSigner() {

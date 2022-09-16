@@ -16,17 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PwSigner implements ScriptSigner {
-  private static PwSigner INSTANCE;
-
-  private PwSigner() {
-  }
-
-  public static PwSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new PwSigner();
-    }
-    return INSTANCE;
-  }
 
   @Override
   public boolean signTransaction(

@@ -12,7 +12,7 @@ public class Secp256k1Blake160SighashAllSignerTest {
 
   @Test
   void testIsMatched() {
-    Secp256k1Blake160SighashAllSigner signer = Secp256k1Blake160SighashAllSigner.getInstance();
+    Secp256k1Blake160SighashAllSigner signer = new Secp256k1Blake160SighashAllSigner();
 
     assertTrue(
         signer.isMatched(

@@ -15,18 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
-  private static Secp256k1Blake160SighashAllSigner INSTANCE;
-
-  private Secp256k1Blake160SighashAllSigner() {
-  }
-
-  public static Secp256k1Blake160SighashAllSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new Secp256k1Blake160SighashAllSigner();
-    }
-    return INSTANCE;
-  }
-
+ 
   public static boolean signTransactionInPlace(
       Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair) {
     byte[] signature = signTransaction(transaction, scriptGroup, keyPair);
