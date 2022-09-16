@@ -66,7 +66,7 @@ public class OmnilockIdentity {
     }
   }
 
-  public class Auth {
+  public static class Auth {
     private OmnilockFlag flag;
     private byte[] authContent;
 

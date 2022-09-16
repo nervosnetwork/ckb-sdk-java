@@ -1,5 +1,9 @@
 package org.nervos.ckb.sign.omnilock;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
 
 public class OmnilockWitnessLock {
@@ -51,6 +55,45 @@ public class OmnilockWitnessLock {
       moleculeLock.setOmniIdentity(identityBuilder.build());
     }
     return moleculeLock.build();
+  }
+
+  public static OmnilockWitnessLock unpack(byte[] in) {
+    if (in == null) {
+      return null;
+    }
+    org.nervos.ckb.sign.omnilock.molecule.OmniLockWitnessLock moleculeOmniLockWitnessLock = org.nervos.ckb.sign.omnilock.molecule.OmniLockWitnessLock.builder(in).build();
+    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
+    if (moleculeOmniLockWitnessLock.getPreimage() != null) {
+      omnilockWitnessLock.setPreimage(moleculeOmniLockWitnessLock.getPreimage().toByteArray());
+    }
+    if (moleculeOmniLockWitnessLock.getSignature() != null) {
+      omnilockWitnessLock.setSignature(moleculeOmniLockWitnessLock.getSignature().getItems());
+    }
+
+    if (moleculeOmniLockWitnessLock.getOmniIdentity() != null) {
+      OmnilockIdentity identity = new OmnilockIdentity();
+      List<OmnilockIdentity.SmtProofEntry> proofs = new ArrayList<>();
+      org.nervos.ckb.sign.omnilock.molecule.Identity moleculeIdentity = moleculeOmniLockWitnessLock.getOmniIdentity();
+      for (int i = 0; i < moleculeIdentity.getProofs().getSize(); i++) {
+        org.nervos.ckb.sign.omnilock.molecule.SmtProofEntry moleculeSmtProofEntry = moleculeIdentity.getProofs().get(i);
+        OmnilockIdentity.SmtProofEntry smtProofEntry = new OmnilockIdentity.SmtProofEntry();
+        smtProofEntry.setMask(moleculeSmtProofEntry.getMask());
+        smtProofEntry.setSmtProof(moleculeSmtProofEntry.getProof().toByteArray());
+        proofs.add(smtProofEntry);
+      }
+
+      byte[] bytes = moleculeIdentity.getIdentity().toByteArray();
+      omnilockWitnessLock.setOmnilockIdentity(identity);
+      OmnilockIdentity.Auth auth = new OmnilockIdentity.Auth();
+      auth.setFlag(OmnilockIdentity.OmnilockFlag.valueOf(bytes[0]));
+      auth.setAuthContent(Arrays.copyOfRange(bytes, 1, 20));
+
+      identity.setIdentity(auth);
+      identity.setProofs(proofs);
+      omnilockWitnessLock.setOmnilockIdentity(identity);
+    }
+
+    return omnilockWitnessLock;
   }
 
   public org.nervos.ckb.sign.omnilock.molecule.SmtProofEntry packSmtProofEntry(OmnilockIdentity.SmtProofEntry smtProofEntry) {
