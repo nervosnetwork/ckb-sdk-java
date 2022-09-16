@@ -25,7 +25,7 @@ public class AuthenticationArgs {
     AuthenticationArgs authenticationArgs = new AuthenticationArgs();
     authenticationArgs.flag = AuthFlag.valueOf(args[0]);
     authenticationArgs.authContent = new byte[AUTH_CONTENT_LENGTH];
-    System.arraycopy(args, 1, authenticationArgs, 0, AUTH_CONTENT_LENGTH);
+    System.arraycopy(args, 1, authenticationArgs.authContent, 0, AUTH_CONTENT_LENGTH);
     return authenticationArgs;
   }
 

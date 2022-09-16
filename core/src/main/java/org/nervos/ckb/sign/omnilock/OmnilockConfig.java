@@ -2,6 +2,7 @@ package org.nervos.ckb.sign.omnilock;
 
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.type.CellDep;
+import org.nervos.ckb.utils.address.Address;
 
 import java.util.Arrays;
 
@@ -10,17 +11,20 @@ public class OmnilockConfig {
   private OmnilockArgs omnilockArgs;
   private Mode mode;
 
-  // Auth mode and flag 0x06 (multisig)
+  // For flag 0x06 (multisig) in Auth mode
   private Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript;
 
-  // Administrator mode
+  // For Administrator mode
   private CellDep adminListCell;
   private OmnilockIdentity omnilockIdentity;
 
+  public OmnilockConfig(String address, Mode mode) {
+    this(Address.decode(address).getScript().args, mode);
+  }
+
   public OmnilockConfig(byte[] args, Mode mode) {
     authenticationArgs = AuthenticationArgs.decode(args);
-    args = Arrays.copyOfRange(args, 21, args.length);
-    omnilockArgs = OmnilockArgs.decode(args);
+    omnilockArgs = OmnilockArgs.decode(Arrays.copyOfRange(args, 21, args.length));
     this.mode = mode;
   }
 
