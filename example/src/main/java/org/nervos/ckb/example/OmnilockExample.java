@@ -8,6 +8,7 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.sign.omnilock.OmnilockConfig;
 import org.nervos.ckb.sign.signer.OmnilockSigner;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
+import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.transaction.handler.OmnilockScriptHandler;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.TransactionInput;
@@ -23,11 +24,11 @@ public class OmnilockExample {
     String sender = "ckt1qrejnmlar3r452tcg57gvq8patctcgy8acync0hxfnyka35ywafvkqgqgpy7m88v3gxnn3apazvlpkkt32xz3tg5qq3kzjf3";
     OmnilockConfig config = new OmnilockConfig(sender, OmnilockConfig.Mode.AUTH);
 
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
+    configuration.registerScriptHandler(new OmnilockScriptHandler(network));
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, network)
-        .registerScriptHandler(new OmnilockScriptHandler(network))
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput(sender, 50100000000L)
-        .setFeeRate(1000)
         .setChangeOutput(sender)
         .build(config);
 

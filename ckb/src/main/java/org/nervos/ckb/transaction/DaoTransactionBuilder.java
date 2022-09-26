@@ -1,9 +1,7 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.handler.ScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
@@ -16,7 +14,7 @@ import java.util.Iterator;
 
 import static org.nervos.ckb.transaction.handler.DaoScriptHandler.*;
 
-public class DaoTransactionBuilder {
+public class DaoTransactionBuilder extends AbstractTransactionBuilder {
   CkbTransactionBuilder builder;
   private Api api;
   private TransactionType transactionType;
@@ -28,17 +26,9 @@ public class DaoTransactionBuilder {
     CLAIM,
   }
 
-  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, OutPoint daoOutPoint, Api api) throws IOException {
-    builder = new CkbTransactionBuilder(availableInputs);
-    init(daoOutPoint, api);
-  }
-
-  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutPoint, Api api) throws IOException {
-    builder = new CkbTransactionBuilder(availableInputs, network);
-    init(daoOutPoint, api);
-  }
-
-  private void init(OutPoint daoOutPoint, Api api) throws IOException {
+  public DaoTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs, OutPoint daoOutPoint, Api api) throws IOException {
+    super(configuration, availableInputs);
+    builder = new CkbTransactionBuilder(configuration, availableInputs);
     this.api = api;
     CellInput cellInput = new CellInput(daoOutPoint, 0);
     CellWithStatus cellWithStatus = api.getLiveCell(daoOutPoint, true);
@@ -124,18 +114,8 @@ public class DaoTransactionBuilder {
     return Numeric.littleEndianBytesToBigInteger(slice).longValue();
   }
 
-  public CkbTransactionBuilder getInnerTransactionBuilder() {
-    return builder;
-  }
-
-  public DaoTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    builder.registerScriptHandler(scriptHandler);
-    return this;
-  }
-
-  public DaoTransactionBuilder setFeeRate(long feeRate) {
-    builder.setFeeRate(feeRate);
-    return this;
+  public DaoTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs) {
+    super(configuration, availableInputs);
   }
 
   public DaoTransactionBuilder addOutput(String address, long capacity) {
@@ -161,6 +141,7 @@ public class DaoTransactionBuilder {
     return this;
   }
 
+  @Override
   public TransactionWithScriptGroups build(Object... contexts) {
     return builder.build(contexts);
   }

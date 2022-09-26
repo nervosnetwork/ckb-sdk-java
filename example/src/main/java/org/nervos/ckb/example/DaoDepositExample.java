@@ -5,6 +5,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
+import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.InputIterator;
@@ -18,10 +19,10 @@ public class DaoDepositExample {
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
 
     // Construct transaction to deposit 510 CKB to DAO
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, network)
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addDaoDepositOutput(sender, 51000000000L)
-        .setFeeRate(1000)
         .setChangeOutput(sender)
         .build();
 
