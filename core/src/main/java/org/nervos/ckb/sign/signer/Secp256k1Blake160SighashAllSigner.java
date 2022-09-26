@@ -30,7 +30,6 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
   public static byte[] signTransaction(
       Transaction transaction, ScriptGroup scriptGroup, byte[] witnessPlaceholder, ECKeyPair keyPair) {
     byte[] txHash = transaction.computeHash();
-    List<byte[]> witnesses = transaction.witnesses;
     Blake2b blake2b = new Blake2b();
     blake2b.update(txHash);
 
@@ -45,7 +44,7 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
       includedWitnessIndex.add(i);
     }
     for (int i: includedWitnessIndex) {
-      byte[] witness = witnesses.get(i);
+      byte[] witness = transaction.witnesses.get(i);
       blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
       blake2b.update(witness);
     }
