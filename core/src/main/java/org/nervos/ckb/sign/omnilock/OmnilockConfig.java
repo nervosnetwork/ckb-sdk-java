@@ -11,7 +11,7 @@ public class OmnilockConfig {
   private OmnilockArgs omnilockArgs;
   private Mode mode;
 
-  // For flag 0x06 (multisig) in Auth mode
+  // For Auth mode with flag 0x06 (multisig)
   private Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript;
 
   // For Administrator mode
