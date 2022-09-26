@@ -5,7 +5,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.sign.omnilock.OmnilockConfig;
+import org.nervos.ckb.sign.omnilock.OmnilockArgs;
 import org.nervos.ckb.sign.signer.OmnilockSigner;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
@@ -22,7 +22,9 @@ public class OmnilockExample {
   public static void main(String[] args) throws IOException {
     Network network = Network.TESTNET;
     String sender = "ckt1qrejnmlar3r452tcg57gvq8patctcgy8acync0hxfnyka35ywafvkqgqgpy7m88v3gxnn3apazvlpkkt32xz3tg5qq3kzjf3";
-    OmnilockConfig config = new OmnilockConfig(sender, OmnilockConfig.Mode.AUTH);
+    OmnilockSigner.Configuration config = new OmnilockSigner.Configuration();
+    config.setOmnilockArgs(new OmnilockArgs(sender));
+    config.setMode(OmnilockSigner.Configuration.Mode.AUTH);
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
     configuration.registerScriptHandler(new OmnilockScriptHandler(network));

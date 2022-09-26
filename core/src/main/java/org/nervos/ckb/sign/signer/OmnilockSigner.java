@@ -5,8 +5,10 @@ import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
-import org.nervos.ckb.sign.omnilock.OmnilockConfig;
+import org.nervos.ckb.sign.omnilock.OmnilockArgs;
+import org.nervos.ckb.sign.omnilock.OmnilockIdentity;
 import org.nervos.ckb.sign.omnilock.OmnilockWitnessLock;
+import org.nervos.ckb.type.CellDep;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.WitnessArgs;
 
@@ -17,14 +19,13 @@ public class OmnilockSigner implements ScriptSigner {
 
   @Override
   public boolean signTransaction(Transaction transaction, ScriptGroup scriptGroup, Context context) {
-    OmnilockConfig omnilockConfig;
-    if (!(context.getPayload() instanceof OmnilockConfig)) {
+    if (!(context.getPayload() instanceof Configuration)) {
       return false;
     }
-    omnilockConfig = (OmnilockConfig) context.getPayload();
+    Configuration config = (Configuration) context.getPayload();
     byte[] args = scriptGroup.getScript().args;
     // Check if script args is matched with given omnilockConfig
-    if (!Arrays.equals(args, omnilockConfig.encode())) {
+    if (!Arrays.equals(args, config.getOmnilockArgs().encode())) {
       return false;
     }
 
@@ -32,15 +33,15 @@ public class OmnilockSigner implements ScriptSigner {
     int index = scriptGroup.getInputIndices().get(0);
     WitnessArgs witnessArgs = WitnessArgs.unpack(witnesses.get(index));
     OmnilockWitnessLock omnilockWitnessLock;
-    switch (omnilockConfig.getMode()) {
+    switch (config.getMode()) {
       case AUTH:
-        omnilockWitnessLock = signForAuthMode(transaction, scriptGroup, context.getKeyPair(), omnilockConfig);
+        omnilockWitnessLock = signForAuthMode(transaction, scriptGroup, context.getKeyPair(), config);
         break;
       case ADMINISTRATOR:
-        omnilockWitnessLock = signForAdministratorMode(transaction, scriptGroup, context.getKeyPair(), omnilockConfig);
+        omnilockWitnessLock = signForAdministratorMode(transaction, scriptGroup, context.getKeyPair(), config);
         break;
       default:
-        throw new IllegalArgumentException("Unknown Omnilock mode " + omnilockConfig.getMode());
+        throw new IllegalArgumentException("Unknown Omnilock mode " + config.getMode());
     }
     if (omnilockWitnessLock != null) {
       witnessArgs.setLock(omnilockWitnessLock.pack().toByteArray());
@@ -52,7 +53,7 @@ public class OmnilockSigner implements ScriptSigner {
   }
 
   // TODO: return void
-  private static OmnilockWitnessLock signForAuthMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
+  private static OmnilockWitnessLock signForAuthMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, Configuration configuration) {
     byte[] authArgs = Arrays.copyOfRange(scriptGroup.getScript().args, 1, 21);
     int firstIndex = scriptGroup.getInputIndices().get(0);
     byte[] firstWitness = transaction.witnesses.get(firstIndex);
@@ -60,7 +61,7 @@ public class OmnilockSigner implements ScriptSigner {
     // witness placeholder should be set before signing
     WitnessArgs witnessArgs = WitnessArgs.unpack(firstWitness);
     OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
-    switch (omnilockConfig.getAuthenticationArgs().getFlag()) {
+    switch (configuration.getOmnilockArgs().getAuthenticationArgs().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
         byte[] hash = Blake2b.digest(keyPair.getEncodedPublicKey(true));
         hash = Arrays.copyOfRange(hash, 0, 20);
@@ -86,7 +87,7 @@ public class OmnilockSigner implements ScriptSigner {
       case DOGECOIN:
         throw new UnsupportedOperationException("Dogecoin");
       case CKB_MULTI_SIG:
-        Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = omnilockConfig.getMultisigScript();
+        Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = configuration.getMultisigScript();
         if (multisigScript == null || !Arrays.equals(authArgs, multisigScript.computeHash())) {
           return null;
         }
@@ -132,7 +133,7 @@ public class OmnilockSigner implements ScriptSigner {
       case DYNAMIC_LINKING:
         throw new UnsupportedOperationException("Dynamic linking");
       default:
-        throw new IllegalArgumentException("Unknown auth flag " + omnilockConfig.getOmnilockArgs().getFlag());
+        throw new IllegalArgumentException("Unknown auth flag " + configuration.getOmnilockArgs().getOmniArgs().getFlag());
     }
     return omnilockWitnessLock;
   }
@@ -158,9 +159,9 @@ public class OmnilockSigner implements ScriptSigner {
     return true;
   }
 
-  private static OmnilockWitnessLock signForAdministratorMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, OmnilockConfig omnilockConfig) {
+  private static OmnilockWitnessLock signForAdministratorMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, Configuration configuration) {
     byte[] signature = null;
-    switch (omnilockConfig.getOmnilockIdentity().getIdentity().getFlag()) {
+    switch (configuration.getOmnilockIdentity().getIdentity().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
         throw new UnsupportedOperationException("CKB_SECP256K1_BLAKE160");
       case LOCK_SCRIPT_HASH:
@@ -168,8 +169,73 @@ public class OmnilockSigner implements ScriptSigner {
       default:
     }
     OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
-    omnilockWitnessLock.setOmnilockIdentity(omnilockConfig.getOmnilockIdentity());
+    omnilockWitnessLock.setOmnilockIdentity(configuration.getOmnilockIdentity());
     omnilockWitnessLock.setSignature(signature);
     return omnilockWitnessLock;
+  }
+
+  public static class Configuration {
+    private OmnilockArgs omnilockArgs;
+    private Mode mode;
+
+    // For Auth mode with flag 0x06 (multisig)
+    private Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript;
+
+    // For Administrator mode
+    private CellDep adminListCell;
+    private OmnilockIdentity omnilockIdentity;
+
+    public Configuration() {
+    }
+
+    public Configuration(OmnilockArgs omnilockArgs, Mode mode) {
+      this.omnilockArgs = omnilockArgs;
+      this.mode = mode;
+    }
+
+    public OmnilockArgs getOmnilockArgs() {
+      return omnilockArgs;
+    }
+
+    public void setOmnilockArgs(OmnilockArgs omnilockArgs) {
+      this.omnilockArgs = omnilockArgs;
+    }
+
+    public Mode getMode() {
+      return mode;
+    }
+
+    public void setMode(Mode mode) {
+      this.mode = mode;
+    }
+
+    public Secp256k1Blake160MultisigAllSigner.MultisigScript getMultisigScript() {
+      return multisigScript;
+    }
+
+    public void setMultisigScript(Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript) {
+      this.multisigScript = multisigScript;
+    }
+
+    public CellDep getAdminListCell() {
+      return adminListCell;
+    }
+
+    public void setAdminListCell(CellDep adminListCell) {
+      this.adminListCell = adminListCell;
+    }
+
+    public OmnilockIdentity getOmnilockIdentity() {
+      return omnilockIdentity;
+    }
+
+    public void setOmnilockIdentity(OmnilockIdentity omnilockIdentity) {
+      this.omnilockIdentity = omnilockIdentity;
+    }
+
+    public enum Mode {
+      AUTH,
+      ADMINISTRATOR
+    }
   }
 }

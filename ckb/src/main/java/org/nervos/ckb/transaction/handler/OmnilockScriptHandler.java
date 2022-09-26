@@ -2,9 +2,9 @@ package org.nervos.ckb.transaction.handler;
 
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
-import org.nervos.ckb.sign.omnilock.OmnilockConfig;
 import org.nervos.ckb.sign.omnilock.OmnilockIdentity;
 import org.nervos.ckb.sign.omnilock.OmnilockWitnessLock;
+import org.nervos.ckb.sign.signer.OmnilockSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.transaction.AbstractTransactionBuilder;
 import org.nervos.ckb.type.CellDep;
@@ -60,27 +60,27 @@ public class OmnilockScriptHandler implements ScriptHandler {
     if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
       return false;
     }
-    OmnilockConfig omnilockConfig;
-    if (context instanceof OmnilockConfig) {
-      omnilockConfig = (OmnilockConfig) context;
+    OmnilockSigner.Configuration configuration;
+    if (context instanceof OmnilockSigner.Configuration) {
+      configuration = (OmnilockSigner.Configuration) context;
     } else {
       return false;
     }
     txBuilder.addCellDep(cellDep);
-    OmnilockConfig.Mode mode = omnilockConfig.getMode();
+    OmnilockSigner.Configuration.Mode mode = configuration.getMode();
     switch (mode) {
       case AUTH:
-        return buildTransactionForAuthMode(txBuilder, scriptGroup, omnilockConfig);
+        return buildTransactionForAuthMode(txBuilder, scriptGroup, configuration);
       case ADMINISTRATOR:
-        return buildTransactionForAdministratorMode(txBuilder, scriptGroup, omnilockConfig);
+        return buildTransactionForAdministratorMode(txBuilder, scriptGroup, configuration);
       default:
         throw new IllegalArgumentException("Omnilock mode is null");
     }
   }
 
-  private boolean buildTransactionForAuthMode(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, OmnilockConfig omnilockConfig) {
+  private boolean buildTransactionForAuthMode(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, OmnilockSigner.Configuration configuration) {
     OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
-    switch (omnilockConfig.getAuthenticationArgs().getFlag()) {
+    switch (configuration.getOmnilockArgs().getAuthenticationArgs().getFlag()) {
       case CKB_SECP256K1_BLAKE160:
         txBuilder.addCellDep(singleSignCellDep);
         omnilockWitnessLock.setSignature(new byte[65]);
@@ -97,7 +97,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
         throw new UnsupportedOperationException("Dogecoin");
       case CKB_MULTI_SIG:
         txBuilder.addCellDep(multiSignCellDep);
-        Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = omnilockConfig.getMultisigScript();
+        Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = configuration.getMultisigScript();
         Objects.requireNonNull(multisigScript);
         omnilockWitnessLock.setSignature(multisigScript.witnessPlaceholderInLock());
         break;
@@ -109,7 +109,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
       case DYNAMIC_LINKING:
         throw new UnsupportedOperationException("Dynamic linking");
       default:
-        throw new IllegalArgumentException("Unknown auth flag " + omnilockConfig.getOmnilockArgs().getFlag());
+        throw new IllegalArgumentException("Unknown auth flag " + configuration.getOmnilockArgs().getOmniArgs().getFlag());
     }
     byte[] lock = omnilockWitnessLock.pack().toByteArray();
     int index = scriptGroup.getInputIndices().get(0);
@@ -117,14 +117,14 @@ public class OmnilockScriptHandler implements ScriptHandler {
     return true;
   }
 
-  private boolean buildTransactionForAdministratorMode(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, OmnilockConfig omnilockConfig) {
+  private boolean buildTransactionForAdministratorMode(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, OmnilockSigner.Configuration configuration) {
     // set celldep
-    CellDep adminListCell = omnilockConfig.getAdminListCell();
+    CellDep adminListCell = configuration.getAdminListCell();
     Objects.requireNonNull(adminListCell);
     txBuilder.addCellDep(adminListCell);
 
     // set lock to witness
-    OmnilockIdentity.OmnilockFlag administratorMode = omnilockConfig.getOmnilockIdentity().getIdentity().getFlag();
+    OmnilockIdentity.OmnilockFlag administratorMode = configuration.getOmnilockIdentity().getIdentity().getFlag();
     byte[] signature = null;
     switch (administratorMode) {
       case CKB_SECP256K1_BLAKE160:
@@ -138,7 +138,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
     }
     OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
     omnilockWitnessLock.setSignature(signature);
-    omnilockWitnessLock.setOmnilockIdentity(omnilockConfig.getOmnilockIdentity());
+    omnilockWitnessLock.setOmnilockIdentity(configuration.getOmnilockIdentity());
 
     byte[] lock = omnilockWitnessLock.pack().toByteArray();
     int index = scriptGroup.getInputIndices().get(0);

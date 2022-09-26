@@ -11,7 +11,8 @@ import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.sign.omnilock.OmnilockConfig;
+import org.nervos.ckb.sign.omnilock.OmnilockArgs;
+import org.nervos.ckb.sign.signer.OmnilockSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.utils.Numeric;
 
@@ -53,8 +54,9 @@ public class SignerChecker {
       } else if (obj.get("omnilock_config") != null) {
         JsonObject obj2 = obj.get("omnilock_config").getAsJsonObject();
         byte[] args = Numeric.hexStringToByteArray(obj2.get("args").getAsString());
-        OmnilockConfig.Mode mode = OmnilockConfig.Mode.valueOf(obj2.get("mode").getAsString());
-        OmnilockConfig omnilockConfig = new OmnilockConfig(args, mode);
+        OmnilockArgs config = new OmnilockArgs(args);
+        OmnilockSigner.Configuration.Mode mode = OmnilockSigner.Configuration.Mode.valueOf(obj2.get("mode").getAsString());
+        OmnilockSigner.Configuration configuration = new OmnilockSigner.Configuration(config, mode);
         if (obj2.get("multisig_script") != null) {
           JsonObject obj3 = obj2.get("multisig_script").getAsJsonObject();
           int threshold = obj3.get("threshold").getAsInt();
@@ -65,9 +67,9 @@ public class SignerChecker {
           }
           Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript =
               new Secp256k1Blake160MultisigAllSigner.MultisigScript(firstN, threshold, keyHashes);
-          omnilockConfig.setMultisigScript(multisigScript);
+          configuration.setMultisigScript(multisigScript);
         }
-        c.setPayload(omnilockConfig);
+        c.setPayload(configuration);
       }
       return c;
     };

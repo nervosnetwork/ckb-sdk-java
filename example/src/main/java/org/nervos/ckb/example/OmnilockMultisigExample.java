@@ -5,7 +5,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.sign.omnilock.OmnilockConfig;
+import org.nervos.ckb.sign.omnilock.OmnilockArgs;
 import org.nervos.ckb.sign.signer.OmnilockSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
@@ -27,8 +27,10 @@ public class OmnilockMultisigExample {
         new Secp256k1Blake160MultisigAllSigner.MultisigScript(0, 2,
                                                               "0x7336b0ba900684cb3cb00f0d46d4f64c0994a562",
                                                               "0x5724c1e3925a5206944d753a6f3edaedf977d77f");
-    OmnilockConfig omnilockConfig = new OmnilockConfig(sender, OmnilockConfig.Mode.AUTH);
-    omnilockConfig.setMultisigScript(multisigScript);
+    OmnilockSigner.Configuration config = new OmnilockSigner.Configuration();
+    config.setOmnilockArgs(new OmnilockArgs(sender));
+    config.setMode(OmnilockSigner.Configuration.Mode.AUTH);
+    config.setMultisigScript(multisigScript);
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
     configuration.registerScriptHandler(new OmnilockScriptHandler(network));
@@ -36,12 +38,12 @@ public class OmnilockMultisigExample {
     TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput(sender, 50100000000L)
         .setChangeOutput(sender)
-        .build(omnilockConfig);
+        .build(config);
 
     TransactionSigner signer = TransactionSigner.getInstance(network)
         .registerLockScriptSigner(Script.OMNILOCK_CODE_HASH_TESTNET, new OmnilockSigner());
-    signer.signTransaction(txWithGroups, new Context("0x7438f7b35c355e3d2fb9305167a31a72d22ddeafb80a21cc99ff6329d92e8087", omnilockConfig));
-    signer.signTransaction(txWithGroups, new Context("0x4fd809631a6aa6e3bb378dd65eae5d71df895a82c91a615a1e8264741515c79c", omnilockConfig));
+    signer.signTransaction(txWithGroups, new Context("0x7438f7b35c355e3d2fb9305167a31a72d22ddeafb80a21cc99ff6329d92e8087", config));
+    signer.signTransaction(txWithGroups, new Context("0x4fd809631a6aa6e3bb378dd65eae5d71df895a82c91a615a1e8264741515c79c", config));
 
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
