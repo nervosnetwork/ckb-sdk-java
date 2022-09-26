@@ -55,6 +55,18 @@ public class SignerChecker {
         byte[] args = Numeric.hexStringToByteArray(obj2.get("args").getAsString());
         OmnilockConfig.Mode mode = OmnilockConfig.Mode.valueOf(obj2.get("mode").getAsString());
         OmnilockConfig omnilockConfig = new OmnilockConfig(args, mode);
+        if (obj2.get("multisig_script") != null) {
+          JsonObject obj3 = obj2.get("multisig_script").getAsJsonObject();
+          int threshold = obj3.get("threshold").getAsInt();
+          int firstN = obj3.get("first_n").getAsInt();
+          List<byte[]> keyHashes = new ArrayList<>();
+          for (JsonElement e: obj3.get("key_hashes").getAsJsonArray()) {
+            keyHashes.add(Numeric.hexStringToByteArray(e.getAsString()));
+          }
+          Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript =
+              new Secp256k1Blake160MultisigAllSigner.MultisigScript(firstN, threshold, keyHashes);
+          omnilockConfig.setMultisigScript(multisigScript);
+        }
         c.setPayload(omnilockConfig);
       }
       return c;
