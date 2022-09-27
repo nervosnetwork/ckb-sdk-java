@@ -2,8 +2,8 @@ description 'SDK for CKB indexer'
 
 dependencies {
     compile project(":core")
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M4")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.9.1")
 
     // Enable use of the JUnitPlatform Runner within the IDE
     testCompile("org.junit.platform:junit-platform-runner:1.0.0-M4")
