@@ -19,6 +19,10 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     super(availableInputs, network);
   }
 
+  public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs) {
+    super(availableInputs);
+  }
+
   @Override
   public CkbTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
     super.registerScriptHandler(scriptHandler);

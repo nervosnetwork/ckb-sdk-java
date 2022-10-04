@@ -15,6 +15,12 @@ import java.util.List;
 
 public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
+  private byte[] codeHash;
+
+  public Secp256k1Blake160MultisigAllScriptHandler(List<CellDep> cellDeps, byte[] codeHash) {
+    this.cellDeps = cellDeps;
+    this.codeHash = codeHash;
+  }
 
   public Secp256k1Blake160MultisigAllScriptHandler(Network network) {
     OutPoint outPoint = new OutPoint();
@@ -31,13 +37,13 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     cellDep.outPoint = outPoint;
     cellDep.depType = CellDep.DepType.DEP_GROUP;
     cellDeps = Arrays.asList(cellDep);
+    this.codeHash = Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH;
   }
 
   private boolean isMatched(Script script) {
     if (script == null) {
       return false;
     }
-    byte[] codeHash = Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH;
     return Arrays.equals(script.codeHash, codeHash);
   }
 
