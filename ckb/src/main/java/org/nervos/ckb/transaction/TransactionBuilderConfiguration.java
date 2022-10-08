@@ -16,10 +16,10 @@ public class TransactionBuilderConfiguration {
     Objects.requireNonNull(network);
     this.network = network;
     // register default scriptHandler
-    this.registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET));
-    this.registerScriptHandler(new Secp256k1Blake160MultisigAllScriptHandler(Network.TESTNET));
-    this.registerScriptHandler(new SudtScriptHandler(Network.TESTNET));
-    this.registerScriptHandler(new DaoScriptHandler(Network.TESTNET));
+    this.registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(network));
+    this.registerScriptHandler(new Secp256k1Blake160MultisigAllScriptHandler(network));
+    this.registerScriptHandler(new SudtScriptHandler(network));
+    this.registerScriptHandler(new DaoScriptHandler(network));
   }
 
   public Network getNetwork() {
