@@ -29,7 +29,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
                                 TransactionType transactionType, byte[] sudtArgs) {
     super(configuration, availableInputs);
     this.transactionType = transactionType;
-    setSudtTypeScript(sudtArgs, network);
+    setSudtTypeScript(sudtArgs);
   }
 
   public SudtTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs,
@@ -43,7 +43,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     this.sudtTypeScript = sudtTypeScript;
   }
 
-  public SudtTransactionBuilder setSudtTypeScript(byte[] sudtArgs, Network network) {
+  public SudtTransactionBuilder setSudtTypeScript(byte[] sudtArgs) {
     byte[] codeHash;
     Network network = configuration.getNetwork();
     if (network == Network.TESTNET) {
@@ -63,7 +63,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   public SudtTransactionBuilder setSudtTypeScript(String sudtOwnerAddress) {
     Address address = Address.decode(sudtOwnerAddress);
     byte[] sudtArgs = address.getScript().computeHash();
-    return setSudtTypeScript(sudtArgs, address.getNetwork());
+    return setSudtTypeScript(sudtArgs);
   }
 
   public SudtTransactionBuilder addOutput(CellOutput output, byte[] data) {
