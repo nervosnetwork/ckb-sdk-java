@@ -139,19 +139,19 @@ public class OmnilockSigner implements ScriptSigner {
   }
 
   private static byte[] setSignatureToWitness(byte[] signatures, byte[] signature, Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript) {
-    int pos = multisigScript.encode().length;
+    int offset = multisigScript.encode().length;
     for (int i = 0; i < multisigScript.getThreshold(); i++) {
-      if (isEmpty(signatures, pos, 65)) {
-        System.arraycopy(signature, 0, signatures, pos, 65);
+      if (isEmpty(signatures, offset, 65)) {
+        System.arraycopy(signature, 0, signatures, offset, 65);
         break;
       }
-      pos += 65;
+      offset += 65;
     }
     return signatures;
   }
 
-  private static boolean isEmpty(byte[] lock, int start, int length) {
-    for (int i = start; i < start + length; i++) {
+  private static boolean isEmpty(byte[] lock, int offset, int length) {
+    for (int i = offset; i < offset + length; i++) {
       if (lock[i] != 0) {
         return false;
       }
