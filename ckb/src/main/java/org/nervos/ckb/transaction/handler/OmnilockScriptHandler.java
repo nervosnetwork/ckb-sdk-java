@@ -99,7 +99,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
         txBuilder.addCellDep(multiSignCellDep);
         Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript = configuration.getMultisigScript();
         Objects.requireNonNull(multisigScript);
-        omnilockWitnessLock.setSignature(multisigScript.witnessPlaceholderInLock());
+        omnilockWitnessLock.setSignature(multisigScript.witnessEmptyPlaceholderInLock());
         break;
       case LOCK_SCRIPT_HASH:
         // TODO: set input by script handler OR by user???
@@ -114,6 +114,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
     byte[] lock = omnilockWitnessLock.pack().toByteArray();
     int index = scriptGroup.getInputIndices().get(0);
     txBuilder.setWitness(index, WitnessArgs.Type.LOCK, new byte[lock.length]);
+    System.out.println(lock.length);
     return true;
   }
 

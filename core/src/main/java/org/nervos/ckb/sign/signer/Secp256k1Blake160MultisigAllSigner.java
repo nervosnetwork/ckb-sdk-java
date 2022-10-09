@@ -212,6 +212,10 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       return placeholder;
     }
 
+    public byte[] witnessEmptyPlaceholderInLock() {
+      return new byte[witnessPlaceholderInLock().length];
+    }
+
     @Override
     public boolean equals(Object o) {
       if (this == o) return true;
