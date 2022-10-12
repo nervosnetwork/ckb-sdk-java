@@ -109,7 +109,7 @@ public class OmnilockArgs {
         args.sinceForTimeLock = buffer.getLong();
       }
       if (args.isSupplyModeEnabled()) {
-        args.typeScriptHashForSupply = Arrays.copyOfRange(raw, 43, 74);
+        args.typeScriptHashForSupply = Arrays.copyOfRange(raw, 43, 75);
       }
       return args;
     }

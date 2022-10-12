@@ -18,4 +18,14 @@ class OmnilockArgsTest {
     Assertions.assertArrayEquals(expected, config.encode());
   }
 
+  @Test
+  public void testDecode() {
+    byte[] bytes = Numeric.hexStringToByteArray("0feb760e1ad345001c6a31ae4ef531c38f94f64f2f6b6ac862a4822248adcb421c020100000000000129d51386a372b6b103f1de175dfb16c36f9358385d67239253131100fdd9624d699b");
+    OmnilockArgs.OmniConfig config = OmnilockArgs.OmniConfig.decode(bytes);
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0xeb760e1ad345001c6a31ae4ef531c38f94f64f2f6b6ac862a4822248adcb421c"), config.getAdminListCellTypeId());
+    Assertions.assertEquals(2, config.getMinimumCKBExponentInAcp());
+    Assertions.assertEquals(1, config.getMinimumSUDTExponentInAcp());
+    Assertions.assertEquals(0x129d5, config.getSinceForTimeLock());
+    Assertions.assertArrayEquals(Numeric.hexStringToByteArray("0x1386a372b6b103f1de175dfb16c36f9358385d67239253131100fdd9624d699b"), config.getTypeScriptHashForSupply());
+  }
 }
