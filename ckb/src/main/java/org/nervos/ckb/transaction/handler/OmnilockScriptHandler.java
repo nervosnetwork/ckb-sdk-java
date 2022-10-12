@@ -22,7 +22,8 @@ public class OmnilockScriptHandler implements ScriptHandler {
   public OmnilockScriptHandler() {
   }
 
-  public OmnilockScriptHandler(Network network) {
+  @Override
+  public ScriptHandler init(Network network) {
     if (network == Network.MAINNET) {
       codeHash = Script.OMNILOCK_CODE_HASH_MAINNET;
       cellDep = new CellDep("0xdfdb40f5d229536915f2d5403c66047e162e25dedd70a79ef5164356e1facdc8", 0, CellDep.DepType.CODE);
@@ -36,6 +37,7 @@ public class OmnilockScriptHandler implements ScriptHandler {
     } else {
       throw new IllegalArgumentException("Unsupported network: " + network);
     }
+    return this;
   }
 
   public void setCellDep(CellDep cellDep) {
@@ -52,6 +54,22 @@ public class OmnilockScriptHandler implements ScriptHandler {
 
   public void setCodeHash(byte[] codeHash) {
     this.codeHash = codeHash;
+  }
+
+  public CellDep getCellDep() {
+    return cellDep;
+  }
+
+  public CellDep getSingleSignCellDep() {
+    return singleSignCellDep;
+  }
+
+  public CellDep getMultiSignCellDep() {
+    return multiSignCellDep;
+  }
+
+  public byte[] getCodeHash() {
+    return codeHash;
   }
 
   @Override

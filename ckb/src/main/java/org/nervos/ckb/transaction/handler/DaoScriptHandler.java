@@ -20,16 +20,30 @@ public class DaoScriptHandler implements ScriptHandler {
   public static byte[] DEPOSIT_CELL_DATA = Numeric.hexStringToByteArray("0x0000000000000000");
   public static int DAO_LOCK_PERIOD_EPOCHS = 180;
 
-
   private List<CellDep> cellDeps;
   private byte[] codeHash;
 
-  public DaoScriptHandler(List<CellDep> cellDeps, byte[] codeHash) {
+  public DaoScriptHandler() {
+  }
+
+  public List<CellDep> getCellDeps() {
+    return cellDeps;
+  }
+
+  public void setCellDeps(List<CellDep> cellDeps) {
     this.cellDeps = cellDeps;
+  }
+
+  public byte[] getCodeHash() {
+    return codeHash;
+  }
+
+  public void setCodeHash(byte[] codeHash) {
     this.codeHash = codeHash;
   }
 
-  public DaoScriptHandler(Network network) {
+  @Override
+  public ScriptHandler init(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
       outPoint.txHash = Numeric.hexStringToByteArray("0xe2fb199810d49a4d8beec56718ba2593b665db9d52299a0f9e6e75416d73ff5c");
@@ -45,6 +59,7 @@ public class DaoScriptHandler implements ScriptHandler {
     cellDep.outPoint = outPoint;
     cellDep.depType = CellDep.DepType.CODE;
     cellDeps = Arrays.asList(cellDep);
+    return this;
   }
 
   private boolean isMatched(Script script) {

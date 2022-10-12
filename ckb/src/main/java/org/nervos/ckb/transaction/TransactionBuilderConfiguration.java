@@ -3,6 +3,8 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.transaction.handler.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,11 +20,10 @@ public class TransactionBuilderConfiguration {
   public TransactionBuilderConfiguration(Network network) {
     Objects.requireNonNull(network);
     this.network = network;
-    // register default scriptHandler
-    this.registerScriptHandler(new Secp256k1Blake160SighashAllScriptHandler(network));
-    this.registerScriptHandler(new Secp256k1Blake160MultisigAllScriptHandler(network));
-    this.registerScriptHandler(new SudtScriptHandler(network));
-    this.registerScriptHandler(new DaoScriptHandler(network));
+    registerScriptHandler(Secp256k1Blake160SighashAllScriptHandler.class);
+    registerScriptHandler(Secp256k1Blake160MultisigAllScriptHandler.class);
+    registerScriptHandler(SudtScriptHandler.class);
+    registerScriptHandler(DaoScriptHandler.class);
   }
 
   public Network getNetwork() {
@@ -43,6 +44,17 @@ public class TransactionBuilderConfiguration {
 
   public void registerScriptHandler(ScriptHandler scriptHandler) {
     this.scriptHandlers.add(scriptHandler);
+  }
+
+  public void registerScriptHandler(Class<? extends ScriptHandler> clazz) {
+    try {
+      Object instance = clazz.newInstance();
+      Method m = clazz.getMethod("init", Network.class);
+      ScriptHandler handler = (ScriptHandler) m.invoke(instance, network);
+      registerScriptHandler(handler);
+    } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public long getFeeRate() {

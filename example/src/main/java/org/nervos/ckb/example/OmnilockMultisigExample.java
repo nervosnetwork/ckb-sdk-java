@@ -33,7 +33,7 @@ public class OmnilockMultisigExample {
     config.setMultisigScript(multisigScript);
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
-    configuration.registerScriptHandler(new OmnilockScriptHandler(network));
+    configuration.registerScriptHandler(new OmnilockScriptHandler().init(network));
     Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput(sender, 50100000000L)

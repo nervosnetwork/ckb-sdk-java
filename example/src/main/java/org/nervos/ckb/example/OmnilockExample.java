@@ -27,7 +27,7 @@ public class OmnilockExample {
     config.setMode(OmnilockSigner.Configuration.Mode.AUTH);
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
-    configuration.registerScriptHandler(new OmnilockScriptHandler(network));
+    configuration.registerScriptHandler(new OmnilockScriptHandler().init(network));
     Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput(sender, 50100000000L)
