@@ -127,9 +127,8 @@ public class OmnilockScriptHandler implements ScriptHandler {
       default:
         throw new IllegalArgumentException("Unknown auth flag " + configuration.getOmnilockArgs().getOmniArgs().getFlag());
     }
-    byte[] lock = omnilockWitnessLock.pack().toByteArray();
     int index = scriptGroup.getInputIndices().get(0);
-    txBuilder.setWitness(index, WitnessArgs.Type.LOCK, new byte[lock.length]);
+    txBuilder.setWitness(index, WitnessArgs.Type.LOCK, omnilockWitnessLock.packAsEmptyPlaceholder());
     return true;
   }
 

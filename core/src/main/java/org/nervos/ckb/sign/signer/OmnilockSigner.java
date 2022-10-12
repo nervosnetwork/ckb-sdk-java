@@ -106,7 +106,7 @@ public class OmnilockSigner implements ScriptSigner {
         // Prepare witness placeholder
         WitnessArgs witnessArgsPlaceholder = WitnessArgs.unpack(firstWitness);
         omnilockWitnessLock.setSignature(multisigScript.witnessEmptyPlaceholderInLock());
-        witnessArgsPlaceholder.setLock(new byte[omnilockWitnessLock.pack().toByteArray().length]);
+        witnessArgsPlaceholder.setLock(omnilockWitnessLock.packAsEmptyPlaceholder());
         witnessPlaceholder = witnessArgsPlaceholder.pack().toByteArray();
         // Sign
         signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, witnessPlaceholder, keyPair);

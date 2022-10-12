@@ -57,6 +57,10 @@ public class OmnilockWitnessLock {
     return moleculeLock.build();
   }
 
+  public byte[] packAsEmptyPlaceholder() {
+    return new byte[pack().toByteArray().length];
+  }
+
   public static OmnilockWitnessLock unpack(byte[] in) {
     if (in == null) {
       return null;
