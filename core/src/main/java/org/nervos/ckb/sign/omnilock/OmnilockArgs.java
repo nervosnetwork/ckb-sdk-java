@@ -3,6 +3,7 @@ package org.nervos.ckb.sign.omnilock;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -113,27 +114,55 @@ public class OmnilockArgs {
       return args;
     }
 
+    private void writeBytes(ByteArrayOutputStream out, byte[] bytes) {
+      out.write(bytes, 0, bytes.length);
+    }
+
     public byte[] encode() {
-      byte[] out = new byte[1];
-      out[0] = (byte) flag;
-      // TODO: complete other fields encoding
-      return out;
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      writeBytes(out, new byte[]{(byte) flag});
+      if (isAdminModeEnabled()) {
+        writeBytes(out, adminListCellTypeId);
+      } else {
+        return out.toByteArray();
+      }
+      if (isAnyoneCanPayModeEnabled()) {
+        writeBytes(out, new byte[]{minimumCKBExponentInAcp.byteValue()});
+        if (minimumSUDTExponentInAcp != null) {
+          writeBytes(out, new byte[]{minimumSUDTExponentInAcp.byteValue()});
+        } else {
+          return out.toByteArray();
+        }
+      } else {
+        return out.toByteArray();
+      }
+      if (isTimeLockModeEnabled()) {
+        ByteBuffer buffer = ByteBuffer.allocate(8);
+        buffer.putLong(sinceForTimeLock);
+        writeBytes(out, buffer.array());
+      } else {
+        return out.toByteArray();
+      }
+      if (isSupplyModeEnabled()) {
+        writeBytes(out, typeScriptHashForSupply);
+      }
+      return out.toByteArray();
     }
 
     public boolean isAdminModeEnabled() {
-      return (flag & 0x1) != 0;
+      return (flag & 0b1) != 0;
     }
 
     public boolean isAnyoneCanPayModeEnabled() {
-      return (flag & 0x10) != 0;
+      return (flag & 0b10) != 0;
     }
 
     public boolean isTimeLockModeEnabled() {
-      return (flag & 0x100) != 0;
+      return (flag & 0b100) != 0;
     }
 
     public boolean isSupplyModeEnabled() {
-      return (flag & 0x1000) != 0;
+      return (flag & 0b1000) != 0;
     }
 
     public int getFlag() {
