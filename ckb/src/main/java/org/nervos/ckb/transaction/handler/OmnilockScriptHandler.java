@@ -119,32 +119,6 @@ public class OmnilockScriptHandler implements ScriptHandler {
 
   private boolean buildTransactionForAdministratorMode(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, OmnilockSigner.Configuration configuration) {
     throw new UnsupportedOperationException();
-    //    // set celldep
-    //    CellDep adminListCell = configuration.getAdminListCell();
-    //    Objects.requireNonNull(adminListCell);
-    //    txBuilder.addCellDep(adminListCell);
-    //
-    //    // set lock to witness
-    //    OmnilockIdentity.OmnilockFlag administratorMode = configuration.getOmnilockIdentity().getIdentity().getFlag();
-    //    byte[] signature = null;
-    //    switch (administratorMode) {
-    //      case CKB_SECP256K1_BLAKE160:
-    //        signature = new byte[65];
-    //        break;
-    //      case LOCK_SCRIPT_HASH:
-    //        // TODO: set input by script handler OR by user???
-    //        break;
-    //      default:
-    //        throw new IllegalArgumentException("Unknown administrator mode " + administratorMode);
-    //    }
-    //    OmnilockWitnessLock omnilockWitnessLock = new OmnilockWitnessLock();
-    //    omnilockWitnessLock.setSignature(signature);
-    //    omnilockWitnessLock.setOmnilockIdentity(configuration.getOmnilockIdentity());
-    //
-    //    byte[] lock = omnilockWitnessLock.pack().toByteArray();
-    //    int index = scriptGroup.getInputIndices().get(0);
-    //    txBuilder.setWitness(index, WitnessArgs.Type.LOCK, lock);
-    //    return true;
   }
 
   private boolean isMatched(Script script) {
