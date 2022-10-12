@@ -90,7 +90,6 @@ public class OmnilockArgs {
     private byte[] adminListCellTypeId;
     private Integer minimumCKBExponentInAcp;
     private Integer minimumSUDTExponentInAcp;
-    // TODO: parse time lock
     private Long sinceForTimeLock;
     private byte[] typeScriptHashForSupply;
 

@@ -52,7 +52,6 @@ public class OmnilockSigner implements ScriptSigner {
     }
   }
 
-  // TODO: return void
   private static OmnilockWitnessLock signForAuthMode(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, Configuration configuration) {
     byte[] authArgs = Arrays.copyOfRange(scriptGroup.getScript().args, 1, 21);
     int firstIndex = scriptGroup.getInputIndices().get(0);
@@ -126,7 +125,6 @@ public class OmnilockSigner implements ScriptSigner {
         omnilockWitnessLock.setSignature(signature);
         break;
       case LOCK_SCRIPT_HASH:
-        signature = new byte[0];
         break;
       case EXEC:
         throw new UnsupportedOperationException("Exec");
