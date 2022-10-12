@@ -12,6 +12,9 @@ public class TransactionBuilderConfiguration {
   private List<ScriptHandler> scriptHandlers = new ArrayList<>();
   private long feeRate = 1000;
 
+  public TransactionBuilderConfiguration() {
+  }
+
   public TransactionBuilderConfiguration(Network network) {
     Objects.requireNonNull(network);
     this.network = network;
