@@ -1,5 +1,6 @@
 package org.nervos.ckb.sign.omnilock;
 
+import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
 
 import java.nio.ByteBuffer;
@@ -26,11 +27,7 @@ public class OmnilockArgs {
   public byte[] encode() {
     byte[] args1 = authentication.encode();
     byte[] args2 = omniConfig.encode();
-
-    byte[] args = new byte[args1.length + args2.length];
-    System.arraycopy(args1, 0, args, 0, args1.length);
-    System.arraycopy(args2, 0, args, args1.length, args2.length);
-    return args;
+    return Numeric.concatBytes(args1, args2);
   }
 
   public Authentication getAuthenticationArgs() {
