@@ -3,8 +3,6 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.transaction.handler.*;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -48,11 +46,12 @@ public class TransactionBuilderConfiguration {
 
   public void registerScriptHandler(Class<? extends ScriptHandler> clazz) {
     try {
-      Object instance = clazz.newInstance();
-      Method m = clazz.getMethod("init", Network.class);
-      ScriptHandler handler = (ScriptHandler) m.invoke(instance, network);
-      registerScriptHandler(handler);
-    } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+      ScriptHandler instance = clazz.newInstance();
+      instance.init(network);
+      registerScriptHandler(instance);
+    } catch (InstantiationException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
       throw new RuntimeException(e);
     }
   }
