@@ -37,7 +37,7 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
   }
 
   @Override
-  public ScriptHandler init(Network network) {
+  public void init(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
       outPoint.txHash = Numeric.hexStringToByteArray("0x71a7ba8fc96349fea0ed3a5c47992e3b4084b031a42264a018e0072e8172e46c");
@@ -53,7 +53,6 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     cellDep.depType = CellDep.DepType.DEP_GROUP;
     cellDeps = Arrays.asList(cellDep);
     this.codeHash = Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH;
-    return this;
   }
 
   private boolean isMatched(Script script) {

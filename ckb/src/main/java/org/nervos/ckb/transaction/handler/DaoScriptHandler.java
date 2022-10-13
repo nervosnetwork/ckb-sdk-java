@@ -43,7 +43,7 @@ public class DaoScriptHandler implements ScriptHandler {
   }
 
   @Override
-  public ScriptHandler init(Network network) {
+  public void init(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
       outPoint.txHash = Numeric.hexStringToByteArray("0xe2fb199810d49a4d8beec56718ba2593b665db9d52299a0f9e6e75416d73ff5c");
@@ -59,7 +59,6 @@ public class DaoScriptHandler implements ScriptHandler {
     cellDep.outPoint = outPoint;
     cellDep.depType = CellDep.DepType.CODE;
     cellDeps = Arrays.asList(cellDep);
-    return this;
   }
 
   private boolean isMatched(Script script) {

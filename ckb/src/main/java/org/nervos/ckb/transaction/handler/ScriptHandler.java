@@ -7,5 +7,5 @@ import org.nervos.ckb.transaction.AbstractTransactionBuilder;
 public interface ScriptHandler {
   boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context);
 
-  ScriptHandler init(Network network);
+  void init(Network network);
 }

@@ -22,6 +22,7 @@ public class TransactionBuilderConfiguration {
     registerScriptHandler(Secp256k1Blake160MultisigAllScriptHandler.class);
     registerScriptHandler(SudtScriptHandler.class);
     registerScriptHandler(DaoScriptHandler.class);
+    registerScriptHandler(OmnilockScriptHandler.class);
   }
 
   public Network getNetwork() {
@@ -49,9 +50,7 @@ public class TransactionBuilderConfiguration {
       ScriptHandler instance = clazz.newInstance();
       instance.init(network);
       registerScriptHandler(instance);
-    } catch (InstantiationException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException e) {
       throw new RuntimeException(e);
     }
   }

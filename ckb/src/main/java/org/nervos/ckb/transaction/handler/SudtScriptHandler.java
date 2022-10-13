@@ -17,7 +17,7 @@ public class SudtScriptHandler implements ScriptHandler {
 
   public SudtScriptHandler() {
   }
- 
+
   public List<CellDep> getCellDeps() {
     return cellDeps;
   }
@@ -35,7 +35,7 @@ public class SudtScriptHandler implements ScriptHandler {
   }
 
   @Override
-  public ScriptHandler init(Network network) {
+  public void init(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
       outPoint.txHash = Numeric.hexStringToByteArray("0xc7813f6a415144643970c2e88e0bb6ca6a8edc5dd7c1022746f628284a9936d5");
@@ -52,7 +52,6 @@ public class SudtScriptHandler implements ScriptHandler {
     cellDep.outPoint = outPoint;
     cellDep.depType = CellDep.DepType.CODE;
     cellDeps = Arrays.asList(cellDep);
-    return this;
   }
 
   private boolean isMatched(Script script) {

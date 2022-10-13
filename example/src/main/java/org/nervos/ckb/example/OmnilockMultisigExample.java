@@ -10,7 +10,6 @@ import org.nervos.ckb.sign.signer.OmnilockSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
-import org.nervos.ckb.transaction.handler.OmnilockScriptHandler;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
@@ -33,7 +32,6 @@ public class OmnilockMultisigExample {
     config.setMultisigScript(multisigScript);
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
-    configuration.registerScriptHandler(new OmnilockScriptHandler().init(network));
     Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput(sender, 50100000000L)
