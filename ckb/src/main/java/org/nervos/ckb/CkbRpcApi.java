@@ -4,10 +4,7 @@ import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
-import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TxsWithCell;
+import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -92,6 +89,9 @@ public interface CkbRpcApi {
       throws IOException;
 
   TxsWithCell getTransactions(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
+ 
+  TxsWithCells getTransactionsGrouped(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
 
   CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
