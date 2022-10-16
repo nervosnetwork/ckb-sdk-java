@@ -39,6 +39,7 @@ Run `gradle build` in project root directory.
 Here we will give some most frequently used operations, to bring you enlightenment about how to use ckb-sdk-java to operate your asset in CKB chain.
 
 ### Setup
+
 ckb-java-sdk provides a convenient client to help you easily interact with [CKB](https://github.com/nervosnetwork/ckb), [CKB-indexer](https://github.com/nervosnetwork/ckb-indexer) or [Mercury](https://github.com/nervosnetwork/mercury) node.
 
 ```java
@@ -50,6 +51,7 @@ DefaultCkbApi ckbApi = new DefaultCkbApi(ckbUrl, mercuryUrl, indexerUrl, false);
 ```
 
 You can leverage this client to call any RPC APIs provided by CKB, CKB-indexer or Mercury in Java code.
+
 ```java
 byte[] blockHash = Numeric.hexStringToByteArray("0x77fdd22f6ae8a717de9ae2b128834e9b2a1424378b5fc95606ba017aab5fed75");
 Block block = ckbApi.getBlock(blockHash);
@@ -61,12 +63,9 @@ For more details about RPC APIs, please check:
 - [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
 - [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
 
-### Build transaction with indexer
+### Build transaction by manual
 
-[ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) is an application to collect cells and transactions from CKB
-chain. With ckb-indexer to collect live cells, we can build transactions easily.
-
-ckb-java-sdk encapsulates the common logic into a user-friendly transaction builder. It could greatly free you from
+ckb-sdk-java encapsulates the common logic into a user-friendly transaction builder. It could greatly free you from
 getting into script details and from tedious manual work of building transaction including adding celldeps, transaction
 fee calculation, change output set and so on.
 
@@ -133,6 +132,7 @@ System.out.println(Numeric.toHexString(txHash));
 ```
 
 ### Generate a new address
+
 In CKB world, a lock script can be represented as an address. `secp256k1_blake160` is the most common used address and here we show how to generate it.
 
 ```java
