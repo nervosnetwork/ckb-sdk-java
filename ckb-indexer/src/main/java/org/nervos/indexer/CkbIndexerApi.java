@@ -2,10 +2,7 @@ package org.nervos.indexer;
 
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
-import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 
@@ -16,6 +13,9 @@ public interface CkbIndexerApi {
       throws IOException;
 
   TransactionResponse getTransactions(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
+
+  TxsWithCells getTransactionsGrouped(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
 
   CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
