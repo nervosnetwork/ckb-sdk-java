@@ -10,6 +10,12 @@ import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.indexer.model.Order;
+import org.nervos.indexer.model.SearchKeyBuilder;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.indexer.model.resp.TipResponse;
+import org.nervos.indexer.model.resp.TransactionResponse;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -240,12 +246,12 @@ public class ApiTest {
     RawTxPoolVerbose rawTxPoolVerbose = api.getRawTxPoolVerbose();
     Assertions.assertNotNull(rawTxPoolVerbose);
 
-    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry:
         rawTxPoolVerbose.pending.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }
 
-    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry:
         rawTxPoolVerbose.proposed.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }
@@ -353,6 +359,55 @@ public class ApiTest {
           }
         },
         "Transaction Empty");
+  }
+
+  @Test
+  void testGetIndexerTip() throws IOException {
+    TipResponse tip = api.getIndexerTip();
+    Assertions.assertNotNull(tip.blockHash);
+    Assertions.assertNotEquals(0, tip.blockNumber);
+  }
+
+  @Test
+  void testGetTransactions() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(
+            Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+            Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+            Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+    TransactionResponse txs = api.getTransactions(key.build(), Order.ASC, 10, null);
+    Assertions.assertTrue(txs.objects.size() > 0);
+  }
+
+  @Test
+  void testGetCells() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(Numeric.hexStringToByteArray(
+            "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                   Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                   Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+
+    CellsResponse cells = api.getCells(key.build(), Order.ASC, 10, null);
+    Assertions.assertTrue(cells.objects.size() > 0);
+  }
+
+
+  @Test
+  void testGetCellCapacity() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(Numeric.hexStringToByteArray(
+            "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                   Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                   Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+    CellCapacityResponse capacity = api.getCellsCapacity(key.build());
+    Assertions.assertEquals(1388355000000L, capacity.capacity);
   }
 
   @Test
