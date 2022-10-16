@@ -1,6 +1,5 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.handler.DaoScriptHandler;
@@ -15,23 +14,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   protected List<TransactionInput> transactionInputs = new ArrayList<>();
   protected long reward = 0;
 
-  public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
-    super(availableInputs, network);
-  }
-
-  public CkbTransactionBuilder(Iterator<TransactionInput> availableInputs) {
-    super(availableInputs);
-  }
-
-  @Override
-  public CkbTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    super.registerScriptHandler(scriptHandler);
-    return this;
-  }
-
-  public CkbTransactionBuilder setFeeRate(long feeRate) {
-    this.feeRate = feeRate;
-    return this;
+  public CkbTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs) {
+    super(configuration, availableInputs);
   }
 
   public CkbTransactionBuilder addInput(TransactionInput transactionInput) {
@@ -103,8 +87,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
           scriptGroupMap.put(type, scriptGroup);
         }
         scriptGroup.getOutputIndices().add(i);
-        for (ScriptHandler handler : scriptHandlers) {
-          for (Object context : contexts) {
+        for (ScriptHandler handler: configuration.getScriptHandlers()) {
+          for (Object context: contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
         }
@@ -132,8 +116,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       }
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
-      for (ScriptHandler handler : scriptHandlers) {
-        for (Object context : contexts) {
+      for (ScriptHandler handler: configuration.getScriptHandlers()) {
+        for (Object context: contexts) {
           handler.buildTransaction(this, scriptGroup, context);
         }
       }
@@ -148,8 +132,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
           scriptGroupMap.put(type, scriptGroup);
         }
         scriptGroup.getInputIndices().add(inputIndex);
-        for (ScriptHandler handler : scriptHandlers) {
-          for (Object context : contexts) {
+        for (ScriptHandler handler: configuration.getScriptHandlers()) {
+          for (Object context: contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
         }
@@ -157,7 +141,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
 
       inputsCapacity += input.output.capacity;
       // check if there is enough capacity for output capacity and change
-      long fee = calculateTxFee(tx, feeRate);
+      long fee = calculateTxFee(tx, configuration.getFeeRate());
       long changeCapacity = inputsCapacity - outputsCapacity - fee + reward;
       CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
       byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
@@ -186,9 +170,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     if (availableInputs != null) {
       while (availableInputs.hasNext()) {
         TransactionInput input = availableInputs.next();
-        if (toFilter(input)) {
-          continue;
-        } else {
+        if (!shouldFilterOut(input)) {
           return input;
         }
       }
@@ -196,7 +178,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return null;
   }
 
-  private boolean toFilter(TransactionInput input) {
+  private boolean shouldFilterOut(TransactionInput input) {
     OutPoint outPoint = input.input.previousOutput;
     // Filter duplicate found inputs same with customized input
     for (int i = 0; i < transactionInputs.size(); i++) {

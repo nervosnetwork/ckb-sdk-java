@@ -15,12 +15,27 @@ public class SudtScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
   private byte[] codeHash;
 
-  public SudtScriptHandler(List<CellDep> cellDeps, byte[] codeHash) {
+  public SudtScriptHandler() {
+  }
+
+  public List<CellDep> getCellDeps() {
+    return cellDeps;
+  }
+
+  public void setCellDeps(List<CellDep> cellDeps) {
     this.cellDeps = cellDeps;
+  }
+
+  public byte[] getCodeHash() {
+    return codeHash;
+  }
+
+  public void setCodeHash(byte[] codeHash) {
     this.codeHash = codeHash;
   }
 
-  public SudtScriptHandler(Network network) {
+  @Override
+  public void init(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
       outPoint.txHash = Numeric.hexStringToByteArray("0xc7813f6a415144643970c2e88e0bb6ca6a8edc5dd7c1022746f628284a9936d5");

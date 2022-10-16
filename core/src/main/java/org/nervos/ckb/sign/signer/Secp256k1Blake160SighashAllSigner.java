@@ -11,22 +11,11 @@ import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.WitnessArgs;
 import org.nervos.ckb.utils.MoleculeConverter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
-  private static Secp256k1Blake160SighashAllSigner INSTANCE;
-
-  private Secp256k1Blake160SighashAllSigner() {
-  }
-
-  public static Secp256k1Blake160SighashAllSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new Secp256k1Blake160SighashAllSigner();
-    }
-    return INSTANCE;
-  }
-
   public static boolean signTransactionInPlace(
       Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair) {
     byte[] signature = signTransaction(transaction, scriptGroup, keyPair);
@@ -39,19 +28,23 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
   }
 
   public static byte[] signTransaction(
-      Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair) {
+      Transaction transaction, ScriptGroup scriptGroup, byte[] witnessPlaceholder, ECKeyPair keyPair) {
     byte[] txHash = transaction.computeHash();
-    List<byte[]> witnesses = transaction.witnesses;
     Blake2b blake2b = new Blake2b();
     blake2b.update(txHash);
 
-    for (int i: scriptGroup.getInputIndices()) {
-      byte[] witness = witnesses.get(i);
-      blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
-      blake2b.update(witness);
+    blake2b.update(MoleculeConverter.packUint64(witnessPlaceholder.length).toByteArray());
+    blake2b.update(witnessPlaceholder);
+    List<Integer> includedWitnessIndex = new ArrayList<>();
+
+    for (int i = 1; i < scriptGroup.getInputIndices().size(); i++) {
+      includedWitnessIndex.add(scriptGroup.getInputIndices().get(i));
     }
     for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
-      byte[] witness = witnesses.get(i);
+      includedWitnessIndex.add(i);
+    }
+    for (int i: includedWitnessIndex) {
+      byte[] witness = transaction.witnesses.get(i);
       blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
       blake2b.update(witness);
     }
@@ -59,6 +52,12 @@ public class Secp256k1Blake160SighashAllSigner implements ScriptSigner {
     byte[] message = blake2b.doFinal();
     byte[] signature = Sign.signMessage(message, keyPair).getSignature();
     return signature;
+  }
+
+  public static byte[] signTransaction(
+      Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair) {
+    byte[] witnessPlaceholder = transaction.witnesses.get(scriptGroup.getInputIndices().get(0));
+    return signTransaction(transaction, scriptGroup, witnessPlaceholder, keyPair);
   }
 
   @Override

@@ -1,8 +1,6 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.handler.*;
 import org.nervos.ckb.type.CellDep;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.TransactionInput;
@@ -16,48 +14,22 @@ import java.util.List;
 
 public abstract class AbstractTransactionBuilder {
   protected int changeOutputIndex = -1;
-  protected long feeRate = 1000;
-
-  protected List<ScriptHandler> scriptHandlers = new ArrayList<>();
+  protected TransactionBuilderConfiguration configuration;
+  protected Iterator<TransactionInput> availableInputs;
   protected List<TransactionInput> inputsDetail = new ArrayList<>();
   protected Transaction tx = new Transaction();
-  protected Iterator<TransactionInput> availableInputs;
 
-  private static List<ScriptHandler> TESTNET_SCRIPT_HANDLERS = new ArrayList<>();
-  private static List<ScriptHandler> MAINNET_SCRIPT_HANDLERS = new ArrayList<>();
-
-  static {
-    TESTNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160SighashAllScriptHandler(Network.TESTNET));
-    TESTNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160MultisigAllScriptHandler(Network.TESTNET));
-    TESTNET_SCRIPT_HANDLERS.add(new SudtScriptHandler(Network.TESTNET));
-    TESTNET_SCRIPT_HANDLERS.add(new DaoScriptHandler(Network.TESTNET));
-
-    MAINNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160SighashAllScriptHandler(Network.MAINNET));
-    MAINNET_SCRIPT_HANDLERS.add(new Secp256k1Blake160MultisigAllScriptHandler(Network.MAINNET));
-    MAINNET_SCRIPT_HANDLERS.add(new SudtScriptHandler(Network.MAINNET));
-    MAINNET_SCRIPT_HANDLERS.add(new DaoScriptHandler(Network.MAINNET));
-  }
-
-  public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
-    this(availableInputs);
-    if (network == Network.TESTNET) {
-      scriptHandlers.addAll(TESTNET_SCRIPT_HANDLERS);
-    } else {
-      scriptHandlers.addAll(MAINNET_SCRIPT_HANDLERS);
-    }
-  }
-
-  public AbstractTransactionBuilder(Iterator<TransactionInput> availableInputs) {
+  public AbstractTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs) {
+    this.configuration = configuration;
     this.availableInputs = availableInputs;
   }
 
-  protected AbstractTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    scriptHandlers.add(scriptHandler);
-    return this;
+  public TransactionBuilderConfiguration getConfiguration() {
+    return configuration;
   }
 
-  public long getFeeRate() {
-    return feeRate;
+  public void setConfiguration(TransactionBuilderConfiguration configuration) {
+    this.configuration = configuration;
   }
 
   public void setInputSince(int index, long since) {

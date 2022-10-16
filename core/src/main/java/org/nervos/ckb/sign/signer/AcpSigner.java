@@ -8,18 +8,6 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Transaction;
 
 public class AcpSigner implements ScriptSigner {
-  private static AcpSigner INSTANCE;
-
-  private AcpSigner() {
-  }
-
-  public static AcpSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new AcpSigner();
-    }
-    return INSTANCE;
-  }
-
   @Override
   public boolean signTransaction(
       Transaction transaction, ScriptGroup scriptGroup, Context context) {

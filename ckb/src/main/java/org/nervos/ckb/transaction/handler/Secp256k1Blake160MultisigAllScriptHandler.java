@@ -17,12 +17,27 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
   private List<CellDep> cellDeps;
   private byte[] codeHash;
 
-  public Secp256k1Blake160MultisigAllScriptHandler(List<CellDep> cellDeps, byte[] codeHash) {
+  public Secp256k1Blake160MultisigAllScriptHandler() {
+  }
+
+  public List<CellDep> getCellDeps() {
+    return cellDeps;
+  }
+
+  public void setCellDeps(List<CellDep> cellDeps) {
     this.cellDeps = cellDeps;
+  }
+
+  public byte[] getCodeHash() {
+    return codeHash;
+  }
+
+  public void setCodeHash(byte[] codeHash) {
     this.codeHash = codeHash;
   }
 
-  public Secp256k1Blake160MultisigAllScriptHandler(Network network) {
+  @Override
+  public void init(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
       outPoint.txHash = Numeric.hexStringToByteArray("0x71a7ba8fc96349fea0ed3a5c47992e3b4084b031a42264a018e0072e8172e46c");

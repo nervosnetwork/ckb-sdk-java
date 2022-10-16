@@ -25,16 +25,16 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     TRANSFER
   }
 
-  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network,
+  public SudtTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs,
                                 TransactionType transactionType, byte[] sudtArgs) {
-    super(availableInputs, network);
+    super(configuration, availableInputs);
     this.transactionType = transactionType;
-    setSudtTypeScript(sudtArgs, network);
+    setSudtTypeScript(sudtArgs);
   }
 
-  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network,
+  public SudtTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs,
                                 TransactionType transactionType, String sudtOwnerAddress) {
-    super(availableInputs, network);
+    super(configuration, availableInputs);
     this.transactionType = transactionType;
     setSudtTypeScript(sudtOwnerAddress);
   }
@@ -43,8 +43,9 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     this.sudtTypeScript = sudtTypeScript;
   }
 
-  public SudtTransactionBuilder setSudtTypeScript(byte[] sudtArgs, Network network) {
+  public SudtTransactionBuilder setSudtTypeScript(byte[] sudtArgs) {
     byte[] codeHash;
+    Network network = configuration.getNetwork();
     if (network == Network.TESTNET) {
       codeHash = Script.SUDT_CODE_HASH_TESTNET;
     } else if (network == Network.MAINNET) {
@@ -62,18 +63,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   public SudtTransactionBuilder setSudtTypeScript(String sudtOwnerAddress) {
     Address address = Address.decode(sudtOwnerAddress);
     byte[] sudtArgs = address.getScript().computeHash();
-    return setSudtTypeScript(sudtArgs, address.getNetwork());
-  }
-
-  @Override
-  public SudtTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    super.registerScriptHandler(scriptHandler);
-    return this;
-  }
-
-  public SudtTransactionBuilder setFeeRate(long feeRate) {
-    this.feeRate = feeRate;
-    return this;
+    return setSudtTypeScript(sudtArgs);
   }
 
   public SudtTransactionBuilder addOutput(CellOutput output, byte[] data) {
@@ -156,7 +146,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
           scriptGroupMap.put(type, scriptGroup);
         }
         scriptGroup.getOutputIndices().add(i);
-        for (ScriptHandler handler: scriptHandlers) {
+        for (ScriptHandler handler: configuration.getScriptHandlers()) {
           for (Object context: contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
@@ -194,7 +184,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       }
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
-      for (ScriptHandler handler: scriptHandlers) {
+      for (ScriptHandler handler: configuration.getScriptHandlers()) {
         for (Object context: contexts) {
           handler.buildTransaction(this, scriptGroup, context);
         }
@@ -210,7 +200,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
           scriptGroupMap.put(type, scriptGroup);
         }
         scriptGroup.getInputIndices().add(inputIndex);
-        for (ScriptHandler handler: scriptHandlers) {
+        for (ScriptHandler handler: configuration.getScriptHandlers()) {
           for (Object context: contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
@@ -226,7 +216,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       }
 
       // check if there is enough capacity for output capacity and change
-      long fee = calculateTxFee(tx, feeRate);
+      long fee = calculateTxFee(tx, configuration.getFeeRate());
       long changeCapacity = inputsCapacity - outputsCapacity - fee;
       CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
       byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);

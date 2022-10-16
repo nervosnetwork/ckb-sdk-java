@@ -9,6 +9,16 @@ public class CellDep {
   public CellDep() {
   }
 
+  public CellDep(String txHash, int index, DepType depType) {
+    this.outPoint = new OutPoint(txHash, index);
+    this.depType = depType;
+  }
+
+  public CellDep(byte[] txHash, int index, DepType depType) {
+    this.outPoint = new OutPoint(txHash, index);
+    this.depType = depType;
+  }
+
   public CellDep(OutPoint outPoint, DepType depType) {
     this.outPoint = outPoint;
     this.depType = depType;

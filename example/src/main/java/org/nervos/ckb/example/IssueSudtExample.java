@@ -5,6 +5,7 @@ import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.SudtTransactionBuilder;
+import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.InputIterator;
@@ -17,13 +18,13 @@ public class IssueSudtExample {
     Network network = Network.TESTNET;
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up";
 
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
+
     Iterator<TransactionInput> iterator = new InputIterator(sender);
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator,
-                                                                          network,
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(configuration, iterator,
                                                                           SudtTransactionBuilder.TransactionType.ISSUE,
                                                                           sender)
         .addSudtOutput(sender, 10L)
-        .setFeeRate(1000)
         .setChangeOutput(sender)
         .build();
 
