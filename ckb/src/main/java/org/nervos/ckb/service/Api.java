@@ -9,7 +9,7 @@ import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.model.resp.TxsWithCell;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -268,11 +268,11 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public TransactionResponse getTransactions(
+  public TxsWithCell getTransactions(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
     return this.rpcService.post("get_transactions",
                                 Arrays.asList(searchKey, order, limit, afterCursor),
-                                TransactionResponse.class);
+                                TxsWithCell.class);
   }
 
   @Override

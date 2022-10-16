@@ -12,7 +12,7 @@ public interface CkbIndexerApi {
   CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
       throws IOException;
 
-  TransactionResponse getTransactions(
+  TxsWithCell getTransactions(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
 
   TxsWithCells getTransactionsGrouped(

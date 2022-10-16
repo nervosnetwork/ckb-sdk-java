@@ -7,7 +7,7 @@ import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKeyBuilder;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.model.resp.TxsWithCell;
 import org.nervos.indexer.model.resp.TxsWithCells;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class TransactionTest {
             Script.HashType.TYPE));
     key.scriptType(ScriptType.LOCK);
 
-    TransactionResponse txs =
+    TxsWithCell txs =
         CkbIndexerFactory.getApi().getTransactions(key.build(), Order.ASC, 10, null);
     Assertions.assertTrue(txs.objects.size() > 0);
   }

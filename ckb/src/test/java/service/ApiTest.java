@@ -15,7 +15,7 @@ import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.model.resp.TxsWithCell;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -378,7 +378,7 @@ public class ApiTest {
             Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
             Script.HashType.TYPE));
     key.scriptType(ScriptType.LOCK);
-    TransactionResponse txs = api.getTransactions(key.build(), Order.ASC, 10, null);
+    TxsWithCell txs = api.getTransactions(key.build(), Order.ASC, 10, null);
     Assertions.assertTrue(txs.objects.size() > 0);
   }
 

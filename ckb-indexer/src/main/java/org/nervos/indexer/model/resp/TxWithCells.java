@@ -14,7 +14,7 @@ public class TxWithCells {
 
   @JsonAdapter(Deserializer.class)
   public static class Cell {
-    public TransactionInfoResponse.IoType ioType;
+    public IoType ioType;
     public int ioIndex;
   }
 
@@ -24,7 +24,7 @@ public class TxWithCells {
     public Cell deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
       JsonArray jsonArray = json.getAsJsonArray();
       Cell cell = new Cell();
-      cell.ioType = context.deserialize(jsonArray.get(0), TransactionInfoResponse.IoType.class);
+      cell.ioType = context.deserialize(jsonArray.get(0), IoType.class);
       cell.ioIndex = context.deserialize(jsonArray.get(1), Integer.class);
       return cell;
     }

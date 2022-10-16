@@ -13,7 +13,7 @@ import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.CellCapacityResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.model.resp.TxsWithCell;
 import org.nervos.mercury.DefaultMercuryApi;
 import org.nervos.mercury.MercuryApi;
 import org.nervos.mercury.model.common.PaginationResponse;
@@ -77,7 +77,7 @@ public class DefaultCkbApi implements CkbApi {
   }
 
   @Override
-  public TransactionResponse getTransactions(
+  public TxsWithCell getTransactions(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
 
     if (this.mercuryApi != null) {
