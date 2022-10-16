@@ -4,6 +4,12 @@ import com.google.gson.reflect.TypeToken;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Convert;
+import org.nervos.indexer.model.Order;
+import org.nervos.indexer.model.SearchKey;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.indexer.model.resp.TipResponse;
+import org.nervos.indexer.model.resp.TransactionResponse;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -246,6 +252,34 @@ public class Api implements CkbRpcApi {
         "dry_run_transaction",
         Collections.singletonList(Convert.parseTransaction(transaction)),
         Cycles.class);
+  }
+
+  @Override
+  public TipResponse getIndexerTip() throws IOException {
+    return this.rpcService.post("get_indexer_tip", Arrays.asList(), TipResponse.class);
+  }
+
+  @Override
+  public CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
+      throws IOException {
+    return this.rpcService.post("get_cells",
+                                Arrays.asList(searchKey, order, limit, afterCursor),
+                                CellsResponse.class);
+  }
+
+  @Override
+  public TransactionResponse getTransactions(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
+    return this.rpcService.post("get_transactions",
+                                Arrays.asList(searchKey, order, limit, afterCursor),
+                                TransactionResponse.class);
+  }
+
+  @Override
+  public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
+    return this.rpcService.post("get_cells_capacity",
+                                Arrays.asList(searchKey),
+                                CellCapacityResponse.class);
   }
 
   @Override

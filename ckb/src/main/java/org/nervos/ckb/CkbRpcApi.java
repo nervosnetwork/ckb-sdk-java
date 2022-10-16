@@ -2,6 +2,12 @@ package org.nervos.ckb;
 
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
+import org.nervos.indexer.model.Order;
+import org.nervos.indexer.model.SearchKey;
+import org.nervos.indexer.model.resp.CellCapacityResponse;
+import org.nervos.indexer.model.resp.CellsResponse;
+import org.nervos.indexer.model.resp.TipResponse;
+import org.nervos.indexer.model.resp.TransactionResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -79,6 +85,16 @@ public interface CkbRpcApi {
   void pingPeers() throws IOException;
 
   Cycles dryRunTransaction(Transaction transaction) throws IOException;
+
+  TipResponse getIndexerTip() throws IOException;
+
+  CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
+      throws IOException;
+
+  TransactionResponse getTransactions(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
+
+  CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
 
   long calculateDaoMaximumWithdraw(OutPoint outPoint, byte[] withdrawBlockHash)
       throws IOException;
