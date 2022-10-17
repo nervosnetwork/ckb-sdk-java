@@ -6,6 +6,4 @@ include 'serialization'
 include 'example'
 include 'ckb-mercury-sdk'
 include 'ckb-indexer'
-include 'ckb-api'
 include 'core'
-

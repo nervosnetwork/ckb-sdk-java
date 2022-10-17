@@ -8,7 +8,7 @@ import org.nervos.ckb.transaction.SudtTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
-import org.nervos.indexer.InputIterator;
+import org.nervos.ckb.transaction.InputIterator;
 
 import java.io.IOException;
 import java.util.Iterator;

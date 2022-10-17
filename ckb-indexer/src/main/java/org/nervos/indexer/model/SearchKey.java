@@ -7,4 +7,5 @@ public class SearchKey {
   public Script script;
   public ScriptType scriptType;
   public Filter filter;
+  public boolean groupByTransaction;
 }

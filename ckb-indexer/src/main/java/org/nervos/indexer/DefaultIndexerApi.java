@@ -3,10 +3,7 @@ package org.nervos.indexer;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
-import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,12 +35,23 @@ public class DefaultIndexerApi implements CkbIndexerApi {
   }
 
   @Override
-  public TransactionResponse getTransactions(
+  public TxsWithCell getTransactions(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
+    searchKey.groupByTransaction = false;
     return this.rpcService.post(
         CkbIndexerRpcMethods.GET_TRANSACTIONS,
         Arrays.asList(searchKey, order, limit, afterCursor),
-        TransactionResponse.class);
+        TxsWithCell.class);
+  }
+
+  @Override
+  public TxsWithCells getTransactionsGrouped(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
+    searchKey.groupByTransaction = true;
+    return this.rpcService.post(
+        CkbIndexerRpcMethods.GET_TRANSACTIONS,
+        Arrays.asList(searchKey, order, limit, afterCursor),
+        TxsWithCells.class);
   }
 
   @Override

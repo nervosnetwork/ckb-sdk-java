@@ -19,7 +19,7 @@ Maven
 ```
 <dependency>
   <groupId>org.nervos.ckb</groupId>
-  <artifactId>ckb-api</artifactId>
+  <artifactId>ckb</artifactId>
   <version>{version}</version>
 </dependency>
 ```
@@ -27,7 +27,7 @@ Maven
 Gradle
 
 ```
-implementation 'org.nervos.ckb:ckb-api:{version}'
+implementation 'org.nervos.ckb:ckb:{version}'
 ```
 
 ## Build
@@ -39,38 +39,30 @@ Run `gradle build` in project root directory.
 Here we will give some most frequently used operations, to bring you enlightenment about how to use ckb-sdk-java to operate your asset in CKB chain.
 
 ### Setup
-ckb-java-sdk provides a convenient client to help you easily interact with [CKB](https://github.com/nervosnetwork/ckb), [CKB-indexer](https://github.com/nervosnetwork/ckb-indexer) or [Mercury](https://github.com/nervosnetwork/mercury) node.
+
+ckb-sdk-java provides a convenient client to help you easily interact with [CKB](https://github.com/nervosnetwork/ckb) node.
 
 ```java
-// Set up client. If you do not use ones of these node, just set them to null;
-String ckbUrl = "http://127.0.0.1:8114";
-String indexerUrl = "http://127.0.0.1:8114";
-String mercuryUrl = "http://127.0.0.1:8116";
-DefaultCkbApi ckbApi = new DefaultCkbApi(ckbUrl, mercuryUrl, indexerUrl, false);
+// Set up client.
+CkbRpcApi ckbAPi = new Api("http://127.0.0.1:8114");
 ```
 
-You can leverage this client to call any RPC APIs provided by CKB, CKB-indexer or Mercury in Java code.
+You can leverage this client to call any RPC APIs provided by CKB in Java code.
+
 ```java
 byte[] blockHash = Numeric.hexStringToByteArray("0x77fdd22f6ae8a717de9ae2b128834e9b2a1424378b5fc95606ba017aab5fed75");
 Block block = ckbApi.getBlock(blockHash);
 ```
 
-For more details about RPC APIs, please check:
+For more details about CKB RPC APIs, please refer to [CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md).
 
-- [CKB RPC doc](https://github.com/nervosnetwork/ckb/blob/develop/rpc/README.md)
-- [CKB-indexer RPC doc](https://github.com/nervosnetwork/ckb-indexer/blob/master/README.md)
-- [Mercury RPC doc](https://github.com/nervosnetwork/mercury/blob/main/core/rpc/README.md).
+### Build transaction by manual
 
-### Build transaction with indexer
-
-[ckb-indexer](https://github.com/nervosnetwork/ckb-indexer) is an application to collect cells and transactions from CKB
-chain. With ckb-indexer to collect live cells, we can build transactions easily.
-
-ckb-java-sdk encapsulates the common logic into a user-friendly transaction builder. It could greatly free you from
+ckb-sdk-java encapsulates the common logic into a user-friendly transaction builder. It could greatly free you from
 getting into script details and from tedious manual work of building transaction including adding celldeps, transaction
 fee calculation, change output set and so on.
 
-Here is an example to build a CKB transfer transaction with the help of transaction builder and ckb-indexer.
+Here is an example to build a CKB transfer transaction with the help of transaction builder and ckb node.
 
 ```java
 String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
@@ -83,7 +75,7 @@ TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, N
     .build();
 ```
 
-For more use cases of building transaction with ckb-indexer, please refer
+For more use cases of building transaction with ckb node, please refer
 to [these examples](./example/src/main/java/org/nervos/ckb/example).
 
 ### Build transaction with Mercury
@@ -107,7 +99,8 @@ builder.addTo(receiver, ckbAmount);
 builder.assetInfo(AssetInfo.newCkbAsset());
 
 // Get an unsigned raw transaction with the help of Mercury
-TransactionWithScriptGroups txWithScriptGroups = api.buildSimpleTransferTransaction(builder.build());
+MercuryApi mercuryApi = new DefaultMercuryApi("http://127.0.0.1:8116", false);
+TransactionWithScriptGroups txWithScriptGroups = mercuryApi.buildSimpleTransferTransaction(builder.build());
 ```
 
 For more use cases of mercury, please refer to [these test cases](./ckb-mercury-sdk/src/test/java/mercury)
@@ -120,7 +113,7 @@ To send transaction you build to CKB network, you need to
 1. sign transaction with your private key.
 2. send signed transaction to CKB node, and wait it to be confirmed.
 
-Before signing and sending transaction, you need to prepare a raw transaction represented by an instance of class `TransactionWithScriptGroups`. You can get it [by Mercury](#Build-transaction-with-Mercury) or [by ckb-indexer](#Build-transaction-with-indexer)
+Before signing and sending transaction, you need to prepare a raw transaction represented by an instance of class `TransactionWithScriptGroups`. You can get it [by Mercury](#Build-transaction-with-Mercury) or [by manual](#Build-transaction-by-manual)
 
 ```java
 // 0. Set your private key
@@ -133,6 +126,7 @@ System.out.println(Numeric.toHexString(txHash));
 ```
 
 ### Generate a new address
+
 In CKB world, a lock script can be represented as an address. `secp256k1_blake160` is the most common used address and here we show how to generate it.
 
 ```java
