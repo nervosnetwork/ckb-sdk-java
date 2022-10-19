@@ -108,7 +108,7 @@ public class SendCapacityExample {
       txBuilder.setOutputs(cellOutputs);
     }
 
-    // NOTE: we maintain a List of list to filter out cells that are send out but not confirmed on chain.
+    // NOTE: we maintain a list of cell to filter out cells that are sent out but not confirmed on chain.
     int startIndex = 0;
     for (CellsWithAddress cellsWithAddress: collectResult.cellsWithAddresses) {
       txBuilder.addInputs(cellsWithAddress.inputs);
@@ -136,7 +136,7 @@ public class SendCapacityExample {
     try {
       return api.sendTransaction(tx);
     } catch (Exception e) {
-      // Clear locked cells list to for future transaction construction in input field.
+      // Clear locked cells list for future transaction construction in input field.
       txUtils.clearLastLockedCells();
       throw e;
     }
