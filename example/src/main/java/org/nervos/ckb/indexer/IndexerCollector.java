@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 public class IndexerCollector {
   public static int maxCount = 2;
   public static int index = 0;
-  public static List<List<OutPoint>> lockedCellsList = new ArrayList<>();
+  public static List<List<OutPoint>> pendingCellsList = new ArrayList<>();
 
   static {
-    resetLockedCells();
+    resetPendingCells();
   }
 
   private Api api;
@@ -44,8 +44,8 @@ public class IndexerCollector {
             transaction,
             feeRate,
             initialLength,
-            new CellCkbIndexerIterator(indexerApi, addresses, true), getLockedCells());
-    updateLockedCellsList(transaction, collectResult);
+            new CellCkbIndexerIterator(indexerApi, addresses, true), getPendingCells());
+    updatePendingCellsList(transaction, collectResult);
     return collectResult;
   }
 
@@ -62,34 +62,34 @@ public class IndexerCollector {
             transaction,
             feeRate,
             initialLength,
-            new CellCkbIndexerIterator(indexerApi, addresses, type), getLockedCells());
-    updateLockedCellsList(transaction, collectResult);
+            new CellCkbIndexerIterator(indexerApi, addresses, type), getPendingCells());
+    updatePendingCellsList(transaction, collectResult);
     return collectResult;
   }
 
-  public static void updateLockedCellsList(Transaction transaction, CollectResult collectResult) {
-    List<OutPoint> lockedCells = new ArrayList<>();
-    lockedCells.addAll(transaction.inputs.stream().map(i -> i.previousOutput).collect(Collectors.toList()));
-    lockedCells.addAll(collectResult.cellsWithAddresses.stream()
+  public static void updatePendingCellsList(Transaction transaction, CollectResult collectResult) {
+    List<OutPoint> pendingCells = new ArrayList<>();
+    pendingCells.addAll(transaction.inputs.stream().map(i -> i.previousOutput).collect(Collectors.toList()));
+    pendingCells.addAll(collectResult.cellsWithAddresses.stream()
                            .flatMap(o -> o.inputs.stream())
                            .map(o -> o.previousOutput)
                            .collect(Collectors.toList()));
-    lockedCellsList.set(index, lockedCells);
+    pendingCellsList.set(index, pendingCells);
     index = (index + 1) % maxCount;
   }
 
-  public static List<OutPoint> getLockedCells() {
-    return lockedCellsList.stream().flatMap(i -> i.stream()).collect(Collectors.toList());
+  public static List<OutPoint> getPendingCells() {
+    return pendingCellsList.stream().flatMap(i -> i.stream()).collect(Collectors.toList());
   }
 
-  public static void clearLastLockedCells() {
+  public static void clearLastPendingCells() {
     index = (index - 1 + maxCount) % maxCount;
-    lockedCellsList.set(index, new ArrayList<>());
+    pendingCellsList.set(index, new ArrayList<>());
   }
 
-  public static void resetLockedCells() {
+  public static void resetPendingCells() {
     for (int i = 0; i < maxCount; i++) {
-      lockedCellsList.add(new ArrayList<>());
+      pendingCellsList.add(new ArrayList<>());
     }
   }
 

@@ -136,8 +136,8 @@ public class SendCapacityExample {
     try {
       return api.sendTransaction(tx);
     } catch (Exception e) {
-      // Clear locked cells list for future transaction construction in input field.
-      txUtils.clearLastLockedCells();
+      // Clear pending cells list for future transaction construction in input field.
+      txUtils.clearLastPendingCells();
       throw e;
     }
   }
