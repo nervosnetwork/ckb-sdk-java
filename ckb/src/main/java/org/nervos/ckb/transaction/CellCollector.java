@@ -42,7 +42,7 @@ public class CellCollector {
       Transaction tx,
       BigInteger feeRate,
       int initialLength,
-      Iterator<TransactionInput> iterator, List<OutPoint> filterOutOutPoints)
+      Iterator<TransactionInput> iterator, List<OutPoint> excludedOutPoints)
       throws IOException {
 
     Set<String> lockHashes = new LinkedHashSet<>();
@@ -98,6 +98,11 @@ public class CellCollector {
       TransactionInput transactionInput = iterator.next();
       if (transactionInput == null) break;
       CellInput cellInput = transactionInput.input;
+      if (excludedOutPoints != null && excludedOutPoints.stream().anyMatch(
+          outPoint -> outPoint.index.equals(cellInput.previousOutput.index) &&
+              outPoint.txHash.equals(cellInput.previousOutput.txHash))) {
+        continue;
+      }
       inputsCapacity = inputsCapacity.add(transactionInput.capacity);
       List<CellInput> cellInputList = lockInputsMap.get(transactionInput.lockHash);
       cellInputList.add(cellInput);
