@@ -1,12 +1,9 @@
 package org.nervos.ckb.indexer;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.transaction.CellCollector;
 import org.nervos.ckb.transaction.CollectResult;
+import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.cell.CellOutput;
 import org.nervos.ckb.type.transaction.Transaction;
@@ -14,9 +11,16 @@ import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
 
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class IndexerCollector {
 
+  public static List<OutPoint> offChainCells = new ArrayList<>();
   private Api api;
   private CkbIndexerApi indexerApi;
 
@@ -28,13 +32,15 @@ public class IndexerCollector {
   public CollectResult collectInputs(
       List<String> addresses, Transaction transaction, BigInteger feeRate, int initialLength)
       throws IOException {
-    return new CellCollector(api)
+    CollectResult collectResult = new CellCollector(api)
         .collectInputs(
             addresses,
             transaction,
             feeRate,
             initialLength,
-            new CellCkbIndexerIterator(indexerApi, addresses, true));
+            new CellCkbIndexerIterator(indexerApi, addresses, true), offChainCells);
+    offChainCells = transaction.inputs.stream().map( i -> i.previousOutput).collect(Collectors.toList());
+    return collectResult;
   }
 
   public CollectResult collectInputs(
@@ -44,13 +50,15 @@ public class IndexerCollector {
       int initialLength,
       Script type)
       throws IOException {
-    return new CellCollector(api)
+    CollectResult collectResult = new CellCollector(api)
         .collectInputs(
             addresses,
             transaction,
             feeRate,
             initialLength,
-            new CellCkbIndexerIterator(indexerApi, addresses, type));
+            new CellCkbIndexerIterator(indexerApi, addresses, type), offChainCells);
+    offChainCells = transaction.inputs.stream().map( i -> i.previousOutput).collect(Collectors.toList());
+    return collectResult;
   }
 
   public BigInteger getCapacity(String address) throws IOException {
