@@ -19,8 +19,16 @@ import java.util.stream.Collectors;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class IndexerCollector {
+  public static int maxCount = 3;
+  public static int index = 0;
+  public static List<List<OutPoint>> lockedCellsList = new ArrayList<>();
 
-  public static List<OutPoint> offChainCells = new ArrayList<>();
+  static {
+    for (int i = 0; i < maxCount; i++) {
+      lockedCellsList.add(new ArrayList<>());
+    }
+  }
+
   private Api api;
   private CkbIndexerApi indexerApi;
 
@@ -38,8 +46,8 @@ public class IndexerCollector {
             transaction,
             feeRate,
             initialLength,
-            new CellCkbIndexerIterator(indexerApi, addresses, true), offChainCells);
-    offChainCells = transaction.inputs.stream().map( i -> i.previousOutput).collect(Collectors.toList());
+            new CellCkbIndexerIterator(indexerApi, addresses, true), getLockedCells());
+    updateLockedCellsList(transaction);
     return collectResult;
   }
 
@@ -56,9 +64,23 @@ public class IndexerCollector {
             transaction,
             feeRate,
             initialLength,
-            new CellCkbIndexerIterator(indexerApi, addresses, type), offChainCells);
-    offChainCells = transaction.inputs.stream().map( i -> i.previousOutput).collect(Collectors.toList());
+            new CellCkbIndexerIterator(indexerApi, addresses, type), getLockedCells());
+    updateLockedCellsList(transaction);
     return collectResult;
+  }
+
+  public void updateLockedCellsList(Transaction transaction) {
+    lockedCellsList.set(index, transaction.inputs.stream().map(i -> i.previousOutput).collect(Collectors.toList()));
+    index = (index + 1) % maxCount;
+  }
+
+  public List<OutPoint> getLockedCells() {
+    return lockedCellsList.stream().flatMap(i -> i.stream()).collect(Collectors.toList());
+  }
+
+  public void clearLastLockedCells() {
+    index = (index - 1) % maxCount;
+    lockedCellsList.set(index, new ArrayList<>());
   }
 
   public BigInteger getCapacity(String address) throws IOException {
@@ -70,7 +92,7 @@ public class IndexerCollector {
 
   public List<CellOutput> generateOutputs(List<Receiver> receivers, String changeAddress) {
     List<CellOutput> cellOutputs = new ArrayList<>();
-    for (Receiver receiver : receivers) {
+    for (Receiver receiver: receivers) {
       AddressParseResult addressParseResult = AddressParser.parse(receiver.address);
       cellOutputs.add(
           new CellOutput(
