@@ -1,9 +1,7 @@
 package org.nervos.ckb.transaction;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.*;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -15,6 +13,10 @@ import org.nervos.ckb.utils.Serializer;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.*;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellCollector {
@@ -31,6 +33,16 @@ public class CellCollector {
       BigInteger feeRate,
       int initialLength,
       Iterator<TransactionInput> iterator)
+      throws IOException {
+    return collectInputs(addresses, tx, feeRate, initialLength, iterator, new ArrayList<>());
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses,
+      Transaction tx,
+      BigInteger feeRate,
+      int initialLength,
+      Iterator<TransactionInput> iterator, List<OutPoint> excludedOutPoints)
       throws IOException {
 
     Set<String> lockHashes = new LinkedHashSet<>();
@@ -86,6 +98,11 @@ public class CellCollector {
       TransactionInput transactionInput = iterator.next();
       if (transactionInput == null) break;
       CellInput cellInput = transactionInput.input;
+      if (excludedOutPoints != null && excludedOutPoints.stream().anyMatch(
+          outPoint -> outPoint.index.equals(cellInput.previousOutput.index) &&
+              outPoint.txHash.equals(cellInput.previousOutput.txHash))) {
+        continue;
+      }
       inputsCapacity = inputsCapacity.add(transactionInput.capacity);
       List<CellInput> cellInputList = lockInputsMap.get(transactionInput.lockHash);
       cellInputList.add(cellInput);
