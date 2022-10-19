@@ -1,9 +1,7 @@
 package org.nervos.ckb.transaction;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.*;
 import org.nervos.ckb.service.Api;
+import org.nervos.ckb.type.OutPoint;
 import org.nervos.ckb.type.Witness;
 import org.nervos.ckb.type.cell.CellInput;
 import org.nervos.ckb.type.cell.CellOutput;
@@ -15,6 +13,10 @@ import org.nervos.ckb.utils.Serializer;
 import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.AddressParseResult;
 import org.nervos.ckb.utils.address.AddressParser;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.*;
 
 /** Copyright © 2019 Nervos Foundation. All rights reserved. */
 public class CellCollector {
@@ -31,6 +33,16 @@ public class CellCollector {
       BigInteger feeRate,
       int initialLength,
       Iterator<TransactionInput> iterator)
+      throws IOException {
+    return collectInputs(addresses, tx, feeRate, initialLength, iterator, new ArrayList<>());
+  }
+
+  public CollectResult collectInputs(
+      List<String> addresses,
+      Transaction tx,
+      BigInteger feeRate,
+      int initialLength,
+      Iterator<TransactionInput> iterator, List<OutPoint> filterOutOutPoints)
       throws IOException {
 
     Set<String> lockHashes = new LinkedHashSet<>();
