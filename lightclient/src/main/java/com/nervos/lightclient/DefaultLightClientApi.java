@@ -6,7 +6,6 @@ import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.ckb.type.Block;
 import org.nervos.ckb.type.Header;
-import org.nervos.ckb.type.OutputsValidator;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.utils.Convert;
 import org.nervos.indexer.model.Order;
@@ -55,7 +54,7 @@ public class DefaultLightClientApi implements LightClientApi {
   public byte[] sendTransaction(Transaction transaction) throws IOException {
     return rpcService.post(
         "send_transaction",
-        Arrays.asList(Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
+        Arrays.asList(Convert.parseTransaction(transaction)),
         byte[].class);
   }
 
