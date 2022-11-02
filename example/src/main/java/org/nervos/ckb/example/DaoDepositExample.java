@@ -7,12 +7,10 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.AbstractInputIterator;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
-import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.transaction.InputIterator;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 public class DaoDepositExample {
   public static void main(String[] args) throws IOException {
@@ -34,7 +32,7 @@ public class DaoDepositExample {
     // Send transaction
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applySendTransaction(txWithGroups.getTxView(), txHash);
+    iterator.applyOffChainTransaction(txWithGroups.getTxView(), txHash);
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }

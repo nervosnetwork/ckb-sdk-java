@@ -30,7 +30,7 @@ public class SendCkbExample {
 
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applySendTransaction(txWithGroups.getTxView(), txHash);
+    iterator.applyOffChainTransaction(txWithGroups.getTxView(), txHash);
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }

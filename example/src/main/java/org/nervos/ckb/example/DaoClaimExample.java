@@ -9,12 +9,10 @@ import org.nervos.ckb.transaction.DaoTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.transaction.handler.DaoScriptHandler;
 import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.transaction.InputIterator;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 public class DaoClaimExample {
   public static void main(String[] args) throws IOException {
@@ -34,7 +32,7 @@ public class DaoClaimExample {
         .signTransaction(txWithGroups, "0x6c9ed03816e3111e49384b8d180174ad08e29feb1393ea1b51cef1c505d4e36a");
 
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applySendTransaction(txWithGroups.getTxView(), txHash);
+    iterator.applyOffChainTransaction(txWithGroups.getTxView(), txHash);
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }
