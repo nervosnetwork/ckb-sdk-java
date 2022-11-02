@@ -4,10 +4,10 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
+import org.nervos.ckb.transaction.AbstractInputIterator;
 import org.nervos.ckb.transaction.InputIterator;
 import org.nervos.ckb.transaction.SudtTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
-import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class SendSudtExample {
     String receiver = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqd0pdquvfuq077aemn447shf4d8u5f4a0glzz2g4";
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
-    Iterator<TransactionInput> iterator =
+    AbstractInputIterator iterator =
         new InputIterator(api).addSudtSearchKey(sender, sudtArgs);
     TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(configuration, iterator,
                                                                           SudtTransactionBuilder.TransactionType.TRANSFER,
@@ -35,6 +35,7 @@ public class SendSudtExample {
         .signTransaction(txWithGroups, "0x0c982052ffd4af5f3bbf232301dcddf468009161fc48ba1426e3ce0929fb59f8");
 
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
+    iterator.applySendTransaction(txWithGroups.getTxView(), txHash);
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }

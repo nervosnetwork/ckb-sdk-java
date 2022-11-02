@@ -8,10 +8,10 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.sign.omnilock.OmnilockArgs;
 import org.nervos.ckb.sign.signer.OmnilockSigner;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
+import org.nervos.ckb.transaction.AbstractInputIterator;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.transaction.InputIterator;
 
@@ -32,7 +32,7 @@ public class OmnilockMultisigExample {
     config.setMultisigScript(multisigScript);
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
-    Iterator<TransactionInput> iterator = new InputIterator(sender);
+    AbstractInputIterator iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput(sender, 50100000000L)
         .setChangeOutput(sender)
@@ -45,6 +45,7 @@ public class OmnilockMultisigExample {
 
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
+    iterator.applySendTransaction(txWithGroups.getTxView(), txHash);
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }

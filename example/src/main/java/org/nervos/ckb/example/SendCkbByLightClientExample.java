@@ -44,6 +44,7 @@ public class SendCkbByLightClientExample {
             .signTransaction(txWithGroups, "0x6c9ed03816e3111e49384b8d180174ad08e29feb1393ea1b51cef1c505d4e36a");
 
     byte[] txHash = lightClientApi.sendTransaction(txWithGroups.getTxView());
+    iterator.applySendTransaction(txWithGroups.getTxView(), txHash);
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }
