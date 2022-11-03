@@ -53,7 +53,7 @@ class AbstractInputIteratorTest {
     // list size change:
     //   - offChainLiveCells: 1 - 1 + 2 = 2
     //   - usedLiveCells: 0 + 2 = 2
-    iterator.applyOffChainTransaction(txWithGroups.getTxView(), Numeric.hexStringToByteArray("0xca2ca7be928300e998f1816392590c6b09c8f2b5fa5f60c5367fb85c84171d96"));
+    iterator.applyOffChainTransaction(txWithGroups.getTxView());
     Assertions.assertEquals(2, AbstractInputIterator.offChainLiveCells.size());
     Assertions.assertEquals(2, AbstractInputIterator.usedLiveCells.size());
 
@@ -66,7 +66,7 @@ class AbstractInputIteratorTest {
             .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r", 100000000000L)
             .setChangeOutput(sender)
             .build();
-    iterator.applyOffChainTransaction(txWithGroups.getTxView(), new byte[0]);
+    iterator.applyOffChainTransaction(txWithGroups.getTxView());
     // list size change:
     //   - offChainLiveCells: 2 - 2 + 1 = 1
     //   - usedLiveCells: 2 + 2 = 4

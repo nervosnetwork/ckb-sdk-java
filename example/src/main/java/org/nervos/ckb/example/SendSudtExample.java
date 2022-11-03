@@ -34,7 +34,7 @@ public class SendSudtExample {
         .signTransaction(txWithGroups, "0x0c982052ffd4af5f3bbf232301dcddf468009161fc48ba1426e3ce0929fb59f8");
 
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applyOffChainTransaction(txWithGroups.getTxView(), txHash);
+    iterator.applyOffChainTransaction(txWithGroups.getTxView());
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }

@@ -84,7 +84,8 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
     }
   }
 
-  public void applyOffChainTransaction(Transaction transaction, byte[] transactionHash) throws IOException {
+  public void applyOffChainTransaction(Transaction transaction) throws IOException {
+    byte[] transactionHash = transaction.computeHash();
     long latestBlockNumber = getTipBlockNumber();
     usedLiveCells = usedLiveCells.stream()
             .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= BLOCK_NUMBER_OFFSET)

@@ -44,7 +44,7 @@ public class SendCkbMultisigExample {
 
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applyOffChainTransaction(txWithGroups.getTxView(), txHash);
+    iterator.applyOffChainTransaction(txWithGroups.getTxView());
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }
