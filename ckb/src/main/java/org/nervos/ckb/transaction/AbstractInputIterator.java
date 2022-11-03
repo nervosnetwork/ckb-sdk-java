@@ -1,7 +1,10 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
-import org.nervos.ckb.type.*;
+import org.nervos.ckb.type.CellInput;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.address.Address;
 import org.nervos.indexer.model.Filter;
 import org.nervos.indexer.model.Order;
@@ -11,7 +14,6 @@ import org.nervos.indexer.model.resp.CellsResponse;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class AbstractInputIterator implements Iterator<TransactionInput> {
   protected List<TransactionInput> transactionInputs = new ArrayList<>();
@@ -23,12 +25,6 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
   protected List<SearchKey> searchKeys = new ArrayList<>();
   protected Order order = Order.ASC;
   protected Integer limit = 100;
-
-  // store used cells for avoiding double spending.
-  public static List<OutPointWithBlockNumber> usedLiveCells = new ArrayList<>();
-  // store newly created outpoints for offchain live cells supply
-  public static List<TransactionInputWithBlockNumber> offChainLiveCells = new ArrayList<>();
-  public static long BLOCK_NUMBER_OFFSET = 13;
 
   public AbstractInputIterator addSearchKey(String address) {
     return addSearchKey(address, null);
@@ -84,87 +80,6 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
     }
   }
 
-  public void applyOffChainTransaction(Transaction transaction) throws IOException {
-    byte[] transactionHash = transaction.computeHash();
-    long latestBlockNumber = getTipBlockNumber();
-    usedLiveCells = usedLiveCells.stream()
-            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= BLOCK_NUMBER_OFFSET)
-            .collect(Collectors.toList());
-
-    offChainLiveCells = offChainLiveCells.stream()
-            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= BLOCK_NUMBER_OFFSET)
-            .collect(Collectors.toList());
-
-    for (int i = 0; i < transaction.inputs.size(); i++) {
-      usedLiveCells.add(new OutPointWithBlockNumber(transaction.inputs.get(i).previousOutput, latestBlockNumber));
-    }
-    for (int i = 0; i < transaction.outputs.size(); i++) {
-      TransactionInputWithBlockNumber transactionInputWithBlockNumber = new TransactionInputWithBlockNumber(
-              new CellInput(new OutPoint(transactionHash, i)),
-              transaction.outputs.get(i),
-              transaction.outputsData.get(i),
-              latestBlockNumber);
-      if (isTransactionInputForSearchKey(transactionInputWithBlockNumber)) {
-        offChainLiveCells.add(transactionInputWithBlockNumber);
-      }
-    }
-  }
-
-  protected boolean isTransactionInputForSearchKey(TransactionInputWithBlockNumber transactionInputWithBlockNumber) {
-    CellOutput cellOutput = transactionInputWithBlockNumber.output;
-    byte[] cellOutputData = transactionInputWithBlockNumber.outputData;
-    for (SearchKey searchKey: searchKeys) {
-      switch (searchKey.scriptType) {
-        case LOCK:
-          if (!Objects.equals(cellOutput.lock, searchKey.script)) {
-            continue;
-          }
-          break;
-        case TYPE:
-          if (!Objects.equals(cellOutput.type, searchKey.script)) {
-            continue;
-          }
-          break;
-      }
-      Filter filter = searchKey.filter;
-      if (filter != null) {
-        if (filter.script != null) {
-          switch (searchKey.scriptType) {
-            case LOCK:
-              if (!Objects.equals(cellOutput.type, filter.script)) {
-                continue;
-              }
-              break;
-            case TYPE:
-              if (!Objects.equals(cellOutput.lock, filter.script)) {
-                continue;
-              }
-              break;
-          }
-          if (filter.outputCapacityRange != null) {
-            if (cellOutput.capacity < filter.outputCapacityRange.get(0) ||
-                    cellOutput.capacity >= filter.outputCapacityRange.get(1)) {
-              continue;
-            }
-          }
-          if (filter.blockRange != null) {
-            if (transactionInputWithBlockNumber.blockNumber < filter.blockRange.get(0) ||
-                    transactionInputWithBlockNumber.blockNumber >= filter.blockRange.get(1)) {
-              continue;
-            }
-          }
-          if (filter.outputDataLenRange != null) {
-            if (cellOutputData.length < filter.outputDataLenRange.get(0) ||
-                    cellOutputData.length >= filter.outputDataLenRange.get(1)) {
-              continue;
-            }
-          }
-        }
-      }
-      return true;
-    }
-    return false;
-  }
 
   protected void updateCurrent() {
     if (inputIndex < transactionInputs.size()) {
@@ -194,7 +109,7 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
     CellsResponse response = getLiveCells(searchKey, order, limit, afterCursor);
     List<TransactionInput> newTransactionInputs = new ArrayList<>();
     for (CellResponse liveCell: response.objects) {
-      if (usedLiveCells.stream().anyMatch(
+      if (IteratorCells.usedLiveCells.stream().anyMatch(
               o -> Arrays.equals(o.txHash, liveCell.outPoint.txHash)
                       && o.index == liveCell.outPoint.index)) {
         continue;
@@ -203,10 +118,9 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
       newTransactionInputs.add(new TransactionInput(cellInput, liveCell.output, liveCell.outputData));
     }
     if (newTransactionInputs.size() == 0) {
-      for (TransactionInputWithBlockNumber input: offChainLiveCells) {
+      for (IteratorCells.TransactionInputWithBlockNumber input: IteratorCells.consumeOffChainCells()) {
         newTransactionInputs.add(input);
       }
-      offChainLiveCells = new ArrayList<>();
     }
     transactionInputs = newTransactionInputs;
     afterCursor = response.lastCursor;
@@ -216,28 +130,4 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
           IOException;
 
   public abstract long getTipBlockNumber() throws IOException;
-
-  public static class OutPointWithBlockNumber extends OutPoint {
-    public long blockNumber;
-
-    public OutPointWithBlockNumber(byte[] txHash, int index, long blockNumber) {
-      super(txHash, index);
-      this.blockNumber = blockNumber;
-    }
-
-    public OutPointWithBlockNumber(OutPoint outPoint, long blockNumber) {
-      this.index = outPoint.index;
-      this.txHash = outPoint.txHash;
-      this.blockNumber = blockNumber;
-    }
-  }
-
-  public static class TransactionInputWithBlockNumber extends TransactionInput {
-    public long blockNumber;
-
-    public TransactionInputWithBlockNumber(CellInput input, CellOutput output, byte[] outputData, long blockNumber) {
-      super(input, output, outputData);
-      this.blockNumber = blockNumber;
-    }
-  }
 }
