@@ -25,6 +25,7 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
   protected List<SearchKey> searchKeys = new ArrayList<>();
   protected Order order = Order.ASC;
   protected Integer limit = 100;
+  protected boolean consumeOffChainCellsFirstly = false;
 
   public AbstractInputIterator addSearchKey(String address) {
     return addSearchKey(address, null);
@@ -57,9 +58,9 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
       throw new IllegalArgumentException("Unsupported network");
     }
     Script type = new Script(
-        codeHash,
-        sudtArgs,
-        Script.HashType.TYPE);
+            codeHash,
+            sudtArgs,
+            Script.HashType.TYPE);
     return addSearchKey(address, type);
   }
 
@@ -108,6 +109,9 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
   protected void fetchTransactionInputs(SearchKey searchKey) throws IOException {
     CellsResponse response = getLiveCells(searchKey, order, limit, afterCursor);
     List<TransactionInput> newTransactionInputs = new ArrayList<>();
+    if (consumeOffChainCellsFirstly) {
+      newTransactionInputs = consumeOffChainCells();
+    }
     for (CellResponse liveCell: response.objects) {
       if (IteratorCells.usedLiveCells.stream().anyMatch(
               o -> Arrays.equals(o.txHash, liveCell.outPoint.txHash)
@@ -117,13 +121,19 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
       CellInput cellInput = new CellInput(liveCell.outPoint);
       newTransactionInputs.add(new TransactionInput(cellInput, liveCell.output, liveCell.outputData));
     }
-    if (newTransactionInputs.size() == 0) {
-      for (IteratorCells.TransactionInputWithBlockNumber input: IteratorCells.consumeOffChainCells()) {
-        newTransactionInputs.add(input);
-      }
+    if (newTransactionInputs.size() == 0 && !consumeOffChainCellsFirstly) {
+      newTransactionInputs = consumeOffChainCells();
     }
     transactionInputs = newTransactionInputs;
     afterCursor = response.lastCursor;
+  }
+
+  private List<TransactionInput> consumeOffChainCells() {
+    List<TransactionInput> inputs = new ArrayList<>();
+    for (IteratorCells.TransactionInputWithBlockNumber input: IteratorCells.consumeOffChainCells()) {
+      inputs.add(input);
+    }
+    return inputs;
   }
 
   public abstract CellsResponse getLiveCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws
