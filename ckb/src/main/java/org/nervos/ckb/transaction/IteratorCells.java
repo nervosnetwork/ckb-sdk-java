@@ -12,22 +12,50 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class IteratorCells {
+  private static IteratorCells GLOBAL = new IteratorCells();
   // store used cells for avoiding double spending.
-  public static List<OutPointWithBlockNumber> usedLiveCells = new ArrayList<>();
+  private List<OutPointWithBlockNumber> usedLiveCells = new ArrayList<>();
   // store newly created outpoints for offchain live cells supply
-  public static List<TransactionInputWithBlockNumber> offChainLiveCells = new ArrayList<>();
-  public static long BLOCK_NUMBER_OFFSET = 13;
+  private List<TransactionInputWithBlockNumber> offChainLiveCells = new ArrayList<>();
+  private long blockNumberOffset = 13;
 
+  public static IteratorCells getGlobalInstance() {
+    return GLOBAL;
+  }
 
-  public static void applyOffChainTransaction(AbstractInputIterator iterator, Transaction transaction) throws IOException {
+  public List<OutPointWithBlockNumber> getUsedLiveCells() {
+    return usedLiveCells;
+  }
+
+  public void setUsedLiveCells(List<OutPointWithBlockNumber> usedLiveCells) {
+    this.usedLiveCells = usedLiveCells;
+  }
+
+  public List<TransactionInputWithBlockNumber> getOffChainLiveCells() {
+    return offChainLiveCells;
+  }
+
+  public void setOffChainLiveCells(List<TransactionInputWithBlockNumber> offChainLiveCells) {
+    this.offChainLiveCells = offChainLiveCells;
+  }
+
+  public long getBlockNumberOffset() {
+    return blockNumberOffset;
+  }
+
+  public void setBlockNumberOffset(long blockNumberOffset) {
+    this.blockNumberOffset = blockNumberOffset;
+  }
+
+  public void applyOffChainTransaction(AbstractInputIterator iterator, Transaction transaction) throws IOException {
     byte[] transactionHash = transaction.computeHash();
     long latestBlockNumber = iterator.getTipBlockNumber();
     usedLiveCells = usedLiveCells.stream()
-            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= BLOCK_NUMBER_OFFSET)
+            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= blockNumberOffset)
             .collect(Collectors.toList());
 
     offChainLiveCells = offChainLiveCells.stream()
-            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= BLOCK_NUMBER_OFFSET)
+            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= blockNumberOffset)
             .collect(Collectors.toList());
 
     for (int i = 0; i < transaction.inputs.size(); i++) {
@@ -112,7 +140,7 @@ public class IteratorCells {
     return false;
   }
 
-  public static List<TransactionInputWithBlockNumber> consumeOffChainCells() {
+  public List<TransactionInputWithBlockNumber> consumeOffChainCells() {
     List<TransactionInputWithBlockNumber> cellsToConsume = new ArrayList<>();
     Iterator<TransactionInputWithBlockNumber> it = offChainLiveCells.iterator();
     while (it.hasNext()) {

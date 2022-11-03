@@ -1,10 +1,7 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
-import org.nervos.ckb.type.CellInput;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.ScriptType;
-import org.nervos.ckb.type.TransactionInput;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.address.Address;
 import org.nervos.indexer.model.Filter;
 import org.nervos.indexer.model.Order;
@@ -26,6 +23,15 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
   protected Order order = Order.ASC;
   protected Integer limit = 100;
   protected boolean consumeOffChainCellsFirstly = false;
+  protected IteratorCells iteratorCells = IteratorCells.getGlobalInstance();
+
+  public IteratorCells getIteratorCells() {
+    return iteratorCells;
+  }
+
+  public void setIteratorCells(IteratorCells iteratorCells) {
+    this.iteratorCells = iteratorCells;
+  }
 
   public List<TransactionInput> getTransactionInputs() {
     return transactionInputs;
@@ -185,7 +191,7 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
       newTransactionInputs = consumeOffChainCells();
     }
     for (CellResponse liveCell: response.objects) {
-      if (IteratorCells.usedLiveCells.stream().anyMatch(
+      if (iteratorCells != null && iteratorCells.getUsedLiveCells().stream().anyMatch(
               o -> Arrays.equals(o.txHash, liveCell.outPoint.txHash)
                       && o.index == liveCell.outPoint.index)) {
         continue;
@@ -200,9 +206,18 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
     afterCursor = response.lastCursor;
   }
 
+  public void applyOffChainTransaction(Transaction transaction) throws IOException {
+    if (iteratorCells != null) {
+      iteratorCells.applyOffChainTransaction(this, transaction);
+    }
+  }
+
   private List<TransactionInput> consumeOffChainCells() {
     List<TransactionInput> inputs = new ArrayList<>();
-    for (IteratorCells.TransactionInputWithBlockNumber input: IteratorCells.consumeOffChainCells()) {
+    if (iteratorCells == null) {
+      return inputs;
+    }
+    for (IteratorCells.TransactionInputWithBlockNumber input: iteratorCells.consumeOffChainCells()) {
       inputs.add(input);
     }
     return inputs;
