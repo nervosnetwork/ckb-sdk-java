@@ -130,12 +130,12 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
         if (filter.script != null) {
           switch (searchKey.scriptType) {
             case LOCK:
-              if (!Objects.equals(cellOutput.type, searchKey.script)) {
+              if (!Objects.equals(cellOutput.type, filter.script)) {
                 continue;
               }
               break;
             case TYPE:
-              if (!Objects.equals(cellOutput.lock, searchKey.script)) {
+              if (!Objects.equals(cellOutput.lock, filter.script)) {
                 continue;
               }
               break;
