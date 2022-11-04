@@ -438,6 +438,21 @@ public class ApiTest {
   }
 
   @Test
+  public void testEstimateCycles() throws IOException {
+    Cycles cycles =
+            api.dryRunTransaction(
+                    new Transaction(
+                            0,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList()));
+    Assertions.assertNotNull(cycles);
+  }
+
+  @Test
   public void testBatchRpc() throws IOException {
     List<RpcResponse> rpcResponses =
         api.batchRPC(
