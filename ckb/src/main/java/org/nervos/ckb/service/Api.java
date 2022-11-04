@@ -252,6 +252,14 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public Cycles estimateCycles(Transaction transaction) throws IOException {
+    return rpcService.post(
+        "estimate_cycles",
+        Collections.singletonList(Convert.parseTransaction(transaction)),
+        Cycles.class);
+  }
+
+  @Override
   public TipResponse getIndexerTip() throws IOException {
     return this.rpcService.post("get_indexer_tip", Arrays.asList(), TipResponse.class);
   }

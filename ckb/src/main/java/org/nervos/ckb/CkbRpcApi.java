@@ -81,7 +81,10 @@ public interface CkbRpcApi {
 
   void pingPeers() throws IOException;
 
+  @Deprecated
   Cycles dryRunTransaction(Transaction transaction) throws IOException;
+
+  Cycles estimateCycles(Transaction transaction) throws IOException;
 
   TipResponse getIndexerTip() throws IOException;
 
