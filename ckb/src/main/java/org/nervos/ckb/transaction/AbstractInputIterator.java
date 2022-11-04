@@ -159,7 +159,6 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
     }
   }
 
-
   protected void updateCurrent() {
     if (inputIndex < transactionInputs.size()) {
       current = transactionInputs.get(inputIndex);
