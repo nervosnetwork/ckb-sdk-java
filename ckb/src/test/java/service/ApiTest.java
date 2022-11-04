@@ -435,6 +435,22 @@ public class ApiTest {
                 Collections.emptyList(),
                 Collections.emptyList()));
     Assertions.assertNotNull(cycles);
+    System.out.println(cycles.cycles);
+  }
+
+  @Test
+  public void testEstimateCycles() throws IOException {
+    Cycles cycles =
+            api.dryRunTransaction(
+                    new Transaction(
+                            0,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList()));
+    Assertions.assertNotNull(cycles);
   }
 
   @Test
