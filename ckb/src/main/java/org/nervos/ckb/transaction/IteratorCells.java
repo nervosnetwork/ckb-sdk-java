@@ -78,7 +78,7 @@ public class IteratorCells {
               transaction.outputsData.get(i),
               latestBlockNumber);
       // Add output to offChainLiveCells if matched with searchKeys
-      if (isTransactionInputForSearchKey(transactionInputWithBlockNumber, iterator.searchKeys)) {
+      if (isTransactionInputForSearchKey(transactionInputWithBlockNumber, iterator.getSearchKeys())) {
         offChainLiveCells.add(transactionInputWithBlockNumber);
       }
     }
