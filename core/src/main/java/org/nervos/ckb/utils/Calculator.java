@@ -28,10 +28,10 @@ public class Calculator {
     return calculateTransactionFee(txSize, feeRate);
   }
 
-  private static final double DEFAULT_BYTES_PER_CYCLES = 0.000_170_571_4;
+  private static final double DEFAULT_BYTES_PER_CYCLE = 0.000_170_571_4;
 
   public static long calculateTransactionFee(Transaction transaction, long cycles, long feeRate) {
-    long txSize = Math.max(calculateTransactionSize(transaction), (long) (cycles * DEFAULT_BYTES_PER_CYCLES));
+    long txSize = Math.max(calculateTransactionSize(transaction), (long) (cycles * DEFAULT_BYTES_PER_CYCLE));
     return calculateTransactionFee(txSize, feeRate);
   }
 }
