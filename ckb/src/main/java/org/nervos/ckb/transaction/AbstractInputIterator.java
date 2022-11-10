@@ -1,7 +1,10 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
-import org.nervos.ckb.type.*;
+import org.nervos.ckb.type.CellInput;
+import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.ScriptType;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.address.Address;
 import org.nervos.indexer.model.Filter;
 import org.nervos.indexer.model.Order;
@@ -10,7 +13,10 @@ import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public abstract class AbstractInputIterator implements Iterator<TransactionInput> {
   protected List<TransactionInput> transactionInputs = new ArrayList<>();
@@ -22,16 +28,6 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
   protected List<SearchKey> searchKeys = new ArrayList<>();
   protected Order order = Order.ASC;
   protected Integer limit = 100;
-  protected boolean consumeOffChainCellsFirstly = false;
-  protected IteratorCells iteratorCells = IteratorCells.getGlobalInstance();
-
-  public IteratorCells getIteratorCells() {
-    return iteratorCells;
-  }
-
-  public void setIteratorCells(IteratorCells iteratorCells) {
-    this.iteratorCells = iteratorCells;
-  }
 
   public List<TransactionInput> getTransactionInputs() {
     return transactionInputs;
@@ -97,14 +93,6 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
     this.limit = limit;
   }
 
-  public boolean isConsumeOffChainCellsFirstly() {
-    return consumeOffChainCellsFirstly;
-  }
-
-  public void setConsumeOffChainCellsFirstly(boolean consumeOffChainCellsFirstly) {
-    this.consumeOffChainCellsFirstly = consumeOffChainCellsFirstly;
-  }
-
   public AbstractInputIterator addSearchKey(String address) {
     return addSearchKey(address, null);
   }
@@ -136,9 +124,9 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
       throw new IllegalArgumentException("Unsupported network");
     }
     Script type = new Script(
-            codeHash,
-            sudtArgs,
-            Script.HashType.TYPE);
+        codeHash,
+        sudtArgs,
+        Script.HashType.TYPE);
     return addSearchKey(address, type);
   }
 
@@ -186,44 +174,13 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
   protected void fetchTransactionInputs(SearchKey searchKey) throws IOException {
     CellsResponse response = getLiveCells(searchKey, order, limit, afterCursor);
     List<TransactionInput> newTransactionInputs = new ArrayList<>();
-    if (consumeOffChainCellsFirstly) {
-      newTransactionInputs = consumeOffChainCells();
-    }
     for (CellResponse liveCell: response.objects) {
-      if (iteratorCells != null && iteratorCells.getUsedLiveCells().stream().anyMatch(
-              o -> Arrays.equals(o.txHash, liveCell.outPoint.txHash)
-                      && o.index == liveCell.outPoint.index)) {
-        continue;
-      }
       CellInput cellInput = new CellInput(liveCell.outPoint);
       newTransactionInputs.add(new TransactionInput(cellInput, liveCell.output, liveCell.outputData));
-    }
-    if (newTransactionInputs.size() == 0 && !consumeOffChainCellsFirstly) {
-      newTransactionInputs = consumeOffChainCells();
     }
     transactionInputs = newTransactionInputs;
     afterCursor = response.lastCursor;
   }
 
-  public void applyOffChainTransaction(Transaction transaction) throws IOException {
-    if (iteratorCells != null) {
-      iteratorCells.applyOffChainTransaction(this, transaction);
-    }
-  }
-
-  private List<TransactionInput> consumeOffChainCells() {
-    List<TransactionInput> inputs = new ArrayList<>();
-    if (iteratorCells == null) {
-      return inputs;
-    }
-    for (IteratorCells.TransactionInputWithBlockNumber input: iteratorCells.consumeOffChainCells()) {
-      inputs.add(input);
-    }
-    return inputs;
-  }
-
-  public abstract CellsResponse getLiveCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws
-          IOException;
-
-  public abstract long getTipBlockNumber() throws IOException;
+  public abstract CellsResponse getLiveCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
 }

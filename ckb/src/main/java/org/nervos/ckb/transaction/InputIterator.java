@@ -50,9 +50,4 @@ public class InputIterator extends AbstractInputIterator {
   public CellsResponse getLiveCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
     return ckbRpcApi.getCells(searchKey, order, limit, afterCursor);
   }
-
-  @Override
-  public long getTipBlockNumber() throws IOException {
-    return ckbRpcApi.getTipBlockNumber();
-  }
 }
