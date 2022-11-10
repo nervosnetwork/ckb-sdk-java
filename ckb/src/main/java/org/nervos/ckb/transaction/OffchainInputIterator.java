@@ -17,28 +17,40 @@ import java.util.Objects;
 
 public class OffchainInputIterator extends AbstractInputIterator {
   private AbstractInputIterator iterator;
-  private IteratorCells iteratorCells;
+  private OffChainInputCollector offChainInputCollector;
   private boolean consumeOffChainCellsFirstly = false;
 
-  public OffchainInputIterator(AbstractInputIterator iterator, IteratorCells iteratorCells) {
+  public OffchainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector) {
     this.iterator = iterator;
-    this.iteratorCells = iteratorCells;
+    this.offChainInputCollector = offChainInputCollector;
   }
 
   public OffchainInputIterator(AbstractInputIterator iterator) {
-    this(iterator, IteratorCells.getGlobalInstance());
+    this(iterator, OffChainInputCollector.getGlobalInstance());
   }
 
   public AbstractInputIterator getIterator() {
     return iterator;
   }
 
-  public IteratorCells getIteratorCells() {
-    return iteratorCells;
+  public void setIterator(AbstractInputIterator iterator) {
+    this.iterator = iterator;
+  }
+
+  public OffChainInputCollector getOffChainInputCollector() {
+    return offChainInputCollector;
+  }
+
+  public void setOffChainInputCollector(OffChainInputCollector offChainInputCollector) {
+    this.offChainInputCollector = offChainInputCollector;
   }
 
   public boolean isConsumeOffChainCellsFirstly() {
     return consumeOffChainCellsFirstly;
+  }
+
+  public void setConsumeOffChainCellsFirstly(boolean consumeOffChainCellsFirstly) {
+    this.consumeOffChainCellsFirstly = consumeOffChainCellsFirstly;
   }
 
   protected void fetchTransactionInputs(SearchKey searchKey) throws IOException {
@@ -49,7 +61,7 @@ public class OffchainInputIterator extends AbstractInputIterator {
     }
 
     for (CellResponse liveCell: response.objects) {
-      if (iteratorCells != null && iteratorCells.getUsedLiveCells().stream().anyMatch(
+      if (offChainInputCollector != null && offChainInputCollector.getUsedLiveCells().stream().anyMatch(
               o -> Arrays.equals(o.txHash, liveCell.outPoint.txHash)
                       && o.index == liveCell.outPoint.index)) {
         continue;
@@ -66,7 +78,7 @@ public class OffchainInputIterator extends AbstractInputIterator {
 
   private List<TransactionInput> consumeOffChainCells() {
     List<TransactionInput> inputs = new ArrayList<>();
-    for (IteratorCells.TransactionInputWithBlockNumber input: iteratorCells.consumeOffChainCells()) {
+    for (OffChainInputCollector.TransactionInputWithBlockNumber input: offChainInputCollector.consumeOffChainCells()) {
       // Add output to offChainLiveCells if matched with searchKeys
       if (isTransactionInputForSearchKey(input, iterator.getSearchKeys())) {
         inputs.add(input);
@@ -75,7 +87,7 @@ public class OffchainInputIterator extends AbstractInputIterator {
     return inputs;
   }
 
-  public static boolean isTransactionInputForSearchKey(IteratorCells.TransactionInputWithBlockNumber transactionInputWithBlockNumber, List<SearchKey> searchKeys) {
+  public static boolean isTransactionInputForSearchKey(OffChainInputCollector.TransactionInputWithBlockNumber transactionInputWithBlockNumber, List<SearchKey> searchKeys) {
     CellOutput cellOutput = transactionInputWithBlockNumber.output;
     byte[] cellOutputData = transactionInputWithBlockNumber.outputData;
     for (SearchKey searchKey: searchKeys) {

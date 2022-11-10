@@ -2,25 +2,21 @@ package transaction;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nervos.ckb.transaction.AbstractInputIterator;
-import org.nervos.ckb.transaction.IteratorCells;
+import org.nervos.ckb.transaction.OffChainInputCollector;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.address.Address;
-import org.nervos.indexer.model.Order;
-import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellsResponse;
 
 import java.io.IOException;
 import java.util.*;
 
-class IteratorCellsTest {
+class OffChainInputCollectorTest {
   private String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq03ewkvsva4cchhntydu648l7lyvn9w2cctnpask";
   private Address senderAddress = Address.decode(sender);
 
   @Test
   void applyOffChainTransaction() throws IOException {
-    IteratorCells.TransactionInputWithBlockNumber input = getRandomTransactionInput(300);
-    IteratorCells cells = new IteratorCells();
+    OffChainInputCollector.TransactionInputWithBlockNumber input = getRandomTransactionInput(300);
+    OffChainInputCollector cells = new OffChainInputCollector();
     cells.getOffChainLiveCells().add(input);
 
     Transaction tx = new Transaction();
@@ -70,7 +66,7 @@ class IteratorCellsTest {
 
   @Test
   void consumeOffChainCells() {
-    IteratorCells cells = new IteratorCells();
+    OffChainInputCollector cells = new OffChainInputCollector();
     cells.getOffChainLiveCells().add(getRandomTransactionInput(100));
     cells.getOffChainLiveCells().add(getRandomTransactionInput(200));
     Assertions.assertEquals(2, cells.getOffChainLiveCells().size());
@@ -84,8 +80,8 @@ class IteratorCellsTest {
     return new OutPoint(hash, new Random().nextInt(10));
   }
 
-  private IteratorCells.TransactionInputWithBlockNumber getRandomTransactionInput(int blockNumber) {
-    return new IteratorCells.TransactionInputWithBlockNumber(
+  private OffChainInputCollector.TransactionInputWithBlockNumber getRandomTransactionInput(int blockNumber) {
+    return new OffChainInputCollector.TransactionInputWithBlockNumber(
             new CellInput(getRandomOutPoint()), getRandomOutput(),
             new byte[0], blockNumber);
   }

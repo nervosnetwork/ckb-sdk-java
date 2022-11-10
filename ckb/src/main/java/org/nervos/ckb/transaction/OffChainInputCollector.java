@@ -1,8 +1,6 @@
 package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.type.*;
-import org.nervos.indexer.model.Filter;
-import org.nervos.indexer.model.SearchKey;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,15 +9,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class IteratorCells {
-  private static IteratorCells GLOBAL = new IteratorCells();
+public class OffChainInputCollector {
+  private static OffChainInputCollector GLOBAL = new OffChainInputCollector();
   // store used cells for avoiding double spending.
   private List<OutPointWithBlockNumber> usedLiveCells = new ArrayList<>();
   // store newly created outpoints for offchain live cells supply
   private List<TransactionInputWithBlockNumber> offChainLiveCells = new ArrayList<>();
   private long blockNumberOffset = 13;
 
-  public static IteratorCells getGlobalInstance() {
+  public static OffChainInputCollector getGlobalInstance() {
     return GLOBAL;
   }
 
