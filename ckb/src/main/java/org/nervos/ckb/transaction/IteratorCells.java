@@ -47,9 +47,8 @@ public class IteratorCells {
     this.blockNumberOffset = blockNumberOffset;
   }
 
-  public void applyOffChainTransaction(AbstractInputIterator iterator, Transaction transaction) throws IOException {
+  public void applyOffChainTransaction(long latestBlockNumber, Transaction transaction) throws IOException {
     byte[] transactionHash = transaction.computeHash();
-    long latestBlockNumber = iterator.getTipBlockNumber();
     usedLiveCells = usedLiveCells.stream()
             .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= blockNumberOffset)
             .collect(Collectors.toList());
@@ -77,67 +76,8 @@ public class IteratorCells {
               transaction.outputs.get(i),
               transaction.outputsData.get(i),
               latestBlockNumber);
-      // Add output to offChainLiveCells if matched with searchKeys
-      if (isTransactionInputForSearchKey(transactionInputWithBlockNumber, iterator.getSearchKeys())) {
-        offChainLiveCells.add(transactionInputWithBlockNumber);
-      }
+      offChainLiveCells.add(transactionInputWithBlockNumber);
     }
-  }
-
-  public static boolean isTransactionInputForSearchKey(TransactionInputWithBlockNumber transactionInputWithBlockNumber, List<SearchKey> searchKeys) {
-    CellOutput cellOutput = transactionInputWithBlockNumber.output;
-    byte[] cellOutputData = transactionInputWithBlockNumber.outputData;
-    for (SearchKey searchKey: searchKeys) {
-      switch (searchKey.scriptType) {
-        case LOCK:
-          if (!Objects.equals(cellOutput.lock, searchKey.script)) {
-            continue;
-          }
-          break;
-        case TYPE:
-          if (!Objects.equals(cellOutput.type, searchKey.script)) {
-            continue;
-          }
-          break;
-      }
-      Filter filter = searchKey.filter;
-      if (filter != null) {
-        if (filter.script != null) {
-          switch (searchKey.scriptType) {
-            case LOCK:
-              if (!Objects.equals(cellOutput.type, filter.script)) {
-                continue;
-              }
-              break;
-            case TYPE:
-              if (!Objects.equals(cellOutput.lock, filter.script)) {
-                continue;
-              }
-              break;
-          }
-          if (filter.outputCapacityRange != null) {
-            if (cellOutput.capacity < filter.outputCapacityRange.get(0) ||
-                    cellOutput.capacity >= filter.outputCapacityRange.get(1)) {
-              continue;
-            }
-          }
-          if (filter.blockRange != null) {
-            if (transactionInputWithBlockNumber.blockNumber < filter.blockRange.get(0) ||
-                    transactionInputWithBlockNumber.blockNumber >= filter.blockRange.get(1)) {
-              continue;
-            }
-          }
-          if (filter.outputDataLenRange != null) {
-            if (cellOutputData.length < filter.outputDataLenRange.get(0) ||
-                    cellOutputData.length >= filter.outputDataLenRange.get(1)) {
-              continue;
-            }
-          }
-        }
-      }
-      return true;
-    }
-    return false;
   }
 
   public List<TransactionInputWithBlockNumber> consumeOffChainCells() {
