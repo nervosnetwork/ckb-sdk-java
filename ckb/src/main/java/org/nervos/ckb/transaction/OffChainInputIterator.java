@@ -1,46 +1,48 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.type.CellInput;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.indexer.model.Filter;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellResponse;
 import org.nervos.indexer.model.resp.CellsResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class OffChainInputIterator extends AbstractInputIterator {
   private AbstractInputIterator iterator;
   private OffChainInputCollector offChainInputCollector;
-  private boolean consumeOffChainCellsFirstly = false;
+  private boolean consumeOffChainCellsFirstly;
+  private boolean currentFromOffChain = false;
 
   public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector, boolean consumeOffChainCellsFirstly) {
     this.iterator = iterator;
+    copyParameters();
     this.offChainInputCollector = offChainInputCollector;
     this.consumeOffChainCellsFirstly = consumeOffChainCellsFirstly;
   }
 
   public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector) {
-    this.iterator = iterator;
-    this.offChainInputCollector = offChainInputCollector;
+    this(iterator, offChainInputCollector, false);
   }
 
   public OffChainInputIterator(AbstractInputIterator iterator) {
     this(iterator, OffChainInputCollector.getGlobalInstance());
   }
 
-  public AbstractInputIterator getIterator() {
-    return iterator;
-  }
-
-  public void setIterator(AbstractInputIterator iterator) {
-    this.iterator = iterator;
+  private void copyParameters() {
+    this.transactionInputs = iterator.transactionInputs;
+    this.current = iterator.current;
+    this.afterCursor = iterator.afterCursor;
+    this.inputIndex = iterator.inputIndex;
+    this.searchKeysIndex = iterator.searchKeysIndex;
+    this.searchKeys = iterator.searchKeys;
+    this.order = iterator.order;
+    this.limit = iterator.limit;
   }
 
   public OffChainInputCollector getOffChainInputCollector() {
@@ -59,38 +61,56 @@ public class OffChainInputIterator extends AbstractInputIterator {
     this.consumeOffChainCellsFirstly = consumeOffChainCellsFirstly;
   }
 
-  protected void fetchTransactionInputs(SearchKey searchKey) throws IOException {
-    CellsResponse response = getLiveCells(searchKey, order, limit, afterCursor);
-    List<TransactionInput> newTransactionInputs = new ArrayList<>();
-    if (consumeOffChainCellsFirstly) {
-      newTransactionInputs = consumeOffChainCells();
-    }
-
-    for (CellResponse liveCell: response.objects) {
-      if (offChainInputCollector != null && offChainInputCollector.getUsedLiveCells().stream().anyMatch(
-              o -> Arrays.equals(o.txHash, liveCell.outPoint.txHash)
-                      && o.index == liveCell.outPoint.index)) {
-        continue;
+  @Override
+  public TransactionInput next() {
+    updateCurrent();
+    if (current != null) {
+      if (!currentFromOffChain) {
+        inputIndex += 1;
       }
-      CellInput cellInput = new CellInput(liveCell.outPoint);
-      newTransactionInputs.add(new TransactionInput(cellInput, liveCell.output, liveCell.outputData));
+      TransactionInput input = current;
+      current = null;
+      return input;
+    } else {
+      throw new NoSuchElementException();
     }
-    if (newTransactionInputs.size() == 0 && !consumeOffChainCellsFirstly) {
-      newTransactionInputs = consumeOffChainCells();
-    }
-    transactionInputs = newTransactionInputs;
-    afterCursor = response.lastCursor;
   }
 
-  private List<TransactionInput> consumeOffChainCells() {
-    List<TransactionInput> inputs = new ArrayList<>();
-    for (OffChainInputCollector.TransactionInputWithBlockNumber input: offChainInputCollector.consumeOffChainCells()) {
-      // Add output to offChainLiveCells if matched with searchKeys
-      if (isTransactionInputForSearchKey(input, iterator.getSearchKeys())) {
-        inputs.add(input);
+  protected void updateCurrent() {
+    if (currentFromOffChain && current != null) {
+      return;
+    }
+
+    if (consumeOffChainCellsFirstly) {
+      current = consumeNextOffChainCell();
+      if (current != null) {
+        currentFromOffChain = true;
+        return;
       }
     }
-    return inputs;
+
+    // Update from RPC client
+    currentFromOffChain = false;
+    super.updateCurrent();
+
+    if (current == null && !consumeOffChainCellsFirstly) {
+      current = consumeNextOffChainCell();
+      if (current != null) {
+        currentFromOffChain = true;
+      }
+    }
+  }
+
+  private TransactionInput consumeNextOffChainCell() {
+    Iterator<OffChainInputCollector.TransactionInputWithBlockNumber> it = offChainInputCollector.getOffChainLiveCells().iterator();
+    while (it.hasNext()) {
+      OffChainInputCollector.TransactionInputWithBlockNumber input = it.next();
+      if (isTransactionInputForSearchKey(input, searchKeys)) {
+        it.remove();
+        return input;
+      }
+    }
+    return null;
   }
 
   public static boolean isTransactionInputForSearchKey(OffChainInputCollector.TransactionInputWithBlockNumber transactionInputWithBlockNumber, List<SearchKey> searchKeys) {
