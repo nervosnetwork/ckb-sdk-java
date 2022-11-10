@@ -20,6 +20,12 @@ public class OffchainInputIterator extends AbstractInputIterator {
   private OffChainInputCollector offChainInputCollector;
   private boolean consumeOffChainCellsFirstly = false;
 
+  public OffchainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector, boolean consumeOffChainCellsFirstly) {
+    this.iterator = iterator;
+    this.offChainInputCollector = offChainInputCollector;
+    this.consumeOffChainCellsFirstly = consumeOffChainCellsFirstly;
+  }
+
   public OffchainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector) {
     this.iterator = iterator;
     this.offChainInputCollector = offChainInputCollector;
