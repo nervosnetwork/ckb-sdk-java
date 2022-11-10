@@ -32,13 +32,12 @@ class IteratorCellsTest {
 
     Assertions.assertEquals(0, cells.getUsedLiveCells().size());
     Assertions.assertEquals(1, cells.getOffChainLiveCells().size());
-    cells.applyOffChainTransaction(getSimpleInputIterator(500), tx);
+    cells.applyOffChainTransaction(500, tx);
     // test correct cell management
     Assertions.assertEquals(1, cells.getUsedLiveCells().size());  // + 1
     CellInput txInput1 = tx.inputs.get(0);
     Assertions.assertTrue(cells.getUsedLiveCells().stream().anyMatch(
-            i -> i.index == txInput1.previousOutput.index &&
-                    Arrays.equals(i.txHash, txInput1.previousOutput.txHash)));
+            i -> i.index == txInput1.previousOutput.index && Arrays.equals(i.txHash, txInput1.previousOutput.txHash)));
     CellOutput output1 = tx.outputs.get(0);
     Assertions.assertEquals(2, cells.getOffChainLiveCells().size());
     Assertions.assertTrue(cells.getOffChainLiveCells().stream().anyMatch(
@@ -46,16 +45,27 @@ class IteratorCellsTest {
                     i.output.capacity == output1.capacity));
 
     tx = new Transaction();
-    tx.inputs.add(cells.getOffChainLiveCells().get(0).input);
+    tx.inputs.add(getRandomTransactionInput(600).input);
     tx.outputs.add(getRandomOutput());
     tx.outputsData.add(new byte[0]);
-    // This outpoint does not belong to sender and won't be added into list OffChainLiveCells
-    tx.outputs.add(new CellOutput(50000000000L, Address.decode("ckt1qrl2cyw7ulrxu48ysexpwus46r9md670h5h73cxjh3zmxsf4gt3d5qg2d5amjwfzgtqr2l72ulxw4k8c0dpga55qjzdlm749f9ffhpwl8zc422t2hvxmtlkk299l30k6xlgccjps9pe2sfhx5y3flvtlu56lu9u6pcqqqqqqqqvykxmu").getScript()));
-    tx.outputsData.add(new byte[0]);
-    cells.applyOffChainTransaction(getSimpleInputIterator(1000), tx);
-    // test clean for overdue cells
+    cells.applyOffChainTransaction(999, tx);
+    // Because 999 > 500, so clear all usedLiveCells and offChainLiveCells at first.
     Assertions.assertEquals(1, cells.getUsedLiveCells().size());
     Assertions.assertEquals(1, cells.getOffChainLiveCells().size());
+
+
+    tx = new Transaction();
+    // Consume 1 cell from offChainLiveCells. offChainLiveCells - 1.
+    //                                        usedLiveCells + 1
+    tx.inputs.add(cells.getOffChainLiveCells().get(0).input);
+    // Add 2 cells from offChainLiveCells. offChainLiveCells + 2.
+    tx.outputs.add(getRandomOutput());
+    tx.outputsData.add(new byte[0]);
+    tx.outputs.add(new CellOutput(50000000000L, Address.decode("ckt1qrl2cyw7ulrxu48ysexpwus46r9md670h5h73cxjh3zmxsf4gt3d5qg2d5amjwfzgtqr2l72ulxw4k8c0dpga55qjzdlm749f9ffhpwl8zc422t2hvxmtlkk299l30k6xlgccjps9pe2sfhx5y3flvtlu56lu9u6pcqqqqqqqqvykxmu").getScript()));
+    tx.outputsData.add(new byte[0]);
+    cells.applyOffChainTransaction(1000, tx);
+    Assertions.assertEquals(2, cells.getUsedLiveCells().size());
+    Assertions.assertEquals(2, cells.getOffChainLiveCells().size());
   }
 
   @Test
@@ -84,29 +94,4 @@ class IteratorCellsTest {
     return new CellOutput(new Random().nextLong(), senderAddress.getScript());
   }
 
-  private AbstractInputIterator getSimpleInputIterator(long tipBlockNumber) {
-    return new AbstractInputIterator() {
-      @Override
-      public CellsResponse getLiveCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
-        return null;
-      }
-
-      @Override
-      public long getTipBlockNumber() {
-        return tipBlockNumber;
-      }
-
-      @Override
-      public List<SearchKey> getSearchKeys() {
-        Script lockScript = Address.decode(sender).getScript();
-        SearchKey searchKey = new SearchKey();
-        searchKey.scriptType = ScriptType.LOCK;
-        searchKey.script = lockScript;
-
-        List<SearchKey> searchKeys = new ArrayList<>();
-        searchKeys.add(searchKey);
-        return searchKeys;
-      }
-    };
-  }
 }
