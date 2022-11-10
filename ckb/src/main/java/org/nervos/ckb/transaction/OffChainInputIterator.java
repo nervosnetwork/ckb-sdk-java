@@ -20,21 +20,9 @@ public class OffChainInputIterator extends AbstractInputIterator {
   private boolean isCurrentFromOffChain = false;
 
   public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector, boolean consumeOffChainCellsFirstly) {
-    this.iterator = iterator;
-    copyParameters();
     this.offChainInputCollector = offChainInputCollector;
     this.consumeOffChainCellsFirstly = consumeOffChainCellsFirstly;
-  }
-
-  public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector) {
-    this(iterator, offChainInputCollector, false);
-  }
-
-  public OffChainInputIterator(AbstractInputIterator iterator) {
-    this(iterator, OffChainInputCollector.getGlobalInstance());
-  }
-
-  private void copyParameters() {
+    this.iterator = iterator;
     this.transactionInputs = iterator.transactionInputs;
     this.current = iterator.current;
     this.afterCursor = iterator.afterCursor;
@@ -43,6 +31,14 @@ public class OffChainInputIterator extends AbstractInputIterator {
     this.searchKeys = iterator.searchKeys;
     this.order = iterator.order;
     this.limit = iterator.limit;
+  }
+
+  public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector) {
+    this(iterator, offChainInputCollector, false);
+  }
+
+  public OffChainInputIterator(AbstractInputIterator iterator) {
+    this(iterator, OffChainInputCollector.getGlobalInstance());
   }
 
   public OffChainInputCollector getOffChainInputCollector() {
@@ -76,6 +72,7 @@ public class OffChainInputIterator extends AbstractInputIterator {
     }
   }
 
+  @Override
   protected void updateCurrent() {
     if (isCurrentFromOffChain && current != null) {
       return;
@@ -113,7 +110,7 @@ public class OffChainInputIterator extends AbstractInputIterator {
     return null;
   }
 
-  public static boolean isTransactionInputForSearchKey(OffChainInputCollector.TransactionInputWithBlockNumber transactionInputWithBlockNumber, List<SearchKey> searchKeys) {
+  private static boolean isTransactionInputForSearchKey(OffChainInputCollector.TransactionInputWithBlockNumber transactionInputWithBlockNumber, List<SearchKey> searchKeys) {
     CellOutput cellOutput = transactionInputWithBlockNumber.output;
     byte[] cellOutputData = transactionInputWithBlockNumber.outputData;
     for (SearchKey searchKey: searchKeys) {
