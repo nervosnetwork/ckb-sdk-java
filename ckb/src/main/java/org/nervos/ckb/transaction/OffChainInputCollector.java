@@ -45,20 +45,20 @@ public class OffChainInputCollector {
     this.blockNumberOffset = blockNumberOffset;
   }
 
-  public void applyOffChainTransaction(long latestBlockNumber, Transaction transaction) throws IOException {
+  public void applyOffChainTransaction(long tipBlockNumber, Transaction transaction) throws IOException {
     byte[] transactionHash = transaction.computeHash();
     usedLiveCells = usedLiveCells.stream()
-            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= blockNumberOffset)
+            .filter(o -> tipBlockNumber >= o.blockNumber && tipBlockNumber - o.blockNumber <= blockNumberOffset)
             .collect(Collectors.toList());
 
     offChainLiveCells = offChainLiveCells.stream()
-            .filter(o -> latestBlockNumber >= o.blockNumber && latestBlockNumber - o.blockNumber <= blockNumberOffset)
+            .filter(o -> tipBlockNumber >= o.blockNumber && tipBlockNumber - o.blockNumber <= blockNumberOffset)
             .collect(Collectors.toList());
 
     for (int i = 0; i < transaction.inputs.size(); i++) {
       OutPoint consumedOutPoint = transaction.inputs.get(i).previousOutput;
       // Add input to usedLiveCells
-      usedLiveCells.add(new OutPointWithBlockNumber(consumedOutPoint, latestBlockNumber));
+      usedLiveCells.add(new OutPointWithBlockNumber(consumedOutPoint, tipBlockNumber));
       // Remove input from offChainLiveCells
       Iterator<TransactionInputWithBlockNumber> it = offChainLiveCells.iterator();
       while (it.hasNext()) {
@@ -73,7 +73,7 @@ public class OffChainInputCollector {
               new CellInput(new OutPoint(transactionHash, i)),
               transaction.outputs.get(i),
               transaction.outputsData.get(i),
-              latestBlockNumber);
+              tipBlockNumber);
       offChainLiveCells.add(transactionInputWithBlockNumber);
     }
   }
