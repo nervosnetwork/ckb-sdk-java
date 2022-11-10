@@ -15,23 +15,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class OffchainInputIterator extends AbstractInputIterator {
+public class OffChainInputIterator extends AbstractInputIterator {
   private AbstractInputIterator iterator;
   private OffChainInputCollector offChainInputCollector;
   private boolean consumeOffChainCellsFirstly = false;
 
-  public OffchainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector, boolean consumeOffChainCellsFirstly) {
+  public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector, boolean consumeOffChainCellsFirstly) {
     this.iterator = iterator;
     this.offChainInputCollector = offChainInputCollector;
     this.consumeOffChainCellsFirstly = consumeOffChainCellsFirstly;
   }
 
-  public OffchainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector) {
+  public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector) {
     this.iterator = iterator;
     this.offChainInputCollector = offChainInputCollector;
   }
 
-  public OffchainInputIterator(AbstractInputIterator iterator) {
+  public OffChainInputIterator(AbstractInputIterator iterator) {
     this(iterator, OffChainInputCollector.getGlobalInstance());
   }
 
