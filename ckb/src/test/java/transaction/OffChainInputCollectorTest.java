@@ -64,16 +64,6 @@ class OffChainInputCollectorTest {
     Assertions.assertEquals(2, cells.getOffChainLiveCells().size());
   }
 
-  @Test
-  void consumeOffChainCells() {
-    OffChainInputCollector cells = new OffChainInputCollector();
-    cells.getOffChainLiveCells().add(getRandomTransactionInput(100));
-    cells.getOffChainLiveCells().add(getRandomTransactionInput(200));
-    Assertions.assertEquals(2, cells.getOffChainLiveCells().size());
-    cells.consumeOffChainCells();
-    Assertions.assertEquals(0, cells.getOffChainLiveCells().size());
-  }
-
   private OutPoint getRandomOutPoint() {
     byte[] hash = new byte[32];
     new Random().nextBytes(hash);

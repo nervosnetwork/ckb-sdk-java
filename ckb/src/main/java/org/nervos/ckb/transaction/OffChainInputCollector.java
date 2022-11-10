@@ -56,14 +56,14 @@ public class OffChainInputCollector {
             .collect(Collectors.toList());
 
     for (int i = 0; i < transaction.inputs.size(); i++) {
-      OutPoint outPoint = transaction.inputs.get(i).previousOutput;
+      OutPoint consumedOutPoint = transaction.inputs.get(i).previousOutput;
       // Add input to usedLiveCells
-      usedLiveCells.add(new OutPointWithBlockNumber(outPoint, latestBlockNumber));
+      usedLiveCells.add(new OutPointWithBlockNumber(consumedOutPoint, latestBlockNumber));
       // Remove input from offChainLiveCells
       Iterator<TransactionInputWithBlockNumber> it = offChainLiveCells.iterator();
       while (it.hasNext()) {
-        TransactionInputWithBlockNumber input = it.next();
-        if (Objects.equals(outPoint, input.input.previousOutput)) {
+        TransactionInputWithBlockNumber offChainLiveCell = it.next();
+        if (Objects.equals(consumedOutPoint, offChainLiveCell.input.previousOutput)) {
           it.remove();
         }
       }
@@ -76,17 +76,6 @@ public class OffChainInputCollector {
               latestBlockNumber);
       offChainLiveCells.add(transactionInputWithBlockNumber);
     }
-  }
-
-  public List<TransactionInputWithBlockNumber> consumeOffChainCells() {
-    List<TransactionInputWithBlockNumber> cellsToConsume = new ArrayList<>();
-    Iterator<TransactionInputWithBlockNumber> it = offChainLiveCells.iterator();
-    while (it.hasNext()) {
-      TransactionInputWithBlockNumber input = it.next();
-      cellsToConsume.add(input);
-      it.remove();
-    }
-    return cellsToConsume;
   }
 
   public static class OutPointWithBlockNumber extends OutPoint {
