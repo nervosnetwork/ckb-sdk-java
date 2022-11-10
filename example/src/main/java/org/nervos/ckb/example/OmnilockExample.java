@@ -7,14 +7,15 @@ import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.sign.omnilock.OmnilockArgs;
 import org.nervos.ckb.sign.signer.OmnilockSigner;
-import org.nervos.ckb.transaction.AbstractInputIterator;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.type.Script;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.transaction.InputIterator;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 public class OmnilockExample {
   public static void main(String[] args) throws IOException {
@@ -25,7 +26,7 @@ public class OmnilockExample {
     config.setMode(OmnilockSigner.Configuration.Mode.AUTH);
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
-    AbstractInputIterator iterator = new InputIterator(sender);
+    Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput(sender, 50100000000L)
         .setChangeOutput(sender)
@@ -37,7 +38,6 @@ public class OmnilockExample {
 
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applyOffChainTransaction(txWithGroups.getTxView());
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }

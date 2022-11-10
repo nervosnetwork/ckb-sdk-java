@@ -4,15 +4,16 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.AbstractInputIterator;
 import org.nervos.ckb.transaction.DaoTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.transaction.handler.DaoScriptHandler;
 import org.nervos.ckb.type.OutPoint;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.transaction.InputIterator;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 public class DaoWithdrawExample {
   public static void main(String[] args) throws IOException {
@@ -23,7 +24,7 @@ public class DaoWithdrawExample {
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
-    AbstractInputIterator iterator = new InputIterator(sender);
+    Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new DaoTransactionBuilder(configuration, iterator, depositOutPoint, api)
         .addWithdrawOutput(sender)
         .setChangeOutput(sender)
@@ -35,7 +36,6 @@ public class DaoWithdrawExample {
 
     // Send transaction
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applyOffChainTransaction(txWithGroups.getTxView());
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }

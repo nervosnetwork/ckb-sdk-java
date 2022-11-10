@@ -4,13 +4,14 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionSigner;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.AbstractInputIterator;
 import org.nervos.ckb.transaction.SudtTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
+import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.transaction.InputIterator;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 public class IssueSudtExample {
   public static void main(String[] args) throws IOException {
@@ -19,7 +20,7 @@ public class IssueSudtExample {
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
 
-    AbstractInputIterator iterator = new InputIterator(sender);
+    Iterator<TransactionInput> iterator = new InputIterator(sender);
     TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(configuration, iterator,
                                                                           SudtTransactionBuilder.TransactionType.ISSUE,
                                                                           sender)
@@ -34,7 +35,6 @@ public class IssueSudtExample {
     // Send transaction
     Api api = new Api("https://testnet.ckb.dev", false);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
-    iterator.applyOffChainTransaction(txWithGroups.getTxView());
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 }
