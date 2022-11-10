@@ -17,7 +17,7 @@ public class OffChainInputIterator extends AbstractInputIterator {
   private AbstractInputIterator iterator;
   private OffChainInputCollector offChainInputCollector;
   private boolean consumeOffChainCellsFirstly;
-  private boolean currentFromOffChain = false;
+  private boolean isCurrentFromOffChain = false;
 
   public OffChainInputIterator(AbstractInputIterator iterator, OffChainInputCollector offChainInputCollector, boolean consumeOffChainCellsFirstly) {
     this.iterator = iterator;
@@ -65,7 +65,7 @@ public class OffChainInputIterator extends AbstractInputIterator {
   public TransactionInput next() {
     updateCurrent();
     if (current != null) {
-      if (!currentFromOffChain) {
+      if (!isCurrentFromOffChain) {
         inputIndex += 1;
       }
       TransactionInput input = current;
@@ -77,26 +77,26 @@ public class OffChainInputIterator extends AbstractInputIterator {
   }
 
   protected void updateCurrent() {
-    if (currentFromOffChain && current != null) {
+    if (isCurrentFromOffChain && current != null) {
       return;
     }
 
     if (consumeOffChainCellsFirstly) {
       current = consumeNextOffChainCell();
       if (current != null) {
-        currentFromOffChain = true;
+        isCurrentFromOffChain = true;
         return;
       }
     }
 
     // Update from RPC client
-    currentFromOffChain = false;
+    isCurrentFromOffChain = false;
     super.updateCurrent();
 
     if (current == null && !consumeOffChainCellsFirstly) {
       current = consumeNextOffChainCell();
       if (current != null) {
-        currentFromOffChain = true;
+        isCurrentFromOffChain = true;
       }
     }
   }
