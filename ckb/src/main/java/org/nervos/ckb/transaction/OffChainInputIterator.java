@@ -38,7 +38,7 @@ public class OffChainInputIterator extends AbstractInputIterator {
   }
 
   public OffChainInputIterator(AbstractInputIterator iterator) {
-    this(iterator, OffChainInputCollector.getGlobalInstance());
+    this(iterator, OffChainInputCollector.getInstance());
   }
 
   public OffChainInputCollector getOffChainInputCollector() {

@@ -19,7 +19,7 @@ public class SendChainedTransactionExample {
     String address2 = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up";
     String address3 = "ckt1qrejnmlar3r452tcg57gvq8patctcgy8acync0hxfnyka35ywafvkqgxhjvp3k9pf88upngryvuxc346q7fq5qmlqqlrhr0p";
 
-    OffChainInputCollector offChainInputCollector = new OffChainInputCollector();
+    OffChainInputCollector offChainInputCollector = OffChainInputCollector.getInstance();
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
     AbstractInputIterator iterator1 = new OffChainInputIterator(
             new InputIterator(address1), offChainInputCollector, true);

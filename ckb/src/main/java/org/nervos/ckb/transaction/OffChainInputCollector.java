@@ -10,15 +10,18 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class OffChainInputCollector {
-  private static OffChainInputCollector GLOBAL = new OffChainInputCollector();
+  private static OffChainInputCollector INSTANCE;
   // store used cells for avoiding double spending.
   private List<OutPointWithBlockNumber> usedLiveCells = new ArrayList<>();
   // store newly created outpoints for offchain live cells supply
   private List<TransactionInputWithBlockNumber> offChainLiveCells = new ArrayList<>();
   private long blockNumberOffset = 13;
 
-  public static OffChainInputCollector getGlobalInstance() {
-    return GLOBAL;
+  public static OffChainInputCollector getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new OffChainInputCollector();
+    }
+    return INSTANCE;
   }
 
   public List<OutPointWithBlockNumber> getUsedLiveCells() {
