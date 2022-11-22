@@ -29,6 +29,70 @@ public abstract class AbstractInputIterator implements Iterator<TransactionInput
   protected Order order = Order.ASC;
   protected Integer limit = 100;
 
+  public List<TransactionInput> getTransactionInputs() {
+    return transactionInputs;
+  }
+
+  public void setTransactionInputs(List<TransactionInput> transactionInputs) {
+    this.transactionInputs = transactionInputs;
+  }
+
+  public TransactionInput getCurrent() {
+    return current;
+  }
+
+  public void setCurrent(TransactionInput current) {
+    this.current = current;
+  }
+
+  public byte[] getAfterCursor() {
+    return afterCursor;
+  }
+
+  public void setAfterCursor(byte[] afterCursor) {
+    this.afterCursor = afterCursor;
+  }
+
+  public int getInputIndex() {
+    return inputIndex;
+  }
+
+  public void setInputIndex(int inputIndex) {
+    this.inputIndex = inputIndex;
+  }
+
+  public int getSearchKeysIndex() {
+    return searchKeysIndex;
+  }
+
+  public void setSearchKeysIndex(int searchKeysIndex) {
+    this.searchKeysIndex = searchKeysIndex;
+  }
+
+  public List<SearchKey> getSearchKeys() {
+    return searchKeys;
+  }
+
+  public void setSearchKeys(List<SearchKey> searchKeys) {
+    this.searchKeys = searchKeys;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
+  public Integer getLimit() {
+    return limit;
+  }
+
+  public void setLimit(Integer limit) {
+    this.limit = limit;
+  }
+
   public AbstractInputIterator addSearchKey(String address) {
     return addSearchKey(address, null);
   }
