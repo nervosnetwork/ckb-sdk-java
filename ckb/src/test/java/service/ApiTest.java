@@ -440,7 +440,7 @@ public class ApiTest {
   @Test
   public void testEstimateCycles() throws IOException {
     Cycles cycles =
-            api.dryRunTransaction(
+            api.estimateCycles(
                     new Transaction(
                             0,
                             Collections.emptyList(),
