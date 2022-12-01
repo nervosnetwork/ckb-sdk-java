@@ -481,4 +481,29 @@ public class ApiTest {
         },
         "RPC method name must be a non-null string");
   }
+
+  @Test
+  public void testGetFeeRateStatics() throws IOException {
+    FeeRateStatics statics = api.getFeeRateStatics(null);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(1);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(101);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(0);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(102);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    Assertions.assertThrows(IOException.class, () -> api.getFeeRateStatics(-1));
+  }
 }
