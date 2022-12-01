@@ -1,9 +1,6 @@
 package service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.GsonFactory;
@@ -180,21 +177,25 @@ public class ApiTest {
     Assertions.assertNotEquals(0, state.bestKnownBlockNumber);
   }
 
+  @Disabled
   @Test
   public void testSetNetworkActive() throws IOException {
     api.setNetworkActive(true);
   }
 
+  @Disabled
   @Test
   public void testAddNode() throws IOException {
     api.addNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
   }
 
+  @Disabled
   @Test
   public void testRemoveNode() throws IOException {
     api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
   }
 
+  @Disabled
   @Test
   public void testSetBan() throws IOException {
     BannedAddress bannedAddress =
@@ -209,11 +210,13 @@ public class ApiTest {
     Assertions.assertNotNull(bannedAddresses);
   }
 
+  @Disabled
   @Test
   public void testClearBannedAddresses() throws IOException {
     api.clearBannedAddresses();
   }
 
+  @Disabled
   @Test
   public void testPingPeers() throws IOException {
     api.clearBannedAddresses();
@@ -227,6 +230,7 @@ public class ApiTest {
     Assertions.assertNotNull(txPoolInfo.tipHash);
   }
 
+  @Disabled
   @Test
   public void testClearTxPool() throws IOException {
     api.clearTxPool();
