@@ -70,6 +70,15 @@ public class ApiTest {
     Assertions.assertEquals(1, transaction.inputs.size());
     Assertions.assertEquals(3, transaction.outputs.size());
     Assertions.assertEquals(30000000000L, transaction.outputs.get(0).capacity);
+
+    transactionHash =
+            Numeric.hexStringToByteArray(
+                    "0x3dca00e45e2f3a39d707d5559ba49d27d21038624b0402039898d3a8830525be");
+    TransactionWithStatus transactionWithStatus = api.getTransaction(transactionHash);
+
+    Assertions.assertNotNull(transactionWithStatus.txStatus);
+    Assertions.assertNotNull(transactionWithStatus.cycles);
+    Assertions.assertTrue(transactionWithStatus.cycles > 0);
   }
 
   @Test
