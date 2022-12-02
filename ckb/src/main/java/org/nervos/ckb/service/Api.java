@@ -314,8 +314,8 @@ public class Api implements CkbRpcApi {
   @Override
   public FeeRateStatics getFeeRateStatics(Integer target) throws IOException {
     return rpcService.post(
-            "get_fee_rate_statics",
-            target == null ? Collections.emptyList() : Collections.singletonList(target),
-            FeeRateStatics.class);
+        "get_fee_rate_statics",
+        target == null ? Collections.emptyList() : Collections.singletonList(target),
+        FeeRateStatics.class);
   }
 }
