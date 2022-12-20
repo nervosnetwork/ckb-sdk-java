@@ -86,17 +86,7 @@ public class InputIterator implements Iterator<TransactionInput> {
   }
 
   private static CkbIndexerApi getDefaultIndexerApi(Network network) {
-    String url;
-    switch (network) {
-      case MAINNET:
-        url = "https://mainnet.ckb.dev/indexer";
-        break;
-      case TESTNET:
-        url = "https://testnet.ckb.dev/indexer";
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported network");
-    }
+    String url = Configuration.getInstance().getIndexerType().getUrl(network);
     return new DefaultIndexerApi(url, false);
   }
 

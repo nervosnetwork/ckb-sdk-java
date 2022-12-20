@@ -7,6 +7,7 @@ import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class DefaultIndexerApi implements CkbIndexerApi {
 
@@ -22,7 +23,15 @@ public class DefaultIndexerApi implements CkbIndexerApi {
 
   @Override
   public TipResponse getTip() throws IOException {
-    return this.rpcService.post(CkbIndexerRpcMethods.GET_TIP, Arrays.asList(), TipResponse.class);
+    IndexerType type = Configuration.getInstance().getIndexerType();
+    String method;
+    switch(type) {
+      case StandAlone: method = CkbIndexerRpcMethods.GET_TIP; break;
+      case CkbModule: method =CkbIndexerRpcMethods.GET_INDEXER_TIP; break;
+      default:
+        throw new IllegalStateException("Unsupported index type:"+ type);
+    }
+    return this.rpcService.post(method, Collections.emptyList(), TipResponse.class);
   }
 
   @Override

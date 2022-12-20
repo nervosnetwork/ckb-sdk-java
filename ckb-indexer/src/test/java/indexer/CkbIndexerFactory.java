@@ -1,13 +1,21 @@
 package indexer;
 
+import org.nervos.ckb.Network;
 import org.nervos.indexer.CkbIndexerApi;
+import org.nervos.indexer.Configuration;
 import org.nervos.indexer.DefaultIndexerApi;
+import org.nervos.indexer.IndexerType;
+
+import java.util.HashMap;
 
 public class CkbIndexerFactory {
-  private static final String NODE_URL = "https://testnet.ckb.dev/indexer";
-  private static CkbIndexerApi API = new DefaultIndexerApi(NODE_URL, false);
+  HashMap<String, CkbIndexerApi> apiDict = new HashMap<>();
+  private static final class InstanceHolder {
+    static final CkbIndexerFactory instance = new CkbIndexerFactory();
+  }
 
   public static CkbIndexerApi getApi() {
-    return API;
+    String url = Configuration.getInstance().getUrl(Network.TESTNET);
+    return InstanceHolder.instance.apiDict.computeIfAbsent(url, (key) -> new DefaultIndexerApi(key, false));
   }
 }
