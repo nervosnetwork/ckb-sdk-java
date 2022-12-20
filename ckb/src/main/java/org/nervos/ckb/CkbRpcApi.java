@@ -93,7 +93,7 @@ public interface CkbRpcApi {
 
   TxsWithCell getTransactions(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
- 
+
   TxsWithCells getTransactionsGrouped(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
 
@@ -103,4 +103,14 @@ public interface CkbRpcApi {
       throws IOException;
 
   List<RpcResponse> batchRPC(List<List> requests) throws IOException;
+
+  /**
+   * Get the fee_rate statistics of confirmed blocks on the chain
+   *
+   * @param target Specify the number (1 - 101) of confirmed blocks to be counted.
+   *               If the number is even, automatically add one. If not specified(null), defaults to 21.
+   * @return Returns the fee_rate statistics of confirmed blocks on the chain.
+   * @throws IOException if error there is an error
+   */
+  FeeRateStatics getFeeRateStatics(Integer target) throws IOException;
 }

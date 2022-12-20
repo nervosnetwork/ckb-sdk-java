@@ -318,4 +318,12 @@ public class Api implements CkbRpcApi {
   public List<RpcResponse> batchRPC(List<List> requests) throws IOException {
     return rpcService.batchPost(requests);
   }
+
+  @Override
+  public FeeRateStatics getFeeRateStatics(Integer target) throws IOException {
+    return rpcService.post(
+        "get_fee_rate_statics",
+        target == null ? Collections.emptyList() : Collections.singletonList(target),
+        FeeRateStatics.class);
+  }
 }

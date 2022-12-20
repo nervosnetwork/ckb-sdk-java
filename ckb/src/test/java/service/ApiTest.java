@@ -1,9 +1,6 @@
 package service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.GsonFactory;
@@ -73,6 +70,15 @@ public class ApiTest {
     Assertions.assertEquals(1, transaction.inputs.size());
     Assertions.assertEquals(3, transaction.outputs.size());
     Assertions.assertEquals(30000000000L, transaction.outputs.get(0).capacity);
+
+    transactionHash =
+            Numeric.hexStringToByteArray(
+                    "0x3dca00e45e2f3a39d707d5559ba49d27d21038624b0402039898d3a8830525be");
+    TransactionWithStatus transactionWithStatus = api.getTransaction(transactionHash);
+
+    Assertions.assertNotNull(transactionWithStatus.txStatus);
+    Assertions.assertNotNull(transactionWithStatus.cycles);
+    Assertions.assertTrue(transactionWithStatus.cycles > 0);
   }
 
   @Test
@@ -180,21 +186,25 @@ public class ApiTest {
     Assertions.assertNotEquals(0, state.bestKnownBlockNumber);
   }
 
+  @Disabled
   @Test
   public void testSetNetworkActive() throws IOException {
     api.setNetworkActive(true);
   }
 
+  @Disabled
   @Test
   public void testAddNode() throws IOException {
     api.addNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
   }
 
+  @Disabled
   @Test
   public void testRemoveNode() throws IOException {
     api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
   }
 
+  @Disabled
   @Test
   public void testSetBan() throws IOException {
     BannedAddress bannedAddress =
@@ -209,11 +219,13 @@ public class ApiTest {
     Assertions.assertNotNull(bannedAddresses);
   }
 
+  @Disabled
   @Test
   public void testClearBannedAddresses() throws IOException {
     api.clearBannedAddresses();
   }
 
+  @Disabled
   @Test
   public void testPingPeers() throws IOException {
     api.clearBannedAddresses();
@@ -227,6 +239,7 @@ public class ApiTest {
     Assertions.assertNotNull(txPoolInfo.tipHash);
   }
 
+  @Disabled
   @Test
   public void testClearTxPool() throws IOException {
     api.clearTxPool();
@@ -491,5 +504,30 @@ public class ApiTest {
           }
         },
         "RPC method name must be a non-null string");
+  }
+
+  @Test
+  public void testGetFeeRateStatics() throws IOException {
+    FeeRateStatics statics = api.getFeeRateStatics(null);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(1);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(101);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(0);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(102);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    Assertions.assertThrows(IOException.class, () -> api.getFeeRateStatics(-1));
   }
 }
