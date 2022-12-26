@@ -3,7 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
+import org.nervos.ckb.transaction.handler.ScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
@@ -18,29 +18,34 @@ import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 
 public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   private TransactionType transactionType;
-  private Script sudtType;
+  private Script sudtTypeScript;
 
   public enum TransactionType {
     ISSUE,
     TRANSFER
   }
 
-  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network,
+  public SudtTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs,
                                 TransactionType transactionType, byte[] sudtArgs) {
-    super(availableInputs, network);
+    super(configuration, availableInputs);
     this.transactionType = transactionType;
-    setSudtArgs(sudtArgs);
+    setSudtTypeScript(sudtArgs);
   }
 
-  public SudtTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network,
+  public SudtTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs,
                                 TransactionType transactionType, String sudtOwnerAddress) {
-    super(availableInputs, network);
+    super(configuration, availableInputs);
     this.transactionType = transactionType;
-    setSudtArgs(sudtOwnerAddress);
+    setSudtTypeScript(sudtOwnerAddress);
   }
 
-  public SudtTransactionBuilder setSudtArgs(byte[] sudtArgs) {
+  public void setSudtTypeScript(Script sudtTypeScript) {
+    this.sudtTypeScript = sudtTypeScript;
+  }
+
+  public SudtTransactionBuilder setSudtTypeScript(byte[] sudtArgs) {
     byte[] codeHash;
+    Network network = configuration.getNetwork();
     if (network == Network.TESTNET) {
       codeHash = Script.SUDT_CODE_HASH_TESTNET;
     } else if (network == Network.MAINNET) {
@@ -48,27 +53,17 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     } else {
       throw new IllegalArgumentException("Unsupported network");
     }
-    sudtType = new Script(
+    sudtTypeScript = new Script(
         codeHash,
         sudtArgs,
         Script.HashType.TYPE);
     return this;
   }
 
-  public SudtTransactionBuilder setSudtArgs(String sudtOwnerAddress) {
-    byte[] sudtArgs = Address.decode(sudtOwnerAddress).getScript().computeHash();
-    return setSudtArgs(sudtArgs);
-  }
-
-  @Override
-  public SudtTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    super.registerScriptHandler(scriptHandler);
-    return this;
-  }
-
-  public SudtTransactionBuilder setFeeRate(long feeRate) {
-    this.feeRate = feeRate;
-    return this;
+  public SudtTransactionBuilder setSudtTypeScript(String sudtOwnerAddress) {
+    Address address = Address.decode(sudtOwnerAddress);
+    byte[] sudtArgs = address.getScript().computeHash();
+    return setSudtTypeScript(sudtArgs);
   }
 
   public SudtTransactionBuilder addOutput(CellOutput output, byte[] data) {
@@ -85,7 +80,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     CellOutput output = new CellOutput(
         0,
         Address.decode(address).getScript(),
-        sudtType);
+        sudtTypeScript);
     byte[] data = sudtAmountToData(udtAmount);
     output.capacity = output.occupiedCapacity(data);
     return addOutput(output, data);
@@ -99,7 +94,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     CellOutput output = new CellOutput(
         capacity,
         Address.decode(address).getScript(),
-        sudtType);
+        sudtTypeScript);
     byte[] data = sudtAmountToData(udtAmount);
     return addOutput(output, data);
   }
@@ -113,13 +108,13 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     CellOutput output = new CellOutput(
         0,
         Address.decode(address).getScript(),
-        sudtType);
+        sudtTypeScript);
     return addOutput(output, data);
   }
 
   @Override
   public TransactionWithScriptGroups build(Object... contexts) {
-    if (sudtType == null) {
+    if (sudtTypeScript == null) {
       throw new IllegalStateException("Sudt type script is not initialized");
     }
     if (transactionType == null) {
@@ -151,8 +146,8 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
           scriptGroupMap.put(type, scriptGroup);
         }
         scriptGroup.getOutputIndices().add(i);
-        for (ScriptHandler handler : scriptHandlers) {
-          for (Object context : contexts) {
+        for (ScriptHandler handler: configuration.getScriptHandlers()) {
+          for (Object context: contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
         }
@@ -176,7 +171,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
 
       Script lock = input.output.lock;
       if (transactionType == TransactionType.ISSUE) {
-        if (!Arrays.equals(lock.computeHash(), sudtType.args)) {
+        if (!Arrays.equals(lock.computeHash(), sudtTypeScript.args)) {
           throw new IllegalStateException("input lock hash should be the same as SUDT args in the SUDT-issue transaction");
         }
       }
@@ -189,8 +184,8 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       }
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
-      for (ScriptHandler handler : scriptHandlers) {
-        for (Object context : contexts) {
+      for (ScriptHandler handler: configuration.getScriptHandlers()) {
+        for (Object context: contexts) {
           handler.buildTransaction(this, scriptGroup, context);
         }
       }
@@ -205,8 +200,8 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
           scriptGroupMap.put(type, scriptGroup);
         }
         scriptGroup.getInputIndices().add(inputIndex);
-        for (ScriptHandler handler : scriptHandlers) {
-          for (Object context : contexts) {
+        for (ScriptHandler handler: configuration.getScriptHandlers()) {
+          for (Object context: contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
         }
@@ -221,7 +216,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       }
 
       // check if there is enough capacity for output capacity and change
-      long fee = calculateTxFee(tx, feeRate);
+      long fee = calculateTxFee(tx, configuration.getFeeRate());
       long changeCapacity = inputsCapacity - outputsCapacity - fee;
       CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
       byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);

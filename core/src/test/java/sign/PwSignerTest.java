@@ -10,7 +10,7 @@ public class PwSignerTest {
 
   @Test
   void testIsMatched() {
-    PwSigner signer = PwSigner.getInstance();
+    PwSigner signer = new PwSigner();
 
     Assertions.assertTrue(
         signer.isMatched(

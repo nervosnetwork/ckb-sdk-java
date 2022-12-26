@@ -3,5 +3,3 @@ description 'Minimal set of ckb serialization classes'
 dependencies {
     compile project(":utils")
 }
-
-apply from: rootProject.file('gradle/checkstyle.gradle')

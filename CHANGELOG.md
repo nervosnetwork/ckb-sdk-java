@@ -1,3 +1,17 @@
+# 2.1.0 (2022-12-26)
+
+## 🚀 Features
+
+- feat: support omnilock script (#590)
+- feat: support building transaction in dev chain (#591)
+- feat: support indexer RPC in ckb (#601)
+- feat: support light client RPC (#602)
+- feat: support offchain cell (#603, 606)
+- feat: support field extra in mercury RPC get_balance (#605)
+- feat: support RPC method estimate_cycles (#608)
+- feat:support rpc method get fee rate statics (#611)
+- feat: guitar Make ckb-indexer can configure which api url to use (#613)
+
 # 2.0.3 (2022-07-13)
 
 ## 🐛 Bug Fixes

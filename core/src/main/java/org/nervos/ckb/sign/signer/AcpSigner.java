@@ -8,34 +8,20 @@ import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Transaction;
 
 public class AcpSigner implements ScriptSigner {
-  private Secp256k1Blake160SighashAllSigner secp256K1Blake160SighashAllSigner =
-      Secp256k1Blake160SighashAllSigner.getInstance();
-  private static AcpSigner INSTANCE;
-
-  private AcpSigner() {
-  }
-
-  public static AcpSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new AcpSigner();
-    }
-    return INSTANCE;
-  }
-
   @Override
   public boolean signTransaction(
       Transaction transaction, ScriptGroup scriptGroup, Context context) {
     Script script = scriptGroup.getScript();
     ECKeyPair keyPair = context.getKeyPair();
     if (isMatched(keyPair, script.args)) {
-      return secp256K1Blake160SighashAllSigner.signScriptGroup(
+      return Secp256k1Blake160SighashAllSigner.signTransactionInPlace(
           transaction, scriptGroup, keyPair);
     } else {
       return false;
     }
   }
 
-  public boolean isMatched(ECKeyPair keyPair, byte[] scriptArgs) {
-    return secp256K1Blake160SighashAllSigner.isMatched(keyPair, scriptArgs);
+  public static boolean isMatched(ECKeyPair keyPair, byte[] scriptArgs) {
+    return Secp256k1Blake160SighashAllSigner.isMatched(keyPair, scriptArgs);
   }
 }

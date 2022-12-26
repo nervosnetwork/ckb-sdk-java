@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class TransactionWithStatus {
   public TxStatus txStatus;
   public Transaction transaction;
+  public Long cycles;
 
   public static class TxStatus {
     public Status status;

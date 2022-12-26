@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
+import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
@@ -21,10 +22,11 @@ class CkbTransactionBuilderTest {
   @Test
   void testSingleInput() {
     Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, Network.TESTNET)
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(Network.TESTNET);
+    configuration.setFeeRate(1000);
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
         .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r",
                    50100000000L)
-        .setFeeRate(1000)
         .setChangeOutput(sender.encode())
         .build();
 
@@ -41,11 +43,11 @@ class CkbTransactionBuilderTest {
   void testMultipleInputs() {
     String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
 
-    Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, Network.TESTNET)
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(Network.TESTNET);
+    configuration.setFeeRate(1000);
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, newTransactionInputs())
         .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r",
                    100000000000L)
-        .setFeeRate(1000)
         .setChangeOutput(sender)
         .build();
 

@@ -3,9 +3,8 @@ description 'ckb-sdk-java is a lightweight Java library for integration with ner
 dependencies {
     compile project(":ckb")
     compile project(":ckb-indexer")
+    compile project(":light-client")
     compile project(":utils")
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
 }
-
-apply from: rootProject.file('gradle/checkstyle.gradle')

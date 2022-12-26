@@ -1,9 +1,7 @@
 package org.nervos.ckb.transaction;
 
-import org.nervos.ckb.Network;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.transaction.scriptHandler.ScriptHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.MoleculeConverter;
 import org.nervos.ckb.utils.Numeric;
@@ -14,7 +12,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import static org.nervos.ckb.transaction.scriptHandler.DaoScriptHandler.*;
+import static org.nervos.ckb.transaction.handler.DaoScriptHandler.*;
 
 public class DaoTransactionBuilder extends AbstractTransactionBuilder {
   CkbTransactionBuilder builder;
@@ -28,12 +26,12 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     CLAIM,
   }
 
-  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network, OutPoint daoOutpoint, Api api) throws IOException {
-    super(availableInputs, network);
-    builder = new CkbTransactionBuilder(availableInputs, network);
+  public DaoTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs, OutPoint daoOutPoint, Api api) throws IOException {
+    super(configuration, availableInputs);
+    builder = new CkbTransactionBuilder(configuration, availableInputs);
     this.api = api;
-    CellInput cellInput = new CellInput(daoOutpoint, 0);
-    CellWithStatus cellWithStatus = api.getLiveCell(daoOutpoint, true);
+    CellInput cellInput = new CellInput(daoOutPoint, 0);
+    CellWithStatus cellWithStatus = api.getLiveCell(daoOutPoint, true);
     TransactionInput input = new TransactionInput(
         cellInput,
         cellWithStatus.cell.output,
@@ -41,20 +39,22 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     transactionType = getTransactionType(cellWithStatus.cell.data.content);
     switch (transactionType) {
       case WITHDRAW:
-        TransactionWithStatus txWithStatus = api.getTransaction(daoOutpoint.txHash);
+        TransactionWithStatus txWithStatus = api.getTransaction(daoOutPoint.txHash);
         depositBlockNumber = api.getHeader(txWithStatus.txStatus.blockHash).number;
-        depositCellCapacity = txWithStatus.transaction.outputs.get(daoOutpoint.index).capacity;
+        depositCellCapacity = txWithStatus.transaction.outputs.get(daoOutPoint.index).capacity;
         break;
       case CLAIM:
-        builder.reward += getDaoReward(daoOutpoint);
+        builder.reward += getDaoReward(daoOutPoint);
         break;
+      default:
+        throw new IllegalArgumentException("Unsupported transaction type");
     }
     builder.transactionInputs.add(input);
   }
 
   private static TransactionType getTransactionType(byte[] outputData) {
     if (outputData.length != 8) {
-      throw new IllegalArgumentException("Dao cell's length should be 8 bytes");
+      throw new IllegalArgumentException("Dao cell's output data length should be 8 bytes");
     }
     if (Arrays.equals(outputData, DEPOSIT_CELL_DATA)) {
       return TransactionType.WITHDRAW;
@@ -98,10 +98,7 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     return daoReward;
   }
 
-  private static long calculateDaoMaximumWithdraw(Header depositBlockHeader,
-                                                  Header withdrawBlockHeader,
-                                                  CellOutput output,
-                                                  long occupiedCapacity) {
+  private static long calculateDaoMaximumWithdraw(Header depositBlockHeader, Header withdrawBlockHeader, CellOutput output, long occupiedCapacity) {
     BigInteger depositAr = BigInteger.valueOf(extractAr(depositBlockHeader.dao));
     BigInteger withdrawAr = BigInteger.valueOf(extractAr(withdrawBlockHeader.dao));
 
@@ -117,24 +114,8 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     return Numeric.littleEndianBytesToBigInteger(slice).longValue();
   }
 
-  public DaoTransactionBuilder(Iterator<TransactionInput> availableInputs, Network network) {
-    super(availableInputs, network);
-  }
-
-  @Override
-  public DaoTransactionBuilder registerScriptHandler(ScriptHandler scriptHandler) {
-    builder.registerScriptHandler(scriptHandler);
-    return this;
-  }
-
-  @Override
-  public long getFeeRate() {
-    return builder.getFeeRate();
-  }
-
-  public DaoTransactionBuilder setFeeRate(long feeRate) {
-    builder.setFeeRate(feeRate);
-    return this;
+  public DaoTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs) {
+    super(configuration, availableInputs);
   }
 
   public DaoTransactionBuilder addOutput(String address, long capacity) {
@@ -153,8 +134,8 @@ public class DaoTransactionBuilder extends AbstractTransactionBuilder {
     }
     CellOutput output = new CellOutput(
         depositCellCapacity,
-        Address.decode(address).getScript()
-        , DAO_SCRIPT);
+        Address.decode(address).getScript(),
+        DAO_SCRIPT);
     byte[] data = MoleculeConverter.packUint64(depositBlockNumber).toByteArray();
     builder.addOutput(output, data);
     return this;

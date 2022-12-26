@@ -2,6 +2,9 @@ package org.nervos.ckb;
 
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
+import org.nervos.indexer.model.Order;
+import org.nervos.indexer.model.SearchKey;
+import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -78,10 +81,36 @@ public interface CkbRpcApi {
 
   void pingPeers() throws IOException;
 
+  @Deprecated
   Cycles dryRunTransaction(Transaction transaction) throws IOException;
+
+  Cycles estimateCycles(Transaction transaction) throws IOException;
+
+  TipResponse getIndexerTip() throws IOException;
+
+  CellsResponse getCells(SearchKey searchKey, Order order, int limit, byte[] afterCursor)
+      throws IOException;
+
+  TxsWithCell getTransactions(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
+
+  TxsWithCells getTransactionsGrouped(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException;
+
+  CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException;
 
   long calculateDaoMaximumWithdraw(OutPoint outPoint, byte[] withdrawBlockHash)
       throws IOException;
 
   List<RpcResponse> batchRPC(List<List> requests) throws IOException;
+
+  /**
+   * Get the fee_rate statistics of confirmed blocks on the chain
+   *
+   * @param target Specify the number (1 - 101) of confirmed blocks to be counted.
+   *               If the number is even, automatically add one. If not specified(null), defaults to 21.
+   * @return Returns the fee_rate statistics of confirmed blocks on the chain.
+   * @throws IOException if error there is an error
+   */
+  FeeRateStatics getFeeRateStatics(Integer target) throws IOException;
 }

@@ -1,15 +1,15 @@
 package service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
 import org.nervos.ckb.service.GsonFactory;
 import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.indexer.model.Order;
+import org.nervos.indexer.model.SearchKeyBuilder;
+import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -70,6 +70,15 @@ public class ApiTest {
     Assertions.assertEquals(1, transaction.inputs.size());
     Assertions.assertEquals(3, transaction.outputs.size());
     Assertions.assertEquals(30000000000L, transaction.outputs.get(0).capacity);
+
+    transactionHash =
+            Numeric.hexStringToByteArray(
+                    "0x3dca00e45e2f3a39d707d5559ba49d27d21038624b0402039898d3a8830525be");
+    TransactionWithStatus transactionWithStatus = api.getTransaction(transactionHash);
+
+    Assertions.assertNotNull(transactionWithStatus.txStatus);
+    Assertions.assertNotNull(transactionWithStatus.cycles);
+    Assertions.assertTrue(transactionWithStatus.cycles > 0);
   }
 
   @Test
@@ -177,21 +186,25 @@ public class ApiTest {
     Assertions.assertNotEquals(0, state.bestKnownBlockNumber);
   }
 
+  @Disabled
   @Test
   public void testSetNetworkActive() throws IOException {
     api.setNetworkActive(true);
   }
 
+  @Disabled
   @Test
   public void testAddNode() throws IOException {
     api.addNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS", "/ip4/192.168.2.100/tcp/8114");
   }
 
+  @Disabled
   @Test
   public void testRemoveNode() throws IOException {
     api.removeNode("QmUsZHPbjjzU627UZFt4k8j6ycEcNvXRnVGxCPKqwbAfQS");
   }
 
+  @Disabled
   @Test
   public void testSetBan() throws IOException {
     BannedAddress bannedAddress =
@@ -206,11 +219,13 @@ public class ApiTest {
     Assertions.assertNotNull(bannedAddresses);
   }
 
+  @Disabled
   @Test
   public void testClearBannedAddresses() throws IOException {
     api.clearBannedAddresses();
   }
 
+  @Disabled
   @Test
   public void testPingPeers() throws IOException {
     api.clearBannedAddresses();
@@ -224,6 +239,7 @@ public class ApiTest {
     Assertions.assertNotNull(txPoolInfo.tipHash);
   }
 
+  @Disabled
   @Test
   public void testClearTxPool() throws IOException {
     api.clearTxPool();
@@ -240,12 +256,12 @@ public class ApiTest {
     RawTxPoolVerbose rawTxPoolVerbose = api.getRawTxPoolVerbose();
     Assertions.assertNotNull(rawTxPoolVerbose);
 
-    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry:
         rawTxPoolVerbose.pending.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }
 
-    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry:
         rawTxPoolVerbose.proposed.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }
@@ -356,6 +372,70 @@ public class ApiTest {
   }
 
   @Test
+  void testGetIndexerTip() throws IOException {
+    TipResponse tip = api.getIndexerTip();
+    Assertions.assertNotNull(tip.blockHash);
+    Assertions.assertNotEquals(0, tip.blockNumber);
+  }
+
+  @Test
+  void testGetTransactions() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(
+            Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+            Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+            Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+    TxsWithCell txs = api.getTransactions(key.build(), Order.ASC, 10, null);
+    Assertions.assertTrue(txs.objects.size() > 0);
+  }
+
+  @Test
+  void testTransactionsGrouped() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(Numeric.hexStringToByteArray(
+            "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                   Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                   Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+
+    TxsWithCells txs = api.getTransactionsGrouped(key.build(), Order.ASC, 10, null);
+    Assertions.assertTrue(txs.objects.size() > 0);
+    Assertions.assertNotNull(txs.objects.get(0));
+    Assertions.assertNotNull(txs.objects.get(0).cells.get(0));
+  }
+
+  @Test
+  void testGetCells() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(Numeric.hexStringToByteArray(
+            "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                   Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                   Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+
+    CellsResponse cells = api.getCells(key.build(), Order.ASC, 10, null);
+    Assertions.assertTrue(cells.objects.size() > 0);
+  }
+
+  @Test
+  void testGetCellCapacity() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(Numeric.hexStringToByteArray(
+            "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                   Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                   Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+    CellCapacityResponse capacity = api.getCellsCapacity(key.build());
+    Assertions.assertEquals(1388355000000L, capacity.capacity);
+  }
+
+  @Test
   public void testDryRunTransaction() throws IOException {
     Cycles cycles =
         api.dryRunTransaction(
@@ -367,6 +447,21 @@ public class ApiTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList()));
+    Assertions.assertNotNull(cycles);
+  }
+
+  @Test
+  public void testEstimateCycles() throws IOException {
+    Cycles cycles =
+            api.estimateCycles(
+                    new Transaction(
+                            0,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList(),
+                            Collections.emptyList()));
     Assertions.assertNotNull(cycles);
   }
 
@@ -409,5 +504,30 @@ public class ApiTest {
           }
         },
         "RPC method name must be a non-null string");
+  }
+
+  @Test
+  public void testGetFeeRateStatics() throws IOException {
+    FeeRateStatics statics = api.getFeeRateStatics(null);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(1);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(101);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(0);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    statics = api.getFeeRateStatics(102);
+    Assertions.assertNotNull(statics);
+    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+
+    Assertions.assertThrows(IOException.class, () -> api.getFeeRateStatics(-1));
   }
 }

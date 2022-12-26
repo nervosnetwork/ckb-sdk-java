@@ -16,17 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PwSigner implements ScriptSigner {
-  private static PwSigner INSTANCE;
-
-  private PwSigner() {
-  }
-
-  public static PwSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new PwSigner();
-    }
-    return INSTANCE;
-  }
 
   @Override
   public boolean signTransaction(
@@ -34,33 +23,38 @@ public class PwSigner implements ScriptSigner {
     Script script = scriptGroup.getScript();
     ECKeyPair keyPair = context.getKeyPair();
     if (isMatched(keyPair, script.args)) {
-      return signScriptGroup(transaction, scriptGroup, keyPair);
+      return signTransactionInPlace(transaction, scriptGroup, keyPair);
     } else {
       return false;
     }
   }
 
-  private boolean signScriptGroup(
+  private boolean signTransactionInPlace(
       Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair) {
+    byte[] signature = signTransactionETH(transaction, scriptGroup, keyPair);
+
+    int index = scriptGroup.getInputIndices().get(0);
+    List<byte[]> witnesses = transaction.witnesses;
+    WitnessArgs witnessArgs = WitnessArgs.unpack(witnesses.get(index));
+    witnessArgs.setLock(signature);
+    witnesses.set(index, witnessArgs.pack().toByteArray());
+    return true;
+  }
+
+  public static byte[] signTransactionETH(Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair) {
     Keccak256 keccak256 = new Keccak256();
     byte[] txHash = transaction.computeHash();
     keccak256.update(txHash);
 
     List<byte[]> witnesses = transaction.witnesses;
-    for (int i : scriptGroup.getInputIndices()) {
+    for (int i: scriptGroup.getInputIndices()) {
       byte[] witness = witnesses.get(i);
       keccak256.update(MoleculeConverter.packUint64(witness.length).toByteArray());
       keccak256.update(witness);
     }
 
     byte[] digest = keccak256.doFinal();
-    byte[] signature = ethereumPersonalSign(digest, keyPair);
-
-    int index = scriptGroup.getInputIndices().get(0);
-    WitnessArgs witnessArgs = WitnessArgs.unpack(witnesses.get(index));
-    witnessArgs.setLock(signature);
-    witnesses.set(index, witnessArgs.pack().toByteArray());
-    return true;
+    return ethereumPersonalSign(digest, keyPair);
   }
 
   private static byte[] ethereumPersonalSign(byte[] message, ECKeyPair keyPair) {
@@ -89,7 +83,6 @@ public class PwSigner implements ScriptSigner {
 
     byte[] ethereumAddress =
         Arrays.copyOfRange(publicKeyHash, publicKeyHash.length - 20, publicKeyHash.length);
-
     return Arrays.equals(scriptArgs, ethereumAddress);
   }
 }

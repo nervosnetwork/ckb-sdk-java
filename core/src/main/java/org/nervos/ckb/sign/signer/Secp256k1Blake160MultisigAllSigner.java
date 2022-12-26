@@ -2,14 +2,13 @@ package org.nervos.ckb.sign.signer;
 
 import org.nervos.ckb.crypto.Blake2b;
 import org.nervos.ckb.crypto.secp256k1.ECKeyPair;
-import org.nervos.ckb.crypto.secp256k1.Sign;
 import org.nervos.ckb.sign.Context;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.ScriptSigner;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.Transaction;
 import org.nervos.ckb.type.WitnessArgs;
-import org.nervos.ckb.utils.MoleculeConverter;
+import org.nervos.ckb.utils.Numeric;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,16 +17,17 @@ import java.util.List;
 public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
   private static final int SIGNATURE_LENGTH_IN_BYTE = 65;
 
-  private static Secp256k1Blake160MultisigAllSigner INSTANCE;
+  public boolean signTransactionInPlace(
+      Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, MultisigScript multisigScript) {
+    int firstIndex = scriptGroup.getInputIndices().get(0);
+    byte[] firstWitness = transaction.witnesses.get(firstIndex);
 
-  private Secp256k1Blake160MultisigAllSigner() {
-  }
+    byte[] witnessPlaceholder = multisigScript.witnessPlaceholder(firstWitness);
+    byte[] signature = Secp256k1Blake160SighashAllSigner.signTransaction(transaction, scriptGroup, witnessPlaceholder, keyPair);
 
-  public static Secp256k1Blake160MultisigAllSigner getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new Secp256k1Blake160MultisigAllSigner();
-    }
-    return INSTANCE;
+    firstWitness = setSignatureToWitness(firstWitness, signature, multisigScript);
+    transaction.witnesses.set(firstIndex, firstWitness);
+    return true;
   }
 
   @Override
@@ -39,41 +39,10 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     if (payload instanceof MultisigScript) {
       MultisigScript multisigScript = (MultisigScript) payload;
       if (isMatched(keyPair, script.args, multisigScript)) {
-        return signScriptGroup(transaction, scriptGroup, keyPair, multisigScript);
+        return signTransactionInPlace(transaction, scriptGroup, keyPair, multisigScript);
       }
     }
     return false;
-  }
-
-  public boolean signScriptGroup(
-      Transaction transaction, ScriptGroup scriptGroup, ECKeyPair keyPair, MultisigScript multisigScript) {
-    byte[] txHash = transaction.computeHash();
-    List<byte[]> witnesses = transaction.witnesses;
-    Blake2b blake2b = new Blake2b();
-    blake2b.update(txHash);
-
-    int firstIndex = scriptGroup.getInputIndices().get(0);
-    byte[] firstWitness = witnesses.get(firstIndex);
-    byte[] firstWitnessPlaceholder = multisigScript.witnessPlaceholder(firstWitness);
-    witnesses.set(firstIndex, firstWitnessPlaceholder);
-
-    for (int i : scriptGroup.getInputIndices()) {
-      byte[] witness = witnesses.get(i);
-      blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
-      blake2b.update(witness);
-    }
-    for (int i = transaction.inputs.size(); i < transaction.witnesses.size(); i++) {
-      byte[] witness = witnesses.get(i);
-      blake2b.update(MoleculeConverter.packUint64(witness.length).toByteArray());
-      blake2b.update(witness);
-    }
-
-    byte[] message = blake2b.doFinal();
-    byte[] signature = Sign.signMessage(message, keyPair).getSignature();
-
-    firstWitness = setSignatureToWitness(firstWitness, signature, multisigScript);
-    witnesses.set(firstIndex, firstWitness);
-    return true;
   }
 
   private static byte[] setSignatureToWitness(byte[] witness, byte[] signature, MultisigScript multisigScript) {
@@ -100,7 +69,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
     return true;
   }
 
-  private static boolean isMatched(ECKeyPair keyPair, byte[] scriptArgs, MultisigScript multisigScript) {
+  public static boolean isMatched(ECKeyPair keyPair, byte[] scriptArgs, MultisigScript multisigScript) {
     if (scriptArgs == null || keyPair == null) {
       return false;
     }
@@ -135,12 +104,35 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       this.keysHashes = keysHashes;
     }
 
-    public MultisigScript(int firstN, int threshold, List<byte[]> keysHashes) {
-      this(0, 0, threshold, keysHashes);
+    public MultisigScript(int version, int firstN, int threshold, byte[]... keysHashes) {
+      this(version, firstN, threshold, Arrays.asList(keysHashes));
     }
 
-    public MultisigScript(int threshold, List<byte[]> keysHashes) {
-      this(0, 0, threshold, keysHashes);
+    public MultisigScript(int version, int firstN, int threshold, String... keysHashes) {
+      this(version, firstN, threshold, toBytesArray(keysHashes));
+    }
+
+    public MultisigScript(int firstN, int threshold, List<byte[]> keysHashes) {
+      this(0, firstN, threshold, keysHashes);
+    }
+
+    public MultisigScript(int firstN, int threshold, byte[]... keysHashes) {
+      this(0, firstN, threshold, keysHashes);
+    }
+
+    public MultisigScript(int firstN, int threshold, String... keysHashes) {
+      this(0, firstN, threshold, keysHashes);
+    }
+
+    private static byte[][] toBytesArray(String[] in) {
+      if (in == null) {
+        return null;
+      }
+      byte[][] out = new byte[in.length][];
+      for (int i = 0; i < in.length; i++) {
+        out[i] = Numeric.hexStringToByteArray(in[i]);
+      }
+      return out;
     }
 
     public int getVersion() {
@@ -166,7 +158,7 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       out[2] = (byte) this.threshold;
       out[3] = (byte) this.keysHashes.size();
       int pos = 4;
-      for (byte[] publicKeyHash : this.keysHashes) {
+      for (byte[] publicKeyHash: this.keysHashes) {
         System.arraycopy(publicKeyHash, 0, out, pos, 20);
         pos += 20;
       }
@@ -218,6 +210,10 @@ public class Secp256k1Blake160MultisigAllSigner implements ScriptSigner {
       byte[] placeholder = new byte[header.length + SIGNATURE_LENGTH_IN_BYTE * getThreshold()];
       System.arraycopy(header, 0, placeholder, 0, header.length);
       return placeholder;
+    }
+
+    public byte[] witnessEmptyPlaceholderInLock() {
+      return new byte[witnessPlaceholderInLock().length];
     }
 
     @Override

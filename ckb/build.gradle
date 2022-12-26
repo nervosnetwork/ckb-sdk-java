@@ -2,9 +2,10 @@ description 'ckb-sdk-java is a lightweight Java library for integration with ner
 
 dependencies {
     compile project(":core")
+    compile project(":ckb-indexer")
+    compile project(":light-client")
     compile project(":utils")
     compile project(":serialization")
 }
 
-apply from: rootProject.file('gradle/checkstyle.gradle')
 apply plugin: 'com.github.johnrengelman.shadow'

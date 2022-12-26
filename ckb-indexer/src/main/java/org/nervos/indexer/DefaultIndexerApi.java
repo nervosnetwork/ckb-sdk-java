@@ -3,13 +3,11 @@ package org.nervos.indexer;
 import org.nervos.ckb.service.RpcService;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.SearchKey;
-import org.nervos.indexer.model.resp.CellCapacityResponse;
-import org.nervos.indexer.model.resp.CellsResponse;
-import org.nervos.indexer.model.resp.TipResponse;
-import org.nervos.indexer.model.resp.TransactionResponse;
+import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class DefaultIndexerApi implements CkbIndexerApi {
 
@@ -25,7 +23,15 @@ public class DefaultIndexerApi implements CkbIndexerApi {
 
   @Override
   public TipResponse getTip() throws IOException {
-    return this.rpcService.post(CkbIndexerRpcMethods.GET_TIP, Arrays.asList(), TipResponse.class);
+    IndexerType type = Configuration.getInstance().getIndexerType();
+    String method;
+    switch(type) {
+      case StandAlone: method = CkbIndexerRpcMethods.GET_TIP; break;
+      case CkbModule: method =CkbIndexerRpcMethods.GET_INDEXER_TIP; break;
+      default:
+        throw new IllegalStateException("Unsupported index type:"+ type);
+    }
+    return this.rpcService.post(method, Collections.emptyList(), TipResponse.class);
   }
 
   @Override
@@ -38,12 +44,23 @@ public class DefaultIndexerApi implements CkbIndexerApi {
   }
 
   @Override
-  public TransactionResponse getTransactions(
+  public TxsWithCell getTransactions(
       SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
+    searchKey.groupByTransaction = false;
     return this.rpcService.post(
         CkbIndexerRpcMethods.GET_TRANSACTIONS,
         Arrays.asList(searchKey, order, limit, afterCursor),
-        TransactionResponse.class);
+        TxsWithCell.class);
+  }
+
+  @Override
+  public TxsWithCells getTransactionsGrouped(
+      SearchKey searchKey, Order order, int limit, byte[] afterCursor) throws IOException {
+    searchKey.groupByTransaction = true;
+    return this.rpcService.post(
+        CkbIndexerRpcMethods.GET_TRANSACTIONS,
+        Arrays.asList(searchKey, order, limit, afterCursor),
+        TxsWithCells.class);
   }
 
   @Override

@@ -1,10 +1,7 @@
 package org.nervos.ckb.sign;
 
 import org.nervos.ckb.Network;
-import org.nervos.ckb.sign.signer.AcpSigner;
-import org.nervos.ckb.sign.signer.PwSigner;
-import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
-import org.nervos.ckb.sign.signer.Secp256k1Blake160SighashAllSigner;
+import org.nervos.ckb.sign.signer.*;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.Transaction;
@@ -20,23 +17,27 @@ public class TransactionSigner {
   static {
     TESTNET_TRANSACTION_SIGNER = new TransactionSigner()
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, new Secp256k1Blake160SighashAllSigner())
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, new Secp256k1Blake160MultisigAllSigner())
         .registerLockScriptSigner(
-            Script.ANY_CAN_PAY_CODE_HASH_TESTNET, AcpSigner.getInstance())
+            Script.ANY_CAN_PAY_CODE_HASH_TESTNET, new AcpSigner())
         .registerLockScriptSigner(
-            Script.PW_LOCK_CODE_HASH_TESTNET, PwSigner.getInstance());
+            Script.PW_LOCK_CODE_HASH_TESTNET, new PwSigner())
+        .registerLockScriptSigner(
+            Script.OMNILOCK_CODE_HASH_TESTNET, new OmnilockSigner());
 
     MAINNET_TRANSACTION_SIGNER = new TransactionSigner()
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, Secp256k1Blake160SighashAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, new Secp256k1Blake160SighashAllSigner())
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, Secp256k1Blake160MultisigAllSigner.getInstance())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, new Secp256k1Blake160MultisigAllSigner())
         .registerLockScriptSigner(
-            Script.ANY_CAN_PAY_CODE_HASH_MAINNET, AcpSigner.getInstance())
+            Script.ANY_CAN_PAY_CODE_HASH_MAINNET, new AcpSigner())
         .registerLockScriptSigner(
-            Script.PW_LOCK_CODE_HASH_MAINNET, PwSigner.getInstance());
+            Script.PW_LOCK_CODE_HASH_MAINNET, new PwSigner())
+        .registerLockScriptSigner(
+            Script.OMNILOCK_CODE_HASH_MAINNET, new OmnilockSigner());
   }
 
   public TransactionSigner() {
@@ -49,7 +50,7 @@ public class TransactionSigner {
 
   public TransactionSigner(TransactionSigner s) {
     scriptSignerMap = new HashMap<>();
-    for (Map.Entry<Key, ScriptSigner> entry : s.scriptSignerMap.entrySet()) {
+    for (Map.Entry<Key, ScriptSigner> entry: s.scriptSignerMap.entrySet()) {
       scriptSignerMap.put(entry.getKey(), entry.getValue());
     }
   }
@@ -86,6 +87,12 @@ public class TransactionSigner {
     return registerLockScriptSigner(Numeric.hexStringToByteArray(codeHash), scriptSigner);
   }
 
+
+  public Set<Integer> signTransaction(
+      TransactionWithScriptGroups transaction, Context... contexts) {
+    return signTransaction(transaction, new HashSet<>(Arrays.asList(contexts)));
+  }
+
   public Set<Integer> signTransaction(
       TransactionWithScriptGroups transaction, Set<Context> contexts) {
     Set<Integer> signedGroupsIndices = new HashSet<>();
@@ -104,7 +111,7 @@ public class TransactionSigner {
       ScriptSigner signer =
           scriptSignerMap.get(new Key(script.codeHash, script.hashType, group.getGroupType()));
       if (signer != null) {
-        for (Context context : contexts) {
+        for (Context context: contexts) {
           if (signer.signTransaction(tx, group, context)) {
             signedGroupsIndices.add(i);
             break;

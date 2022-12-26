@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.SudtTransactionBuilder;
+import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
@@ -26,17 +27,17 @@ class SudtTransactionBuilderTest {
       Numeric.hexStringToByteArray("0xc5e5dcf215925f7ef4dfaf5f4b4f105bc321c02776d6e7d52a1db3fcd9d011a4"),
       sudtArgs,
       Script.HashType.TYPE);
- 
+
   @Test
   void testBalance() {
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(Network.TESTNET);
+    configuration.setFeeRate(1000);
     Iterator<TransactionInput> iterator = newTransactionInputs();
-    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(iterator,
-                                                                          Network.TESTNET,
+    TransactionWithScriptGroups txWithGroups = new SudtTransactionBuilder(configuration, iterator,
                                                                           SudtTransactionBuilder.TransactionType.TRANSFER,
                                                                           sudtArgs)
         .addSudtOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up",
                        1L)
-        .setFeeRate(1000)
         .setChangeOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqdamwzrffgc54ef48493nfd2sd0h4cjnxg4850up")
         .build();
 
