@@ -26,6 +26,9 @@ public class TipTest {
     Assertions.assertTrue(tip.blockNumber <= tip2.blockNumber);
   }
 
+  // both testnet and mainnet indexer url point to the ckb module ones, so no get_tip exist, it's get_indexer_tip,
+  // so if you use a old standalone ckb-indexer, should Configuration.setIndexerUrl yourself.
+  @Disabled
   @Test
   void getTipStandAlone() throws IOException {
     Configuration.getInstance().setIndexType(IndexerType.StandAlone);
