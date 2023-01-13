@@ -11,8 +11,10 @@ import java.util.List;
 
 public interface CkbRpcApi {
   Block getBlock(byte[] blockHash) throws IOException;
+  BlockResponse getBlock(byte[] blockHash, Boolean with_cycles) throws IOException;
 
   Block getBlockByNumber(long blockNumber) throws IOException;
+  BlockResponse getBlockByNumber(long blockNumber, Boolean with_cycles) throws IOException;
 
   TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException;
 

@@ -35,9 +35,21 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public BlockResponse getBlock(byte[] blockHash, Boolean with_cycles) throws IOException {
+    List params = with_cycles == null ? Collections.singletonList(blockHash): Arrays.asList(blockHash,null, with_cycles);
+    return rpcService.post("get_block", params, BlockResponse.class);
+  }
+
+  @Override
   public Block getBlockByNumber(long blockNumber) throws IOException {
     return rpcService.post(
         "get_block_by_number", Collections.singletonList(blockNumber), Block.class);
+  }
+
+  @Override
+  public BlockResponse getBlockByNumber(long blockNumber, Boolean with_cycles) throws IOException {
+    List params = with_cycles == null ? Collections.singletonList(blockNumber): Arrays.asList(blockNumber,null, with_cycles);
+    return rpcService.post("get_block_by_number", params, BlockResponse.class);
   }
 
   @Override
@@ -261,7 +273,7 @@ public class Api implements CkbRpcApi {
 
   @Override
   public TipResponse getIndexerTip() throws IOException {
-    return this.rpcService.post("get_indexer_tip", Arrays.asList(), TipResponse.class);
+    return this.rpcService.post("get_indexer_tip", Collections.emptyList(), TipResponse.class);
   }
 
   @Override
