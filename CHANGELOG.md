@@ -1,3 +1,7 @@
+# 2.1.1 (2023-01-16)
+- feat: support with_cycles for get_block and get_block_by_number rpc
+
+## 🚀 Features
 # 2.1.0 (2022-12-26)
 
 ## 🚀 Features

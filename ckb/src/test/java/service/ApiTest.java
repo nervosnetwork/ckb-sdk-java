@@ -34,6 +34,14 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetBlockByNumberWithCycles() throws IOException {
+    BlockWithCycles response = api.getBlockByNumber(7981482, true);
+    Assertions.assertEquals(response.cycles.size() + 1, response.block.transactions.size());
+    Assertions.assertTrue(response.cycles.size() > 0);
+  }
+
+
+  @Test
   public void testGetBlockHashByNumber() throws IOException {
     byte[] blockHash = api.getBlockHash(1);
     Assertions.assertEquals(
@@ -58,6 +66,17 @@ public class ApiTest {
     Block block = api.getBlock(blockHash);
     Assertions.assertEquals(1, block.transactions.size());
     Assertions.assertNotNull(block.header);
+  }
+
+  @Test
+  public void testGetBlockWithCycles() throws IOException {
+    byte[] blockHash =
+            Numeric.hexStringToByteArray(
+                    "0xd88eb0cf9f6e6f123c733e9aba29dec9cb449965a8adc98216c50d5083b909b1");
+    BlockWithCycles response = api.getBlock(blockHash, true);
+    Assertions.assertEquals(response.cycles.size() + 1, response.block.transactions.size());
+    Assertions.assertTrue(response.cycles.size() > 0);
+    Assertions.assertNotNull(response.block.header);
   }
 
   @Test
