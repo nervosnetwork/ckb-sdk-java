@@ -2,7 +2,7 @@ package org.nervos.ckb.type;
 
 import java.util.List;
 
-public class BlockResponse {
+public class BlockWithCycles {
     /**
      * infomation of the block
      */
