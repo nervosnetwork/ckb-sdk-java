@@ -19,6 +19,11 @@ import java.util.Map;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest {
+  // python code:    "block_hash_that_does_not_exist".encode("utf-8").hex()
+  // output   '626c6f636b5f686173685f746861745f646f65735f6e6f745f6578697374'
+  byte[] BLOCK_HASH_NOT_EXIST = Numeric.hexStringToByteArray(
+      "0x626c6f636b5f686173685f746861745f646f65735f6e6f745f65786973740000");
+  long block_number_not_exist = 0xffffffffffffffffL;
 
   private Api api;
 
@@ -53,7 +58,21 @@ public class ApiTest {
     Assertions.assertArrayEquals(packedResponse.getBlockBytes(), packedResponse0.getBlockBytes());
     Assertions.assertNull(packedResponse0.cycles);
   }
+  @Test
+  public void testGetBlockByNumberWithCycles_NotExist() throws IOException {
+    long blockNumber = block_number_not_exist;
+    BlockWithCycles response = api.getBlockByNumber(blockNumber, true);
+    Assertions.assertNull(response);
 
+    BlockWithCycles response0 = api.getBlockByNumber(blockNumber, false);
+    Assertions.assertNull(response0);
+
+    PackedBlockWithCycles packedResponse = api.getPackedBlockByNumber(blockNumber, true);
+    Assertions.assertNull(packedResponse);
+
+    PackedBlockWithCycles packedResponse0 = api.getPackedBlockByNumber(blockNumber, false);
+    Assertions.assertNull(packedResponse0);
+  }
 
   @Test
   public void testGetBlockHashByNumber() throws IOException {
@@ -100,6 +119,18 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetPackedBlock_NotExist() throws IOException {
+    byte[] blockHash = BLOCK_HASH_NOT_EXIST;
+    Block block = api.getBlock(blockHash);
+    Assertions.assertNull(block);
+
+    PackedBlockWithCycles packedBlockBytes = api.getPackedBlock(blockHash, true);
+    Assertions.assertNull(packedBlockBytes);
+
+    PackedBlockWithCycles packedBlockBytes0 = api.getPackedBlock(blockHash, false);
+    Assertions.assertNull(packedBlockBytes0);
+  }
+  @Test
   public void testGetBlockWithCycles() throws IOException {
     byte[] blockHash =
         Numeric.hexStringToByteArray(
@@ -145,6 +176,16 @@ public class ApiTest {
     Transaction transaction = api.getTransaction(transactionHash).transaction;
     byte[] bytes_from_json = transaction.pack().toByteArray();
     Assertions.assertArrayEquals(bytes_from_json, transaction_bytes);
+  }
+
+  @Test
+  public void testPackedTransactionNotExist() throws IOException {
+    byte[] transactionHash = BLOCK_HASH_NOT_EXIST;
+    PackedTransactionWithStatus packedTransaction = api.getPackedTransaction(transactionHash);
+    Assertions.assertEquals(TransactionWithStatus.Status.UNKNOWN, packedTransaction.txStatus.status);
+
+    TransactionWithStatus transaction = api.getTransaction(transactionHash);
+    Assertions.assertEquals(TransactionWithStatus.Status.UNKNOWN, transaction.txStatus.status);
   }
 
   @Test
@@ -199,6 +240,16 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetHeader_NotExist() throws IOException {
+    byte[] blockHash = BLOCK_HASH_NOT_EXIST;
+    Header header = api.getHeader(blockHash);
+    Assertions.assertNull(header);
+
+    PackedHeader packedHeader = api.getPackedHeader(blockHash);
+    Assertions.assertNull(packedHeader);
+  }
+
+  @Test
   public void testGetHeaderByNumber() throws IOException {
     Header header = api.getHeaderByNumber(1);
     Assertions.assertEquals(1, header.number);
@@ -208,6 +259,14 @@ public class ApiTest {
     Assertions.assertArrayEquals(header.pack().toByteArray(), packedHeader.getHeaderBytes());
   }
 
+  @Test
+  public void testGetHeaderByNumber_NotExist() throws IOException {
+    Header header = api.getHeaderByNumber(block_number_not_exist);
+    Assertions.assertNull(header);
+
+    PackedHeader packedHeader = api.getPackedHeaderByNumber(block_number_not_exist);
+    Assertions.assertNull(packedHeader);
+  }
   @Test
   public void testGetConsensus() throws IOException {
     Consensus consensus = api.getConsensus();
@@ -249,6 +308,16 @@ public class ApiTest {
     if (packedForkBlock != null) {
       Assertions.assertArrayEquals(packedForkBlock.getBlockBytes(), forkBlock.pack().toByteArray());
     }
+  }
+
+  @Test
+  public void testGetForkBlock_NotExist() throws IOException {
+    byte[] block_hash = BLOCK_HASH_NOT_EXIST;
+    Block forkBlock = api.getForkBlock(block_hash);
+    Assertions.assertNull(forkBlock);
+
+    PackedBlockWithCycles packedForkBlock = api.getPackedForkBlock(block_hash);
+    Assertions.assertNull(packedForkBlock);
   }
 
   @Test

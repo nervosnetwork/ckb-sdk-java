@@ -60,6 +60,7 @@ public class Api implements CkbRpcApi {
       return rpcService.post("get_block_by_number", params, BlockWithCycles.class);
     } else {
       Block block = rpcService.post("get_block_by_number", params, Block.class);
+      if (block == null) return null;
       BlockWithCycles ret = new BlockWithCycles();
       ret.block = block;
       return ret;
@@ -72,6 +73,7 @@ public class Api implements CkbRpcApi {
       return rpcService.post("get_block", Arrays.asList(blockHash, 0, true), PackedBlockWithCycles.class);
     } else {
       String s = rpcService.post("get_block", Arrays.asList(blockHash, 0, false), String.class);
+      if (s == null) return null;
       PackedBlockWithCycles ret = new PackedBlockWithCycles();
       ret.block = s;
       return ret;
@@ -85,6 +87,7 @@ public class Api implements CkbRpcApi {
       return rpcService.post("get_block_by_number", params, PackedBlockWithCycles.class);
     } else {
       String s = rpcService.post("get_block_by_number", params, String.class);
+      if (s == null) return null;
       PackedBlockWithCycles ret = new PackedBlockWithCycles();
       ret.block = s;
       return ret;
@@ -121,6 +124,7 @@ public class Api implements CkbRpcApi {
   @Override
   public PackedHeader getPackedTipHeader() throws IOException {
     String s = rpcService.post("get_tip_header", Collections.singletonList(0), String.class);
+    if (s == null) return null;
     PackedHeader ret = new PackedHeader();
     ret.header = s;
     return ret;
@@ -159,6 +163,7 @@ public class Api implements CkbRpcApi {
   @Override
   public PackedHeader getPackedHeader(byte[] blockHash) throws IOException {
     String s = rpcService.post("get_header", Arrays.asList(blockHash, 0), String.class);
+    if (s == null) return null;
     PackedHeader ret = new PackedHeader();
     ret.header = s;
     return ret;
@@ -174,6 +179,7 @@ public class Api implements CkbRpcApi {
   public PackedHeader getPackedHeaderByNumber(long blockNumber) throws IOException {
     String s = rpcService.post(
         "get_header_by_number", Arrays.asList(blockNumber, 0), String.class);
+    if (s == null) return null;
     PackedHeader ret = new PackedHeader();
     ret.header = s;
     return ret;

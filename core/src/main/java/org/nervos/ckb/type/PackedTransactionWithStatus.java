@@ -11,6 +11,6 @@ public class PackedTransactionWithStatus {
    * @return parsed bytes from transaction string
    */
   public byte[] getTransactionBytes() {
-    return Numeric.hexStringToByteArray(this.transaction);
+    return this.transaction == null ? null : Numeric.hexStringToByteArray(this.transaction);
   }
 }

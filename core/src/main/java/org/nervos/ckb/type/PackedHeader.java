@@ -10,10 +10,10 @@ public class PackedHeader {
   public String header;
 
   public byte[] getHeaderBytes() {
-    return Numeric.hexStringToByteArray(this.header);
+    return header == null ? null : Numeric.hexStringToByteArray(this.header);
   }
 
   public byte[] calculateHash() {
-    return Blake2b.digest(this.getHeaderBytes());
+    return header == null ? null : Blake2b.digest(this.getHeaderBytes());
   }
 }
