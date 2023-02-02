@@ -16,12 +16,24 @@ public class MoleculeConverter {
   }
 
   public static Uint32 packUint32(int in) {
-    byte[] arr = toByteArrayLittleEndianUnsigned(BigInteger.valueOf(in), Uint32.SIZE);
+    byte[] arr = new byte[Integer.BYTES];
+    arr[3] = (byte) (in >> Byte.SIZE * 3);
+    arr[2] = (byte) (in >> Byte.SIZE * 2);
+    arr[1] = (byte) (in >> Byte.SIZE);
+    arr[0] = (byte) in;
     return Uint32.builder(arr).build();
   }
 
   public static Uint64 packUint64(long in) {
-    byte[] arr = toByteArrayLittleEndianUnsigned(BigInteger.valueOf(in), Uint64.SIZE);
+    byte[] arr = new byte[Long.BYTES];
+    arr[7] = (byte) (in >> Byte.SIZE * 7);
+    arr[6] = (byte) (in >> Byte.SIZE * 6);
+    arr[5] = (byte) (in >> Byte.SIZE * 5);
+    arr[4] = (byte) (in >> Byte.SIZE * 4);
+    arr[3] = (byte) (in >> Byte.SIZE * 3);
+    arr[2] = (byte) (in >> Byte.SIZE * 2);
+    arr[1] = (byte) (in >> Byte.SIZE);
+    arr[0] = (byte) in;
     return Uint64.builder(arr).build();
   }
 
