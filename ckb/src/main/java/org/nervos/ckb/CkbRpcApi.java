@@ -19,6 +19,14 @@ public interface CkbRpcApi {
   PackedBlockWithCycles getPackedBlockByNumber(long blockNumber, boolean with_cycles) throws IOException;
 
   TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException;
+
+  /**
+   * get transaction with verbosity value is 1
+   * @param transactionHash the transaction hash
+   * @return he RPC does not return the transaction content and the field transaction must be null.
+   * @throws IOException
+   */
+  TransactionWithStatus getTransactionVerbosity1(byte[] transactionHash) throws IOException;
   PackedTransactionWithStatus getPackedTransaction(byte[] transactionHash) throws IOException;
   byte[] getBlockHash(long blockNumber) throws IOException;
 

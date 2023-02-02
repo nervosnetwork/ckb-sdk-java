@@ -101,6 +101,11 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public TransactionWithStatus getTransactionVerbosity1(byte[] transactionHash) throws IOException {
+    return rpcService.post("get_transaction", Arrays.asList(transactionHash, 1), TransactionWithStatus.class);
+  }
+
+  @Override
   public PackedTransactionWithStatus getPackedTransaction(byte[] transactionHash) throws IOException {
     return rpcService.post("get_transaction", Arrays.asList(transactionHash, 0), PackedTransactionWithStatus.class);
   }
