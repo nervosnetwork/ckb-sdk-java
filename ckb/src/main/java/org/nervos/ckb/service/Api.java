@@ -65,7 +65,7 @@ public class Api implements CkbRpcApi {
       return ret;
     }
   }
-  
+
   @Override
   public PackedBlockWithCycles getPackedBlock(byte[] blockHash, boolean with_cycles) throws IOException {
     if (with_cycles) {
@@ -119,6 +119,14 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public PackedHeader getPackedTipHeader() throws IOException {
+    String s = rpcService.post("get_tip_header", Collections.singletonList(0), String.class);
+    PackedHeader ret = new PackedHeader();
+    ret.header = s;
+    return ret;
+  }
+
+  @Override
   public CellWithStatus getLiveCell(OutPoint outPoint, boolean withData) throws IOException {
     return rpcService.post(
         "get_live_cell",
@@ -149,9 +157,26 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public PackedHeader getPackedHeader(byte[] blockHash) throws IOException {
+    String s = rpcService.post("get_header", Arrays.asList(blockHash, 0), String.class);
+    PackedHeader ret = new PackedHeader();
+    ret.header = s;
+    return ret;
+  }
+
+  @Override
   public Header getHeaderByNumber(long blockNumber) throws IOException {
     return rpcService.post(
         "get_header_by_number", Collections.singletonList(blockNumber), Header.class);
+  }
+
+  @Override
+  public PackedHeader getPackedHeaderByNumber(long blockNumber) throws IOException {
+    String s = rpcService.post(
+        "get_header_by_number", Arrays.asList(blockNumber, 0), String.class);
+    PackedHeader ret = new PackedHeader();
+    ret.header = s;
+    return ret;
   }
 
   @Override

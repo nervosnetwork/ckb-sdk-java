@@ -25,6 +25,7 @@ public interface CkbRpcApi {
   BlockEconomicState getBlockEconomicState(byte[] blockHash) throws IOException;
 
   Header getTipHeader() throws IOException;
+  PackedHeader getPackedTipHeader() throws IOException;
 
   CellWithStatus getLiveCell(OutPoint outPoint, boolean withData) throws IOException;
 
@@ -35,8 +36,10 @@ public interface CkbRpcApi {
   Epoch getEpochByNumber(long epochNumber) throws IOException;
 
   Header getHeader(byte[] blockHash) throws IOException;
+  PackedHeader getPackedHeader(byte[] blockHash) throws IOException;
 
   Header getHeaderByNumber(long blockNumber) throws IOException;
+  PackedHeader getPackedHeaderByNumber(long blockNumber) throws IOException;
 
   TransactionProof getTransactionProof(List<byte[]> txHashes) throws IOException;
 

@@ -155,6 +155,17 @@ public class ApiTest {
   }
 
   @Test
+  public void testGetPackedTipHeader() throws IOException {
+    PackedHeader tipHeader = api.getPackedTipHeader();
+
+    org.nervos.ckb.type.concrete.Header h = org.nervos.ckb.type.concrete.Header.builder(tipHeader.getHeaderBytes()).build();
+
+    byte[] headerHash = tipHeader.calculateHash();
+    PackedHeader packedHeader = api.getPackedHeader(headerHash);
+    Assertions.assertEquals(tipHeader.header, packedHeader.header);
+  }
+
+  @Test
   public void testGetTipBlockNumber() throws IOException {
     long blockNumber = api.getTipBlockNumber();
     Assertions.assertNotEquals(0, blockNumber);
@@ -182,6 +193,9 @@ public class ApiTest {
     Header header = api.getHeader(blockHash);
     Assertions.assertEquals(1, header.number);
     Assertions.assertEquals(1590137711584L, header.timestamp);
+
+    PackedHeader packedHeader = api.getPackedHeader(blockHash);
+    Assertions.assertArrayEquals(header.pack().toByteArray(), packedHeader.getHeaderBytes());
   }
 
   @Test
@@ -189,6 +203,9 @@ public class ApiTest {
     Header header = api.getHeaderByNumber(1);
     Assertions.assertEquals(1, header.number);
     Assertions.assertEquals(1590137711584L, header.timestamp);
+
+    PackedHeader packedHeader = api.getPackedHeaderByNumber(1);
+    Assertions.assertArrayEquals(header.pack().toByteArray(), packedHeader.getHeaderBytes());
   }
 
   @Test
