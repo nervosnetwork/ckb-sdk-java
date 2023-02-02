@@ -35,9 +35,23 @@ public class ApiTest {
 
   @Test
   public void testGetBlockByNumberWithCycles() throws IOException {
-    BlockWithCycles response = api.getBlockByNumber(7981482, true);
+    long blockNumber = 7981482;
+    BlockWithCycles response = api.getBlockByNumber(blockNumber, true);
     Assertions.assertEquals(response.cycles.size() + 1, response.block.transactions.size());
     Assertions.assertTrue(response.cycles.size() > 0);
+
+    BlockWithCycles response0 = api.getBlockByNumber(blockNumber, false);
+    Assertions.assertArrayEquals(response0.block.pack().toByteArray(), response.block.pack().toByteArray());
+    Assertions.assertNull(response0.cycles);
+
+    PackedBlockWithCycles packedResponse = api.getPackedBlockByNumber(blockNumber, true);
+    Assertions.assertEquals(Numeric.toHexString(packedResponse.getBlockBytes()), Numeric.toHexString(response.block.pack().toByteArray()));
+    Assertions.assertArrayEquals(packedResponse.getBlockBytes(), response.block.pack().toByteArray());
+    Assertions.assertEquals(response.cycles, packedResponse.cycles);
+
+    PackedBlockWithCycles packedResponse0 = api.getPackedBlockByNumber(blockNumber, false);
+    Assertions.assertArrayEquals(packedResponse.getBlockBytes(), packedResponse0.getBlockBytes());
+    Assertions.assertNull(packedResponse0.cycles);
   }
 
 
@@ -66,17 +80,38 @@ public class ApiTest {
     Block block = api.getBlock(blockHash);
     Assertions.assertEquals(1, block.transactions.size());
     Assertions.assertNotNull(block.header);
+
+    PackedBlockWithCycles packedBlockBytes = api.getPackedBlock(blockHash, true);
+    byte[] bytes = packedBlockBytes.getBlockBytes();
+    Assertions.assertNotNull(bytes);
+    Assertions.assertNotNull(packedBlockBytes.cycles);
+
+    PackedBlockWithCycles packedBlockBytes0 = api.getPackedBlock(blockHash, false);
+    Assertions.assertNull(packedBlockBytes0.cycles);
+    Assertions.assertEquals(packedBlockBytes.block, packedBlockBytes0.block);
+
+    org.nervos.ckb.type.concrete.Block block_from_molecule = org.nervos.ckb.type.concrete.Block.builder(bytes).build();
+
+    org.nervos.ckb.type.concrete.Block block_from_json = block.pack();
+
+    byte[] bytes_from_json = block_from_json.toByteArray();
+    Assertions.assertEquals(Numeric.toHexString(bytes), Numeric.toHexString(bytes_from_json));
+    Assertions.assertArrayEquals(bytes, bytes_from_json);
   }
 
   @Test
   public void testGetBlockWithCycles() throws IOException {
     byte[] blockHash =
-            Numeric.hexStringToByteArray(
-                    "0xd88eb0cf9f6e6f123c733e9aba29dec9cb449965a8adc98216c50d5083b909b1");
+        Numeric.hexStringToByteArray(
+            "0xd88eb0cf9f6e6f123c733e9aba29dec9cb449965a8adc98216c50d5083b909b1");
     BlockWithCycles response = api.getBlock(blockHash, true);
     Assertions.assertEquals(response.cycles.size() + 1, response.block.transactions.size());
     Assertions.assertTrue(response.cycles.size() > 0);
     Assertions.assertNotNull(response.block.header);
+
+    BlockWithCycles response0 = api.getBlock(blockHash, false);
+    Assertions.assertArrayEquals(response0.block.pack().toByteArray(), response.block.pack().toByteArray());
+    Assertions.assertNull(response0.cycles);
   }
 
   @Test
@@ -91,13 +126,25 @@ public class ApiTest {
     Assertions.assertEquals(30000000000L, transaction.outputs.get(0).capacity);
 
     transactionHash =
-            Numeric.hexStringToByteArray(
-                    "0x3dca00e45e2f3a39d707d5559ba49d27d21038624b0402039898d3a8830525be");
+        Numeric.hexStringToByteArray(
+            "0x3dca00e45e2f3a39d707d5559ba49d27d21038624b0402039898d3a8830525be");
     TransactionWithStatus transactionWithStatus = api.getTransaction(transactionHash);
 
     Assertions.assertNotNull(transactionWithStatus.txStatus);
     Assertions.assertNotNull(transactionWithStatus.cycles);
     Assertions.assertTrue(transactionWithStatus.cycles > 0);
+  }
+
+  @Test
+  public void testPackedTransaction() throws IOException {
+    byte[] transactionHash =
+        Numeric.hexStringToByteArray(
+            "0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1");
+    byte[] transaction_bytes = api.getPackedTransaction(transactionHash).getTransactionBytes();
+
+    Transaction transaction = api.getTransaction(transactionHash).transaction;
+    byte[] bytes_from_json = transaction.pack().toByteArray();
+    Assertions.assertArrayEquals(bytes_from_json, transaction_bytes);
   }
 
   @Test
@@ -275,12 +322,12 @@ public class ApiTest {
     RawTxPoolVerbose rawTxPoolVerbose = api.getRawTxPoolVerbose();
     Assertions.assertNotNull(rawTxPoolVerbose);
 
-    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry:
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
         rawTxPoolVerbose.pending.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }
 
-    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry:
+    for (Map.Entry<byte[], RawTxPoolVerbose.VerboseDetail> entry :
         rawTxPoolVerbose.proposed.entrySet()) {
       Assertions.assertNotNull((entry.getValue()));
     }
@@ -472,15 +519,15 @@ public class ApiTest {
   @Test
   public void testEstimateCycles() throws IOException {
     Cycles cycles =
-            api.estimateCycles(
-                    new Transaction(
-                            0,
-                            Collections.emptyList(),
-                            Collections.emptyList(),
-                            Collections.emptyList(),
-                            Collections.emptyList(),
-                            Collections.emptyList(),
-                            Collections.emptyList()));
+        api.estimateCycles(
+            new Transaction(
+                0,
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList()));
     Assertions.assertNotNull(cycles);
   }
 

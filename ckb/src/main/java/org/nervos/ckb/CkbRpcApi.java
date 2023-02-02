@@ -11,13 +11,15 @@ import java.util.List;
 
 public interface CkbRpcApi {
   Block getBlock(byte[] blockHash) throws IOException;
-  BlockWithCycles getBlock(byte[] blockHash, Boolean with_cycles) throws IOException;
+  BlockWithCycles getBlock(byte[] blockHash, boolean with_cycles) throws IOException;
+  PackedBlockWithCycles getPackedBlock(byte[] blockHash, boolean with_cycles) throws IOException;
 
   Block getBlockByNumber(long blockNumber) throws IOException;
-  BlockWithCycles getBlockByNumber(long blockNumber, Boolean with_cycles) throws IOException;
+  BlockWithCycles getBlockByNumber(long blockNumber, boolean with_cycles) throws IOException;
+  PackedBlockWithCycles getPackedBlockByNumber(long blockNumber, boolean with_cycles) throws IOException;
 
   TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException;
-
+  PackedTransactionWithStatus getPackedTransaction(byte[] transactionHash) throws IOException;
   byte[] getBlockHash(long blockNumber) throws IOException;
 
   BlockEconomicState getBlockEconomicState(byte[] blockHash) throws IOException;

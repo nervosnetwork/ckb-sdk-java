@@ -35,9 +35,16 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public BlockWithCycles getBlock(byte[] blockHash, Boolean with_cycles) throws IOException {
-    List params = with_cycles == null ? Collections.singletonList(blockHash): Arrays.asList(blockHash,null, with_cycles);
-    return rpcService.post("get_block", params, BlockWithCycles.class);
+  public BlockWithCycles getBlock(byte[] blockHash, boolean with_cycles) throws IOException {
+    List params = Arrays.asList(blockHash, null, with_cycles);
+    if (with_cycles) {
+      return rpcService.post("get_block", params, BlockWithCycles.class);
+    } else {
+      Block block = rpcService.post("get_block", params, Block.class);
+      BlockWithCycles ret = new BlockWithCycles();
+      ret.block = block;
+      return ret;
+    }
   }
 
   @Override
@@ -47,15 +54,52 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public BlockWithCycles getBlockByNumber(long blockNumber, Boolean with_cycles) throws IOException {
-    List params = with_cycles == null ? Collections.singletonList(blockNumber): Arrays.asList(blockNumber,null, with_cycles);
-    return rpcService.post("get_block_by_number", params, BlockWithCycles.class);
+  public BlockWithCycles getBlockByNumber(long blockNumber, boolean with_cycles) throws IOException {
+    List params = Arrays.asList(blockNumber, null, with_cycles);
+    if (with_cycles) {
+      return rpcService.post("get_block_by_number", params, BlockWithCycles.class);
+    } else {
+      Block block = rpcService.post("get_block_by_number", params, Block.class);
+      BlockWithCycles ret = new BlockWithCycles();
+      ret.block = block;
+      return ret;
+    }
+  }
+  
+  @Override
+  public PackedBlockWithCycles getPackedBlock(byte[] blockHash, boolean with_cycles) throws IOException {
+    if (with_cycles) {
+      return rpcService.post("get_block", Arrays.asList(blockHash, 0, true), PackedBlockWithCycles.class);
+    } else {
+      String s = rpcService.post("get_block", Arrays.asList(blockHash, 0, false), String.class);
+      PackedBlockWithCycles ret = new PackedBlockWithCycles();
+      ret.block = s;
+      return ret;
+    }
+  }
+
+  @Override
+  public PackedBlockWithCycles getPackedBlockByNumber(long blockNumber, boolean with_cycles) throws IOException {
+    List params = Arrays.asList(blockNumber, 0, with_cycles);
+    if (with_cycles) {
+      return rpcService.post("get_block_by_number", params, PackedBlockWithCycles.class);
+    } else {
+      String s = rpcService.post("get_block_by_number", params, String.class);
+      PackedBlockWithCycles ret = new PackedBlockWithCycles();
+      ret.block = s;
+      return ret;
+    }
   }
 
   @Override
   public TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException {
     return rpcService.post(
         "get_transaction", Collections.singletonList(transactionHash), TransactionWithStatus.class);
+  }
+
+  @Override
+  public PackedTransactionWithStatus getPackedTransaction(byte[] transactionHash) throws IOException {
+    return rpcService.post("get_transaction", Arrays.asList(transactionHash, 0), PackedTransactionWithStatus.class);
   }
 
   @Override

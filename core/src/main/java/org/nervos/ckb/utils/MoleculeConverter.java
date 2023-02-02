@@ -92,4 +92,36 @@ public class MoleculeConverter {
     }
     return CellDepVec.builder().add(arr).build();
   }
+
+  public static TransactionVec packTransactionVec(List<org.nervos.ckb.type.Transaction> transactions) {
+    TransactionVec.Builder builder = TransactionVec.builder();
+    Transaction[] packed_transactions = transactions.stream().map(org.nervos.ckb.type.Transaction::pack).toArray(Transaction[]::new);
+    builder.add(packed_transactions);
+    return builder.build();
+  }
+
+  public static ProposalShortId packProposalShortId(byte[] shortId) {
+    return ProposalShortId.builder().set(shortId).build();
+  }
+
+  public static ProposalShortIdVec packProposalShortIdVec(List<byte[]> shortIds) {
+    ProposalShortIdVec.Builder builder = ProposalShortIdVec.builder();
+    ProposalShortId[] packed_ids = shortIds.stream().map(MoleculeConverter::packProposalShortId).toArray(ProposalShortId[]::new);
+    builder.add(packed_ids);
+    return builder.build();
+  }
+
+  public static UncleBlock packUncleBlock(org.nervos.ckb.type.Block.Uncle uncle) {
+    UncleBlock.Builder builder = UncleBlock.builder();
+    builder.setHeader(uncle.header.pack());
+    builder.setProposals(packProposalShortIdVec(uncle.proposals));
+    return builder.build();
+  }
+
+  public static UncleBlockVec packUncleBlockVec(List<org.nervos.ckb.type.Block.Uncle> uncles) {
+    UncleBlockVec.Builder builder = UncleBlockVec.builder();
+    UncleBlock[] packed_uncles = uncles.stream().map(MoleculeConverter::packUncleBlock).toArray(UncleBlock[]::new);
+    builder.add(packed_uncles);
+    return builder.build();
+  }
 }
