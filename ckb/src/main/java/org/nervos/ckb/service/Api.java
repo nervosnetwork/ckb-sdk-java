@@ -206,6 +206,15 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public PackedBlockWithCycles getPackedForkBlock(byte[] blockHash) throws IOException {
+    String s = rpcService.post("get_fork_block", Arrays.asList(blockHash, 0), String.class);
+    if (s == null) return null;
+    PackedBlockWithCycles ret = new PackedBlockWithCycles();
+    ret.block = s;
+    return ret;
+  }
+
+  @Override
   public Consensus getConsensus() throws IOException {
     return rpcService.post("get_consensus", Collections.emptyList(), Consensus.class);
   }

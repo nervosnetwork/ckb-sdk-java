@@ -20,6 +20,6 @@ public class PackedBlockWithCycles {
      * @return parsed bytes from block string
      */
     public byte[] getBlockBytes() {
-        return Numeric.hexStringToByteArray(this.block);
+        return this.block == null ? null : Numeric.hexStringToByteArray(this.block);
     }
 }

@@ -48,6 +48,7 @@ public interface CkbRpcApi {
   List<byte[]> verifyTransactionProof(TransactionProof transactionProof) throws IOException;
 
   Block getForkBlock(byte[] blockHash) throws IOException;
+  PackedBlockWithCycles getPackedForkBlock(byte[] blockHash) throws IOException;
 
   Consensus getConsensus() throws IOException;
 

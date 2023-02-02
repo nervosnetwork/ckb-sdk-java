@@ -241,10 +241,14 @@ public class ApiTest {
 
   @Test
   public void testGetForkBlock() throws IOException {
-    Block forkBlock =
-        api.getForkBlock(
-            Numeric.hexStringToByteArray(
-                "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd"));
+    byte[] block_hash = Numeric.hexStringToByteArray(
+        "0xd5ac7cf8c34a975bf258a34f1c2507638487ab71aa4d10a9ec73704aa3abf9cd");
+    Block forkBlock = api.getForkBlock(block_hash);
+
+    PackedBlockWithCycles packedForkBlock = api.getPackedForkBlock(block_hash);
+    if (packedForkBlock != null) {
+      Assertions.assertArrayEquals(packedForkBlock.getBlockBytes(), forkBlock.pack().toByteArray());
+    }
   }
 
   @Test
