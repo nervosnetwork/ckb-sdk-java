@@ -11,18 +11,29 @@ import java.util.List;
 
 public interface CkbRpcApi {
   Block getBlock(byte[] blockHash) throws IOException;
-  BlockWithCycles getBlock(byte[] blockHash, Boolean with_cycles) throws IOException;
+  BlockWithCycles getBlock(byte[] blockHash, boolean with_cycles) throws IOException;
+  PackedBlockWithCycles getPackedBlock(byte[] blockHash, boolean with_cycles) throws IOException;
 
   Block getBlockByNumber(long blockNumber) throws IOException;
-  BlockWithCycles getBlockByNumber(long blockNumber, Boolean with_cycles) throws IOException;
+  BlockWithCycles getBlockByNumber(long blockNumber, boolean with_cycles) throws IOException;
+  PackedBlockWithCycles getPackedBlockByNumber(long blockNumber, boolean with_cycles) throws IOException;
 
   TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException;
 
+  /**
+   * get transaction with verbosity value is 1
+   * @param transactionHash the transaction hash
+   * @return the RPC does not return the transaction content and the field transaction must be null.
+   * @throws IOException
+   */
+  TransactionWithStatus getTransactionStatus(byte[] transactionHash) throws IOException;
+  PackedTransactionWithStatus getPackedTransaction(byte[] transactionHash) throws IOException;
   byte[] getBlockHash(long blockNumber) throws IOException;
 
   BlockEconomicState getBlockEconomicState(byte[] blockHash) throws IOException;
 
   Header getTipHeader() throws IOException;
+  PackedHeader getPackedTipHeader() throws IOException;
 
   CellWithStatus getLiveCell(OutPoint outPoint, boolean withData) throws IOException;
 
@@ -33,8 +44,10 @@ public interface CkbRpcApi {
   Epoch getEpochByNumber(long epochNumber) throws IOException;
 
   Header getHeader(byte[] blockHash) throws IOException;
+  PackedHeader getPackedHeader(byte[] blockHash) throws IOException;
 
   Header getHeaderByNumber(long blockNumber) throws IOException;
+  PackedHeader getPackedHeaderByNumber(long blockNumber) throws IOException;
 
   TransactionProof getTransactionProof(List<byte[]> txHashes) throws IOException;
 
@@ -43,6 +56,7 @@ public interface CkbRpcApi {
   List<byte[]> verifyTransactionProof(TransactionProof transactionProof) throws IOException;
 
   Block getForkBlock(byte[] blockHash) throws IOException;
+  PackedBlockWithCycles getPackedForkBlock(byte[] blockHash) throws IOException;
 
   Consensus getConsensus() throws IOException;
 

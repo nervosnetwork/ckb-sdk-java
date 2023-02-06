@@ -49,6 +49,10 @@ public final class BlockV1 extends Table {
     return extension;
   }
 
+  public Block asV0() {
+    return Block.Builder.buildUnchecked(this.buf);
+  }
+
   public static Builder builder() {
     return new Builder();
   }
