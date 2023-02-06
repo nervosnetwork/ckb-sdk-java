@@ -171,7 +171,7 @@ public class ApiTest {
     byte[] transactionHash =
         Numeric.hexStringToByteArray(
             "0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1");
-    TransactionWithStatus transactionVerbosity1 = api.getTransactionVerbosity1(transactionHash);
+    TransactionWithStatus transactionVerbosity1 = api.getTransactionStatus(transactionHash);
     Assertions.assertNull(transactionVerbosity1.transaction);
 
     TransactionWithStatus transactionVerbosity2 = api.getTransaction(transactionHash);
@@ -182,7 +182,7 @@ public class ApiTest {
   @Test
   public void testGetTransactionVerbosity1_NotExist() throws IOException {
     byte[] transactionHash = BLOCK_HASH_NOT_EXIST;
-    TransactionWithStatus transactionVerbosity1 = api.getTransactionVerbosity1(transactionHash);
+    TransactionWithStatus transactionVerbosity1 = api.getTransactionStatus(transactionHash);
     Assertions.assertEquals(TransactionWithStatus.Status.UNKNOWN, transactionVerbosity1.txStatus.status);
 
     TransactionWithStatus transactionVerbosity2 = api.getTransaction(transactionHash);

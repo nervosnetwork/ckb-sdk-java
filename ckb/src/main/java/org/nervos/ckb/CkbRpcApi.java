@@ -23,10 +23,10 @@ public interface CkbRpcApi {
   /**
    * get transaction with verbosity value is 1
    * @param transactionHash the transaction hash
-   * @return he RPC does not return the transaction content and the field transaction must be null.
+   * @return the RPC does not return the transaction content and the field transaction must be null.
    * @throws IOException
    */
-  TransactionWithStatus getTransactionVerbosity1(byte[] transactionHash) throws IOException;
+  TransactionWithStatus getTransactionStatus(byte[] transactionHash) throws IOException;
   PackedTransactionWithStatus getPackedTransaction(byte[] transactionHash) throws IOException;
   byte[] getBlockHash(long blockNumber) throws IOException;
 
