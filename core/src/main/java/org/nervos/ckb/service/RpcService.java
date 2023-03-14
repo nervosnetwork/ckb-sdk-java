@@ -51,7 +51,8 @@ public class RpcService {
 
   public <T> T post(@NotNull String method, List params, Type cls, Gson gson) throws IOException {
     RequestParams requestParams = new RequestParams(method, params);
-    RequestBody body = RequestBody.create(gson.toJson(requestParams), JSON_MEDIA_TYPE);
+    String gson_params = gson.toJson(requestParams);
+    RequestBody body = RequestBody.create(gson_params, JSON_MEDIA_TYPE);
     Request request = new Request.Builder().url(url).post(body).build();
     Response response = client.newCall(request).execute();
     String responseBody = Objects.requireNonNull(response.body()).string();

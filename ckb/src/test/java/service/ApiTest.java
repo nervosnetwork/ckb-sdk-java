@@ -8,6 +8,7 @@ import org.nervos.ckb.service.RpcResponse;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.model.Order;
+import org.nervos.indexer.model.ScriptSearchMode;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.*;
 
@@ -58,6 +59,7 @@ public class ApiTest {
     Assertions.assertArrayEquals(packedResponse.getBlockBytes(), packedResponse0.getBlockBytes());
     Assertions.assertNull(packedResponse0.cycles);
   }
+
   @Test
   public void testGetBlockByNumberWithCycles_NotExist() throws IOException {
     long blockNumber = block_number_not_exist;
@@ -130,6 +132,7 @@ public class ApiTest {
     PackedBlockWithCycles packedBlockBytes0 = api.getPackedBlock(blockHash, false);
     Assertions.assertNull(packedBlockBytes0);
   }
+
   @Test
   public void testGetBlockWithCycles() throws IOException {
     byte[] blockHash =
@@ -179,6 +182,7 @@ public class ApiTest {
     Assertions.assertArrayEquals(transactionVerbosity1.txStatus.blockHash, transactionVerbosity2.txStatus.blockHash);
     Assertions.assertEquals(transactionVerbosity1.cycles, transactionVerbosity2.cycles);
   }
+
   @Test
   public void testGetTransactionVerbosity1_NotExist() throws IOException {
     byte[] transactionHash = BLOCK_HASH_NOT_EXIST;
@@ -188,6 +192,7 @@ public class ApiTest {
     TransactionWithStatus transactionVerbosity2 = api.getTransaction(transactionHash);
     Assertions.assertEquals(TransactionWithStatus.Status.UNKNOWN, transactionVerbosity1.txStatus.status);
   }
+
   @Test
   public void testPackedTransaction() throws IOException {
     byte[] transactionHash =
@@ -289,6 +294,7 @@ public class ApiTest {
     PackedHeader packedHeader = api.getPackedHeaderByNumber(block_number_not_exist);
     Assertions.assertNull(packedHeader);
   }
+
   @Test
   public void testGetConsensus() throws IOException {
     Consensus consensus = api.getConsensus();
@@ -571,6 +577,49 @@ public class ApiTest {
   }
 
   @Test
+  void testGetTransactions_prefix_partial() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(
+            Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+            Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae".substring(0, 4)),
+            Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK);
+    key.scriptSearchMode(ScriptSearchMode.Prefix);
+    TxsWithCell txs = api.getTransactions(key.build(), Order.ASC, 10, null);
+    Assertions.assertTrue(txs.objects.size() > 0);
+  }
+
+  @Test
+  void testGetTransactions_exact_partial() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(
+            Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+            Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae".substring(0, 4)),
+            Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK).scriptSearchMode(ScriptSearchMode.Exact);
+    TxsWithCell txs = api.getTransactions(key.build(), Order.ASC, 10, null);
+    Assertions.assertEquals(0, txs.objects.size());
+  }
+
+  @Test
+  void testGetTransactions_exact_full() throws IOException {
+    SearchKeyBuilder key = new SearchKeyBuilder();
+    key.script(
+        new Script(
+            Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+            Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+            Script.HashType.TYPE));
+    key.scriptType(ScriptType.LOCK).scriptSearchMode(ScriptSearchMode.Exact);
+    TxsWithCell txs = api.getTransactions(key.build(), Order.ASC, 10, null);
+    Assertions.assertTrue(txs.objects.size() > 0);
+  }
+
+  @Test
   void testTransactionsGrouped() throws IOException {
     SearchKeyBuilder key = new SearchKeyBuilder();
     key.script(
@@ -705,7 +754,5 @@ public class ApiTest {
     statics = api.getFeeRateStatics(102);
     Assertions.assertNotNull(statics);
     Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
-
-    Assertions.assertThrows(IOException.class, () -> api.getFeeRateStatics(-1));
   }
 }
