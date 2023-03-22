@@ -1,7 +1,7 @@
-# 2.1.1 (2023-01-16)
-- feat: support with_cycles for get_block and get_block_by_number rpc
-- feat: support packed rpcs
-- feat: support indexer exact search mod
+# 2.1.1 (2023-03-23)
+- feat: support with_cycles for get_block and get_block_by_number rpc (#623)
+- feat: support packed rpcs (#624)
+- feat: support indexer exact search mod (#627)
 
 ## 🚀 Features
 # 2.1.0 (2022-12-26)
