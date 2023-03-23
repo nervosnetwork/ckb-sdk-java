@@ -97,7 +97,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '2.1.0'
+                version '2.1.1'
                 from components.java
             }
         }
