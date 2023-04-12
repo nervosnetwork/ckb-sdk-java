@@ -65,7 +65,7 @@ public final class Numeric {
   }
 
   public static boolean containsHexPrefix(String input) {
-    return input.length() > 1 && input.charAt(0) == '0' && input.charAt(1) == 'x';
+    return input.length() > 1 && input.charAt(0) == '0' && (input.charAt(1) == 'x' || input.charAt(1) == 'X');
   }
 
   public static BigInteger toBigInt(byte[] value, int offset, int length) {
@@ -149,6 +149,11 @@ public final class Numeric {
     }
 
     int destOffset = length - bytesLength;
+    if (value.signum() < 0) {
+      // signum expand
+      for (int i = 0, len = 0; i < destOffset; i++)
+        result[i] = (byte)0xff;
+    }
     System.arraycopy(bytes, srcOffset, result, destOffset, bytesLength);
     return result;
   }

@@ -101,6 +101,10 @@ public class NumericTest {
     Assertions.assertArrayEquals(
         Numeric.toBytesPadded(BigInteger.valueOf(Integer.MAX_VALUE), 4),
         new byte[]{0x7f, (byte) 0xff, (byte) 0xff, (byte) 0xff});
+
+    Assertions.assertArrayEquals(
+        new byte[]{(byte)0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff},
+        Numeric.toBytesPadded(BigInteger.valueOf(-1), 4));
   }
 
   @Test
@@ -198,6 +202,16 @@ public class NumericTest {
   public void testLittleEndian() {
     String littleEndian = Numeric.littleEndian(71);
     Assertions.assertEquals("0x4700000000000000", littleEndian);
+
+    String negLittleEndian = Numeric.littleEndian(-1);
+    Assertions.assertEquals("0xffffffffffffffff", negLittleEndian);
+    String negLittleEndian2= Numeric.littleEndian(-2);
+    Assertions.assertEquals("0xfeffffffffffffff", negLittleEndian2);
+
+    long v = 0x7eadbeef;
+    String negBeef = Numeric.littleEndian(-v);
+    // 7e => 81, ad => 52, be => 41, ef=> 11
+    Assertions.assertEquals("0x11415281ffffffff", negBeef);
   }
 
   @Test

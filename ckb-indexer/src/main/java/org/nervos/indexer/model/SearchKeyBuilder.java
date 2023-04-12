@@ -13,38 +13,58 @@ public class SearchKeyBuilder {
 
   private Filter filter;
 
-  public void script(Script script) {
+  public SearchKeyBuilder script(Script script) {
     this.script = script;
+    return this;
   }
 
-  public void scriptType(ScriptType scriptType) {
+  public SearchKeyBuilder scriptType(ScriptType scriptType) {
     this.scriptType = scriptType;
+    return this;
   }
 
-  public void filterScript(Script script) {
+  public SearchKeyBuilder filterScript(Script script) {
     initFilter();
     this.filter.script = script;
+    return this;
   }
 
-  public void filterOutputDataLenRange(int inclusive, int exclusive) {
+  public SearchKeyBuilder filterOutputDataLenRange(int inclusive, int exclusive) {
     initFilter();
     this.filter.outputDataLenRange = new ArrayList<>(2);
     this.filter.outputDataLenRange.add(inclusive);
     this.filter.outputDataLenRange.add(exclusive);
+    return this;
   }
 
-  public void filterOutputCapacityRange(long inclusive, long exclusive) {
+  public SearchKeyBuilder filterOutputCapacityRange(long inclusive, long exclusive) {
     initFilter();
     this.filter.outputCapacityRange = new ArrayList<>(2);
     this.filter.outputCapacityRange.add(inclusive);
     this.filter.outputCapacityRange.add(exclusive);
+    return this;
   }
 
-  public void filterBlockRange(int inclusive, int exclusive) {
+  public SearchKeyBuilder filterBlockRange(int inclusive, int exclusive) {
     initFilter();
     this.filter.blockRange = new ArrayList<>(2);
     this.filter.blockRange.add(inclusive);
     this.filter.blockRange.add(exclusive);
+    return this;
+  }
+
+  private ScriptSearchMode _scriptSearchMode;
+
+  public SearchKeyBuilder scriptSearchMode(ScriptSearchMode scriptSearchMode) {
+    this._scriptSearchMode = scriptSearchMode;
+    return this;
+  }
+
+  private Boolean _withData;
+
+  public SearchKeyBuilder withData(Boolean withData) {
+    this._withData = withData;
+    return this;
   }
 
   public SearchKey build() {
@@ -52,6 +72,9 @@ public class SearchKeyBuilder {
     searchKey.script = this.script;
     searchKey.scriptType = this.scriptType;
     searchKey.filter = this.filter;
+    searchKey.scriptSearchMode = this._scriptSearchMode;
+    searchKey.withData = this._withData;
+    // searchKey.groupByTransaction controlled by api function
 
     return searchKey;
   }

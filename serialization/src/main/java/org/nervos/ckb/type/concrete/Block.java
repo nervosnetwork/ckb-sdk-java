@@ -87,6 +87,33 @@ public final class Block extends Table {
       proposals = ProposalShortIdVec.builder(itemBuf).build();
     }
 
+    public static Block buildUnchecked(@Nonnull byte[] buf) {
+      Objects.requireNonNull(buf);
+      int size = MoleculeUtils.littleEndianBytes4ToInt(buf, 0);
+      if (buf.length != size) {
+        throw MoleculeException.invalidByteSize(size, buf.length, Block.class);
+      }
+      int[] offsets = MoleculeUtils.getOffsets(buf);
+
+      byte[] itemBuf;
+      itemBuf = Arrays.copyOfRange(buf, offsets[0], offsets[1]);
+      Header header = Header.builder(itemBuf).build();
+      itemBuf = Arrays.copyOfRange(buf, offsets[1], offsets[2]);
+      UncleBlockVec uncles = UncleBlockVec.builder(itemBuf).build();
+      itemBuf = Arrays.copyOfRange(buf, offsets[2], offsets[3]);
+      TransactionVec transactions = TransactionVec.builder(itemBuf).build();
+      itemBuf = Arrays.copyOfRange(buf, offsets[3], offsets[4]);
+      ProposalShortIdVec proposals = ProposalShortIdVec.builder(itemBuf).build();
+
+      Block t = new Block();
+      t.buf = buf;
+      t.header = header;
+      t.uncles = uncles;
+      t.transactions = transactions;
+      t.proposals = proposals;
+      return t;
+    }
+
     public Builder setHeader(@Nonnull Header header) {
       Objects.requireNonNull(header);
       this.header = header;
