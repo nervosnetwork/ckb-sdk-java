@@ -1,11 +1,13 @@
 description 'ckb-sdk-java is a lightweight Java library for integration with nervos CKB.'
 
 dependencies {
-    compile project(":core")
-    compile project(":ckb-indexer")
-    compile project(":light-client")
-    compile project(":utils")
-    compile project(":serialization")
+    implementation project(":core")
+    implementation project(":ckb-indexer")
+    implementation project(":light-client")
+    implementation project(":utils")
+    implementation project(":serialization")
+
+    implementation "com.google.code.gson:gson:$gsonVersion"
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
