@@ -93,7 +93,7 @@ class DefaultLightClientApiTestKt : FunSpec({
                 every {
                     call.execute()
                 } answers {
-                    val resp = spyk(callOriginal())
+                    val resp = mockk<Response>()
                     every { resp.isSuccessful } returns true
                     every { resp.body } returns response.toResponseBody()
                     resp
