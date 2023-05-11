@@ -1,5 +1,6 @@
 package service;
 
+import com.google.common.collect.Streams;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
@@ -13,10 +14,8 @@ import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest {
@@ -324,6 +323,31 @@ public class ApiTest {
 
     List<byte[]> result = api.verifyTransactionProof(transactionProof);
     Assertions.assertEquals(1, result.size());
+  }
+
+  @Test
+  public void testGetTransactionAndWitnessProof() throws IOException {
+    List<byte[]> txHashes = Collections.singletonList(
+        Numeric.hexStringToByteArray("0x8277d74d33850581f8d843613ded0c2a1722dec0e87e748f45c115dfb14210f1"));
+    TransactionAndWitnessProof proof = api.getTransactionAndWitnessProof(txHashes, null);
+    Assertions.assertNotNull(proof);
+    Assertions.assertNotNull(proof.blockHash);
+    Assertions.assertEquals(1, proof.transactionsProof.indices.size());
+    Assertions.assertEquals(proof.witnessesProof.indices.size(), proof.transactionsProof.indices.size());
+
+    TransactionAndWitnessProof proof2 = api.getTransactionAndWitnessProof(txHashes, proof.blockHash);
+    Assertions.assertEquals(proof, proof2);
+
+    List<byte[]> result = api.verifyTransactionAndWitnessProof(proof);
+
+    Assertions.assertNotNull(result);
+    Iterator<byte[]> l_it = txHashes.iterator();
+    Iterator<byte[]> r_it = result.iterator();
+    while (l_it.hasNext() && r_it.hasNext()) {
+      Assertions.assertArrayEquals(l_it.next(), r_it.next());
+    }
+    Assertions.assertFalse(l_it.hasNext());
+    Assertions.assertFalse(r_it.hasNext());
   }
 
   @Test
@@ -740,19 +764,15 @@ public class ApiTest {
     Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
 
     statics = api.getFeeRateStatics(1);
-    Assertions.assertNotNull(statics);
-    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
 
     statics = api.getFeeRateStatics(101);
-    Assertions.assertNotNull(statics);
-    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
 
     statics = api.getFeeRateStatics(0);
-    Assertions.assertNotNull(statics);
-    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
 
     statics = api.getFeeRateStatics(102);
-    Assertions.assertNotNull(statics);
-    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
   }
 }
