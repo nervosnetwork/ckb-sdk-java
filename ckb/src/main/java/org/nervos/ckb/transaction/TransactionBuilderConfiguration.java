@@ -23,6 +23,7 @@ public class TransactionBuilderConfiguration {
     registerScriptHandler(SudtScriptHandler.class);
     registerScriptHandler(DaoScriptHandler.class);
     registerScriptHandler(OmnilockScriptHandler.class);
+    registerScriptHandler(TypIdHandler.class);
   }
 
   public Network getNetwork() {
