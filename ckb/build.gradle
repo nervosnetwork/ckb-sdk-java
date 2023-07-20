@@ -8,6 +8,7 @@ dependencies {
     implementation project(":serialization")
 
     implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.google.guava:guava:$guavaVersion"
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
