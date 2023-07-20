@@ -1,10 +1,14 @@
 description 'CKB core'
 
 dependencies {
-    compile project(":serialization")
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
-    compile "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
-    compile "com.google.code.gson:gson:$gsonVersion"
-    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    compile "com.squareup.okhttp3:logging-interceptor:$loggingOkhttpVersion"
+    implementation(project(":utils"))
+    implementation project(":serialization")
+
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
+    implementation("com.google.guava:guava:$guavaVersion")
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$loggingOkhttpVersion"
 }

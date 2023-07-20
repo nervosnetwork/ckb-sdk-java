@@ -2,15 +2,17 @@ buildscript {
 
     ext.bouncycastleVersion = '1.65'
     ext.rxjavaVersion = '2.2.21'
-    ext.gsonVersion = '2.10.1'
-    ext.okhttpVersion = '4.11.0'
-    ext.loggingOkhttpVersion = '4.11.0'
-    ext.slf4jVersion = '2.0.7'
+    ext.gsonVersion = '2.9.1'
+    ext.okhttpVersion = '4.10.0'
+    ext.loggingOkhttpVersion = '4.10.0'
+    ext.slf4jVersion = '2.0.0'
     ext.guavaVersion = '32.1.1-jre'
-    ext.junitVersion = '5.9.3'
+    ext.junitVersion = '5.9.0'
+    ext.kotestVersion = '5.6.1'
+    ext.kotlinVersion = "1.8.21"
+    ext.mockkVersion = "1.13.5"
 
     repositories {
-        jcenter()
         mavenCentral()
     }
 
@@ -23,7 +25,6 @@ buildscript {
 plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
-    id 'com.jfrog.bintray' version '1.8.5'
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -62,24 +63,22 @@ allprojects {
 
 configure(subprojects.findAll { it.name != 'tests' }) {
     // Required for Maven Nexus repository
-    apply plugin: 'maven'
     apply plugin: 'signing'
 
     // Required for JFrog Artifactory repository
     apply plugin: 'maven-publish'
-    apply plugin: 'com.jfrog.bintray'
 
-    task javadocJar(type: Jar) {
+    tasks.register('javadocJar', Jar) {
         archiveClassifier.set('javadoc')
         from javadoc
     }
 
-    task sourcesJar(type: Jar) {
+    tasks.register('sourcesJar', Jar) {
         archiveClassifier.set('sources')
         from sourceSets.main.allSource
     }
 
-    task testJar(type: Jar) {
+    tasks.register('testJar', Jar) {
         archiveClassifier.set('test-sources')
         from sourceSets.test.output
     }
@@ -94,54 +93,52 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     }
 
     publishing {
+        repositories {
+            maven {
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username=ossrhUsername
+                    password=ossrhPassword
+                }
+            }
+        }
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
                 version '2.1.1'
                 from components.java
-            }
-        }
-    }
 
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                    authentication(
-                            userName: ossrhUsername,
-                            password: ossrhPassword
-                    )
-                }
-
-                pom.project {
-                    name 'ckb-sdk-java'
-                    packaging 'jar'
-                    description project.description
-                    url 'https://github.com/nervosnetwork/ckb-sdk-java.git'
-
+                pom {
+                    name = 'ckb-sdk-java'
+                    description = project.description
+                    url = 'https://github.com/nervosnetwork/ckb-sdk-java.git'
                     scm {
-                        connection 'scm:git@github.com:nervosnetwork/ckb-sdk-java.git'
-                        url 'https://github.com/nervosnetwork/ckb-sdk-java.git'
+                        connection = 'scm:git@github.com:nervosnetwork/ckb-sdk-java.git'
+                        url = 'https://github.com/nervosnetwork/ckb-sdk-java.git'
                     }
 
                     licenses {
                         license {
-                            name 'The MIT License'
-                            url 'https://opensource.org/licenses/MIT'
+                            name = 'The MIT License'
+                            url = 'https://opensource.org/licenses/MIT'
                         }
                     }
-
                     developers {
                         developer {
-                            id 'nervos'
-                            name 'nervos developer'
-                            email 'op@nervos.org'
+                            id = 'nervos'
+                            name = 'nervos developer'
+                            email = 'op@nervos.org'
                         }
                     }
                 }
             }
         }
+    }
+
+
+    tasks.register('uploadArchives') {
+        println "start publish ${project.name} ${it.name}"
+        dependsOn publish
     }
 
     signing {
@@ -150,12 +147,11 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         sign configurations.archives
     }
 
-    task release {
+    tasks.register('release')  {
+        println("release ${it.name}")
         dependsOn 'build'
         dependsOn 'uploadArchives'
-        dependsOn 'bintrayUpload'
 
         tasks.findByName('uploadArchives').mustRunAfter 'build'
-        tasks.findByName('bintrayUpload').mustRunAfter 'build'
     }
 }

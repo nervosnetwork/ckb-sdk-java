@@ -212,6 +212,22 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
+  public TransactionAndWitnessProof getTransactionAndWitnessProof(List<byte[]> txHashes, byte[] blockHash) throws IOException {
+    return rpcService.post(
+        "get_transaction_and_witness_proof",
+        blockHash == null ? Collections.singletonList(txHashes): Arrays.asList(txHashes, blockHash),
+        TransactionAndWitnessProof.class);
+  }
+
+  @Override
+  public List<byte[]> verifyTransactionAndWitnessProof(TransactionAndWitnessProof proof) throws IOException {
+    return rpcService.post(
+        "verify_transaction_and_witness_proof",
+        Collections.singletonList(proof),
+        new TypeToken<List<byte[]>>() {}.getType());
+  }
+
+  @Override
   public Block getForkBlock(byte[] blockHash) throws IOException {
     return rpcService.post("get_fork_block", Collections.singletonList(blockHash), Block.class);
   }

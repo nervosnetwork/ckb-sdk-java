@@ -1,6 +1,6 @@
 description 'Minimal set of ckb utility classes'
 
 dependencies {
-    compile "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
-    compile "com.google.guava:guava:$guavaVersion"
+    implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
+    implementation("com.google.guava:guava:$guavaVersion")
 }

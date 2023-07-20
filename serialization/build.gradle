@@ -1,5 +1,7 @@
 description 'Minimal set of ckb serialization classes'
 
 dependencies {
-    compile project(":utils")
+    implementation project(":utils")
+
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
 }

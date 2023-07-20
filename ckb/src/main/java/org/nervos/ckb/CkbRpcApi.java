@@ -54,7 +54,8 @@ public interface CkbRpcApi {
   TransactionProof getTransactionProof(List<byte[]> txHashes, byte[] blockHash) throws IOException;
 
   List<byte[]> verifyTransactionProof(TransactionProof transactionProof) throws IOException;
-
+  TransactionAndWitnessProof getTransactionAndWitnessProof(List<byte[]> txHashes, byte[] blockHash) throws IOException;
+  List<byte[]> verifyTransactionAndWitnessProof(TransactionAndWitnessProof proof) throws IOException;
   Block getForkBlock(byte[] blockHash) throws IOException;
   PackedBlockWithCycles getPackedForkBlock(byte[] blockHash) throws IOException;
 

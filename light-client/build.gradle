@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
 }
 
 group 'org.nervos.ckb'
@@ -11,10 +12,25 @@ repositories {
 
 dependencies {
     implementation project(":ckb-indexer")
+    implementation project(":core")
+    implementation project(":utils")
+
+    implementation("com.google.code.gson:gson:$gsonVersion")
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation "io.mockk:mockk:${mockkVersion}"
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    testImplementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 }
 
 test {
     useJUnitPlatform()
 }
+//kotlin {
+//    jvmToolchain(11)
+//}
