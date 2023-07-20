@@ -2,6 +2,7 @@ package com.nervos.lightclient;
 
 import com.nervos.lightclient.type.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.nervos.ckb.type.Block;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @DisabledIfEnvironmentVariable(named = "CI", matches = "true")
+@Disabled
 class DefaultLightClientApiTest {
   public LightClientApi api = new DefaultLightClientApi("http://localhost:9000");
   // ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r

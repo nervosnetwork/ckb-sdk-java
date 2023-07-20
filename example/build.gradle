@@ -1,10 +1,11 @@
 description 'ckb-sdk-java is a lightweight Java library for integration with nervos CKB.'
 
 dependencies {
-    compile project(":ckb")
-    compile project(":ckb-indexer")
-    compile project(":light-client")
-    compile project(":utils")
-    compile "com.google.code.gson:gson:$gsonVersion"
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation project(":ckb")
+    implementation project(":ckb-indexer")
+    implementation project(":light-client")
+    implementation project(":utils")
+    implementation project(":core")
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
 }
