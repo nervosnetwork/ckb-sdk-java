@@ -8,4 +8,6 @@ public interface ScriptHandler {
   boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context);
 
   void init(Network network);
+
+  default boolean postBuild(int index, AbstractTransactionBuilder txBuilder, Object context) {return false;}
 }

@@ -79,16 +79,10 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       outputsCapacity += output.capacity;
       Script type = output.type;
       if (type != null) {
-        ScriptGroup scriptGroup = scriptGroupMap.get(type);
-        if (scriptGroup == null) {
-          scriptGroup = new ScriptGroup();
-          scriptGroup.setScript(type);
-          scriptGroup.setGroupType(ScriptType.TYPE);
-          scriptGroupMap.put(type, scriptGroup);
-        }
+        ScriptGroup scriptGroup = scriptGroupMap.computeIfAbsent(type, ScriptGroup::new_type);
         scriptGroup.getOutputIndices().add(i);
-        for (ScriptHandler handler: configuration.getScriptHandlers()) {
-          for (Object context: contexts) {
+        for (ScriptHandler handler : configuration.getScriptHandlers()) {
+          for (Object context : contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
         }
@@ -107,33 +101,21 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       inputIndex += 1;
 
       Script lock = input.output.lock;
-      ScriptGroup scriptGroup = scriptGroupMap.get(lock);
-      if (scriptGroup == null) {
-        scriptGroup = new ScriptGroup();
-        scriptGroup.setScript(lock);
-        scriptGroup.setGroupType(ScriptType.LOCK);
-        scriptGroupMap.put(lock, scriptGroup);
-      }
+      ScriptGroup scriptGroup = scriptGroupMap.computeIfAbsent(lock, ScriptGroup::new_lock);
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
-      for (ScriptHandler handler: configuration.getScriptHandlers()) {
-        for (Object context: contexts) {
+      for (ScriptHandler handler : configuration.getScriptHandlers()) {
+        for (Object context : contexts) {
           handler.buildTransaction(this, scriptGroup, context);
         }
       }
 
       Script type = input.output.type;
       if (type != null) {
-        scriptGroup = scriptGroupMap.get(type);
-        if (scriptGroup == null) {
-          scriptGroup = new ScriptGroup();
-          scriptGroup.setScript(type);
-          scriptGroup.setGroupType(ScriptType.TYPE);
-          scriptGroupMap.put(type, scriptGroup);
-        }
+        scriptGroup = scriptGroupMap.computeIfAbsent(type, ScriptGroup::new_type);
         scriptGroup.getInputIndices().add(inputIndex);
-        for (ScriptHandler handler: configuration.getScriptHandlers()) {
-          for (Object context: contexts) {
+        for (ScriptHandler handler : configuration.getScriptHandlers()) {
+          for (Object context : contexts) {
             handler.buildTransaction(this, scriptGroup, context);
           }
         }
@@ -152,15 +134,33 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       }
     }
 
+    postBuild(scriptGroupMap);
     if (!enoughCapacity) {
       throw new IllegalStateException("No enough capacity");
     }
     return TransactionWithScriptGroups.builder()
         .setTxView(tx)
-        .setScriptGroups(new ArrayList<>(scriptGroupMap.values()))
+        .setScriptGroups(new ArrayList<>(rebuildScriptGroups(scriptGroupMap).values()))
         .build();
   }
 
+  public void postBuild(Map<Script, ScriptGroup> scriptGroupMap) {
+    for (Map.Entry<Script, ScriptGroup> entry : scriptGroupMap.entrySet()) {
+      ScriptGroup old_group = entry.getValue();
+      if (ScriptType.LOCK == old_group.getGroupType()) {
+        continue;
+      }
+      for (int idx : old_group.getOutputIndices()) {
+        for (ScriptHandler handler : configuration.getScriptHandlers()) {
+          for (Object context : configuration.getScriptHandlers()) {
+            if (handler.postBuild(idx, this, context)) {
+              break;
+            };
+          }
+        }
+      }
+    }
+  }
   int transactionInputsIndex = 0;
 
   public TransactionInput next() {
