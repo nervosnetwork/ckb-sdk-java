@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.nervos.ckb.utils.MoleculeConverter.packUint64;
 
-public class TypIdHandler implements ScriptHandler {
+public class TypeIdHandler implements ScriptHandler {
   public static final byte[] TYPE_ID_CODE_HASH = Numeric.hexStringToByteArray("0x00000000000000000000000000000000000000000000000000545950455f4944");
   public static final byte[] ZERO_ARGS = new byte[32];
 
