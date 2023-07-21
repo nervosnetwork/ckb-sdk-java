@@ -73,11 +73,17 @@ public class TransactionBuilderConfiguration {
   }
 
   /**
-   * Set forceSmallChangeAsFee. When building transaction, a change output will not be required if it would be smaller than the specified amount.
+   * Set forceSmallChangeAsFee. When building transaction, a change output will not be required if its capacity would be
+   * smaller than the specified amount.
    *
-   * @param forceSmallChangeAsFee Unit shannons
+   * @param forceSmallChangeAsFee Should be positive. Unit is shannons.
    */
   public void setForceSmallChangeAsFee(@Nullable Long forceSmallChangeAsFee) {
+    if (forceSmallChangeAsFee != null) {
+      if (forceSmallChangeAsFee <= 0) {
+        throw new IllegalArgumentException("invalid forceSmallChangeAsFee: " + forceSmallChangeAsFee);
+      }
+    }
     this.forceSmallChangeAsFee = forceSmallChangeAsFee;
   }
 }
