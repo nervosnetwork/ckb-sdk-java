@@ -1,5 +1,6 @@
 package transaction;
 
+import com.google.common.collect.Iterators;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.Network;
@@ -9,6 +10,7 @@ import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
 import org.nervos.ckb.transaction.handler.TypeIdHandler;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
+import org.nervos.ckb.utils.Utils;
 import org.nervos.ckb.utils.address.Address;
 
 import java.util.ArrayList;
@@ -61,6 +63,35 @@ class CkbTransactionBuilderTest {
     Assertions.assertEquals(2, tx.outputs.size());
     long fee = 100000000000L - tx.outputs.get(0).capacity - tx.outputs.get(1).capacity;
     Assertions.assertEquals(613, fee);
+  }
+
+  @Test
+  void testForceSmallFeeAsChange() {
+    Iterator<TransactionInput> inputs = newTransactionInputs();
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(Network.TESTNET);
+    configuration.setForceSmallChangeAsFee(Utils.ckbToShannon(1));
+    TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, inputs)
+        .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r", Utils.ckbToShannon(1099))
+        .build();
+    Assertions.assertEquals(txWithGroups.getTxView().outputs.size(), 1);
+  }
+
+  @Test
+  void testForceSmallFeeAsChangeFailure() {
+    Iterator<TransactionInput> inputs = newTransactionInputs();
+    TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(Network.TESTNET);
+    // Not enough small change.
+    configuration.setForceSmallChangeAsFee(Utils.ckbToShannon(0.5));
+    Exception exception = null;
+    try {
+      TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, inputs)
+          .addOutput("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r", Utils.ckbToShannon(1099))
+          .build();
+    } catch (Exception e) {
+      exception = e;
+    }
+    Assertions.assertNotNull(exception);
+    Assertions.assertEquals(exception.getMessage(), "Change output not set");
   }
 
   @Test

@@ -3,6 +3,7 @@ package org.nervos.ckb.transaction;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.transaction.handler.*;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,8 @@ public class TransactionBuilderConfiguration {
   private Network network;
   private List<ScriptHandler> scriptHandlers = new ArrayList<>();
   private long feeRate = 1000;
+  @Nullable
+  private Long forceSmallChangeAsFee;
 
   public TransactionBuilderConfiguration() {
   }
@@ -62,5 +65,19 @@ public class TransactionBuilderConfiguration {
 
   public void setFeeRate(long feeRate) {
     this.feeRate = feeRate;
+  }
+
+  @Nullable
+  public Long getForceSmallChangeAsFee() {
+    return forceSmallChangeAsFee;
+  }
+
+  /**
+   * Set forceSmallChangeAsFee. When building transaction, a change output will not be required if it would be smaller than the specified amount.
+   *
+   * @param forceSmallChangeAsFee Unit shannons
+   */
+  public void setForceSmallChangeAsFee(@Nullable Long forceSmallChangeAsFee) {
+    this.forceSmallChangeAsFee = forceSmallChangeAsFee;
   }
 }

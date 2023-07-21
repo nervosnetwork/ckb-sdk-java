@@ -18,6 +18,11 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     super(configuration, availableInputs);
   }
 
+  /**
+   * Add a potential input for the transaction.
+   * <p>
+   * The input may not be actually used if there's already enough capacity for the outputs.
+   */
   public CkbTransactionBuilder addInput(TransactionInput transactionInput) {
     transactionInputs.add(transactionInput);
     return this;
@@ -32,6 +37,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return addHeaderDep(Numeric.hexStringToByteArray(headerDep));
   }
 
+  /**
+   * Add outputs and data. The two parameters should have the same size.
+   */
   public CkbTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {
     tx.outputs.addAll(outputs);
     tx.outputsData.addAll(outputsData);
@@ -57,6 +65,11 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return addOutput(output, data);
   }
 
+  /**
+   * Set change output. Its capacity will be overwritten later when building the transaction.
+   * <p>
+   * Change output should be set only once.
+   */
   public CkbTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
     if (changeOutputIndex != -1) {
       throw new IllegalStateException("Change output has been set");
@@ -65,11 +78,19 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
     return addOutput(output, data);
   }
 
+  /**
+   * Set change output. Its capacity will be overwritten later when building the transaction.
+   * <p>
+   * Change output should be set only once.
+   */
   public CkbTransactionBuilder setChangeOutput(String address) {
     CellOutput output = new CellOutput(0, Address.decode(address).getScript());
     return setChangeOutput(output, new byte[0]);
   }
 
+  /**
+   * Build the transaction. This will collect inputs so that there's enough capacity for the outputs.
+   */
   @Override
   public TransactionWithScriptGroups build(Object... contexts) {
     Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
@@ -125,12 +146,26 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       // check if there is enough capacity for output capacity and change
       long fee = calculateTxFee(tx, configuration.getFeeRate());
       long changeCapacity = inputsCapacity - outputsCapacity - fee + reward;
-      CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
-      byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
-      if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
-        tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
+      final Long forceSmallChangeAsFee = getConfiguration().getForceSmallChangeAsFee();
+      if (forceSmallChangeAsFee != null && changeCapacity > 0 && changeCapacity < forceSmallChangeAsFee) {
+        if (changeOutputIndex != -1) {
+          throw new IllegalStateException("Will discard change capacity but change output is set");
+        }
         enoughCapacity = true;
         break;
+      }
+      if (changeCapacity > 0) {
+        try {
+          CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
+          byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
+          if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
+            tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
+            enoughCapacity = true;
+            break;
+          }
+        } catch (IndexOutOfBoundsException e) {
+          throw new IllegalStateException("Change output not set");
+        }
       }
     }
 
