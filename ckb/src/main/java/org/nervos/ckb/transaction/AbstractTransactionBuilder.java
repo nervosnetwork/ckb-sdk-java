@@ -8,7 +8,6 @@ import org.nervos.ckb.utils.Calculator;
 import java.util.*;
 
 public abstract class AbstractTransactionBuilder {
-  protected int changeOutputIndex = -1;
   protected TransactionBuilderConfiguration configuration;
   protected Iterator<TransactionInput> availableInputs;
   protected List<TransactionInput> inputsDetail = new ArrayList<>();

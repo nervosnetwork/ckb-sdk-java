@@ -8,11 +8,17 @@ import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
 
+import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   protected List<TransactionInput> transactionInputs = new ArrayList<>();
   protected long reward = 0;
+  protected CellOutput changeOutput;
+  protected byte[] changeOutputData;
+  int transactionInputsIndex = 0;
 
   public CkbTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs) {
     super(configuration, availableInputs);
@@ -66,33 +72,66 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
   }
 
   /**
-   * Set change output. Its capacity will be overwritten later when building the transaction.
+   * Set possible change output. Its capacity must be 0.
    * <p>
    * Change output should be set only once.
    */
-  public CkbTransactionBuilder setChangeOutput(CellOutput output, byte[] data) {
-    if (changeOutputIndex != -1) {
+  public CkbTransactionBuilder setChangeOutput(@Nonnull CellOutput output, @Nonnull byte[] data) {
+    if (changeOutput != null) {
       throw new IllegalStateException("Change output has been set");
     }
-    changeOutputIndex = tx.outputs.size();
-    return addOutput(output, data);
+    if (output.capacity != 0) {
+      throw new IllegalArgumentException("Change output capacity is not 0");
+    }
+    changeOutput = output;
+    changeOutputData = data;
+    return this;
   }
 
   /**
-   * Set change output. Its capacity will be overwritten later when building the transaction.
+   * Set possible change output address.
    * <p>
    * Change output should be set only once.
    */
-  public CkbTransactionBuilder setChangeOutput(String address) {
+  public CkbTransactionBuilder setChangeOutput(@Nonnull String address) {
     CellOutput output = new CellOutput(0, Address.decode(address).getScript());
     return setChangeOutput(output, new byte[0]);
   }
 
   /**
+   * Returns a clone of tx with the change output added.
+   */
+  private Transaction txWithChangeOutput() {
+    List<CellOutput> outputs1 = Stream.concat(tx.outputs.stream(), Stream.of(changeOutput)).collect(Collectors.toList());
+    List<byte[]> outputsData1 = Stream.concat(tx.outputsData.stream(), Stream.of(changeOutputData)).collect(Collectors.toList());
+    return new Transaction(
+        tx.version,
+        tx.cellDeps,
+        tx.headerDeps,
+        tx.inputs,
+        outputs1,
+        outputsData1,
+        tx.witnesses
+    );
+  }
+
+  /**
    * Build the transaction. This will collect inputs so that there's enough capacity for the outputs.
+   * <p>
+   * If changeOutput is set, a change output will be added, unless forceSmallChangeAsFee is set and the change is small enough.
+   * </p>
+   * <p>
+   * If changeOutput is not set, forceSmallChangeAsFee must be set and the change must be small enough.
+   * </p>
+   *
+   * @throws IllegalStateException if settings are invalid or the transaction cannot be balanced.
    */
   @Override
   public TransactionWithScriptGroups build(Object... contexts) {
+    if (getConfiguration().getForceSmallChangeAsFee() == null && changeOutput == null) {
+      throw new IllegalStateException("Neither forceSmallChangeAsFee or changeOutput are set");
+    }
+
     Map<Script, ScriptGroup> scriptGroupMap = new HashMap<>();
     long outputsCapacity = 0L;
     for (int i = 0; i < tx.outputs.size(); i++) {
@@ -143,28 +182,27 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       }
 
       inputsCapacity += input.output.capacity;
-      // check if there is enough capacity for output capacity and change
-      long fee = calculateTxFee(tx, configuration.getFeeRate());
-      long changeCapacity = inputsCapacity - outputsCapacity - fee + reward;
       final Long forceSmallChangeAsFee = getConfiguration().getForceSmallChangeAsFee();
-      if (forceSmallChangeAsFee != null && changeCapacity > 0 && changeCapacity < forceSmallChangeAsFee) {
-        if (changeOutputIndex != -1) {
-          throw new IllegalStateException("Will discard change capacity but change output is set");
+      if (forceSmallChangeAsFee != null) {
+        long fee = calculateTxFee(tx, configuration.getFeeRate());
+        long changeCapacity = inputsCapacity - outputsCapacity - fee + reward;
+        if (changeCapacity > 0 && changeCapacity < forceSmallChangeAsFee) {
+          enoughCapacity = true;
+          break;
         }
-        enoughCapacity = true;
-        break;
       }
-      if (changeCapacity > 0) {
-        try {
-          CellOutput changeOutput = tx.outputs.get(changeOutputIndex);
-          byte[] changeOutputData = tx.outputsData.get(changeOutputIndex);
-          if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
-            tx.outputs.get(changeOutputIndex).capacity = changeCapacity;
-            enoughCapacity = true;
-            break;
-          }
-        } catch (IndexOutOfBoundsException e) {
-          throw new IllegalStateException("Change output not set");
+
+      if (changeOutput != null) {
+        // Calculate fee with change output.
+        Transaction txWithChange = txWithChangeOutput();
+        long fee = calculateTxFee(txWithChange, configuration.getFeeRate());
+        long changeCapacity = inputsCapacity - outputsCapacity - fee + reward;
+        if (changeCapacity >= changeOutput.occupiedCapacity(changeOutputData)) {
+          changeOutput.capacity = changeCapacity;
+          // Replace tx with txWithChange.
+          tx = txWithChange;
+          enoughCapacity = true;
+          break;
         }
       }
     }
@@ -190,13 +228,12 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
           for (Object context : configuration.getScriptHandlers()) {
             if (handler.postBuild(idx, this, context)) {
               break;
-            };
+            }
           }
         }
       }
     }
   }
-  int transactionInputsIndex = 0;
 
   public TransactionInput next() {
     if (transactionInputsIndex < transactionInputs.size()) {
@@ -222,9 +259,6 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       }
     }
     // only pool tx fee by null-type input
-    if (input.output.type != null) {
-      return true;
-    }
-    return false;
+    return input.output.type != null;
   }
 }
