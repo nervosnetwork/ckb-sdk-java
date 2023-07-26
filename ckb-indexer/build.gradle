@@ -11,7 +11,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 
     // Enable use of the JUnitPlatform Runner within the IDE
-    testImplementation("org.junit.platform:junit-platform-runner:1.9.3")
+    testImplementation("org.junit.platform:junit-platform-runner:1.10.0")
 }
 
 test {
