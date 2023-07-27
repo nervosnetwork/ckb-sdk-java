@@ -125,9 +125,11 @@ public class Script {
     @SerializedName("type")
     TYPE(0x01),
     @SerializedName("data1")
-    DATA1(0x02);
+    DATA1(0x02),
+    @SerializedName("data2")
+    DATA2(0x03);
 
-    private byte byteValue;
+    private final byte byteValue;
 
     HashType(int byteValue) {
       this.byteValue = (byte) byteValue;
@@ -145,6 +147,8 @@ public class Script {
           return TYPE;
         case 0x02:
           return DATA1;
+        case 0x03:
+          return DATA2;
         default:
           throw new NullPointerException();
       }

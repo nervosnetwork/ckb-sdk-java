@@ -6,6 +6,7 @@ public class TransactionWithStatus {
   public TxStatus txStatus;
   public Transaction transaction;
   public Long cycles;
+  public Long timeAddedToPool;
 
   public static class TxStatus {
     public Status status;

@@ -10,4 +10,6 @@ public class TxPoolInfo {
   public long minFeeRate;
   public byte[] tipHash;
   public long tipNumber;
+  public long txSizeLimit;
+  public long maxTxPoolSize;
 }
