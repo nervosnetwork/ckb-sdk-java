@@ -74,7 +74,7 @@ public class TransactionBuilderConfiguration {
 
   /**
    * Set forceSmallChangeAsFee. When building transaction, a change output will not be required if its capacity would be
-   * smaller than the specified amount.
+   * smaller than or equal to the specified amount.
    *
    * @param forceSmallChangeAsFee Should be positive. Unit is shannons.
    */

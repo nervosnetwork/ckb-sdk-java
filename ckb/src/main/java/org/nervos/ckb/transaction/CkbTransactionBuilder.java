@@ -186,7 +186,7 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
       if (forceSmallChangeAsFee != null) {
         long fee = calculateTxFee(tx, configuration.getFeeRate());
         long changeCapacity = inputsCapacity - outputsCapacity - fee + reward;
-        if (changeCapacity > 0 && changeCapacity < forceSmallChangeAsFee) {
+        if (changeCapacity > 0 && changeCapacity <= forceSmallChangeAsFee) {
           enoughCapacity = true;
           break;
         }
