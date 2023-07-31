@@ -6,7 +6,6 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.handler.ScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.address.Address;
 
@@ -19,6 +18,8 @@ import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   private TransactionType transactionType;
   private Script sudtTypeScript;
+
+  private int changeOutputIndex = -1;
 
   public enum TransactionType {
     ISSUE,
