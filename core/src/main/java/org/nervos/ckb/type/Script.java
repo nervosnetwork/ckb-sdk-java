@@ -127,7 +127,7 @@ public class Script {
     @SerializedName("data1")
     DATA1(0x02),
     @SerializedName("data2")
-    DATA2(0x03);
+    DATA2(0x04);
 
     private final byte byteValue;
 
@@ -147,7 +147,7 @@ public class Script {
           return TYPE;
         case 0x02:
           return DATA1;
-        case 0x03:
+        case 0x04:
           return DATA2;
         default:
           throw new NullPointerException();
