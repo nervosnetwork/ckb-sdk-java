@@ -9,4 +9,5 @@ public class Filter {
   public List<Integer> outputDataLenRange;
   public List<Long> outputCapacityRange;
   public List<Integer> blockRange;
+  public List<Integer> scriptLenRange;
 }

@@ -9,6 +9,7 @@ import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.ScriptSearchMode;
+import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.*;
 
@@ -678,6 +679,27 @@ public class ApiTest {
 
     CellsResponse cells = api.getCells(key.build(), Order.ASC, 10, null);
     Assertions.assertTrue(cells.objects.size() > 0);
+  }
+
+  @Test
+  void testGetCellsWithScriptLenRange() throws IOException {
+    SearchKey key = new SearchKeyBuilder()
+        .script(
+            new Script(Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                       Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                       Script.HashType.TYPE))
+        .scriptType(ScriptType.LOCK)
+        .filterScript(
+            new Script(Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                       Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                       Script.HashType.TYPE)
+        )
+        .filterScriptLen(0, 1)
+        .build();
+
+    api.getCells(key, Order.ASC, 10, null);
   }
 
   @Test

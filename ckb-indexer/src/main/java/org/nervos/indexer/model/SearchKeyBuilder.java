@@ -53,6 +53,14 @@ public class SearchKeyBuilder {
     return this;
   }
 
+  public SearchKeyBuilder filterScriptLen(int inclusive, int exclusive) {
+    initFilter();
+    this.filter.scriptLenRange = new ArrayList<>(2);
+    this.filter.scriptLenRange.add(inclusive);
+    this.filter.scriptLenRange.add(exclusive);
+    return this;
+  }
+
   private ScriptSearchMode _scriptSearchMode;
 
   public SearchKeyBuilder scriptSearchMode(ScriptSearchMode scriptSearchMode) {
