@@ -10,7 +10,7 @@ buildscript {
     ext.junitVersion = '5.10.0'
     ext.kotestVersion = '5.6.2'
     ext.kotlinVersion = "1.9.10"
-    ext.mockkVersion = "1.13.5"
+    ext.mockkVersion = "1.13.7"
 
     repositories {
         mavenCentral()
