@@ -106,6 +106,16 @@ public interface CkbRpcApi {
   byte[] sendTransaction(Transaction transaction, OutputsValidator outputsValidator)
       throws IOException;
 
+  byte[] sendTestTransaction(Transaction transaction) throws IOException;
+
+  byte[] sendTestTransaction(Transaction transaction, OutputsValidator outputsValidator)
+      throws IOException;
+	
+  byte[] testTxPoolAccept(Transaction transaction) throws IOException;
+
+  byte[] testTxPoolAccept(Transaction transaction, OutputsValidator outputsValidator)
+      throws IOException;
+
   NodeInfo localNodeInfo() throws IOException;
 
   List<PeerNodeInfo> getPeers() throws IOException;
