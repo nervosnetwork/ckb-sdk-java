@@ -87,12 +87,25 @@ public class TransactionSigner {
     return registerLockScriptSigner(Numeric.hexStringToByteArray(codeHash), scriptSigner);
   }
 
-
+  /**
+   * signTransaction signs the transaction using registered ScriptSigners.
+   *
+   * @param transaction Transaction to be signed.
+   * @param contexts Contexts for {@link org.nervos.ckb.sign.ScriptSigner}.
+   * @return signed groups indices.
+   */
   public Set<Integer> signTransaction(
       TransactionWithScriptGroups transaction, Context... contexts) {
     return signTransaction(transaction, new HashSet<>(Arrays.asList(contexts)));
   }
 
+  /**
+   * signTransaction signs the transaction using registered ScriptSigners.
+   *
+   * @param transaction Transaction to be signed.
+   * @param contexts Contexts for {@link org.nervos.ckb.sign.ScriptSigner}.
+   * @return signed groups indices.
+   */
   public Set<Integer> signTransaction(
       TransactionWithScriptGroups transaction, Set<Context> contexts) {
     Set<Integer> signedGroupsIndices = new HashSet<>();
@@ -122,6 +135,13 @@ public class TransactionSigner {
     return signedGroupsIndices;
   }
 
+  /**
+   * signTransaction signs the transaction using registered ScriptSigners.
+   *
+   * @param transaction Transaction to be signed.
+   * @param privateKeys Each private key is wrapped in one {@link Context}. These contexts will be passed to ScriptSigners.
+   * @return signed groups indices.
+   */
   public Set<Integer> signTransaction(
       TransactionWithScriptGroups transaction, String... privateKeys) {
     Contexts contexts = new Contexts();

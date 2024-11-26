@@ -68,9 +68,10 @@ Here is an example to build a CKB transfer transaction with the help of transact
 String sender = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq2qf8keemy2p5uu0g0gn8cd4ju23s5269qk8rg4r";
 String receiver = "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqg958atl2zdh8jn3ch8lc72nt0cf864ecqdxm9zf";
 Iterator<TransactionInput> iterator = new InputIterator(sender);
-TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(iterator, Network.TESTNET)
+TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(Network.TESTNET);
+configuration.setFeeRate(1000);
+TransactionWithScriptGroups txWithGroups = new CkbTransactionBuilder(configuration, iterator)
     .addOutput(receiver, 50100000000L)
-    .setFeeRate(1000)
     .setChangeOutput(sender)
     .build();
 ```
