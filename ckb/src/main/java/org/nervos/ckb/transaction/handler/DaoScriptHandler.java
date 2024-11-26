@@ -108,6 +108,7 @@ public class DaoScriptHandler implements ScriptHandler {
       this.withdrawOutpoint = withdrawOutpoint;
       try {
         TransactionWithStatus txWithStatus = api.getTransaction(withdrawOutpoint.txHash);
+        byte[] withdrawBlockHash = txWithStatus.txStatus.blockHash;
         Transaction withdrawTx = txWithStatus.transaction;
         byte[] depositBlockHash = null;
         for (int i = 0; i < withdrawTx.inputs.size(); i++) {
@@ -123,7 +124,6 @@ public class DaoScriptHandler implements ScriptHandler {
         if (depositBlockHash == null) {
           throw new RuntimeException("Can find deposit cell");
         }
-        byte[] withdrawBlockHash = txWithStatus.txStatus.blockHash;
         depositBlockHeader = api.getHeader(depositBlockHash);
         withdrawBlockHeader = api.getHeader(withdrawBlockHash);
       } catch (IOException e) {

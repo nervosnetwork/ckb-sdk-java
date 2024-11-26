@@ -1,19 +1,13 @@
 package org.nervos.ckb.transaction;
 
+import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.TransactionWithScriptGroups;
-import org.nervos.ckb.type.CellDep;
-import org.nervos.ckb.type.Transaction;
-import org.nervos.ckb.type.TransactionInput;
-import org.nervos.ckb.type.WitnessArgs;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Calculator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public abstract class AbstractTransactionBuilder {
-  protected int changeOutputIndex = -1;
   protected TransactionBuilderConfiguration configuration;
   protected Iterator<TransactionInput> availableInputs;
   protected List<TransactionInput> inputsDetail = new ArrayList<>();
@@ -53,7 +47,7 @@ public abstract class AbstractTransactionBuilder {
   }
 
   public void addCellDeps(List<CellDep> cellDeps) {
-    for (CellDep cellDep: cellDeps) {
+    for (CellDep cellDep : cellDeps) {
       addCellDep(cellDep);
     }
   }
@@ -112,6 +106,43 @@ public abstract class AbstractTransactionBuilder {
     return build((Object) null);
   }
 
+  public CellOutput getOutput(int i) {
+    try {
+      return this.tx.outputs.get(i);
+    } catch (IndexOutOfBoundsException e) {
+      return null;
+    }
+  }
+
+  public CellInput getInput(int i) {
+    try {
+      return this.tx.inputs.get(i);
+    } catch (IndexOutOfBoundsException e) {
+      return null;
+    }
+  }
+
+  public Map<Script, ScriptGroup> rebuildScriptGroups(Map<Script, ScriptGroup> scriptGroupMap) {
+    Map<Script, ScriptGroup> ret = new HashMap<>();
+    for (Map.Entry<Script, ScriptGroup> entry : scriptGroupMap.entrySet()) {
+      Script key = entry.getKey();
+      ScriptGroup old_group = entry.getValue();
+      if (ScriptType.LOCK == old_group.getGroupType()) {
+        ret.put(key, old_group);
+        continue;
+      }
+      if (!old_group.getInputIndices().isEmpty()) {
+        ScriptGroup new_group = ret.computeIfAbsent(key, ScriptGroup::new_type);
+        new_group.getInputIndices().addAll(old_group.getInputIndices());
+      }
+      for (int idx : old_group.getOutputIndices()) {
+        Script type = this.tx.outputs.get(idx).type;
+        ScriptGroup new_group = ret.computeIfAbsent(type, ScriptGroup::new_type);
+        new_group.getOutputIndices().add(idx);
+      }
+    }
+    return ret;
+  }
   /**
    * Builds the transaction with custom contexts for script handlers.
    *

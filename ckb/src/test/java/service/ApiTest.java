@@ -1,6 +1,5 @@
 package service;
 
-import com.google.common.collect.Streams;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 import org.nervos.ckb.service.Api;
@@ -10,12 +9,12 @@ import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.indexer.model.Order;
 import org.nervos.indexer.model.ScriptSearchMode;
+import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.SearchKeyBuilder;
 import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Stream;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ApiTest {
@@ -30,6 +29,15 @@ public class ApiTest {
   @BeforeAll
   public void init() {
     api = new Api("https://testnet.ckb.dev", false);
+  }
+
+  @Test
+  public void testNoTrailingNullParams() {
+    Assertions.assertEquals(Arrays.asList(1, 2), Api.noTrailingNullParams(1, 2, null));
+    Assertions.assertEquals(Arrays.asList(1, 2), Api.noTrailingNullParams(1, 2, null, null));
+    Assertions.assertEquals(Arrays.asList(1, 2, null, 3), Api.noTrailingNullParams(1, 2, null, 3));
+    Assertions.assertEquals(Collections.emptyList(), Api.noTrailingNullParams((Object) null));
+    Assertions.assertEquals(Collections.emptyList(), Api.noTrailingNullParams(null, null));
   }
 
   @Test
@@ -674,6 +682,27 @@ public class ApiTest {
   }
 
   @Test
+  void testGetCellsWithScriptLenRange() throws IOException {
+    SearchKey key = new SearchKeyBuilder()
+        .script(
+            new Script(Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                       Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                       Script.HashType.TYPE))
+        .scriptType(ScriptType.LOCK)
+        .filterScript(
+            new Script(Numeric.hexStringToByteArray(
+                "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63"),
+                       Numeric.hexStringToByteArray("0xe53f35ccf63bb37a3bb0ac3b7f89808077a78eae"),
+                       Script.HashType.TYPE)
+        )
+        .filterScriptLen(0, 1)
+        .build();
+
+    api.getCells(key, Order.ASC, 10, null);
+  }
+
+  @Test
   void testGetCellCapacity() throws IOException {
     SearchKeyBuilder key = new SearchKeyBuilder();
     key.script(
@@ -759,20 +788,20 @@ public class ApiTest {
 
   @Test
   public void testGetFeeRateStatics() throws IOException {
-    FeeRateStatics statics = api.getFeeRateStatics(null);
-    Assertions.assertNotNull(statics);
-    Assertions.assertTrue(statics.mean > 0 && statics.median > 0);
+    FeeRateStatistics statistics = api.getFeeRateStatistics(null);
+    Assertions.assertNotNull(statistics);
+    Assertions.assertTrue(statistics.mean > 0 && statistics.median > 0);
 
-    statics = api.getFeeRateStatics(1);
-    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
+    statistics = api.getFeeRateStatistics(1);
+    Assertions.assertTrue(statistics == null || statistics.mean > 0 && statistics.median > 0);
 
-    statics = api.getFeeRateStatics(101);
-    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
+    statistics = api.getFeeRateStatistics(101);
+    Assertions.assertTrue(statistics == null || statistics.mean > 0 && statistics.median > 0);
 
-    statics = api.getFeeRateStatics(0);
-    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
+    statistics = api.getFeeRateStatistics(0);
+    Assertions.assertTrue(statistics == null || statistics.mean > 0 && statistics.median > 0);
 
-    statics = api.getFeeRateStatics(102);
-    Assertions.assertTrue(statics == null || statics.mean > 0 && statics.median > 0);
+    statistics = api.getFeeRateStatistics(102);
+    Assertions.assertTrue(statistics == null || statistics.mean > 0 && statistics.median > 0);
   }
 }

@@ -1,6 +1,9 @@
 package org.nervos.ckb.service;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.gson.reflect.TypeToken;
+import org.jetbrains.annotations.NotNull;
 import org.nervos.ckb.CkbRpcApi;
 import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Convert;
@@ -9,13 +12,14 @@ import org.nervos.indexer.model.SearchKey;
 import org.nervos.indexer.model.resp.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Api implements CkbRpcApi {
 
-  private RpcService rpcService;
+  private final RpcService rpcService;
 
   public Api(String nodeUrl) {
     this(nodeUrl, false);
@@ -27,6 +31,20 @@ public class Api implements CkbRpcApi {
 
   public Api(RpcService rpcService) {
     this.rpcService = rpcService;
+  }
+
+  // Remove trailing nulls for better backward compatibility.
+  @VisibleForTesting
+  public static List<Object> noTrailingNullParams(Object... ps) {
+    ArrayList<Object> params = Lists.newArrayList(ps);
+    for (int i = params.size() - 1; i >= 0; i--) {
+      if (params.get(i) == null) {
+        params.remove(i);
+      } else {
+        break;
+      }
+    }
+    return params;
   }
 
   @Override
@@ -95,19 +113,19 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public TransactionWithStatus getTransaction(byte[] transactionHash) throws IOException {
+  public TransactionWithStatus getTransaction(@NotNull byte[] transactionHash, Boolean onlyCommitted) throws IOException {
     return rpcService.post(
-        "get_transaction", Collections.singletonList(transactionHash), TransactionWithStatus.class);
+        "get_transaction", noTrailingNullParams(transactionHash, null, onlyCommitted), TransactionWithStatus.class);
   }
 
   @Override
-  public TransactionWithStatus getTransactionStatus(byte[] transactionHash) throws IOException {
-    return rpcService.post("get_transaction", Arrays.asList(transactionHash, 1), TransactionWithStatus.class);
+  public TransactionWithStatus getTransactionStatus(@NotNull byte[] transactionHash, Boolean onlyCommitted) throws IOException {
+    return rpcService.post("get_transaction", noTrailingNullParams(transactionHash, 1, onlyCommitted), TransactionWithStatus.class);
   }
 
   @Override
-  public PackedTransactionWithStatus getPackedTransaction(byte[] transactionHash) throws IOException {
-    return rpcService.post("get_transaction", Arrays.asList(transactionHash, 0), PackedTransactionWithStatus.class);
+  public PackedTransactionWithStatus getPackedTransaction(@NotNull byte[] transactionHash, Boolean onlyCommitted) throws IOException {
+    return rpcService.post("get_transaction", noTrailingNullParams(transactionHash, 0, onlyCommitted), PackedTransactionWithStatus.class);
   }
 
   @Override
@@ -215,7 +233,7 @@ public class Api implements CkbRpcApi {
   public TransactionAndWitnessProof getTransactionAndWitnessProof(List<byte[]> txHashes, byte[] blockHash) throws IOException {
     return rpcService.post(
         "get_transaction_and_witness_proof",
-        blockHash == null ? Collections.singletonList(txHashes): Arrays.asList(txHashes, blockHash),
+        blockHash == null ? Collections.singletonList(txHashes) : Arrays.asList(txHashes, blockHash),
         TransactionAndWitnessProof.class);
   }
 
@@ -248,7 +266,7 @@ public class Api implements CkbRpcApi {
 
   @Override
   public long getBlockMedianTime(byte[] blockHash) throws IOException {
-    return rpcService.post("get_block_median_time", Arrays.asList(blockHash), Long.class);
+    return rpcService.post("get_block_median_time", Collections.singletonList(blockHash), Long.class);
   }
 
   /** Stats RPC */
@@ -277,6 +295,40 @@ public class Api implements CkbRpcApi {
   public RawTxPoolVerbose getRawTxPoolVerbose() throws IOException {
     return rpcService.post(
         "get_raw_tx_pool", Collections.singletonList(true), RawTxPoolVerbose.class);
+  }
+
+  @Override
+  public byte[] sendTestTransaction(Transaction transaction) throws IOException {
+    return rpcService.post(
+        "send_test_transaction",
+        Arrays.asList(Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
+        byte[].class);
+  }
+
+  @Override
+  public byte[] sendTestTransaction(Transaction transaction, OutputsValidator outputsValidator)
+      throws IOException {
+    return rpcService.post(
+        "send_test_transaction",
+        Arrays.asList(Convert.parseTransaction(transaction), outputsValidator),
+        byte[].class);
+  }
+
+  @Override
+  public byte[] testTxPoolAccept(Transaction transaction) throws IOException {
+    return rpcService.post(
+        "test_tx_pool_accept",
+        Arrays.asList(Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
+        byte[].class);
+  }
+
+  @Override
+  public byte[] testTxPoolAccept(Transaction transaction, OutputsValidator outputsValidator)
+      throws IOException {
+    return rpcService.post(
+        "test_tx_pool_accept",
+        Arrays.asList(Convert.parseTransaction(transaction), outputsValidator),
+        byte[].class);
   }
 
   @Override
@@ -410,7 +462,7 @@ public class Api implements CkbRpcApi {
   @Override
   public CellCapacityResponse getCellsCapacity(SearchKey searchKey) throws IOException {
     return this.rpcService.post("get_cells_capacity",
-                                Arrays.asList(searchKey),
+                                Collections.singletonList(searchKey),
                                 CellCapacityResponse.class);
   }
 
@@ -437,10 +489,10 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public FeeRateStatics getFeeRateStatics(Integer target) throws IOException {
+  public FeeRateStatistics getFeeRateStatistics(Integer target) throws IOException {
     return rpcService.post(
-        "get_fee_rate_statics",
+        "get_fee_rate_statistics",
         target == null ? Collections.emptyList() : Collections.singletonList(target),
-        FeeRateStatics.class);
+        FeeRateStatistics.class);
   }
 }

@@ -6,11 +6,11 @@ buildscript {
     ext.okhttpVersion = '4.10.0'
     ext.loggingOkhttpVersion = '4.10.0'
     ext.slf4jVersion = '2.0.0'
-    ext.guavaVersion = '31.1-jre'
-    ext.junitVersion = '5.9.0'
-    ext.kotestVersion = '5.6.1'
-    ext.kotlinVersion = "1.8.21"
-    ext.mockkVersion = "1.13.5"
+    ext.guavaVersion = '32.1.1-jre'
+    ext.junitVersion = '5.10.0'
+    ext.kotestVersion = '5.6.2'
+    ext.kotlinVersion = "1.9.10"
+    ext.mockkVersion = "1.13.7"
 
     repositories {
         mavenCentral()
@@ -23,7 +23,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
 

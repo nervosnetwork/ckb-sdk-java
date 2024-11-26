@@ -6,7 +6,6 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.transaction.handler.ScriptHandler;
 import org.nervos.ckb.type.CellOutput;
 import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.ScriptType;
 import org.nervos.ckb.type.TransactionInput;
 import org.nervos.ckb.utils.address.Address;
 
@@ -19,6 +18,8 @@ import static org.nervos.ckb.utils.AmountUtils.sudtAmountToData;
 public class SudtTransactionBuilder extends AbstractTransactionBuilder {
   private TransactionType transactionType;
   private Script sudtTypeScript;
+
+  private int changeOutputIndex = -1;
 
   public enum TransactionType {
     ISSUE,
@@ -138,13 +139,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
       }
       Script type = output.type;
       if (type != null) {
-        ScriptGroup scriptGroup = scriptGroupMap.get(type);
-        if (scriptGroup == null) {
-          scriptGroup = new ScriptGroup();
-          scriptGroup.setScript(type);
-          scriptGroup.setGroupType(ScriptType.TYPE);
-          scriptGroupMap.put(type, scriptGroup);
-        }
+        ScriptGroup scriptGroup = scriptGroupMap.computeIfAbsent(type, ScriptGroup::new_type);
         scriptGroup.getOutputIndices().add(i);
         for (ScriptHandler handler: configuration.getScriptHandlers()) {
           for (Object context: contexts) {
@@ -175,13 +170,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
           throw new IllegalStateException("input lock hash should be the same as SUDT args in the SUDT-issue transaction");
         }
       }
-      ScriptGroup scriptGroup = scriptGroupMap.get(lock);
-      if (scriptGroup == null) {
-        scriptGroup = new ScriptGroup();
-        scriptGroup.setScript(lock);
-        scriptGroup.setGroupType(ScriptType.LOCK);
-        scriptGroupMap.put(lock, scriptGroup);
-      }
+      ScriptGroup scriptGroup = scriptGroupMap.computeIfAbsent(lock, ScriptGroup::new_lock);
       scriptGroup.getInputIndices().add(inputIndex);
       // add cellDeps and set witness placeholder
       for (ScriptHandler handler: configuration.getScriptHandlers()) {
@@ -192,13 +181,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
 
       Script type = input.output.type;
       if (type != null) {
-        scriptGroup = scriptGroupMap.get(type);
-        if (scriptGroup == null) {
-          scriptGroup = new ScriptGroup();
-          scriptGroup.setScript(type);
-          scriptGroup.setGroupType(ScriptType.TYPE);
-          scriptGroupMap.put(type, scriptGroup);
-        }
+        scriptGroup = scriptGroupMap.computeIfAbsent(type, ScriptGroup::new_type);
         scriptGroup.getInputIndices().add(inputIndex);
         for (ScriptHandler handler: configuration.getScriptHandlers()) {
           for (Object context: contexts) {
@@ -236,7 +219,7 @@ public class SudtTransactionBuilder extends AbstractTransactionBuilder {
     }
     return TransactionWithScriptGroups.builder()
         .setTxView(tx)
-        .setScriptGroups(new ArrayList<>(scriptGroupMap.values()))
+        .setScriptGroups(new ArrayList<>(rebuildScriptGroups(scriptGroupMap).values()))
         .build();
   }
 }

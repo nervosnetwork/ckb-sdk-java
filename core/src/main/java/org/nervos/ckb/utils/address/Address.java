@@ -3,6 +3,7 @@ package org.nervos.ckb.utils.address;
 import org.nervos.ckb.Network;
 import org.nervos.ckb.type.Script;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class Address {
 
   }
 
-  public static Address decode(String address) {
+  public static Address decode(@Nonnull String address) {
     Objects.requireNonNull(address);
     Bech32.Bech32Data bech32Data = Bech32.decode(address);
     Bech32.Encoding encoding = bech32Data.encoding;

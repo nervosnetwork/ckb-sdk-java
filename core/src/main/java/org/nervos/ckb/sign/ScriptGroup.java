@@ -12,6 +12,11 @@ public class ScriptGroup {
   private List<Integer> inputIndices = new ArrayList<>();
   private List<Integer> outputIndices = new ArrayList<>();
 
+  public ScriptGroup(Script script, ScriptType groupType) {
+    this.script = script;
+    this.groupType = groupType;
+  }
+
   public Script getScript() {
     return script;
   }
@@ -26,6 +31,14 @@ public class ScriptGroup {
 
   public void setGroupType(ScriptType groupType) {
     this.groupType = groupType;
+  }
+
+  public static ScriptGroup new_type(Script script) {
+    return new ScriptGroup(script, ScriptType.TYPE);
+  }
+
+  public static ScriptGroup new_lock(Script script) {
+    return new ScriptGroup(script, ScriptType.LOCK);
   }
 
   public List<Integer> getInputIndices() {
@@ -85,7 +98,7 @@ public class ScriptGroup {
     }
 
     public Builder addInputIndices(int... indices) {
-      for (int index: indices) {
+      for (int index : indices) {
         this.inputIndices.add(index);
       }
       return this;
@@ -97,16 +110,14 @@ public class ScriptGroup {
     }
 
     public Builder addOutputIndices(int... indices) {
-      for (int index: indices) {
+      for (int index : indices) {
         this.outputIndices.add(index);
       }
       return this;
     }
 
     public ScriptGroup build() {
-      ScriptGroup scriptGroup = new ScriptGroup();
-      scriptGroup.setScript(script);
-      scriptGroup.setGroupType(groupType);
+      ScriptGroup scriptGroup = new ScriptGroup(script, groupType);
       scriptGroup.setInputIndices(inputIndices);
       scriptGroup.setOutputIndices(outputIndices);
       return scriptGroup;
