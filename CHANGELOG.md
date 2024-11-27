@@ -1,3 +1,12 @@
+# 3.0.0 (2024-11-26)
+- feat: support indexer filter script_len_range
+- feat: support v0.119.0 rpcs #683
+- feat: add script hash type data2
+- feat: force small change as fee
+- fix: Make dao handler get correct withdraw block hash
+- feat: support type id handler
+
+
 # 2.1.1 (2023-03-23)
 - feat: support with_cycles for get_block and get_block_by_number rpc (#623)
 - feat: support packed rpcs (#624)
