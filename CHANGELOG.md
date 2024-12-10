@@ -1,3 +1,6 @@
+# 3.0.1 (2024-12-10)
+- fix: fix javaDocs error
+
 # 3.0.0 (2024-11-26)
 - feat: support indexer filter script_len_range
 - feat: support v0.119.0 rpcs #683
