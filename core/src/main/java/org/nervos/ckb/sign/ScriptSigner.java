@@ -20,9 +20,9 @@ public interface ScriptSigner {
    * @param context This is passed from {@code TransactionSigner.signTransaction}
    * @return {@code true} when the script handler has modified the transaction.
    *
-   * @see TransactionSigner#signTransaction(TransactionWithScriptGroups, Context...)
-   * @see TransactionSigner#signTransaction(TransactionWithScriptGroups, Set<Context>)
-   * @see TransactionSigner#signTransaction(TransactionWithScriptGroups, String...)
+   * @see "TransactionSigner#signTransaction(TransactionWithScriptGroups, Context...)"
+   * @see "TransactionSigner#signTransaction(TransactionWithScriptGroups, Set<Context>)"
+   * @see "TransactionSigner#signTransaction(TransactionWithScriptGroups, String...)"
    */
   boolean signTransaction(Transaction transaction, ScriptGroup scriptGroup, Context context);
 }

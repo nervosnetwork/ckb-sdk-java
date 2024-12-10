@@ -35,7 +35,7 @@ public interface CkbRpcApi {
    *
    * @param transactionHash the transaction hash
    * @return the RPC does not return the transaction content and the field transaction must be null.
-   * @throws IOException
+   * @throws IOException RPC Errors
    */
   default TransactionWithStatus getTransactionStatus(@Nonnull byte[] transactionHash) throws IOException {
     return getTransactionStatus(transactionHash, null);

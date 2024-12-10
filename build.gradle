@@ -18,23 +18,24 @@ buildscript {
 
     dependencies {
         classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.0.0'
+		classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.0.0-beta4'
+
     }
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '9.0.0-beta4'
     id 'java'
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'com.gradleup.shadow'
 apply plugin: 'application'
 apply plugin: 'io.codearte.nexus-staging'
 
 mainClassName = 'org.nervos.ckb.example.RpcExample'
 applicationName = 'ckb-sdk-java'
 
-description 'ckb-sdk-java base project'
+description = 'ckb-sdk-java base project'
 
 allprojects {
 
@@ -42,7 +43,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '3.0.0'
+    version '2.2.0'
     apply plugin: 'java'
 
     repositories {
@@ -105,7 +106,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '3.0.0'
+                version '2.2.0'
                 from components.java
 
                 pom {

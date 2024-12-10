@@ -29,8 +29,8 @@ public interface ScriptHandler {
    *
    * <p>For example:</p>
    *
-   * <pre>{@code
-   * @Override
+   * <pre>
+   * {@code
    * boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
    *    // Only change the transaction when the script is used.
    *    if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {

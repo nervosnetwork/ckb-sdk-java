@@ -28,6 +28,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
    * Add a potential input for the transaction.
    * <p>
    * The input may not be actually used if there's already enough capacity for the outputs.
+   * @param transactionInput the transactionInput
+   * @return none
    */
   public CkbTransactionBuilder addInput(TransactionInput transactionInput) {
     transactionInputs.add(transactionInput);
@@ -45,6 +47,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
 
   /**
    * Add outputs and data. The two parameters should have the same size.
+   * @param outputs the outputs
+   * @param outputsData the outputsData
+   * @return none
    */
   public CkbTransactionBuilder setOutputs(List<CellOutput> outputs, List<byte[]> outputsData) {
     tx.outputs.addAll(outputs);
@@ -75,6 +80,9 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
    * Set possible change output. Its capacity must be 0.
    * <p>
    * Change output should be set only once.
+   * @param output the change output
+   * @param data the data
+   * @return none
    */
   public CkbTransactionBuilder setChangeOutput(@Nonnull CellOutput output, @Nonnull byte[] data) {
     if (changeOutput != null) {
@@ -92,6 +100,8 @@ public class CkbTransactionBuilder extends AbstractTransactionBuilder {
    * Set possible change output address.
    * <p>
    * Change output should be set only once.
+   * @param address the address of change output
+   * @return none
    */
   public CkbTransactionBuilder setChangeOutput(@Nonnull String address) {
     CellOutput output = new CellOutput(0, Address.decode(address).getScript());
