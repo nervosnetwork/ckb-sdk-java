@@ -41,7 +41,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '2.1.1'
+    version '2.1.2'
     apply plugin: 'java'
 
     repositories {
@@ -97,7 +97,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '2.1.1'
+                version '2.1.2'
                 from components.java
             }
         }
