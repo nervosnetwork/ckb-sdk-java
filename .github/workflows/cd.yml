@@ -2,8 +2,8 @@ name: Continuous delivery in GitHub and Maven Central Repository
 
 on:
   push:
-    tags:
-      - 'rc/v*'
+    branch:
+      - 'exec/fix-publish'
 
 jobs:
   create_release_draft:
