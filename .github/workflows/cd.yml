@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'rc/v*'
+      - 'rc-test/*'
 
 jobs:
   create_release_draft:
