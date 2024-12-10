@@ -34,7 +34,7 @@ apply plugin: 'io.codearte.nexus-staging'
 mainClassName = 'org.nervos.ckb.example.RpcExample'
 applicationName = 'ckb-sdk-java'
 
-description 'ckb-sdk-java base project'
+description = 'ckb-sdk-java base project'
 
 allprojects {
 
