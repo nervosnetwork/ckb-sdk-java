@@ -18,6 +18,7 @@ public abstract class AbstractTransactionBuilder {
    *
    * @param configuration This is the bundle of configuration for builder,
    *                      such as fee rate and registerred {@link org.nervos.ckb.transaction.handler.ScriptHandler}.
+   * @param availableInputs The available inputs for the transaction.
    */
   public AbstractTransactionBuilder(TransactionBuilderConfiguration configuration, Iterator<TransactionInput> availableInputs) {
     this.configuration = configuration;
@@ -101,6 +102,7 @@ public abstract class AbstractTransactionBuilder {
    * default context null. Use {@link #build(Object...)} to pass custom contexts.
    *
    * @see org.nervos.ckb.transaction.handler.ScriptHandler#buildTransaction(AbstractTransactionBuilder, ScriptGroup, Object)
+   * @return The built transaction with script groups.
    */
   public TransactionWithScriptGroups build() {
     return build((Object) null);
@@ -149,6 +151,8 @@ public abstract class AbstractTransactionBuilder {
    * The contexts will be passed to the registered script handlers in the same order.
    *
    * @see org.nervos.ckb.transaction.handler.ScriptHandler#buildTransaction(AbstractTransactionBuilder, ScriptGroup, Object)
+   * @param contexts The custom contexts for script handlers.
+   * @return The built transaction with script groups.
    */
   abstract TransactionWithScriptGroups build(Object... contexts);
 }
