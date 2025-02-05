@@ -145,9 +145,9 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 
 	signing {
 		useInMemoryPgpKeys(
-			project.property("signing.keyId") as String,
-			file(project.property("signing.secretKeyRingFile") as String).readText(),
-			project.property("signing.password") as String
+			project.property("signingkeyId") as String,
+			file(project.property("signingSecretKeyRingFile") as String).readText(),
+			project.property("signingPassword") as String
 		)
 		sign publishing.publications.mavenJava
 	}
