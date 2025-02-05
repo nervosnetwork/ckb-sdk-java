@@ -145,7 +145,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 
 	signing {
 		useInMemoryPgpKeys(
-			project.property("signingkeyId") as String,
+			project.property("signingKeyId") as String,
 			file(project.property("signingSecretKeyRingFile") as String).readText(),
 			project.property("signingPassword") as String
 		)
