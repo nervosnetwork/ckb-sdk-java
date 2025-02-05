@@ -149,9 +149,9 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     signing {
         required { gradle.taskGraph.hasTask('uploadArchives') }
         // only execute as part of this task
-        println "start sign ${project.name} ${it.name}"
+        println "start sign"
         sign configurations.archives
-        println "sign ${project.name} ${it.name} finish"
+        println "sign  finish"
     }
 
     tasks.register('release')  {
