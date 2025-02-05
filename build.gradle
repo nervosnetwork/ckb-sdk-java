@@ -147,11 +147,12 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     }
 
     signing {
-        required { gradle.taskGraph.hasTask('uploadArchives') }
+        sign publishing.publications.mavenJava
+        // required { gradle.taskGraph.hasTask('uploadArchives') }
         // only execute as part of this task
-        println "start sign"
-        sign configurations.archives
-        println "sign  finish"
+        // println "start sign"
+        // sign configurations.archives
+        // println "sign  finish"
     }
 
     tasks.register('release')  {
