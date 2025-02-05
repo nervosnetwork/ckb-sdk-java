@@ -146,7 +146,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 	signing {
 		useInMemoryPgpKeys(
 			project.property('ossrhUsername') as String,
-			file("build.gradle").getText(),
+			file(project.property('signingSecretKeyRingFile')).getText(),
 			project.property('ossrhUsername') as String
 		)
 		sign publishing.publications.mavenJava
