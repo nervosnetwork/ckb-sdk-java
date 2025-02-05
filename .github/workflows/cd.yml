@@ -38,7 +38,7 @@ jobs:
       - name: Build project
         run: |
           chmod +x ./gradlew
-          ./gradlew build
+          ./gradlew shadowJar
           echo ls build && ls build
           echo tree build && tree build
 
