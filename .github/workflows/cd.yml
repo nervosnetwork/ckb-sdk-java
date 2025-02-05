@@ -40,13 +40,14 @@ jobs:
           chmod +x ./gradlew
           ./gradlew shadowJar
 
+      - uses: valeriangalliat/action-sshd-cloudflared@v3
       - name: Upload artifact to Nexus
         env:
-          # ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.NEXUS_OSSRH_USERNAME }}
-          # ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.NEXUS_OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.NEXUS_OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.NEXUS_OSSRH_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKeyId: ${{ secrets.NEXUS_SIGNING_KEYID }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.NEXUS_SIGNING_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingSecretKeyRingFile: "/home/runner/work/ckb-sdk-java/ckb-sdk-java/secret_key.gpg"
+          ORG_GRADLE_PROJECT_signingSecretKeyRingFile: "./secret_key.gpg"
         run: |
           ./gradlew uploadArchives
 
