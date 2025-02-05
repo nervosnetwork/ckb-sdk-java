@@ -153,8 +153,8 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 
         signatory(
             keyId: project.findProperty('signing.keyId'),
+            // password: project.findProperty('signing.password')
             // secretKeyRingFile: project.findProperty('signing.secretKeyRingFile'),
-            password: project.findProperty('signing.password')
 		)
        
 
