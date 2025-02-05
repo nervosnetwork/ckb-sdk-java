@@ -94,9 +94,6 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     ext {
         ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
         ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
-		signing_keyId = project.hasProperty('signing.keyId') ? project.property('signing.keyId') : ''
-		signing_password = project.hasProperty('signing.password') ? project.property('signing.password') : ''
-		signing_secretKeyRingFile = project.hasProperty('signing.secretKeyRingFile') ? project.property('signing.secretKeyRingFile') : ''
     }
 
 
