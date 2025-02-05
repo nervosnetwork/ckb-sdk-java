@@ -154,7 +154,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 		// 	file(signingKeyId).getText(),
 		// 	signingPassword as String
 		// )
-		// sign publishing.publications.mavenJava
+		sign publishing.publications.mavenJava
 	}
 
 
