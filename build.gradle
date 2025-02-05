@@ -97,10 +97,6 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     }
 
 
-    signing {
-        sign publishing.publications.mavenJava
-    }
-
     publishing {
         repositories {
             maven {
@@ -143,8 +139,13 @@ configure(subprojects.findAll { it.name != 'tests' }) {
                         }
                     }
                 }
-            }
-        }
+			}
+		}
+
+		signing {
+			sign publishing.publications.mavenJava
+		}
+
     }
 
 
