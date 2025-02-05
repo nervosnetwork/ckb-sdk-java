@@ -108,7 +108,10 @@ configure(subprojects.findAll { it.name != 'tests' }) {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
                 version '0.0.11'
-                from components.java
+				from components.java
+
+				beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
 
 				artifact javadocJar
 				artifact sourcesJar
@@ -146,26 +149,11 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         dependsOn publish
     }
 
-	signing {
-		sign publishing.publications.mavenJava
-
-		def keyId = project.findProperty('signing.keyId')
-		def secretKeyRingFile = project.findProperty('signing.secretKeyRingFile')
-		def password = project.findProperty('signing.password')
-
-		if (keyId != null && secretKeyRingFile != null && password != null) {
-			useInMemoryPgpKeys(keyId, secretKeyRingFile, password)
-		} else {
-			throw new GradleException("Signing configuration is incomplete or incorrect.")
-		}
-
-
-		// required { gradle.taskGraph.hasTask('uploadArchives') }
-		// only execute as part of this task
-		// println "start sign"
-		// sign configurations.archives
-		// println "sign  finish"
-	}
+    signing {
+        required { gradle.taskGraph.hasTask('uploadArchives') }
+        // only execute as part of this task
+        sign configurations.archives
+    }
 
     tasks.register('release')  {
         println("release ${it.name}")
