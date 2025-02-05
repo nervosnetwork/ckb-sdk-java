@@ -48,7 +48,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.NEXUS_SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signingSecretKeyRingFile: "./secret_key.gpg"
         run: |
-          ./gradlew uploadArchives
+          [ -n "$ORG_GRADLE_PROJECT_signingKeyId" ] && ./gradlew uploadArchives
 
 #       - name: upload artifact ckb.jar to GitHub release page
 #         uses: actions/upload-release-asset@v1
