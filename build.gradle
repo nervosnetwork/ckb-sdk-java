@@ -150,7 +150,11 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 		// 	signingPassword as String
 		// )
 		// sign publishing.publications.mavenJava
-       sign publishing.publications
+		def signingKeyId = findProperty("signingKeyId")
+		def signingKey = findProperty("signingKey")
+		def signingPassword = findProperty("signingPassword")
+		useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+		sign publishing.publications
 
 	}
 
