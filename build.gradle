@@ -151,7 +151,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         signatory(
             keyId: project.findProperty('signing.keyId'),
             password: project.findProperty('signing.password'),
-            secretKeyRingFile: file(project.findProperty('signing.secretKeyRingFile'))
+            secretKeyRingFile: project.findProperty('signing.secretKeyRingFile')
         )
 
         sign publishing.publications.mavenJava
