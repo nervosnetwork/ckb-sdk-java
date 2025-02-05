@@ -150,7 +150,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         required { gradle.taskGraph.hasTask('uploadArchives') }
         // only execute as part of this task
         // sign configurations.archives
-    sign publishing.publications.mavenJava
+        sign publishing.publications.mavenJava
 
     }
 
