@@ -96,7 +96,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
 		signingKeyId = project.hasProperty('signingKeyId') ? project.property('signingKeyId') : ''
 		signingPassword = project.hasProperty('signingPassword') ? project.property('signingPassword') : ''
-		signingSecretKeyRingFile = project.hasProperty('signingSecretKeyRingFile') ? project.property('signingSecretKeyRingFile') : 'signingSecretKeyRingFileMustExist'
+		signingSecretKeyRingFile = project.hasProperty('signingSecretKeyRingFile') ? project.property('signingSecretKeyRingFile') : System.getenv('ORG_GRADLE_PROJECT_signingSecretKeyRingFile')
 		
 
     }
