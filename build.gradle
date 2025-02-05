@@ -111,7 +111,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 
                 pom {
                     name = 'ckb-sdk-java'
-                    description = project.description
+                    description = "ckb java sdk"
                     url = 'https://github.com/nervosnetwork/ckb-sdk-java.git'
                     scm {
                         connection = 'scm:git@github.com:nervosnetwork/ckb-sdk-java.git'
