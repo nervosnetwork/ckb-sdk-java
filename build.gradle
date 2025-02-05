@@ -148,14 +148,13 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     }
 
     signing {
-        // required { gradle.taskGraph.hasTask('uploadArchives') }
-        // only execute as part of this task
-		println "signing  ${publishing.publications.mavenJava} "
+        signatory(
+            keyId: project.findProperty('signing.keyId'),
+            password: project.findProperty('signing.password'),
+            secretKeyRingFile: file(project.findProperty('signing.secretKeyRingFile'))
+        )
+
         sign publishing.publications.mavenJava
-		// sign publishing.publications.main
-
-
-
     }
 
     tasks.register('release')  {
