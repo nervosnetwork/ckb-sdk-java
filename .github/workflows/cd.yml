@@ -3,7 +3,7 @@ name: Continuous delivery in GitHub and Maven Central Repository
 on:
   push:
     tags:
-      - 'rc/v*'
+      - 'rc-test/v*'
 
 jobs:
   create_release_draft:
