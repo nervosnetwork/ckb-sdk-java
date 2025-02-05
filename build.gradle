@@ -148,12 +148,6 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 
 	signing {
 		sign publishing.publications.mavenJava
-		signatory(
-			keyId= signing_keyId,
-			password= signing_password,
-			secretKeyRingFile=signing_secretKeyRingFile
-		)
-
 	}
 
 
