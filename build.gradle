@@ -62,10 +62,6 @@ allprojects {
     }
     apply from: rootProject.file('gradle/checkstyle.gradle')
 
-
-    signing {
-        sign publishing.publications.mavenJava
-    }
 }
 
 configure(subprojects.findAll { it.name != 'tests' }) {
@@ -98,6 +94,11 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     ext {
         ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
         ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
+    }
+
+
+    signing {
+        sign publishing.publications.mavenJava
     }
 
     publishing {
