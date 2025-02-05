@@ -39,6 +39,9 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew shadowJar
+          echo ls build && ls build
+          echo tree build && tree build
+
       - name: Upload artifact to Nexus
         env:
           ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.NEXUS_OSSRH_USERNAME }}
