@@ -36,9 +36,9 @@ jobs:
       - name: Prepare signing secret key ring file
         run: |
           echo "${{ secrets.NEXUS_SIGNING_SECRET_KEY_BASE64 }}" | base64 --decode > /tmp/secret_key.gpg
-          echo signing.keyId= ${{ secrets.NEXUS_SIGNING_KEYID }} >> gradle.properties
+          # echo signing.keyId= ${{ secrets.NEXUS_SIGNING_KEYID }} >> gradle.properties
           echo signing.secretKeyRingFile=/tmp/secret_key.gpg >> gradle.properties
-          echo signing.password=${{ secrets.NEXUS_SIGNING_PASSWORD }} >> gradle.properties
+          # echo signing.password=${{ secrets.NEXUS_SIGNING_PASSWORD }} >> gradle.properties
         
       - name: Build project
         run: |
