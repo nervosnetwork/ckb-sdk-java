@@ -147,12 +147,19 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     }
 
 	signing {
-		def signingKeyId = findProperty("signing.KeyId")
-		def signingKey = findProperty("signing.secretKeyRingFile")
-		def signingPassword = findProperty("signing.password")
-		useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-		
 		sign publishing.publications.mavenJava
+
+		def keyId = project.findProperty('signing.keyId')
+		def secretKeyRingFile = project.findProperty('signing.secretKeyRingFile')
+		def password = project.findProperty('signing.password')
+
+		if (keyId != null && secretKeyRingFile != null && password != null) {
+			useInMemoryPgpKeys(keyId, secretKeyRingFile, password)
+		} else {
+			throw new GradleException("Signing configuration is incomplete or incorrect.")
+		}
+
+
 		// required { gradle.taskGraph.hasTask('uploadArchives') }
 		// only execute as part of this task
 		// println "start sign"
