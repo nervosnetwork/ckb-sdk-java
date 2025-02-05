@@ -146,14 +146,19 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         dependsOn publish
     }
 
-    signing {
-        sign publishing.publications.mavenJava
-        // required { gradle.taskGraph.hasTask('uploadArchives') }
-        // only execute as part of this task
-        // println "start sign"
-        // sign configurations.archives
-        // println "sign  finish"
-    }
+	signing {
+		def signingKeyId = findProperty("signingKeyId")
+		def signingKey = findProperty("signing.secretKeyRingFile")
+		def signingPassword = findProperty("signingPassword")
+		useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+		
+		sign publishing.publications.mavenJava
+		// required { gradle.taskGraph.hasTask('uploadArchives') }
+		// only execute as part of this task
+		// println "start sign"
+		// sign configurations.archives
+		// println "sign  finish"
+	}
 
     tasks.register('release')  {
         println("release ${it.name}")
