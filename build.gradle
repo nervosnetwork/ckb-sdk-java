@@ -94,6 +94,10 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     ext {
         ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
         ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
+		// signingKeyId
+		signingKeyId = project.hasProperty('signingKeyId') ? project.property('signingKeyId') : ''
+		signingPassword = project.hasProperty('signingPassword') ? project.property('signingPassword') : ''
+		signingKey = project.hasProperty('signingKey') ? project.property('signingKey') : ''
     }
 
 
@@ -144,18 +148,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 	}
 
 	signing {
-		// useInMemoryPgpKeys(
-		// 	signingKeyId
-		// 	file(signingKeyId).getText(),
-		// 	signingPassword as String
-		// )
-		// sign publishing.publications.mavenJava
-		def signingKeyId = findProperty("signingKeyId")
-		def signingKey = findProperty("signingKey")
-		def signingPassword = findProperty("signingPassword")
-		useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
 		sign publishing.publications
-
 	}
 
 
