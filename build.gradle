@@ -64,8 +64,6 @@ allprojects {
 }
 
 configure(subprojects.findAll { it.name != 'tests' }) {
-    // Required for Maven Nexus repository
-    apply plugin: 'signing'
 
     // Required for JFrog Artifactory repository
     apply plugin: 'maven-publish'
@@ -88,6 +86,9 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     artifacts {
         archives sourcesJar, javadocJar, testJar
     }
+
+    // Required for Maven Nexus repository
+    apply plugin: 'signing'
 
     ext {
         ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
