@@ -61,6 +61,11 @@ allprojects {
         useJUnitPlatform()
     }
     apply from: rootProject.file('gradle/checkstyle.gradle')
+
+
+    signing {
+        sign publishing.publications.mavenJava
+    }
 }
 
 configure(subprojects.findAll { it.name != 'tests' }) {
@@ -147,9 +152,6 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         dependsOn publish
     }
 
-    signing {
-        sign publishing.publications.mavenJava
-    }
 
     tasks.register('release')  {
         println("release ${it.name}")
