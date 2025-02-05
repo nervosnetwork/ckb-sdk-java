@@ -149,12 +149,12 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 	}
 
 	signing {
-		useInMemoryPgpKeys(
-			signingKeyId
-			file(signingKeyId).getText(),
-			signingPassword as String
-		)
-		sign publishing.publications.mavenJava
+		// useInMemoryPgpKeys(
+		// 	signingKeyId
+		// 	file(signingKeyId).getText(),
+		// 	signingPassword as String
+		// )
+		// sign publishing.publications.mavenJava
 	}
 
 
