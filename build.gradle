@@ -94,11 +94,6 @@ configure(subprojects.findAll { it.name != 'tests' }) {
     ext {
         ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
         ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
-		signingKeyId = project.hasProperty('signingKeyId') ? project.property('signingKeyId') : ''
-		signingPassword = project.hasProperty('signingPassword') ? project.property('signingPassword') : ''
-		signingSecretKeyRingFile = project.hasProperty('signingSecretKeyRingFile') ? project.property('signingSecretKeyRingFile') : System.getenv('ORG_GRADLE_PROJECT_signingSecretKeyRingFile')
-		
-
     }
 
 
@@ -154,7 +149,9 @@ configure(subprojects.findAll { it.name != 'tests' }) {
 		// 	file(signingKeyId).getText(),
 		// 	signingPassword as String
 		// )
-		sign publishing.publications.mavenJava
+		// sign publishing.publications.mavenJava
+       sign publishing.publications
+
 	}
 
 
