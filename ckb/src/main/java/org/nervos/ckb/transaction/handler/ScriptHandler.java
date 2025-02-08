@@ -29,8 +29,9 @@ public interface ScriptHandler {
    *
    * <p>For example:</p>
    *
-   * <pre>{@code
-   * @Override
+   * <pre>
+   * <code>
+   * \@Override
    * boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
    *    // Only change the transaction when the script is used.
    *    if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
@@ -45,8 +46,8 @@ public interface ScriptHandler {
    *    txBuilder.setWitness(witnessIndex, WitnessArgs.Type.LOCK, dummyWitness);
    *
    *    return true;
-   * }
-   * }</pre>
+   * </code>
+   * </pre>
    *
    * @param txBuilder The transaction in building.
    * @param scriptGroup Transaction builder calls this callback for each script group found in the transaction.

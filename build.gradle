@@ -14,6 +14,7 @@ buildscript {
 
     repositories {
         mavenCentral()
+        maven { url 'https://nexus.web.cern.ch/nexus/content/repositories/public/' }
     }
 
     dependencies {
@@ -25,6 +26,7 @@ buildscript {
 plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
+	id 'signing'
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -42,7 +44,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '3.0.0'
+    version '3.0.1'
     apply plugin: 'java'
 
     repositories {
@@ -59,11 +61,10 @@ allprojects {
         useJUnitPlatform()
     }
     apply from: rootProject.file('gradle/checkstyle.gradle')
+
 }
 
 configure(subprojects.findAll { it.name != 'tests' }) {
-    // Required for Maven Nexus repository
-    apply plugin: 'signing'
 
     // Required for JFrog Artifactory repository
     apply plugin: 'maven-publish'
@@ -87,10 +88,14 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         archives sourcesJar, javadocJar, testJar
     }
 
+    // Required for Maven Nexus repository
+    apply plugin: 'signing'
+
     ext {
         ossrhUsername = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : ''
         ossrhPassword = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : ''
     }
+
 
     publishing {
         repositories {
@@ -105,12 +110,15 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '3.0.0'
-                from components.java
+                version '3.0.1'
+				from components.java
+
+				artifact javadocJar
+				artifact sourcesJar
 
                 pom {
                     name = 'ckb-sdk-java'
-                    description = project.description
+                    description = "ckb java sdk"
                     url = 'https://github.com/nervosnetwork/ckb-sdk-java.git'
                     scm {
                         connection = 'scm:git@github.com:nervosnetwork/ckb-sdk-java.git'
@@ -131,20 +139,18 @@ configure(subprojects.findAll { it.name != 'tests' }) {
                         }
                     }
                 }
-            }
-        }
-    }
+			}
+		}
+	}
 
+	signing {
+        required { gradle.taskGraph.hasTask('uploadArchives') }
+		sign publishing.publications
+	}
 
     tasks.register('uploadArchives') {
         println "start publish ${project.name} ${it.name}"
         dependsOn publish
-    }
-
-    signing {
-        required { gradle.taskGraph.hasTask('uploadArchives') }
-        // only execute as part of this task
-        sign configurations.archives
     }
 
     tasks.register('release')  {

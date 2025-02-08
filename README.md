@@ -28,6 +28,8 @@ Gradle
 
 ```
 implementation 'org.nervos.ckb:ckb:{version}'
+implementation 'org.nervos.ckb:core:{version}'
+implementation 'org.nervos.ckb:utils:{version}'
 ```
 
 ## Build
