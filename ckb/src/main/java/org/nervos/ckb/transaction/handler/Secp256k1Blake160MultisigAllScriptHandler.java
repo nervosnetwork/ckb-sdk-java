@@ -4,10 +4,7 @@ import org.nervos.ckb.Network;
 import org.nervos.ckb.sign.ScriptGroup;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.transaction.AbstractTransactionBuilder;
-import org.nervos.ckb.type.CellDep;
-import org.nervos.ckb.type.OutPoint;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.WitnessArgs;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 
 import java.util.Arrays;
@@ -16,8 +13,11 @@ import java.util.List;
 public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler {
   private List<CellDep> cellDeps;
   private byte[] codeHash;
+  private Script.HashType hashType;
+  private MultisigVersion multisigVersion;
 
-  public Secp256k1Blake160MultisigAllScriptHandler() {
+  public Secp256k1Blake160MultisigAllScriptHandler(MultisigVersion multisigVersion) {
+    this.multisigVersion = multisigVersion;
   }
 
   public List<CellDep> getCellDeps() {
@@ -36,15 +36,51 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     this.codeHash = codeHash;
   }
 
+  public Script.HashType getHashType() {
+    return hashType;
+  }
+
+  public void setHashType(Script.HashType hashType) {
+    this.hashType = hashType;
+  }
+
+  public MultisigVersion getMultisigVersion() {
+    return multisigVersion;
+  }
+
+  public void setMultisigVersion(MultisigVersion multisigVersion) {
+    this.multisigVersion = multisigVersion;
+  }
+
   @Override
   public void init(Network network) {
     OutPoint outPoint = new OutPoint();
     if (network == Network.MAINNET) {
-      outPoint.txHash = Numeric.hexStringToByteArray("0x71a7ba8fc96349fea0ed3a5c47992e3b4084b031a42264a018e0072e8172e46c");
-      outPoint.index = 1;
+      switch (this.multisigVersion) {
+        case Legacy:
+          outPoint.txHash = Numeric.hexStringToByteArray("0x71a7ba8fc96349fea0ed3a5c47992e3b4084b031a42264a018e0072e8172e46c");
+          outPoint.index = 1;
+          break;
+        case V2:
+          outPoint.txHash = Numeric.hexStringToByteArray("0x6888aa39ab30c570c2c30d9d5684d3769bf77265a7973211a3c087fe8efbf738");
+          outPoint.index = 0;
+          break;
+        default:
+          throw new IllegalArgumentException("Unsupported multisig version");
+      }
     } else if (network == Network.TESTNET) {
-      outPoint.txHash = Numeric.hexStringToByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37");
-      outPoint.index = 1;
+      switch (this.multisigVersion) {
+        case Legacy:
+          outPoint.txHash = Numeric.hexStringToByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37");
+          outPoint.index = 1;
+          break;
+        case V2:
+          outPoint.txHash = Numeric.hexStringToByteArray("0x2eefdeb21f3a3edf697c28a52601b4419806ed60bb427420455cc29a090b26d5");
+          outPoint.index = 0;
+          break;
+        default:
+          throw new IllegalArgumentException("Unsupported multisig version");
+      }
     } else {
       throw new IllegalArgumentException("Unsupported network");
     }
@@ -52,14 +88,15 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     cellDep.outPoint = outPoint;
     cellDep.depType = CellDep.DepType.DEP_GROUP;
     cellDeps = Arrays.asList(cellDep);
-    this.codeHash = Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH;
+    this.codeHash = this.multisigVersion.codeHash();
+    this.hashType = this.multisigVersion.hashType();
   }
 
   private boolean isMatched(Script script) {
     if (script == null) {
       return false;
     }
-    return Arrays.equals(script.codeHash, codeHash);
+    return Arrays.equals(script.codeHash, codeHash) && script.hashType == hashType;
   }
 
   @Override

@@ -11,11 +11,19 @@ import java.util.Arrays;
 import static org.nervos.ckb.utils.MoleculeConverter.packByte32;
 import static org.nervos.ckb.utils.MoleculeConverter.packBytes;
 
+
 public class Script {
   public static final byte[] SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH =
       Numeric.hexStringToByteArray("0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8");
-  public static final byte[] SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH =
+  // Multisig Script deployed on Genesis Block
+  // https://explorer.nervos.org/script/0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8/type
+  public static final byte[] SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH_LEGACY =
       Numeric.hexStringToByteArray("0x5c5069eb0857efc65e1bca0c07df34c31663b3622fd3876c876320fc9634e2a8");
+  // Latest multisig script, Enhance multisig handling for optional since value
+  // https://github.com/nervosnetwork/ckb-system-scripts/pull/99
+  // https://explorer.nervos.org/script/0x36c971b8d41fbd94aabca77dc75e826729ac98447b46f91e00796155dddb0d29/data1
+  public static final byte[] SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH_V2=
+      Numeric.hexStringToByteArray("0x36c971b8d41fbd94aabca77dc75e826729ac98447b46f91e00796155dddb0d29");
   public static final byte[] ANY_CAN_PAY_CODE_HASH_MAINNET =
       Numeric.hexStringToByteArray("0xd369597ff47f29fbc0d47d2e3775370d1250b85140c670e4718af712983a2354");
   public static final byte[] ANY_CAN_PAY_CODE_HASH_TESTNET =
