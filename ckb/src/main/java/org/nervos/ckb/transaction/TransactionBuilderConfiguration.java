@@ -23,8 +23,7 @@ public class TransactionBuilderConfiguration {
     Objects.requireNonNull(network);
     this.network = network;
     registerScriptHandler(Secp256k1Blake160SighashAllScriptHandler.class);
-    registerScriptHandler(new Secp256k1Blake160MultisigAllScriptHandler(MultisigVersion.Legacy).getClass());
-    registerScriptHandler(new Secp256k1Blake160MultisigAllScriptHandler(MultisigVersion.V2).getClass());
+    registerScriptHandler(Secp256k1Blake160MultisigAllScriptHandler.class);
     registerScriptHandler(SudtScriptHandler.class);
     registerScriptHandler(DaoScriptHandler.class);
     registerScriptHandler(OmnilockScriptHandler.class);

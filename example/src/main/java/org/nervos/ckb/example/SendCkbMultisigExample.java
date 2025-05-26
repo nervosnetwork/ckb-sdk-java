@@ -8,9 +8,7 @@ import org.nervos.ckb.sign.TransactionWithScriptGroups;
 import org.nervos.ckb.sign.signer.Secp256k1Blake160MultisigAllSigner;
 import org.nervos.ckb.transaction.CkbTransactionBuilder;
 import org.nervos.ckb.transaction.TransactionBuilderConfiguration;
-import org.nervos.ckb.type.MultisigVersion;
-import org.nervos.ckb.type.Script;
-import org.nervos.ckb.type.TransactionInput;
+import org.nervos.ckb.type.*;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
 import org.nervos.ckb.transaction.InputIterator;
@@ -44,7 +42,7 @@ public class SendCkbMultisigExample {
     signer.signTransaction(txWithGroups, new Context("0x4fd809631a6aa6e3bb378dd65eae5d71df895a82c91a615a1e8264741515c79c", multisigScript));
     signer.signTransaction(txWithGroups, new Context("0x7438f7b35c355e3d2fb9305167a31a72d22ddeafb80a21cc99ff6329d92e8087", multisigScript));
 
-    Api api = new Api("https://testnet.ckb.dev", false);
+    Api api = new Api("https://testnet.ckb.dev", true);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
@@ -61,7 +59,7 @@ public class SendCkbMultisigExample {
         multisigScript.computeHash(),
         MultisigVersion.V2.hashType()
     );
-    // ckt1qpw9q60tppt7l3j7r09qcp7lxnp3vcanvgha8pmvsa3jplykxn32sqdunqvd3g2felqv6qer8pkydws8jg9qxlca0st5v
+    // ckt1qqmvjudc6s0mm992hjnhm367sfnjntycg3a5d7g7qpukz4wamvxjjq4unqvd3g2felqv6qer8pkydws8jg9qxlc3r8v40
     String sender = new Address(lock, network).encode();
 
     TransactionBuilderConfiguration configuration = new TransactionBuilderConfiguration(network);
@@ -76,13 +74,14 @@ public class SendCkbMultisigExample {
     signer.signTransaction(txWithGroups, new Context("0x4fd809631a6aa6e3bb378dd65eae5d71df895a82c91a615a1e8264741515c79c", multisigScript));
     signer.signTransaction(txWithGroups, new Context("0x7438f7b35c355e3d2fb9305167a31a72d22ddeafb80a21cc99ff6329d92e8087", multisigScript));
 
-    Api api = new Api("https://testnet.ckb.dev", false);
+    Api api = new Api("https://testnet.ckb.dev", true);
+//    EntryCompleted completed = api.testTxPoolAccept(txWithGroups.getTxView(), OutputsValidator.PASSTHROUGH);
     byte[] txHash = api.sendTransaction(txWithGroups.getTxView());
     System.out.println("Transaction hash: " + Numeric.toHexString(txHash));
   }
 
   public static void main(String[] args) throws IOException {
-    example_legacy();
+//    example_legacy();
     example_v2();
   }
 }

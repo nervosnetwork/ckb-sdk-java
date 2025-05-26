@@ -315,7 +315,7 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public byte[] testTxPoolAccept(Transaction transaction) throws IOException {
+  public EntryCompleted testTxPoolAccept(Transaction transaction) throws IOException {
     return rpcService.post(
         "test_tx_pool_accept",
         Arrays.asList(Convert.parseTransaction(transaction), OutputsValidator.PASSTHROUGH),
@@ -323,12 +323,12 @@ public class Api implements CkbRpcApi {
   }
 
   @Override
-  public byte[] testTxPoolAccept(Transaction transaction, OutputsValidator outputsValidator)
+  public EntryCompleted testTxPoolAccept(Transaction transaction, OutputsValidator outputsValidator)
       throws IOException {
     return rpcService.post(
         "test_tx_pool_accept",
         Arrays.asList(Convert.parseTransaction(transaction), outputsValidator),
-        byte[].class);
+        EntryCompleted.class);
   }
 
   @Override

@@ -9,54 +9,18 @@ import org.nervos.ckb.utils.Numeric;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler {
-  private List<CellDep> cellDeps;
-  private byte[] codeHash;
-  private Script.HashType hashType;
-  private MultisigVersion multisigVersion;
+  private Network network;
 
-  public Secp256k1Blake160MultisigAllScriptHandler(MultisigVersion multisigVersion) {
-    this.multisigVersion = multisigVersion;
+  public Secp256k1Blake160MultisigAllScriptHandler() {
   }
 
-  public List<CellDep> getCellDeps() {
-    return cellDeps;
-  }
-
-  public void setCellDeps(List<CellDep> cellDeps) {
-    this.cellDeps = cellDeps;
-  }
-
-  public byte[] getCodeHash() {
-    return codeHash;
-  }
-
-  public void setCodeHash(byte[] codeHash) {
-    this.codeHash = codeHash;
-  }
-
-  public Script.HashType getHashType() {
-    return hashType;
-  }
-
-  public void setHashType(Script.HashType hashType) {
-    this.hashType = hashType;
-  }
-
-  public MultisigVersion getMultisigVersion() {
-    return multisigVersion;
-  }
-
-  public void setMultisigVersion(MultisigVersion multisigVersion) {
-    this.multisigVersion = multisigVersion;
-  }
-
-  @Override
-  public void init(Network network) {
+  public List<CellDep> getCellDeps(MultisigVersion multisigVersion) {
     OutPoint outPoint = new OutPoint();
-    if (network == Network.MAINNET) {
-      switch (this.multisigVersion) {
+    if (this.network == Network.MAINNET) {
+      switch (multisigVersion) {
         case Legacy:
           outPoint.txHash = Numeric.hexStringToByteArray("0x71a7ba8fc96349fea0ed3a5c47992e3b4084b031a42264a018e0072e8172e46c");
           outPoint.index = 1;
@@ -68,8 +32,8 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
         default:
           throw new IllegalArgumentException("Unsupported multisig version");
       }
-    } else if (network == Network.TESTNET) {
-      switch (this.multisigVersion) {
+    } else if (this.network == Network.TESTNET) {
+      switch (multisigVersion) {
         case Legacy:
           outPoint.txHash = Numeric.hexStringToByteArray("0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37");
           outPoint.index = 1;
@@ -87,23 +51,41 @@ public class Secp256k1Blake160MultisigAllScriptHandler implements ScriptHandler 
     CellDep cellDep = new CellDep();
     cellDep.outPoint = outPoint;
     cellDep.depType = CellDep.DepType.DEP_GROUP;
-    cellDeps = Arrays.asList(cellDep);
-    this.codeHash = this.multisigVersion.codeHash();
-    this.hashType = this.multisigVersion.hashType();
+    return Arrays.asList(cellDep);
   }
 
-  private boolean isMatched(Script script) {
+
+  @Override
+  public void init(Network network) {
+    this.network = network;
+  }
+
+  private Optional<MultisigVersion> isMatched(Script script) {
     if (script == null) {
-      return false;
+      return Optional.empty();
     }
-    return Arrays.equals(script.codeHash, codeHash) && script.hashType == hashType;
+
+    if (Arrays.equals(script.codeHash, MultisigVersion.Legacy.codeHash()) && script.hashType == MultisigVersion.Legacy.hashType()) {
+      return Optional.of(MultisigVersion.Legacy);
+    } else if (Arrays.equals(script.codeHash, MultisigVersion.V2.codeHash()) && script.hashType == MultisigVersion.V2.hashType()) {
+      return Optional.of(MultisigVersion.V2);
+    } else {
+      return Optional.empty();
+    }
   }
 
   @Override
   public boolean buildTransaction(AbstractTransactionBuilder txBuilder, ScriptGroup scriptGroup, Object context) {
-    if (scriptGroup == null || !isMatched(scriptGroup.getScript())) {
+    if (scriptGroup == null) {
       return false;
     }
+    Optional<MultisigVersion> multisigVersion = isMatched(scriptGroup.getScript());
+    if (!multisigVersion.isPresent()) {
+      return false;
+    }
+
+    List<CellDep> cellDeps = this.getCellDeps(multisigVersion.get());
+
     Secp256k1Blake160MultisigAllSigner.MultisigScript multisigScript;
     if (context instanceof Secp256k1Blake160MultisigAllSigner.MultisigScript) {
       multisigScript = (Secp256k1Blake160MultisigAllSigner.MultisigScript) context;
