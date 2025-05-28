@@ -2,6 +2,7 @@ package utils;
 
 import org.junit.jupiter.api.Test;
 import org.nervos.ckb.Network;
+import org.nervos.ckb.type.MultisigVersion;
 import org.nervos.ckb.type.Script;
 import org.nervos.ckb.utils.Numeric;
 import org.nervos.ckb.utils.address.Address;
@@ -22,7 +23,7 @@ public class AddressTest {
     testShort(script, Network.MAINNET, "ckb1qyqt8xaupvm8837nv3gtc9x0ekkj64vud3jqfwyw5v");
     testShort(script, Network.TESTNET, "ckt1qyqt8xaupvm8837nv3gtc9x0ekkj64vud3jq5t63cs");
 
-    script = generateScript(Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH,
+    script = generateScript(Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH_LEGACY,
                             "4fb2be2e5d0c1a3b8694f832350a33c1685d477a", Script.HashType.TYPE);
     testShort(script, Network.MAINNET, "ckb1qyq5lv479ewscx3ms620sv34pgeuz6zagaaqklhtgg");
     testShort(script, Network.TESTNET, "ckt1qyq5lv479ewscx3ms620sv34pgeuz6zagaaqt6f5y5");
@@ -59,6 +60,18 @@ public class AddressTest {
                             "b39bbc0b3673c7d36450bc14cfcdad2d559c6c64", Script.HashType.DATA1);
     testFullBech32m(script, Network.MAINNET, "ckb1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq4nnw7qkdnnclfkg59uzn8umtfd2kwxceqcydzyt");
     testFullBech32m(script, Network.TESTNET, "ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq4nnw7qkdnnclfkg59uzn8umtfd2kwxceqkkxdwn");
+
+    // multiscript v2
+
+    script = generateScript(MultisigVersion.V2.codeHash(),
+                            "986b5c23988427044e57d188fee45530d8877bcc", MultisigVersion.V2.hashType());
+    testFullBech32m(script, Network.MAINNET, "ckb1qqmvjudc6s0mm992hjnhm367sfnjntycg3a5d7g7qpukz4wamvxjjq5cddwz8xyyyuzyu4733rlwg4fsmzrhhnqvclulh");
+    testFullBech32m(script, Network.TESTNET, "ckt1qqmvjudc6s0mm992hjnhm367sfnjntycg3a5d7g7qpukz4wamvxjjq5cddwz8xyyyuzyu4733rlwg4fsmzrhhnqz25n40");
+
+    script = generateScript(MultisigVersion.Legacy.codeHash(),
+                            "986b5c23988427044e57d188fee45530d8877bcc", MultisigVersion.Legacy.hashType());
+    testFullBech32m(script, Network.MAINNET, "ckb1qpw9q60tppt7l3j7r09qcp7lxnp3vcanvgha8pmvsa3jplykxn32sqvcddwz8xyyyuzyu4733rlwg4fsmzrhhnqq5gm75");
+    testFullBech32m(script, Network.TESTNET, "ckt1qpw9q60tppt7l3j7r09qcp7lxnp3vcanvgha8pmvsa3jplykxn32sqvcddwz8xyyyuzyu4733rlwg4fsmzrhhnqwxr55v");
   }
 
   private void testShort(Script script, Network network, String encoded) {

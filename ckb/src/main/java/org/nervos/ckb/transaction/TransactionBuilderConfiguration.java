@@ -2,6 +2,7 @@ package org.nervos.ckb.transaction;
 
 import org.nervos.ckb.Network;
 import org.nervos.ckb.transaction.handler.*;
+import org.nervos.ckb.type.MultisigVersion;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

@@ -111,9 +111,9 @@ public interface CkbRpcApi {
   byte[] sendTestTransaction(Transaction transaction, OutputsValidator outputsValidator)
       throws IOException;
 	
-  byte[] testTxPoolAccept(Transaction transaction) throws IOException;
+  EntryCompleted testTxPoolAccept(Transaction transaction) throws IOException;
 
-  byte[] testTxPoolAccept(Transaction transaction, OutputsValidator outputsValidator)
+  EntryCompleted testTxPoolAccept(Transaction transaction, OutputsValidator outputsValidator)
       throws IOException;
 
   NodeInfo localNodeInfo() throws IOException;

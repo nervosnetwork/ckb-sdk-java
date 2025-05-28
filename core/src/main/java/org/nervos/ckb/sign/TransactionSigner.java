@@ -19,7 +19,9 @@ public class TransactionSigner {
         .registerLockScriptSigner(
             Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, new Secp256k1Blake160SighashAllSigner())
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, new Secp256k1Blake160MultisigAllSigner())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH_LEGACY, new Secp256k1Blake160MultisigAllSigner())
+        .registerLockScriptData1Signer(
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH_V2, new Secp256k1Blake160MultisigAllSigner())
         .registerLockScriptSigner(
             Script.ANY_CAN_PAY_CODE_HASH_TESTNET, new AcpSigner())
         .registerLockScriptSigner(
@@ -31,7 +33,9 @@ public class TransactionSigner {
         .registerLockScriptSigner(
             Script.SECP256K1_BLAKE160_SIGNHASH_ALL_CODE_HASH, new Secp256k1Blake160SighashAllSigner())
         .registerLockScriptSigner(
-            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH, new Secp256k1Blake160MultisigAllSigner())
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH_LEGACY, new Secp256k1Blake160MultisigAllSigner())
+        .registerLockScriptData1Signer(
+            Script.SECP256K1_BLAKE160_MULTISIG_ALL_CODE_HASH_V2, new Secp256k1Blake160MultisigAllSigner())
         .registerLockScriptSigner(
             Script.ANY_CAN_PAY_CODE_HASH_MAINNET, new AcpSigner())
         .registerLockScriptSigner(
@@ -81,6 +85,10 @@ public class TransactionSigner {
 
   public TransactionSigner registerLockScriptSigner(byte[] codeHash, ScriptSigner scriptSigner) {
     return register(codeHash, Script.HashType.TYPE, ScriptType.LOCK, scriptSigner);
+  }
+
+  public TransactionSigner registerLockScriptData1Signer(byte[] codeHash, ScriptSigner scriptSigner) {
+    return register(codeHash, Script.HashType.DATA1, ScriptType.LOCK, scriptSigner);
   }
 
   public TransactionSigner registerLockScriptSigner(String codeHash, ScriptSigner scriptSigner) {
