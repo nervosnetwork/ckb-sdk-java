@@ -44,7 +44,7 @@ allprojects {
     targetCompatibility = 1.8
 
     group 'org.nervos.ckb'
-    version '3.0.1'
+    version '4.0.0-alpha'
     apply plugin: 'java'
 
     repositories {
@@ -110,7 +110,7 @@ configure(subprojects.findAll { it.name != 'tests' }) {
         publications {
             mavenJava(MavenPublication) {
                 groupId 'org.nervos.ckb'
-                version '3.0.1'
+                version '4.0.0-alpha'
 				from components.java
 
 				artifact javadocJar
